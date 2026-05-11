@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design System — Library 1 Primitives</title>
+<link rel="stylesheet" href="/output/tokens/tokens.css">
+<link rel="stylesheet" href="/styleguide.css">
+</head>
+<body>
+<div class="layout">
+
+<aside class="sidebar">
+  <a href="/styleguide.html" class="sidebar-brand">
+    <div class="sidebar-logo">Design System</div>
+    <div class="sidebar-sub">Living Style Guide</div>
+  </a>
+  <div class="sidebar-section">Overview</div>
+  <a href="/styleguide.html">Summary</a>
+  <div class="sidebar-section">Foundation</div>
+  <a href="/styleguide-colors.html">Colors</a>
+  <a href="/styleguide-typography.html">Typography</a>
+  <a href="/styleguide-shadows.html">Shadows</a>
+  <div class="sidebar-section">Components</div>
+  <a href="/styleguide-components.html" class="active">Library 1 — Primitives</a>
+  <a href="/styleguide-components2.html">Library 2 — Patterns</a>
+  <div class="sidebar-section">Assets</div>
+  <a href="/styleguide-icons.html">Icons</a>
+  <div class="sidebar-stat">
+    <p><strong>1,517</strong> components · Library 1</p>
+    <p><strong>2,399</strong> components · Library 2</p>
+    <p><strong>429</strong> icons</p>
+    <p><strong>74</strong> design tokens</p>
+  </div>
+</aside>
+
+<main class="main">
+
+  <div class="page-header">
+    <div class="page-decoration"></div>
+    <div class="page-header-eyebrow">Components</div>
+    <h1>Library 1 — Primitives</h1>
+    <p class="page-header-desc">1,517 atomic components in <code>output/components/</code>. Covers buttons with full variant × state matrices, form controls, status badges, appearance chips, tooltips, popovers, and table primitives. Check this library before building anything interactive.</p>
+  </div>
+
+  <!-- Action Buttons -->
+  <section class="section">
+    <div class="section-header">
+      <h2>Action — Buttons</h2>
+      <span class="section-count">Family: action_primary_* · action_secondary_* · action_danger_*</span>
+    </div>
+    <p class="section-intro">Four action families (primary, secondary, danger, success, warning), three emphasis levels (bold, subtle, minimal), three sizes, six states. File naming: <code>action_primary_-size_medium_-emphasis_bold_-state_default_-icon-only_false_-shape_rectangle.html</code></p>
+
+    <div class="divider-label">Primary — Bold</div>
+    <div class="components-grid">
+      <div class="component-card">
+        <div class="component-preview">
+          <div style="width:187px;height:36px;background-color:#1339ec;border-radius:8px;display:flex;flex-direction:row;align-items:center;justify-content:center">
+            <div style="width:151px;height:36px;display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:8px;padding:8px 10px">
+              <div style="width:20px;height:20px;background:rgba(255,255,255,0.4);border-radius:3px"></div>
+              <span style="color:#ffffff;font-family:'Helvetica Neue',sans-serif;font-size:14px;font-weight:500;line-height:20px">Button Text</span>
+              <div style="width:20px;height:20px;background:rgba(255,255,255,0.4);border-radius:3px"></div>
+            </div>
+            <div style="width:36px;height:36px;border:1px solid rgba(255,255,255,0.24);display:flex;align-items:center;justify-content:center;padding:8px">
+              <div style="width:12px;height:7px;background:#ffffff;border-radius:1px"></div>
+            </div>
+          </div>
+        </div>
+        <div class="component-info">
+          <div class="name">Primary · Bold · Medium · Default</div>
+          <span class="lib-tag">Lib 1</span>
+        </div>
+      </div>
+
+      <div class="component-card">
+        <div class="component-preview">
+          <div style="width:187px;height:36px;background-color:#0f2ebd;border-radius:8px;display:flex;flex-direction:row;align-items:center;justify-content:center">
+            <div style="width:151px;height:36px;display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:8px;padding:8px 10px">
+              <div style="width:20px;height:20px;background:rgba(255,255,255,0.4);border-radius:3px"></div>
+              <span style="color:#ffffff;font-family:'Helvetica Neue',sans-serif;font-size:14px;font-weight:500;line-height:20px">Button Text</span>
+              <div style="width:20px;height:20px;background:rgba(255,255,255,0.4);border-radius:3px"></div>
+            </div>
+            <div style="width:36px;height:36px;border:1px solid rgba(255,255,255,0.24);display:flex;align-items:center;justify-content:center;padding:8px">
+              <div style="width:12px;height:7px;background:#ffffff;border-radius:1px"></div>
+            </div>
+          </div>
+        </div>
+        <div class="component-info">
+          <div class="name">Primary · Bold · Medium · Hover</div>
+          <span class="lib-tag">Lib 1</span>
+        </div>
+      </div>
+
+      <div class="component-card">
+        <div class="component-preview" style="background:var(--sys-background-neutral)">
+          <div style="width:187px;height:36px;background-color:rgba(255,255,255,0);border-radius:8px;border:1px solid #1339ec;display:flex;flex-direction:row;align-items:center;justify-content:center">
+            <div style="width:151px;height:36px;display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:8px;padding:8px 10px">
+              <div style="width:20px;height:20px;background:rgba(19,57,236,0.2);border-radius:3px"></div>
+              <span style="color:#1339ec;font-family:'Helvetica Neue',sans-serif;font-size:14px;font-weight:500;line-height:20px">Button Text</span>
+              <div style="width:20px;height:20px;background:rgba(19,57,236,0.2);border-radius:3px"></div>
+            </div>
+            <div style="width:36px;height:36px;border:1px solid rgba(19,57,236,0.24);display:flex;align-items:center;justify-content:center;padding:8px">
+              <div style="width:12px;height:7px;background:#1339ec;border-radius:1px"></div>
+            </div>
+          </div>
+        </div>
+        <div class="component-info">
+          <div class="name">Primary · Subtle · Medium · Default</div>
+          <span class="lib-tag">Lib 1</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider-label">Secondary — Bold</div>
+    <div class="components-grid">
+      <div class="component-card">
+        <div class="component-preview">
+          <div style="width:187px;height:36px;background-color:rgba(95,106,130,0.08);border-radius:8px;display:flex;flex-direction:row;align-items:center;justify-content:center">
+            <div style="width:151px;height:36px;display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:8px;padding:8px 10px">
+              <div style="width:20px;height:20px;background:rgba(17,19,23,0.2);border-radius:3px"></div>
+              <span style="color:#111317;font-family:'Helvetica Neue',sans-serif;font-size:14px;font-weight:500;line-height:20px">Button Text</span>
+              <div style="width:20px;height:20px;background:rgba(17,19,23,0.2);border-radius:3px"></div>
+            </div>
+            <div style="width:36px;height:36px;border:1px solid #e7eaee;display:flex;align-items:center;justify-content:center;padding:8px">
+              <div style="width:12px;height:7px;background:#111317;border-radius:1px"></div>
+            </div>
+          </div>
+        </div>
+        <div class="component-info">
+          <div class="name">Secondary · Bold · Medium · Default</div>
+          <span class="lib-tag">Lib 1</span>
+        </div>
+      </div>
+
+      <div class="component-card">
+        <div class="component-preview">
+          <div style="width:187px;height:36px;background-color:rgba(95,106,130,0.12);border-radius:8px;display:flex;flex-direction:row;align-items:center;justify-content:center">
+            <div style="width:151px;height:36px;display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:8px;padding:8px 10px">
+              <div style="width:20px;height:20px;background:rgba(17,19,23,0.2);border-radius:3px"></div>
+              <span style="color:#111317;font-family:'Helvetica Neue',sans-serif;font-size:14px;font-weight:500;line-height:20px">Button Text</span>
+              <div style="width:20px;height:20px;background:rgba(17,19,23,0.2);border-radius:3px"></div>
+            </div>
+            <div style="width:36px;height:36px;border:1px solid #e7eaee;display:flex;align-items:center;justify-content:center;padding:8px">
+              <div style="width:12px;height:7px;background:#111317;border-radius:1px"></div>
+            </div>
+          </div>
+        </div>
+        <div class="component-info">
+          <div class="name">Secondary · Bold · Medium · Hover</div>
+          <span class="lib-tag">Lib 1</span>
+        </div>
+      </div>
+
+      <div class="component-card">
+        <div class="component-preview">
+          <div style="width:187px;height:36px;background-color:rgba(95,106,130,0.08);border-radius:8px;opacity:0.5;display:flex;flex-direction:row;align-items:center;justify-content:center">
+            <div style="width:151px;height:36px;display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:8px;padding:8px 10px">
+              <div style="width:20px;height:20px;background:rgba(17,19,23,0.2);border-radius:3px"></div>
+              <span style="color:#111317;font-family:'Helvetica Neue',sans-serif;font-size:14px;font-weight:500;line-height:20px">Button Text</span>
+              <div style="width:20px;height:20px;background:rgba(17,19,23,0.2);border-radius:3px"></div>
+            </div>
+            <div style="width:36px;height:36px;border:1px solid #e7eaee;display:flex;align-items:center;justify-content:center;padding:8px">
+              <div style="width:12px;height:7px;background:#111317;border-radius:1px"></div>
+            </div>
+          </div>
+        </div>
+        <div class="component-info">
+          <div class="name">Secondary · Bold · Medium · Disabled</div>
+          <span class="lib-tag">Lib 1</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider-label">Danger — Bold</div>
+    <div class="components-grid">
+      <div class="component-card">
+        <div class="component-preview">
+          <div style="width:187px;height:36px;background-color:#ffebeb;border-radius:8px;display:flex;flex-direction:row;align-items:center;justify-content:center">
+            <div style="width:151px;height:36px;display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:8px;padding:8px 10px">
+              <div style="width:20px;height:20px;background:rgba(229,0,0,0.15);border-radius:3px"></div>
+              <span style="color:#cc0000;font-family:'Helvetica Neue',sans-serif;font-size:14px;font-weight:500;line-height:20px">Delete</span>
+              <div style="width:20px;height:20px;background:rgba(229,0,0,0.15);border-radius:3px"></div>
+            </div>
+            <div style="width:36px;height:36px;border:1px solid rgba(204,0,0,0.24);display:flex;align-items:center;justify-content:center;padding:8px">
+              <div style="width:12px;height:7px;background:#cc0000;border-radius:1px"></div>
+            </div>
+          </div>
+        </div>
+        <div class="component-info">
+          <div class="name">Danger · Bold · Medium · Default</div>
+          <span class="lib-tag">Lib 1</span>
+        </div>
+      </div>
+
+      <div class="component-card">
+        <div class="component-preview">
+          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:center">
+            <div style="width:72px;height:28px;background:#ffebeb;border-radius:8px;display:flex;align-items:center;justify-content:center">
+              <span style="color:#cc0000;font-family:'Helvetica Neue',sans-serif;font-size:12px;font-weight:500">Small</span>
+            </div>
+            <div style="width:90px;height:36px;background:#ffebeb;border-radius:8px;display:flex;align-items:center;justify-content:center">
+              <span style="color:#cc0000;font-family:'Helvetica Neue',sans-serif;font-size:14px;font-weight:500">Medium</span>
+            </div>
+            <div style="width:100px;height:44px;background:#ffebeb;border-radius:8px;display:flex;align-items:center;justify-content:center">
+              <span style="color:#cc0000;font-family:'Helvetica Neue',sans-serif;font-size:16px;font-weight:500">Large</span>
+            </div>
+          </div>
+        </div>
+        <div class="component-info">
+          <div class="name">Danger · Bold · Size variants</div>
+          <span class="lib-tag">Lib 1</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Status -->
+  <section class="section">
+    <div class="section-header">
+      <h2>Status Badges</h2>
+      <span class="section-count">Family: status_*</span>
+    </div>
+    <p class="section-intro">Compact 10×10px coloured dots signalling workflow state. File: <code>status_approved.html</code>, <code>status_draft.html</code>, etc.</p>
+    <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow-card)">
+      <div style="display:flex;gap:28px;flex-wrap:wrap;align-items:flex-start">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+          <div style="width:10px;height:10px;background:#2e881b;border-radius:50%"></div>
+          <div style="font-size:11px;color:var(--text-faint)">approved</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+          <div style="width:10px;height:10px;background:#5f6a82;border-radius:50%"></div>
+          <div style="font-size:11px;color:var(--text-faint)">draft</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+          <div style="width:10px;height:10px;background:#1339ec;border-radius:50%"></div>
+          <div style="font-size:11px;color:var(--text-faint)">scheduled</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+          <div style="width:10px;height:10px;background:#e05a00;border-radius:50%"></div>
+          <div style="font-size:11px;color:var(--text-faint)">review</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+          <div style="width:10px;height:10px;background:#cc0000;border-radius:50%"></div>
+          <div style="font-size:11px;color:var(--text-faint)">rejected</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+          <div style="width:10px;height:10px;background:#b481c4;border-radius:50%"></div>
+          <div style="font-size:11px;color:var(--text-faint)">connected</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Appearance chips -->
+  <section class="section">
+    <div class="section-header">
+      <h2>Appearance Chips</h2>
+      <span class="section-count">Family: appearance_colored_* · appearance_subtle_*</span>
+    </div>
+    <p class="section-intro">Coloured label/badge chips. Variants by <code>color</code> (amber, blue, coral, emerald, purple, grey…) and <code>size</code> (small, medium, large). File: <code>appearance_colored_-color_amber_-size_medium_-slim_false.html</code></p>
+    <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow-card)">
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+        <!-- Amber -->
+        <div style="height:28px;background:#fff8eb;border-radius:1024px;display:flex;align-items:center;gap:6px;padding:5px 10px">
+          <div style="width:8px;height:8px;background:#ffb433;border-radius:50%"></div>
+          <span style="color:#b58024;font-family:'Helvetica Neue',sans-serif;font-size:12px;font-weight:500">Amber</span>
+        </div>
+        <!-- Blue -->
+        <div style="height:28px;background:#eef3fd;border-radius:1024px;display:flex;align-items:center;gap:6px;padding:5px 10px">
+          <div style="width:8px;height:8px;background:#5581f1;border-radius:50%"></div>
+          <span style="color:#1339ec;font-family:'Helvetica Neue',sans-serif;font-size:12px;font-weight:500">Blue</span>
+        </div>
+        <!-- Green -->
+        <div style="height:28px;background:#f4ffe6;border-radius:1024px;display:flex;align-items:center;gap:6px;padding:5px 10px">
+          <div style="width:8px;height:8px;background:#5fbb2f;border-radius:50%"></div>
+          <span style="color:#2e881b;font-family:'Helvetica Neue',sans-serif;font-size:12px;font-weight:500">Emerald</span>
+        </div>
+        <!-- Red/Coral -->
+        <div style="height:28px;background:#ffefef;border-radius:1024px;display:flex;align-items:center;gap:6px;padding:5px 10px">
+          <div style="width:8px;height:8px;background:#fc7c7c;border-radius:50%"></div>
+          <span style="color:#b24141;font-family:'Helvetica Neue',sans-serif;font-size:12px;font-weight:500">Coral</span>
+        </div>
+        <!-- Purple/Violet -->
+        <div style="height:28px;background:#f9f4fb;border-radius:1024px;display:flex;align-items:center;gap:6px;padding:5px 10px">
+          <div style="width:8px;height:8px;background:#c68ed7;border-radius:50%"></div>
+          <span style="color:#8d6599;font-family:'Helvetica Neue',sans-serif;font-size:12px;font-weight:500">Violet</span>
+        </div>
+        <!-- Grey -->
+        <div style="height:28px;background:#f3f5f7;border-radius:1024px;display:flex;align-items:center;gap:6px;padding:5px 10px">
+          <div style="width:8px;height:8px;background:#848ea4;border-radius:50%"></div>
+          <span style="color:#5f6a82;font-family:'Helvetica Neue',sans-serif;font-size:12px;font-weight:500">Grey</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sizes overview -->
+  <section class="section">
+    <div class="section-header"><h2>Size System</h2></div>
+    <p class="section-intro">All interactive components come in three sizes. The size affects height, font size, and padding — not border-radius or emphasis.</p>
+    <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:32px;box-shadow:var(--shadow-card)">
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+          <div style="height:28px;background:#1339ec;border-radius:8px;padding:0 12px;display:flex;align-items:center">
+            <span style="color:#fff;font-family:'Helvetica Neue',sans-serif;font-size:12px;font-weight:500">Small</span>
+          </div>
+          <div style="font-size:11px;color:var(--text-faint);text-align:center">28px tall<br>12px / 400</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+          <div style="height:36px;background:#1339ec;border-radius:8px;padding:0 16px;display:flex;align-items:center">
+            <span style="color:#fff;font-family:'Helvetica Neue',sans-serif;font-size:14px;font-weight:500">Medium</span>
+          </div>
+          <div style="font-size:11px;color:var(--text-faint);text-align:center">36px tall<br>14px / 500</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+          <div style="height:44px;background:#1339ec;border-radius:8px;padding:0 20px;display:flex;align-items:center">
+            <span style="color:#fff;font-family:'Helvetica Neue',sans-serif;font-size:16px;font-weight:500">Large</span>
+          </div>
+          <div style="font-size:11px;color:var(--text-faint);text-align:center">44px tall<br>16px / 500</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- File browser note -->
+  <section class="section">
+    <div class="section-header"><h2>All 1,517 Components</h2></div>
+    <div class="card" style="max-width:540px">
+      <div class="card-label">Browsing the full library</div>
+      <div class="card-name" style="font-size:14px;line-height:1.65;color:var(--text-muted)">Each component variant is a standalone HTML file with a built-in preview. Open any file in a browser to see the exact pixel dimensions, colours, and spacing. Files are in <code>output/components/</code>. Key families: <code>action_primary_*</code>, <code>action_secondary_*</code>, <code>appearance_colored_*</code>, <code>status_*</code>, <code>tab-group_*</code>, <code>table-row_*</code>, <code>check-box_*</code>, <code>tooltip_*</code>, <code>modal-item_*</code>.</div>
+    </div>
+  </section>
+
+</main>
+</div>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design System — Shadows &amp; Spacing</title>
+<link rel="stylesheet" href="/output/tokens/tokens.css">
+<link rel="stylesheet" href="/styleguide.css">
+</head>
+<body>
+<div class="layout">
+
+<aside class="sidebar">
+  <a href="/styleguide.html" class="sidebar-brand">
+    <div class="sidebar-logo">Design System</div>
+    <div class="sidebar-sub">Living Style Guide</div>
+  </a>
+  <div class="sidebar-section">Overview</div>
+  <a href="/styleguide.html">Summary</a>
+  <div class="sidebar-section">Foundation</div>
+  <a href="/styleguide-colors.html">Colors</a>
+  <a href="/styleguide-typography.html">Typography</a>
+  <a href="/styleguide-shadows.html" class="active">Shadows</a>
+  <div class="sidebar-section">Components</div>
+  <a href="/styleguide-components.html">Library 1 — Primitives</a>
+  <a href="/styleguide-components2.html">Library 2 — Patterns</a>
+  <div class="sidebar-section">Assets</div>
+  <a href="/styleguide-icons.html">Icons</a>
+  <div class="sidebar-stat">
+    <p><strong>1,517</strong> components · Library 1</p>
+    <p><strong>2,399</strong> components · Library 2</p>
+    <p><strong>429</strong> icons</p>
+    <p><strong>74</strong> design tokens</p>
+  </div>
+</aside>
+
+<main class="main">
+
+  <div class="page-header">
+    <div class="page-decoration"></div>
+    <div class="page-header-eyebrow">Foundation</div>
+    <h1>Shadows &amp; Spacing</h1>
+    <p class="page-header-desc">Five shadow tokens for elevation, and eleven spacing steps for consistent layout rhythm. Always use token variables — never hardcode <code>box-shadow</code> values or pixel measurements.</p>
+  </div>
+
+  <!-- Shadows -->
+  <section class="section">
+    <div class="section-header">
+      <h2>Shadows</h2>
+      <span class="section-count">5 tokens</span>
+    </div>
+    <p class="section-intro">Shadow tokens are split by context: <code>shadows-shadow-md</code> is a general-purpose elevation, <code>card-widget-*</code> targets widget cards, and <code>media-item-*</code> targets thumbnail/media surfaces.</p>
+    <div class="shadows-grid">
+
+      <div class="shadow-card">
+        <div class="shadow-box" style="box-shadow:var(--shadows-shadow-md)"></div>
+        <div class="card-label">General</div>
+        <div class="card-name">Shadow MD</div>
+        <div class="card-meta" style="margin-top:8px;line-height:1.7">--shadows-shadow-md<br><span style="font-size:10px;color:var(--text-faint)">0px 1px 4px rgba(0,0,0,.1)<br>0px 4px 8px −2px rgba(0,0,0,.1)</span></div>
+      </div>
+
+      <div class="shadow-card">
+        <div class="shadow-box" style="box-shadow:var(--card-widget---default)"></div>
+        <div class="card-label">Widget Card</div>
+        <div class="card-name">Default</div>
+        <div class="card-meta" style="margin-top:8px;line-height:1.7">--card-widget---default<br><span style="font-size:10px;color:var(--text-faint)">0px 1px 3px rgba(172,172,172,.2)</span></div>
+      </div>
+
+      <div class="shadow-card">
+        <div class="shadow-box" style="box-shadow:var(--card-widget---hover)"></div>
+        <div class="card-label">Widget Card</div>
+        <div class="card-name">Hover</div>
+        <div class="card-meta" style="margin-top:8px;line-height:1.7">--card-widget---hover<br><span style="font-size:10px;color:var(--text-faint)">0px 6px 12px rgba(172,172,172,.1)<br>0px 1px 3px rgba(172,172,172,.2)</span></div>
+      </div>
+
+      <div class="shadow-card" style="background:var(--sys-text-primary)">
+        <div class="shadow-box" style="box-shadow:var(--media-item---default);background:var(--surface)"></div>
+        <div class="card-label" style="color:var(--text-faint)">Media Item</div>
+        <div class="card-name" style="color:var(--surface)">Default</div>
+        <div class="card-meta" style="margin-top:8px;line-height:1.7;color:var(--text-faint)">--media-item---default<br><span style="font-size:10px">0px 0px 8px rgba(0,0,0,.25)</span></div>
+      </div>
+
+      <div class="shadow-card" style="background:var(--sys-text-primary)">
+        <div class="shadow-box" style="box-shadow:var(--media-item---hover);background:var(--surface)"></div>
+        <div class="card-label" style="color:var(--text-faint)">Media Item</div>
+        <div class="card-name" style="color:var(--surface)">Hover</div>
+        <div class="card-meta" style="margin-top:8px;line-height:1.7;color:var(--text-faint)">--media-item---hover<br><span style="font-size:10px">0px 4px 8px rgba(0,0,0,.25)</span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Spacing -->
+  <section class="section">
+    <div class="section-header">
+      <h2>Spacing</h2>
+      <span class="section-count">11 tokens</span>
+    </div>
+    <p class="section-intro">A linear spacing scale. Use <code>--spacing-*</code> tokens for all margins, padding, and gaps. Never hardcode pixel values. Prefix: <code>--spacing-</code></p>
+
+    <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-card);">
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <thead>
+          <tr>
+            <th style="text-align:left;padding:10px 20px;background:var(--bg);border-bottom:1.5px solid var(--border);font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--text-faint);">Token</th>
+            <th style="text-align:left;padding:10px 20px;background:var(--bg);border-bottom:1.5px solid var(--border);font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--text-faint);">Value</th>
+            <th style="text-align:left;padding:10px 20px;background:var(--bg);border-bottom:1.5px solid var(--border);font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--text-faint);">Visual</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--border)">
+            <td style="padding:12px 20px"><code>--spacing-none</code></td>
+            <td style="padding:12px 20px;font-family:monospace;font-size:12px;color:var(--text-faint)">0px</td>
+            <td style="padding:12px 20px"><div style="height:4px;background:var(--sys-primary-default);border-radius:2px;width:0px;min-width:2px;background:var(--border)"></div></td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border)">
+            <td style="padding:12px 20px"><code>--spacing-xxxs</code></td>
+            <td style="padding:12px 20px;font-family:monospace;font-size:12px;color:var(--text-faint)">2px</td>
+            <td style="padding:12px 20px"><div style="height:4px;background:var(--sys-primary-default);border-radius:2px;width:2px"></div></td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border)">
+            <td style="padding:12px 20px"><code>--spacing-xxs</code></td>
+            <td style="padding:12px 20px;font-family:monospace;font-size:12px;color:var(--text-faint)">4px</td>
+            <td style="padding:12px 20px"><div style="height:4px;background:var(--sys-primary-default);border-radius:2px;width:4px"></div></td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border)">
+            <td style="padding:12px 20px"><code>--spacing-xs</code></td>
+            <td style="padding:12px 20px;font-family:monospace;font-size:12px;color:var(--text-faint)">6px</td>
+            <td style="padding:12px 20px"><div style="height:4px;background:var(--sys-primary-default);border-radius:2px;width:6px"></div></td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border)">
+            <td style="padding:12px 20px"><code>--spacing-s</code></td>
+            <td style="padding:12px 20px;font-family:monospace;font-size:12px;color:var(--text-faint)">8px</td>
+            <td style="padding:12px 20px"><div style="height:4px;background:var(--sys-primary-default);border-radius:2px;width:8px"></div></td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border)">
+            <td style="padding:12px 20px"><code>--spacing-sm</code></td>
+            <td style="padding:12px 20px;font-family:monospace;font-size:12px;color:var(--text-faint)">10px</td>
+            <td style="padding:12px 20px"><div style="height:4px;background:var(--sys-primary-default);border-radius:2px;width:10px"></div></td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border)">
+            <td style="padding:12px 20px"><code>--spacing-m</code></td>
+            <td style="padding:12px 20px;font-family:monospace;font-size:12px;color:var(--text-faint)">12px</td>
+            <td style="padding:12px 20px"><div style="height:4px;background:var(--sys-primary-default);border-radius:2px;width:12px"></div></td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border)">
+            <td style="padding:12px 20px"><code>--spacing-l</code></td>
+            <td style="padding:12px 20px;font-family:monospace;font-size:12px;color:var(--text-faint)">16px</td>
+            <td style="padding:12px 20px"><div style="height:4px;background:var(--sys-primary-default);border-radius:2px;width:16px"></div></td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border)">
+            <td style="padding:12px 20px"><code>--spacing-xl</code></td>
+            <td style="padding:12px 20px;font-family:monospace;font-size:12px;color:var(--text-faint)">20px</td>
+            <td style="padding:12px 20px"><div style="height:4px;background:var(--sys-primary-default);border-radius:2px;width:20px"></div></td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border)">
+            <td style="padding:12px 20px"><code>--spacing-2xl</code></td>
+            <td style="padding:12px 20px;font-family:monospace;font-size:12px;color:var(--text-faint)">24px</td>
+            <td style="padding:12px 20px"><div style="height:4px;background:var(--sys-primary-default);border-radius:2px;width:24px"></div></td>
+          </tr>
+          <tr>
+            <td style="padding:12px 20px"><code>--spacing-3xl</code></td>
+            <td style="padding:12px 20px;font-family:monospace;font-size:12px;color:var(--text-faint)">32px</td>
+            <td style="padding:12px 20px"><div style="height:4px;background:var(--sys-primary-default);border-radius:2px;width:32px"></div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+</div>
+</body>
+</html>

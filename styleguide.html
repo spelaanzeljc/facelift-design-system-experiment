@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design System — Summary</title>
+<link rel="stylesheet" href="/output/tokens/tokens.css">
+<link rel="stylesheet" href="/styleguide.css">
+</head>
+<body>
+<div class="layout">
+
+<aside class="sidebar">
+  <a href="/styleguide.html" class="sidebar-brand">
+    <div class="sidebar-logo">Design System</div>
+    <div class="sidebar-sub">Living Style Guide</div>
+  </a>
+  <div class="sidebar-section">Overview</div>
+  <a href="/styleguide.html" class="active">Summary</a>
+  <div class="sidebar-section">Foundation</div>
+  <a href="/styleguide-colors.html">Colors</a>
+  <a href="/styleguide-typography.html">Typography</a>
+  <a href="/styleguide-shadows.html">Shadows</a>
+  <div class="sidebar-section">Components</div>
+  <a href="/styleguide-components.html">Library 1 — Primitives</a>
+  <a href="/styleguide-components2.html">Library 2 — Patterns</a>
+  <div class="sidebar-section">Assets</div>
+  <a href="/styleguide-icons.html">Icons</a>
+  <div class="sidebar-stat">
+    <p><strong>1,517</strong> components · Library 1</p>
+    <p><strong>2,399</strong> components · Library 2</p>
+    <p><strong>429</strong> icons</p>
+    <p><strong>74</strong> design tokens</p>
+  </div>
+</aside>
+
+<main class="main">
+
+  <div class="page-header">
+    <div class="page-decoration"></div>
+    <div class="page-header-eyebrow">Exported from Figma</div>
+    <h1>Design System</h1>
+    <p class="page-header-desc">A living reference of every token, component, and icon. All values come from <code>output/tokens/tokens.css</code> — never hardcode colours, type sizes, or shadows.</p>
+  </div>
+
+  <!-- Primary Colors -->
+  <section class="section">
+    <div class="section-header">
+      <h2>Primary Colors</h2>
+      <a href="/styleguide-colors.html" style="font-size:12px;color:var(--clay);text-decoration:none;font-weight:500">View all →</a>
+    </div>
+    <p class="section-intro">Use semantic tokens in code. The brand primary is <code>--sys-primary-default</code> (#1339ec).</p>
+    <div class="summary-colors">
+      <div class="color-card">
+        <div class="color-swatch" style="background:#1339ec"></div>
+        <div class="color-info"><div class="name">Brand Primary</div><div class="token">--sys-primary-default</div><div class="hex">#1339ec</div></div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#111317"></div>
+        <div class="color-info"><div class="name">Text Primary</div><div class="token">--sys-text-primary</div><div class="hex">#111317</div></div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#5f6a82"></div>
+        <div class="color-info"><div class="name">Text Secondary</div><div class="token">--sys-text-secondary</div><div class="hex">#5f6a82</div></div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#ffffff;border-bottom:1px solid #e8e3dc"></div>
+        <div class="color-info"><div class="name">Background</div><div class="token">--sys-background-base</div><div class="hex">#ffffff</div></div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#f3f5f7;border-bottom:1px solid #e8e3dc"></div>
+        <div class="color-info"><div class="name">Surface</div><div class="token">--sys-background-neutral</div><div class="hex">#f3f5f7</div></div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#d3d7de"></div>
+        <div class="color-info"><div class="name">Border</div><div class="token">--sys-border-base</div><div class="hex">#d3d7de</div></div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#2e881b"></div>
+        <div class="color-info"><div class="name">Success</div><div class="token">--sys-success-content</div><div class="hex">#2e881b</div></div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#e05a00"></div>
+        <div class="color-info"><div class="name">Warning</div><div class="token">--sys-warning-content</div><div class="hex">#e05a00</div></div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#cc0000"></div>
+        <div class="color-info"><div class="name">Danger</div><div class="token">--sys-danger-content</div><div class="hex">#cc0000</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Primary Elements -->
+  <section class="section">
+    <div class="section-header">
+      <h2>Primary Elements</h2>
+      <a href="/styleguide-components.html" style="font-size:12px;color:var(--clay);text-decoration:none;font-weight:500">View all →</a>
+    </div>
+    <p class="section-intro">Core interactive components. Full variants in Library 1 and Library 2.</p>
+
+    <div class="summary-elements">
+
+      <div class="summary-element-group">
+        <h3>Buttons</h3>
+        <div class="element-row">
+          <div style="height:36px;background:#1339ec;border-radius:8px;display:inline-flex;align-items:center;padding:0 16px;gap:8px;cursor:pointer">
+            <span style="font-family:'Helvetica Neue',sans-serif;font-size:14px;font-weight:700;color:#fff;line-height:20px">Primary</span>
+          </div>
+          <div style="height:36px;background:rgba(95,106,130,0.08);border-radius:8px;display:inline-flex;align-items:center;padding:0 16px;cursor:pointer">
+            <span style="font-family:'Helvetica Neue',sans-serif;font-size:14px;font-weight:700;color:#111317;line-height:20px">Secondary</span>
+          </div>
+          <div style="height:36px;background:#ffebeb;border-radius:8px;display:inline-flex;align-items:center;padding:0 16px;cursor:pointer">
+            <span style="font-family:'Helvetica Neue',sans-serif;font-size:14px;font-weight:700;color:#cc0000;line-height:20px">Danger</span>
+          </div>
+        </div>
+        <div class="element-row" style="margin-top:4px">
+          <div style="height:32px;background:#1339ec;border-radius:8px;display:inline-flex;align-items:center;padding:0 12px;cursor:pointer">
+            <span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;font-weight:700;color:#fff">Small</span>
+          </div>
+          <div style="height:40px;background:#1339ec;border-radius:8px;display:inline-flex;align-items:center;padding:0 20px;cursor:pointer">
+            <span style="font-family:'Helvetica Neue',sans-serif;font-size:14px;font-weight:700;color:#fff">Large</span>
+          </div>
+          <div style="height:36px;background:#1339ec;border-radius:100px;display:inline-flex;align-items:center;padding:0 16px;cursor:pointer">
+            <span style="font-family:'Helvetica Neue',sans-serif;font-size:14px;font-weight:700;color:#fff">Rounded</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="summary-element-group">
+        <h3>Status &amp; Badges</h3>
+        <div class="element-row">
+          <div style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:#e9ffcf;border-radius:100px">
+            <div style="width:7px;height:7px;border-radius:50%;background:#2e881b"></div>
+            <span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;font-weight:500;color:#2e881b">Approved</span>
+          </div>
+          <div style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:#ffede2;border-radius:100px">
+            <div style="width:7px;height:7px;border-radius:50%;background:#e05a00"></div>
+            <span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;font-weight:500;color:#e05a00">Pending</span>
+          </div>
+          <div style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:#ffebeb;border-radius:100px">
+            <div style="width:7px;height:7px;border-radius:50%;background:#cc0000"></div>
+            <span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;font-weight:500;color:#cc0000">Rejected</span>
+          </div>
+        </div>
+        <div class="element-row" style="margin-top:4px">
+          <div style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;background:#dfe7fd;border-radius:100px">
+            <div style="width:7px;height:7px;border-radius:50%;background:#1339ec"></div>
+            <span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;font-weight:500;color:#1339ec">Blue</span>
+          </div>
+          <div style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;background:#eddcf3;border-radius:100px">
+            <div style="width:7px;height:7px;border-radius:50%;background:#8d6599"></div>
+            <span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;font-weight:500;color:#8d6599">Violet</span>
+          </div>
+          <div style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;background:#d9fbfe;border-radius:100px">
+            <div style="width:7px;height:7px;border-radius:50%;background:#00818f"></div>
+            <span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;font-weight:500;color:#00818f">Petrol</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="summary-element-group">
+        <h3>Inputs &amp; Controls</h3>
+        <div class="element-row" style="flex-direction:column;align-items:flex-start;gap:10px">
+          <div style="width:100%">
+            <div style="font-family:'Helvetica Neue',sans-serif;font-size:12px;font-weight:500;color:#111317;margin-bottom:4px">Label</div>
+            <div style="width:100%;height:36px;background:#fff;border:1.5px solid #d3d7de;border-radius:8px;display:flex;align-items:center;padding:0 12px">
+              <span style="font-family:'Helvetica Neue',sans-serif;font-size:14px;color:#848ea4">Placeholder text</span>
+            </div>
+          </div>
+          <div style="width:100%">
+            <div style="font-family:'Helvetica Neue',sans-serif;font-size:12px;font-weight:500;color:#111317;margin-bottom:4px">Focused</div>
+            <div style="width:100%;height:36px;background:#fff;border:1.5px solid #5581f1;border-radius:8px;display:flex;align-items:center;padding:0 12px;box-shadow:0 0 0 3px rgba(85,129,241,0.15)">
+              <span style="font-family:'Helvetica Neue',sans-serif;font-size:14px;color:#111317">Value</span>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:18px;height:18px;background:#1339ec;border-radius:4px;display:flex;align-items:center;justify-content:center">
+              <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <span style="font-family:'Helvetica Neue',sans-serif;font-size:13px;color:#111317">Checked</span>
+            <div style="width:18px;height:18px;border:1.5px solid #d3d7de;border-radius:4px;margin-left:8px"></div>
+            <span style="font-family:'Helvetica Neue',sans-serif;font-size:13px;color:#111317">Unchecked</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Primary Fonts -->
+  <section class="section">
+    <div class="section-header">
+      <h2>Primary Fonts &amp; Sizes</h2>
+      <a href="/styleguide-typography.html" style="font-size:12px;color:var(--clay);text-decoration:none;font-weight:500">View all →</a>
+    </div>
+    <p class="section-intro">Two typefaces: <strong>Helvetica Neue</strong> for all UI text, <strong>Lota Grotesque</strong> for marketing/hero only.</p>
+
+    <table class="type-table">
+      <thead>
+        <tr>
+          <th style="width:200px">Style</th>
+          <th style="width:160px">Specs</th>
+          <th>Specimen</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="meta">
+            <div class="style-label">Heading XL</div>
+            <div class="style-token">---bb-update-heading-heading-xl</div>
+          </td>
+          <td class="meta"><div class="style-specs">28px / 700 / lh 36px<br>Helvetica Neue</div></td>
+          <td class="specimen-cell"><div style="font-family:'Helvetica Neue',sans-serif;font-size:28px;font-weight:700;line-height:36px;color:#141413">Page Title</div></td>
+        </tr>
+        <tr>
+          <td class="meta">
+            <div class="style-label">Heading Sm</div>
+            <div class="style-token">---bb-update-heading-heading-sm</div>
+          </td>
+          <td class="meta"><div class="style-specs">16px / 700 / lh 24px<br>Helvetica Neue</div></td>
+          <td class="specimen-cell"><div style="font-family:'Helvetica Neue',sans-serif;font-size:16px;font-weight:700;line-height:24px;color:#141413">Section Heading</div></td>
+        </tr>
+        <tr>
+          <td class="meta">
+            <div class="style-label">Body Md Regular</div>
+            <div class="style-token">---bb-update-body-body-md--regular</div>
+          </td>
+          <td class="meta"><div class="style-specs">14px / 400 / lh 20px<br>Helvetica Neue</div></td>
+          <td class="specimen-cell"><div style="font-family:'Helvetica Neue',sans-serif;font-size:14px;font-weight:400;line-height:20px;color:#141413">The quick brown fox jumps over the lazy dog.</div></td>
+        </tr>
+        <tr>
+          <td class="meta">
+            <div class="style-label">Body Md Medium</div>
+            <div class="style-token">---bb-update-body-body-md--medium</div>
+          </td>
+          <td class="meta"><div class="style-specs">14px / 500 / lh 20px<br>Helvetica Neue</div></td>
+          <td class="specimen-cell"><div style="font-family:'Helvetica Neue',sans-serif;font-size:14px;font-weight:500;line-height:20px;color:#141413">The quick brown fox jumps over the lazy dog.</div></td>
+        </tr>
+        <tr>
+          <td class="meta">
+            <div class="style-label">Body Md Bold</div>
+            <div class="style-token">---bb-update-body-body-md--bold</div>
+          </td>
+          <td class="meta"><div class="style-specs">14px / 700 / lh 20px<br>Helvetica Neue</div></td>
+          <td class="specimen-cell"><div style="font-family:'Helvetica Neue',sans-serif;font-size:14px;font-weight:700;line-height:20px;color:#141413">The quick brown fox jumps over the lazy dog.</div></td>
+        </tr>
+        <tr>
+          <td class="meta">
+            <div class="style-label">Body Sm Regular</div>
+            <div class="style-token">---bb-update-body-body-sm--regular</div>
+          </td>
+          <td class="meta"><div class="style-specs">12px / 400 / lh 18px<br>Helvetica Neue</div></td>
+          <td class="specimen-cell"><div style="font-family:'Helvetica Neue',sans-serif;font-size:12px;font-weight:400;line-height:18px;color:#141413">The quick brown fox jumps over the lazy dog.</div></td>
+        </tr>
+        <tr>
+          <td class="meta">
+            <div class="style-label">Extra Small</div>
+            <div class="style-token">--extras-small-extra-small</div>
+          </td>
+          <td class="meta"><div class="style-specs">12px / 400 / lh 18px<br>Helvetica Neue</div></td>
+          <td class="specimen-cell"><div style="font-family:'Helvetica Neue',sans-serif;font-size:12px;font-weight:400;line-height:18px;color:#5f6a82">Caption, metadata, labels</div></td>
+        </tr>
+        <tr>
+          <td class="meta">
+            <div class="style-label">Display H1</div>
+            <div class="style-token">--headings-h1---72-regular</div>
+          </td>
+          <td class="meta"><div class="style-specs">72px / 400 / lh 80px<br>Lota Grotesque</div></td>
+          <td class="specimen-cell"><div style="font-family:'Lota Grotesque',system-ui,sans-serif;font-size:48px;font-weight:400;line-height:1.1;letter-spacing:-2px;color:#a8a49d">Display</div></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+</main>
+</div>
+</body>
+</html>

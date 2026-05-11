@@ -1,0 +1,475 @@
+/* Design Tokens — auto-generated from Figma Foundation library */
+/* Source: Variables API — 🟡 Reference Colors + 🟡 Color Tokens collections */
+
+:root {
+
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     REFERENCE PALETTE  (raw colour ramps)
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+  /* ── Blue (brand primary) ── */
+  --blue-50:  #eef3fd;
+  --blue-100: #dfe7fd;
+  --blue-200: #c7d5fa;
+  --blue-300: #75a7eb;
+  --blue-400: #5581f1;
+  --blue-500: #1339ec;
+  --blue-600: #0f2ebd;
+  --blue-700: #0c228d;
+  --blue-800: #08175e;
+  --blue-900: #030926;
+
+  /* ── Grey ── */
+  --grey-white: #ffffff;
+  --grey-black: #000000;
+  --grey-50:  #f3f5f7;
+  --grey-100: #e7eaee;
+  --grey-200: #d3d7de;
+  --grey-300: #a7aebe;
+  --grey-400: #848ea4;
+  --grey-500: #5f6a82;
+  --grey-600: #515a6e;
+  --grey-700: #414858;
+  --grey-800: #2b303b;
+  --grey-900: #111317;
+
+  /* ── Green ── */
+  --green-50:  #f4ffe6;
+  --green-100: #e9ffcf;
+  --green-200: #dafab7;
+  --green-300: #caf5a0;
+  --green-400: #a8e972;
+  --green-500: #80d747;
+  --green-600: #5fbb2f;
+  --green-700: #2e881b;
+  --green-800: #1b5c14;
+  --green-900: #0a330a;
+
+  /* ── Red ── */
+  --red-50:  #ffebeb;
+  --red-100: #ffd1d1;
+  --red-200: #ff9e9e;
+  --red-300: #ff6b6b;
+  --red-400: #ff3838;
+  --red-500: #e50000;
+  --red-600: #cc0000;
+  --red-700: #b20000;
+  --red-800: #850000;
+  --red-900: #570000;
+
+  /* ── Orange ── */
+  --orange-50:  #ffede2;
+  --orange-100: #ffdcc5;
+  --orange-200: #ffb482;
+  --orange-300: #ff944d;
+  --orange-400: #ff7c24;
+  --orange-500: #ff6600;
+  --orange-600: #e05a00;
+  --orange-700: #ad4500;
+  --orange-800: #803300;
+  --orange-900: #391700;
+
+  /* ── Violet ── */
+  --violet-50:  #f9f4fb;
+  --violet-100: #eddcf3;
+  --violet-200: #e5cbed;
+  --violet-300: #d9b3e4;
+  --violet-400: #d1a5df;
+  --violet-500: #c68ed7;
+  --violet-600: #b481c4;
+  --violet-700: #8d6599;
+  --violet-800: #6d4e76;
+  --violet-900: #533c5a;
+
+  /* ── Purple ── */
+  --purple-50:  #fff0f6;
+  --purple-100: #ffd0e3;
+  --purple-200: #ffb9d6;
+  --purple-300: #ff98c3;
+  --purple-400: #ff85b8;
+  --purple-500: #ff66a6;
+  --purple-600: #e85d97;
+  --purple-700: #b54876;
+  --purple-800: #8c385b;
+  --purple-900: #6b2b46;
+
+  /* ── Azure ── */
+  --azure-50:  #f4f7fb;
+  --azure-100: #dde7f4;
+  --azure-200: #cddbee;
+  --azure-300: #b6cae7;
+  --azure-400: #a8c0e2;
+  --azure-500: #92b0db;
+  --azure-600: #85a0c7;
+  --azure-700: #687d9b;
+  --azure-800: #506178;
+  --azure-900: #3d4a5c;
+
+  /* ── Cobalt ── */
+  --cobalt-50:  #f0f4ff;
+  --cobalt-100: #d0dcff;
+  --cobalt-200: #b9cbff;
+  --cobalt-300: #98b3ff;
+  --cobalt-400: #85a5ff;
+  --cobalt-500: #668eff;
+  --cobalt-600: #5d81e8;
+  --cobalt-700: #4865b5;
+  --cobalt-800: #384e8c;
+  --cobalt-900: #2b3c6b;
+
+  /* ── Indigo ── */
+  --indigo-50:  #f0f4ff;
+  --indigo-100: #cae6fa;
+  --indigo-200: #cae6fa;
+  --indigo-300: #b0daf8;
+  --indigo-400: #8cc9f4;
+  --indigo-500: #75bef2;
+  --indigo-600: #4c9ed9;
+  --indigo-700: #3b7caa;
+  --indigo-800: #2e6083;
+  --indigo-900: #234964;
+
+  /* ── Petrol ── */
+  --petrol-50:  #edfdff;
+  --petrol-100: #d9fbfe;
+  --petrol-200: #c2f4fa;
+  --petrol-300: #9debf5;
+  --petrol-400: #76e3ee;
+  --petrol-500: #1bcddf;
+  --petrol-600: #00aabd;
+  --petrol-700: #00818f;
+  --petrol-800: #005461;
+  --petrol-900: #002229;
+
+  /* ── Mint ── */
+  --mint-50:  #f9fef1;
+  --mint-100: #ecfcd2;
+  --mint-200: #e3fabc;
+  --mint-300: #d6f89e;
+  --mint-400: #cef68b;
+  --mint-500: #c2f46e;
+  --mint-600: #b1de64;
+  --mint-700: #8aad4e;
+  --mint-800: #6b863d;
+  --mint-900: #51662e;
+
+  /* ── Emerald ── */
+  --emerald-50:  #f0fcf0;
+  --emerald-100: #cff4cf;
+  --emerald-200: #b8efb8;
+  --emerald-300: #97e897;
+  --emerald-400: #83e383;
+  --emerald-500: #64dc64;
+  --emerald-600: #5bc85b;
+  --emerald-700: #479c47;
+  --emerald-800: #377937;
+  --emerald-900: #2a5c2a;
+
+  /* ── Peridot ── */
+  --peridot-50:  #fcfcec;
+  --peridot-100: #f4f7c3;
+  --peridot-200: #eff3a6;
+  --peridot-300: #e8ed7e;
+  --peridot-400: #e4e965;
+  --peridot-500: #dde43e;
+  --peridot-600: #c9cf38;
+  --peridot-700: #9da22c;
+  --peridot-800: #7a7d22;
+  --peridot-900: #5d601a;
+
+  /* ── Yellow ── */
+  --yellow-50:  #fffdf0;
+  --yellow-100: #fff9db;
+  --yellow-200: #fff2ad;
+  --yellow-300: #ffea7a;
+  --yellow-400: #fbd928;
+  --yellow-500: #e6bb09;
+  --yellow-600: #c29300;
+  --yellow-700: #856300;
+  --yellow-800: #523900;
+  --yellow-900: #291d00;
+
+  /* ── Amber ── */
+  --amber-50:  #fff8eb;
+  --amber-100: #ffe8c0;
+  --amber-200: #ffdda1;
+  --amber-300: #ffcd76;
+  --amber-400: #ffc35c;
+  --amber-500: #ffb433;
+  --amber-600: #e8a42e;
+  --amber-700: #b58024;
+  --amber-800: #8c631c;
+  --amber-900: #6b4c15;
+
+  /* ── Beige ── */
+  --beige-50:  #fdf6ef;
+  --beige-100: #f8e2ce;
+  --beige-200: #f5d5b7;
+  --beige-300: #f0c196;
+  --beige-400: #edb581;
+  --beige-500: #e9a362;
+  --beige-600: #d49459;
+  --beige-700: #a57446;
+  --beige-800: #805a36;
+  --beige-900: #624429;
+
+  /* ── Coral ── */
+  --coral-50:  #ffefef;
+  --coral-100: #fed6d6;
+  --coral-200: #fdb4b4;
+  --coral-300: #fc9191;
+  --coral-400: #fc7c7c;
+  --coral-500: #fb5b5b;
+  --coral-600: #e45353;
+  --coral-700: #b24141;
+  --coral-800: #8a3232;
+  --coral-900: #692626;
+
+  /* ── Alpha ── */
+  --alpha-grey-4:  rgba(95, 106, 130, 0.04);
+  --alpha-grey-8:  rgba(95, 106, 130, 0.08);
+  --alpha-grey-12: rgba(95, 106, 130, 0.12);
+  --alpha-grey-16: rgba(95, 106, 130, 0.16);
+  --alpha-grey-20: rgba(95, 106, 130, 0.20);
+  --alpha-grey-24: rgba(95, 106, 130, 0.24);
+  --alpha-white-0:  rgba(255, 255, 255, 0);
+  --alpha-white-16: rgba(255, 255, 255, 0.16);
+  --alpha-white-24: rgba(255, 255, 255, 0.24);
+  --alpha-black-40: rgba(0, 0, 0, 0.40);
+
+
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     SEMANTIC TOKENS  (🟡 Color Tokens — System layer)
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+  /* ── Background ── */
+  --sys-background-base:    var(--grey-white);
+  --sys-background-neutral: var(--grey-50);
+
+  /* ── Text ── */
+  --sys-text-primary:     var(--grey-900);
+  --sys-text-secondary:   var(--grey-500);
+  --sys-text-placeholder: var(--grey-400);
+  --sys-text-disabled:    var(--grey-300);
+  --sys-text-on-color:    var(--grey-white);
+  --sys-text-brand:       var(--sys-primary-default);
+
+  /* ── Icon ── */
+  --sys-icon-primary:     var(--grey-900);
+  --sys-icon-secondary:   var(--grey-500);
+  --sys-icon-placeholder: var(--grey-400);
+  --sys-icon-disabled:    var(--grey-300);
+  --sys-icon-on-color:    var(--grey-white);
+  --sys-icon-brand:       var(--sys-primary-default);
+
+  /* ── Border ── */
+  --sys-border-subtle:           var(--grey-50);
+  --sys-border-soft:             var(--grey-100);
+  --sys-border-base:             var(--grey-200);
+  --sys-border-bold:             var(--grey-300);
+  --sys-border-contrast:         var(--grey-700);
+  --sys-border-on-color-subtle:  var(--alpha-white-16);
+  --sys-border-on-color-base:    var(--alpha-white-24);
+  --sys-border-on-color-strong:  var(--grey-white);
+  --sys-border-brand:            var(--sys-primary-default);
+  --sys-border-focus:            var(--blue-400);
+  --sys-border-success:          var(--green-700);
+  --sys-border-warning:          var(--orange-600);
+  --sys-border-danger:           var(--red-600);
+
+  /* ── Primary (brand blue) ── */
+  --sys-primary-default: var(--blue-500);
+  --sys-primary-hover:   var(--blue-600);
+  --sys-primary-pressed: var(--blue-700);
+  --sys-primary-active:  var(--blue-700);
+
+  --sys-primary-subtle-default: var(--alpha-white-0);
+  --sys-primary-subtle-hover:   var(--blue-50);
+  --sys-primary-subtle-pressed: var(--blue-100);
+  --sys-primary-subtle-active:  var(--blue-100);
+
+  --sys-primary-minimal-default: var(--alpha-white-0);
+  --sys-primary-minimal-hover:   var(--blue-50);
+  --sys-primary-minimal-pressed: var(--blue-100);
+  --sys-primary-minimal-active:  var(--blue-100);
+
+  /* ── Secondary (grey ghost) ── */
+  --sys-secondary-default: var(--alpha-grey-8);
+  --sys-secondary-hover:   var(--alpha-grey-12);
+  --sys-secondary-pressed: var(--alpha-grey-20);
+  --sys-secondary-active:  var(--alpha-grey-20);
+
+  /* ── Success (green) ── */
+  --sys-success-default: var(--green-100);
+  --sys-success-hover:   var(--green-200);
+  --sys-success-pressed: var(--green-300);
+  --sys-success-content: var(--green-700);
+
+  /* ── Warning (orange) ── */
+  --sys-warning-default: var(--orange-50);
+  --sys-warning-hover:   var(--orange-100);
+  --sys-warning-pressed: var(--orange-200);
+  --sys-warning-content: var(--orange-600);
+
+  /* ── Danger (red) ── */
+  --sys-danger-default: var(--red-50);
+  --sys-danger-hover:   var(--red-100);
+  --sys-danger-pressed: var(--red-200);
+  --sys-danger-content: var(--red-600);
+
+
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     TYPOGRAPHY  (from Figma local text styles)
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+  /* 🟡 BB Update/Body/Body Md – Regular */
+  ---bb-update-body-body-md--regular-font-family: "Helvetica Neue";
+  ---bb-update-body-body-md--regular-font-size: 14px;
+  ---bb-update-body-body-md--regular-font-weight: 400;
+  ---bb-update-body-body-md--regular-line-height: 20px;
+  /* 🟡 BB Update/Body/Body Md – Medium */
+  ---bb-update-body-body-md--medium-font-family: "Helvetica Neue";
+  ---bb-update-body-body-md--medium-font-size: 14px;
+  ---bb-update-body-body-md--medium-font-weight: 500;
+  ---bb-update-body-body-md--medium-line-height: 20px;
+  /* 🟡 BB Update/Body/Body Md – Bold */
+  ---bb-update-body-body-md--bold-font-family: "Helvetica Neue";
+  ---bb-update-body-body-md--bold-font-size: 14px;
+  ---bb-update-body-body-md--bold-font-weight: 700;
+  ---bb-update-body-body-md--bold-line-height: 20px;
+  /* 🟡 BB Update/Body/Body Sm – Regular */
+  ---bb-update-body-body-sm--regular-font-family: "Helvetica Neue";
+  ---bb-update-body-body-sm--regular-font-size: 12px;
+  ---bb-update-body-body-sm--regular-font-weight: 400;
+  ---bb-update-body-body-sm--regular-line-height: 18px;
+  /* 🟡 BB Update/Body/Body Sm – Medium */
+  ---bb-update-body-body-sm--medium-font-family: "Helvetica Neue";
+  ---bb-update-body-body-sm--medium-font-size: 12px;
+  ---bb-update-body-body-sm--medium-font-weight: 500;
+  ---bb-update-body-body-sm--medium-line-height: 18px;
+  /* 🟡 BB Update/Body/Body Sm – Bold */
+  ---bb-update-body-body-sm--bold-font-family: "Helvetica Neue";
+  ---bb-update-body-body-sm--bold-font-size: 12px;
+  ---bb-update-body-body-sm--bold-font-weight: 700;
+  ---bb-update-body-body-sm--bold-line-height: 18px;
+  /* 🟡 BB Update/Heading/Heading XL */
+  ---bb-update-heading-heading-xl-font-family: "Helvetica Neue";
+  ---bb-update-heading-heading-xl-font-size: 28px;
+  ---bb-update-heading-heading-xl-font-weight: 700;
+  ---bb-update-heading-heading-xl-line-height: 36px;
+  /* 🟡 BB Update/Heading/Heading Lg */
+  ---bb-update-heading-heading-lg-font-family: "Helvetica Neue";
+  ---bb-update-heading-heading-lg-font-size: 24px;
+  ---bb-update-heading-heading-lg-font-weight: 700;
+  ---bb-update-heading-heading-lg-line-height: 32px;
+  /* 🟡 BB Update/Heading/Heading Md */
+  ---bb-update-heading-heading-md-font-family: "Helvetica Neue";
+  ---bb-update-heading-heading-md-font-size: 20px;
+  ---bb-update-heading-heading-md-font-weight: 700;
+  ---bb-update-heading-heading-md-line-height: 28px;
+  /* 🟡 BB Update/Heading/Heading Sm */
+  ---bb-update-heading-heading-sm-font-family: "Helvetica Neue";
+  ---bb-update-heading-heading-sm-font-size: 16px;
+  ---bb-update-heading-heading-sm-font-weight: 700;
+  ---bb-update-heading-heading-sm-line-height: 24px;
+  /* 🟡 BB Update/Heading/Heading XS */
+  ---bb-update-heading-heading-xs-font-family: "Helvetica Neue";
+  ---bb-update-heading-heading-xs-font-size: 14px;
+  ---bb-update-heading-heading-xs-font-weight: 700;
+  ---bb-update-heading-heading-xs-line-height: 20px;
+  /* Headlines/Headline-H1 */
+  --headlines-headline-h1-font-family: "Helvetica Neue";
+  --headlines-headline-h1-font-size: 28px;
+  --headlines-headline-h1-font-weight: 700;
+  --headlines-headline-h1-line-height: 42px;
+  /* Headlines/Headline-H2 */
+  --headlines-headline-h2-font-family: "Helvetica Neue";
+  --headlines-headline-h2-font-size: 24px;
+  --headlines-headline-h2-font-weight: 700;
+  --headlines-headline-h2-line-height: 36px;
+  /* Headlines/Headline-H3 */
+  --headlines-headline-h3-font-family: "Helvetica Neue";
+  --headlines-headline-h3-font-size: 20px;
+  --headlines-headline-h3-font-weight: 700;
+  --headlines-headline-h3-line-height: 30px;
+  /* Headlines/Headline-H4 */
+  --headlines-headline-h4-font-family: "Helvetica Neue";
+  --headlines-headline-h4-font-size: 16px;
+  --headlines-headline-h4-font-weight: 700;
+  --headlines-headline-h4-line-height: 24px;
+  /* Paragraph */
+  --paragraph-paragraph-font-family: "Helvetica Neue";
+  --paragraph-paragraph-font-size: 16px;
+  --paragraph-paragraph-font-weight: 400;
+  --paragraph-paragraph-line-height: 24px;
+  /* Paragraph Bold */
+  --paragraph-paragraph-bold-font-family: "Helvetica Neue";
+  --paragraph-paragraph-bold-font-size: 16px;
+  --paragraph-paragraph-bold-font-weight: 700;
+  --paragraph-paragraph-bold-line-height: 24px;
+  /* Small */
+  --small-small-font-family: "Helvetica Neue";
+  --small-small-font-size: 14px;
+  --small-small-font-weight: 400;
+  --small-small-line-height: 21px;
+  /* Small Bold */
+  --small-small-bold-font-family: "Helvetica Neue";
+  --small-small-bold-font-size: 14px;
+  --small-small-bold-font-weight: 700;
+  --small-small-bold-line-height: 21px;
+  /* Extra Small */
+  --extras-small-extra-small-font-family: "Helvetica Neue";
+  --extras-small-extra-small-font-size: 12px;
+  --extras-small-extra-small-font-weight: 400;
+  --extras-small-extra-small-line-height: 18px;
+  /* Extra Small Bold */
+  --extras-small-extra-small-bold-font-family: "Helvetica Neue";
+  --extras-small-extra-small-bold-font-size: 12px;
+  --extras-small-extra-small-bold-font-weight: 700;
+  --extras-small-extra-small-bold-line-height: 18px;
+  /* Headings/H1 - 72 Regular (Lota Grotesque display) */
+  --headings-h1---72-regular-font-family: "Lota Grotesque";
+  --headings-h1---72-regular-font-size: 72px;
+  --headings-h1---72-regular-font-weight: 400;
+  --headings-h1---72-regular-line-height: 80px;
+  --headings-h1---72-regular-letter-spacing: -2.88px;
+  /* Headings/H2 - 48 Regular (Lota Grotesque display) */
+  --headings-h2---48-regular-font-family: "Lota Grotesque";
+  --headings-h2---48-regular-font-size: 48px;
+  --headings-h2---48-regular-font-weight: 400;
+  --headings-h2---48-regular-line-height: 56px;
+  --headings-h2---48-regular-letter-spacing: -1.2px;
+  /* H5 – 24px – Semi Bold (Lota Grotesque display) */
+  --h5--24px--semi-bold-font-family: "Lota Grotesque";
+  --h5--24px--semi-bold-font-size: 24px;
+  --h5--24px--semi-bold-font-weight: 600;
+  --h5--24px--semi-bold-line-height: 32px;
+  --h5--24px--semi-bold-letter-spacing: -0.6px;
+
+
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     SHADOWS / EFFECTS
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  --shadows-shadow-md:       0px 1px 4px 0px rgba(0, 0, 0, 0.1), 0px 4px 8px -2px rgba(0, 0, 0, 0.1);
+  --media-item---default:    0px 0px 8px 0px rgba(0, 0, 0, 0.25);
+  --media-item---hover:      0px 4px 8px 0px rgba(0, 0, 0, 0.25);
+  --card-widget---default:   0px 1px 3px 0px rgba(172, 172, 172, 0.2);
+  --card-widget---hover:     0px 6px 12px 0px rgba(172, 172, 172, 0.1), 0px 1px 3px 0px rgba(172, 172, 172, 0.2);
+
+
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     SPACING  (🟡 Spacing collection)
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  --spacing-none:   0px;
+  --spacing-xxxs:   2px;
+  --spacing-xxs:    4px;
+  --spacing-xs:     6px;
+  --spacing-s:      8px;
+  --spacing-sm:    10px;
+  --spacing-m:     12px;
+  --spacing-l:     16px;
+  --spacing-xl:    20px;
+  --spacing-2xl:   24px;
+  --spacing-3xl:   32px;
+
+}

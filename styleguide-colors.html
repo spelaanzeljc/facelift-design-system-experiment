@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design System — Colors</title>
+<link rel="stylesheet" href="/output/tokens/tokens.css">
+<link rel="stylesheet" href="/styleguide.css">
+</head>
+<body>
+<div class="layout">
+
+<aside class="sidebar">
+  <a href="/styleguide.html" class="sidebar-brand">
+    <div class="sidebar-logo">Design System</div>
+    <div class="sidebar-sub">Living Style Guide</div>
+  </a>
+  <div class="sidebar-section">Overview</div>
+  <a href="/styleguide.html">Summary</a>
+  <div class="sidebar-section">Foundation</div>
+  <a href="/styleguide-colors.html" class="active">Colors</a>
+  <a href="/styleguide-typography.html">Typography</a>
+  <a href="/styleguide-shadows.html">Shadows</a>
+  <div class="sidebar-section">Components</div>
+  <a href="/styleguide-components.html">Library 1 — Primitives</a>
+  <a href="/styleguide-components2.html">Library 2 — Patterns</a>
+  <div class="sidebar-section">Assets</div>
+  <a href="/styleguide-icons.html">Icons</a>
+  <div class="sidebar-stat">
+    <p><strong>1,517</strong> components · Library 1</p>
+    <p><strong>2,399</strong> components · Library 2</p>
+    <p><strong>429</strong> icons</p>
+    <p><strong>74</strong> design tokens</p>
+  </div>
+</aside>
+
+<main class="main">
+
+  <div class="page-header">
+    <div class="page-decoration"></div>
+    <div class="page-header-eyebrow">Foundation</div>
+    <h1>Colors</h1>
+    <p class="page-header-desc">Two layers: a <strong>reference palette</strong> (raw ramps <code>--blue-500</code>, <code>--grey-900</code>…) and <strong>semantic tokens</strong> (<code>--sys-primary-default</code>, <code>--sys-text-primary</code>…). Always use semantic tokens in UI code.</p>
+  </div>
+
+  <!-- Semantic Primary -->
+  <section class="section">
+    <div class="section-header"><h2>Semantic — Primary</h2></div>
+    <div class="colors-grid">
+      <div class="color-card"><div class="color-swatch" style="background:#1339ec"></div><div class="color-info"><div class="name">Primary Default</div><div class="token">--sys-primary-default</div><div class="hex">#1339ec</div></div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#0f2ebd"></div><div class="color-info"><div class="name">Primary Hover</div><div class="token">--sys-primary-hover</div><div class="hex">#0f2ebd</div></div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#0c228d"></div><div class="color-info"><div class="name">Primary Pressed</div><div class="token">--sys-primary-pressed</div><div class="hex">#0c228d</div></div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#eef3fd;border-bottom:1px solid #e8e3dc"></div><div class="color-info"><div class="name">Primary Subtle Hover</div><div class="token">--sys-primary-subtle-hover</div><div class="hex">#eef3fd</div></div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#dfe7fd;border-bottom:1px solid #e8e3dc"></div><div class="color-info"><div class="name">Primary Subtle Pressed</div><div class="token">--sys-primary-subtle-pressed</div><div class="hex">#dfe7fd</div></div></div>
+    </div>
+  </section>
+
+  <!-- Semantic Text & Surface -->
+  <section class="section">
+    <div class="section-header"><h2>Semantic — Text &amp; Surface</h2></div>
+    <div class="colors-grid">
+      <div class="color-card"><div class="color-swatch" style="background:#111317"></div><div class="color-info"><div class="name">Text Primary</div><div class="token">--sys-text-primary</div><div class="hex">#111317</div></div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#5f6a82"></div><div class="color-info"><div class="name">Text Secondary</div><div class="token">--sys-text-secondary</div><div class="hex">#5f6a82</div></div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#848ea4"></div><div class="color-info"><div class="name">Text Placeholder</div><div class="token">--sys-text-placeholder</div><div class="hex">#848ea4</div></div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#a7aebe"></div><div class="color-info"><div class="name">Text Disabled</div><div class="token">--sys-text-disabled</div><div class="hex">#a7aebe</div></div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#ffffff;border-bottom:1px solid #e8e3dc"></div><div class="color-info"><div class="name">Text on Color</div><div class="token">--sys-text-on-color</div><div class="hex">#ffffff</div></div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#ffffff;border-bottom:1px solid #e8e3dc"></div><div class="color-info"><div class="name">Background Base</div><div class="token">--sys-background-base</div><div class="hex">#ffffff</div></div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#f3f5f7;border-bottom:1px solid #e8e3dc"></div><div class="color-info"><div class="name">Background Neutral</div><div class="token">--sys-background-neutral</div><div class="hex">#f3f5f7</div></div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#f3f5f7;border-bottom:1px solid #e8e3dc"></div><div class="color-info"><div class="name">Border Subtle</div><div class="token">--sys-border-subtle</div><div class="hex">#f3f5f7</div></div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#e7eaee;border-bottom:1px solid #e8e3dc"></div><div class="color-info"><div class="name">Border Soft</div><div class="token">--sys-border-soft</div><div class="hex">#e7eaee</div></div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#d3d7de"></div><div class="color-info"><div class="name">Border Base</div><div class="token">--sys-border-base</div><div class="hex">#d3d7de</div></div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#a7aebe"></div><div class="color-info"><div class="name">Border Bold</div><div class="token">--sys-border-bold</div><div class="hex">#a7aebe</div></div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#5581f1"></div><div class="color-info"><div class="name">Border Focus</div><div class="token">--sys-border-focus</div><div class="hex">#5581f1</div></div></div>
+    </div>
+  </section>
+
+  <!-- Semantic Status -->
+  <section class="section">
+    <div class="section-header"><h2>Semantic — Status</h2></div>
+    <div class="colors-grid">
+      <div class="color-card"><div class="color-swatch" style="background:#e9ffcf;border-bottom:1px solid #e8e3dc"></div><div class="color-info"><div class="name">Success BG</div><div class="token">--sys-success-default</div><div class="hex">#e9ffcf</div></div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#2e881b"></div><div class="color-info"><div class="name">Success Content</div><div class="token">--sys-success-content</div><div class="hex">#2e881b</div></div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#dafab7;border-bottom:1px solid #e8e3dc"></div><div class="color-info"><div class="name">Success Hover</div><div class="token">--sys-success-hover</div><div class="hex">#dafab7</div></div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#ffede2;border-bottom:1px solid #e8e3dc"></div><div class="color-info"><div class="name">Warning BG</div><div class="token">--sys-warning-default</div><div class="hex">#ffede2</div></div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#e05a00"></div><div class="color-info"><div class="name">Warning Content</div><div class="token">--sys-warning-content</div><div class="hex">#e05a00</div></div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#ffdcc5;border-bottom:1px solid #e8e3dc"></div><div class="color-info"><div class="name">Warning Hover</div><div class="token">--sys-warning-hover</div><div class="hex">#ffdcc5</div></div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#ffebeb;border-bottom:1px solid #e8e3dc"></div><div class="color-info"><div class="name">Danger BG</div><div class="token">--sys-danger-default</div><div class="hex">#ffebeb</div></div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#cc0000"></div><div class="color-info"><div class="name">Danger Content</div><div class="token">--sys-danger-content</div><div class="hex">#cc0000</div></div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#ffd1d1;border-bottom:1px solid #e8e3dc"></div><div class="color-info"><div class="name">Danger Hover</div><div class="token">--sys-danger-hover</div><div class="hex">#ffd1d1</div></div></div>
+    </div>
+  </section>
+
+  <!-- Reference — Blue -->
+  <section class="section">
+    <div class="section-header"><h2>Reference — Blue</h2><span class="section-count">Brand primary ramp</span></div>
+    <div class="colors-grid colors-grid--ramp">
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#eef3fd;border-bottom:1px solid #e8e3dc"></div><div class="color-info"><div class="token">--blue-50</div><div class="hex">#eef3fd</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#dfe7fd;border-bottom:1px solid #e8e3dc"></div><div class="color-info"><div class="token">--blue-100</div><div class="hex">#dfe7fd</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#c7d5fa;border-bottom:1px solid #e8e3dc"></div><div class="color-info"><div class="token">--blue-200</div><div class="hex">#c7d5fa</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#75a7eb"></div><div class="color-info"><div class="token">--blue-300</div><div class="hex">#75a7eb</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#5581f1"></div><div class="color-info"><div class="token">--blue-400</div><div class="hex">#5581f1</div></div></div>
+      <div class="color-card color-card--highlight"><div class="color-swatch color-swatch--sm" style="background:#1339ec"></div><div class="color-info"><div class="token">--blue-500 ★</div><div class="hex">#1339ec</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#0f2ebd"></div><div class="color-info"><div class="token">--blue-600</div><div class="hex">#0f2ebd</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#0c228d"></div><div class="color-info"><div class="token">--blue-700</div><div class="hex">#0c228d</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#08175e"></div><div class="color-info"><div class="token">--blue-800</div><div class="hex">#08175e</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#030926"></div><div class="color-info"><div class="token">--blue-900</div><div class="hex">#030926</div></div></div>
+    </div>
+  </section>
+
+  <!-- Reference — Grey -->
+  <section class="section">
+    <div class="section-header"><h2>Reference — Grey</h2></div>
+    <div class="colors-grid colors-grid--ramp">
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#ffffff;border-bottom:1px solid #e8e3dc"></div><div class="color-info"><div class="token">--grey-white</div><div class="hex">#ffffff</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#f3f5f7;border-bottom:1px solid #e8e3dc"></div><div class="color-info"><div class="token">--grey-50</div><div class="hex">#f3f5f7</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#e7eaee;border-bottom:1px solid #e8e3dc"></div><div class="color-info"><div class="token">--grey-100</div><div class="hex">#e7eaee</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#d3d7de"></div><div class="color-info"><div class="token">--grey-200</div><div class="hex">#d3d7de</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#a7aebe"></div><div class="color-info"><div class="token">--grey-300</div><div class="hex">#a7aebe</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#848ea4"></div><div class="color-info"><div class="token">--grey-400</div><div class="hex">#848ea4</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#5f6a82"></div><div class="color-info"><div class="token">--grey-500</div><div class="hex">#5f6a82</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#515a6e"></div><div class="color-info"><div class="token">--grey-600</div><div class="hex">#515a6e</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#414858"></div><div class="color-info"><div class="token">--grey-700</div><div class="hex">#414858</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#2b303b"></div><div class="color-info"><div class="token">--grey-800</div><div class="hex">#2b303b</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#111317"></div><div class="color-info"><div class="token">--grey-900</div><div class="hex">#111317</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#000000"></div><div class="color-info"><div class="token">--grey-black</div><div class="hex">#000000</div></div></div>
+    </div>
+  </section>
+
+  <!-- Reference — Status ramps -->
+  <section class="section">
+    <div class="section-header"><h2>Reference — Status Ramps</h2></div>
+    <p class="palette-heading">Green (success)</p>
+    <div class="colors-grid colors-grid--ramp">
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#f4ffe6;border-bottom:1px solid #e8e3dc"></div><div class="color-info"><div class="token">--green-50</div><div class="hex">#f4ffe6</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#e9ffcf;border-bottom:1px solid #e8e3dc"></div><div class="color-info"><div class="token">--green-100</div><div class="hex">#e9ffcf</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#dafab7;border-bottom:1px solid #e8e3dc"></div><div class="color-info"><div class="token">--green-200</div><div class="hex">#dafab7</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#caf5a0;border-bottom:1px solid #e8e3dc"></div><div class="color-info"><div class="token">--green-300</div><div class="hex">#caf5a0</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#a8e972"></div><div class="color-info"><div class="token">--green-400</div><div class="hex">#a8e972</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#80d747"></div><div class="color-info"><div class="token">--green-500</div><div class="hex">#80d747</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#5fbb2f"></div><div class="color-info"><div class="token">--green-600</div><div class="hex">#5fbb2f</div></div></div>
+      <div class="color-card color-card--highlight"><div class="color-swatch color-swatch--sm" style="background:#2e881b"></div><div class="color-info"><div class="token">--green-700 ★</div><div class="hex">#2e881b</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#1b5c14"></div><div class="color-info"><div class="token">--green-800</div><div class="hex">#1b5c14</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#0a330a"></div><div class="color-info"><div class="token">--green-900</div><div class="hex">#0a330a</div></div></div>
+    </div>
+    <p class="palette-heading">Orange (warning)</p>
+    <div class="colors-grid colors-grid--ramp">
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#ffede2;border-bottom:1px solid #e8e3dc"></div><div class="color-info"><div class="token">--orange-50</div><div class="hex">#ffede2</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#ffdcc5;border-bottom:1px solid #e8e3dc"></div><div class="color-info"><div class="token">--orange-100</div><div class="hex">#ffdcc5</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#ffb482"></div><div class="color-info"><div class="token">--orange-200</div><div class="hex">#ffb482</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#ff944d"></div><div class="color-info"><div class="token">--orange-300</div><div class="hex">#ff944d</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#ff7c24"></div><div class="color-info"><div class="token">--orange-400</div><div class="hex">#ff7c24</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#ff6600"></div><div class="color-info"><div class="token">--orange-500</div><div class="hex">#ff6600</div></div></div>
+      <div class="color-card color-card--highlight"><div class="color-swatch color-swatch--sm" style="background:#e05a00"></div><div class="color-info"><div class="token">--orange-600 ★</div><div class="hex">#e05a00</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#ad4500"></div><div class="color-info"><div class="token">--orange-700</div><div class="hex">#ad4500</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#803300"></div><div class="color-info"><div class="token">--orange-800</div><div class="hex">#803300</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#391700"></div><div class="color-info"><div class="token">--orange-900</div><div class="hex">#391700</div></div></div>
+    </div>
+    <p class="palette-heading">Red (danger)</p>
+    <div class="colors-grid colors-grid--ramp">
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#ffebeb;border-bottom:1px solid #e8e3dc"></div><div class="color-info"><div class="token">--red-50</div><div class="hex">#ffebeb</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#ffd1d1;border-bottom:1px solid #e8e3dc"></div><div class="color-info"><div class="token">--red-100</div><div class="hex">#ffd1d1</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#ff9e9e"></div><div class="color-info"><div class="token">--red-200</div><div class="hex">#ff9e9e</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#ff6b6b"></div><div class="color-info"><div class="token">--red-300</div><div class="hex">#ff6b6b</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#ff3838"></div><div class="color-info"><div class="token">--red-400</div><div class="hex">#ff3838</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#e50000"></div><div class="color-info"><div class="token">--red-500</div><div class="hex">#e50000</div></div></div>
+      <div class="color-card color-card--highlight"><div class="color-swatch color-swatch--sm" style="background:#cc0000"></div><div class="color-info"><div class="token">--red-600 ★</div><div class="hex">#cc0000</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#b20000"></div><div class="color-info"><div class="token">--red-700</div><div class="hex">#b20000</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#850000"></div><div class="color-info"><div class="token">--red-800</div><div class="hex">#850000</div></div></div>
+      <div class="color-card"><div class="color-swatch color-swatch--sm" style="background:#570000"></div><div class="color-info"><div class="token">--red-900</div><div class="hex">#570000</div></div></div>
+    </div>
+  </section>
+
+  <!-- Secondary palettes sampler -->
+  <section class="section">
+    <div class="section-header"><h2>Reference — Secondary Palettes</h2><span class="section-count">500-step sampler · all ramps have 50–900</span></div>
+    <div class="colors-grid">
+      <div class="color-card"><div class="color-swatch" style="background:#c68ed7"></div><div class="color-info"><div class="name">Violet</div><div class="token">--violet-500</div><div class="hex">#c68ed7</div></div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#ff66a6"></div><div class="color-info"><div class="name">Purple</div><div class="token">--purple-500</div><div class="hex">#ff66a6</div></div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#92b0db"></div><div class="color-info"><div class="name">Azure</div><div class="token">--azure-500</div><div class="hex">#92b0db</div></div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#668eff"></div><div class="color-info"><div class="name">Cobalt</div><div class="token">--cobalt-500</div><div class="hex">#668eff</div></div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#75bef2"></div><div class="color-info"><div class="name">Indigo</div><div class="token">--indigo-500</div><div class="hex">#75bef2</div></div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#1bcddf"></div><div class="color-info"><div class="name">Petrol</div><div class="token">--petrol-500</div><div class="hex">#1bcddf</div></div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#c2f46e;border-bottom:1px solid #e8e3dc"></div><div class="color-info"><div class="name">Mint</div><div class="token">--mint-500</div><div class="hex">#c2f46e</div></div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#64dc64"></div><div class="color-info"><div class="name">Emerald</div><div class="token">--emerald-500</div><div class="hex">#64dc64</div></div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#dde43e;border-bottom:1px solid #e8e3dc"></div><div class="color-info"><div class="name">Peridot</div><div class="token">--peridot-500</div><div class="hex">#dde43e</div></div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#e6bb09"></div><div class="color-info"><div class="name">Yellow</div><div class="token">--yellow-500</div><div class="hex">#e6bb09</div></div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#ffb433"></div><div class="color-info"><div class="name">Amber</div><div class="token">--amber-500</div><div class="hex">#ffb433</div></div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#e9a362"></div><div class="color-info"><div class="name">Beige</div><div class="token">--beige-500</div><div class="hex">#e9a362</div></div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#fb5b5b"></div><div class="color-info"><div class="name">Coral</div><div class="token">--coral-500</div><div class="hex">#fb5b5b</div></div></div>
+    </div>
+  </section>
+
+</main>
+</div>
+</body>
+</html>
