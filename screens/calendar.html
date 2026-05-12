@@ -168,6 +168,113 @@ body{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;background:var(--sy
 .modal-btn-submit{padding:8px 16px;border-radius:7px;font-size:13px;font-weight:600;color:var(--grey-white);background:var(--sys-primary-default);border:none;cursor:pointer}
 .modal-btn-submit:hover{background:var(--sys-primary-hover)}
 
+/* ── PAGE TITLE BAR ── */
+.page-title-bar{height:52px;flex-shrink:0;display:flex;align-items:center;padding:0 20px;gap:8px;border-bottom:1px solid var(--sys-border-soft);background:var(--sys-background-base)}
+.ptb-left{display:flex;align-items:center;gap:6px;flex:1;min-width:0;position:relative}
+.ptb-title{font-size:16px;font-weight:700;color:var(--sys-text-primary);white-space:nowrap}
+.ptb-chevron-btn{display:inline-flex;align-items:center;padding:3px;border-radius:5px;color:var(--sys-text-secondary)}
+.ptb-chevron-btn:hover{background:var(--sys-background-neutral)}
+.ptb-more{width:28px;height:28px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;color:var(--sys-text-secondary);position:relative}
+.ptb-more:hover{background:var(--sys-background-neutral)}
+.ptb-right{display:flex;align-items:center;gap:6px}
+.ptb-btn-ghost{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border:1px solid var(--sys-border-base);border-radius:7px;font-size:13px;font-weight:500;color:var(--sys-text-secondary);background:var(--sys-background-base)}
+.ptb-btn-ghost:hover{background:var(--sys-background-neutral)}
+.ptb-split{display:inline-flex;height:32px;position:relative}
+.ptb-split-main{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border:1px solid var(--sys-border-base);border-right:none;border-radius:7px 0 0 7px;font-size:13px;font-weight:500;color:var(--sys-text-secondary);background:var(--sys-background-base)}
+.ptb-split-main:hover{background:var(--sys-background-neutral)}
+.ptb-split-caret{width:26px;height:32px;display:flex;align-items:center;justify-content:center;border:1px solid var(--sys-border-base);border-radius:0 7px 7px 0;color:var(--sys-text-secondary);background:var(--sys-background-base)}
+.ptb-split-caret:hover{background:var(--sys-background-neutral)}
+.ptb-blue{display:inline-flex;height:32px;position:relative}
+.ptb-blue-main{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;background:var(--sys-primary-default);border:1px solid var(--sys-primary-default);border-right-color:var(--sys-primary-hover);border-radius:7px 0 0 7px;font-size:13px;font-weight:600;color:var(--grey-white)}
+.ptb-blue-main:hover{background:var(--sys-primary-hover);border-color:var(--sys-primary-hover)}
+.ptb-blue-caret{width:26px;height:32px;display:flex;align-items:center;justify-content:center;background:var(--sys-primary-default);border:1px solid var(--sys-primary-default);border-radius:0 7px 7px 0;color:var(--grey-white)}
+.ptb-blue-caret:hover{background:var(--sys-primary-hover)}
+/* ── PAGE DROPDOWNS ── */
+.page-dropdown{position:absolute;top:calc(100% + 4px);left:0;background:var(--sys-background-base);border:1px solid var(--sys-border-base);border-radius:8px;box-shadow:var(--shadows-shadow-md);padding:4px;min-width:210px;z-index:500;display:none}
+.page-dropdown.is-open{display:block}
+.pd-item{padding:7px 12px;border-radius:5px;font-size:13px;cursor:pointer;color:var(--sys-text-primary);display:flex;align-items:center;gap:8px;white-space:nowrap}
+.pd-item:hover:not(.pd-disabled){background:var(--sys-background-neutral)}
+.pd-disabled{color:var(--sys-text-placeholder);cursor:default}
+.pd-danger:not(.pd-disabled){color:var(--sys-danger-content)}
+.pd-divider{height:1px;background:var(--sys-border-soft);margin:4px 0}
+.pd-icon{width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--sys-text-secondary)}
+/* ── TOOLBAR ICON BUTTONS ── */
+.toolbar-icon-btn{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--sys-text-secondary)}
+.toolbar-icon-btn:hover{background:var(--sys-background-neutral)}
+.toolbar-icon-btn.is-active{background:var(--blue-50);color:var(--sys-primary-default)}
+.toolbar-vdiv{width:1px;height:18px;background:var(--sys-border-soft)}
+.entries-count{font-size:13px;font-weight:500;color:var(--sys-text-secondary);white-space:nowrap}
+.toolbar-icon-grp{display:flex;align-items:center;gap:2px}
+.filter-icon-btn{display:inline-flex;align-items:center;gap:1px;border-radius:6px;padding:0 4px;height:30px;color:var(--sys-text-secondary)}
+.filter-icon-btn:hover{background:var(--sys-background-neutral)}
+.filter-icon-btn.is-active{background:var(--blue-50);color:var(--sys-primary-default)}
+/* ── LIST VIEW ── */
+.list-view{flex:1;overflow-y:auto;display:none;flex-direction:column}
+.list-table{width:100%;border-collapse:collapse}
+.list-table thead th{height:36px;padding:0 14px;text-align:left;font-size:11px;font-weight:600;color:var(--sys-text-secondary);letter-spacing:.04em;border-bottom:1px solid var(--sys-border-soft);background:var(--sys-background-neutral);position:sticky;top:0;z-index:1;white-space:nowrap;user-select:none}
+.list-table tbody tr{cursor:pointer}
+.list-table tbody tr:hover td{background:var(--sys-background-neutral)}
+.list-table td{padding:10px 14px;border-bottom:1px solid var(--sys-border-soft);vertical-align:middle}
+.lt-name-cell{display:flex;align-items:center;gap:10px}
+.lt-thumb{width:48px;height:48px;border-radius:6px;flex-shrink:0}
+.lt-name{font-size:13px;font-weight:600;color:var(--sys-text-primary);margin-bottom:2px}
+.lt-type{font-size:11px;color:var(--sys-text-secondary)}
+.lt-status{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:500;white-space:nowrap}
+.lt-nets{display:flex;align-items:center;gap:4px}
+.lt-tags{display:flex;flex-wrap:wrap;gap:4px}
+.lt-tag{padding:2px 8px;border-radius:3px;font-size:11px;font-weight:500}
+.lt-interactions{display:flex;align-items:center;gap:5px;font-size:13px;color:var(--sys-text-secondary)}
+.lt-date{font-size:12px;color:var(--sys-text-secondary);white-space:nowrap}
+/* ── SEARCH PANEL ── */
+.search-panel{position:fixed;top:108px;right:0;bottom:0;width:380px;background:var(--sys-background-base);border-left:1px solid var(--sys-border-soft);box-shadow:-4px 0 20px rgba(0,0,0,.08);z-index:300;transform:translateX(100%);transition:transform .22s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column}
+.search-panel.is-open{transform:translateX(0)}
+.sp-header{height:52px;display:flex;align-items:center;padding:0 16px;gap:10px;border-bottom:1px solid var(--sys-border-soft);flex-shrink:0}
+.sp-title{font-size:15px;font-weight:700;color:var(--sys-text-primary);flex:1}
+.sp-close{width:26px;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;color:var(--sys-text-secondary)}
+.sp-close:hover{background:var(--sys-background-neutral)}
+.sp-search-wrap{padding:12px 16px;border-bottom:1px solid var(--sys-border-soft);flex-shrink:0;position:relative;display:flex;align-items:center}
+.sp-search-icon{position:absolute;left:28px;color:var(--sys-text-placeholder);pointer-events:none}
+.sp-input{width:100%;height:34px;border:1px solid var(--sys-border-base);border-radius:7px;padding:0 32px;font-size:13px;font-family:inherit;color:var(--sys-text-primary);outline:none;background:var(--sys-background-base)}
+.sp-input:focus{border-color:var(--sys-border-focus);box-shadow:0 0 0 3px var(--blue-50)}
+.sp-clear{position:absolute;right:22px;cursor:pointer;color:var(--sys-text-secondary);display:none;background:none;border:none;padding:2px;font-size:15px;line-height:1}
+.sp-results{flex:1;overflow-y:auto}
+.sp-results-hdr{display:grid;grid-template-columns:1fr 60px 100px;padding:8px 16px;background:var(--sys-background-neutral);border-bottom:1px solid var(--sys-border-soft)}
+.sp-results-hdr span{font-size:11px;font-weight:600;color:var(--sys-text-secondary);letter-spacing:.04em}
+.sp-row{display:grid;grid-template-columns:1fr 60px 100px;padding:11px 16px;border-bottom:1px solid var(--sys-border-soft);cursor:pointer;align-items:center}
+.sp-row:hover{background:var(--sys-background-neutral)}
+.sp-row.sp-hidden{display:none}
+.sp-row-name{font-size:13px;font-weight:500;color:var(--sys-text-primary)}
+.sp-row-type{font-size:11px;color:var(--sys-text-secondary)}
+.sp-row-date{font-size:12px;color:var(--sys-text-secondary)}
+/* ── FILTERS PANEL ── */
+.filters-panel{position:fixed;top:108px;right:0;bottom:0;width:360px;background:var(--sys-background-base);border-left:1px solid var(--sys-border-soft);box-shadow:-4px 0 20px rgba(0,0,0,.08);z-index:300;transform:translateX(100%);transition:transform .22s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column}
+.filters-panel.is-open{transform:translateX(0)}
+.fp-header{height:52px;display:flex;align-items:center;padding:0 16px;gap:10px;border-bottom:1px solid var(--sys-border-soft);flex-shrink:0}
+.fp-title{font-size:15px;font-weight:700;color:var(--sys-text-primary);flex:1}
+.fp-close{width:26px;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;color:var(--sys-text-secondary)}
+.fp-close:hover{background:var(--sys-background-neutral)}
+.fp-body{flex:1;overflow-y:auto}
+.fp-section{padding:16px 16px 4px}
+.fp-section-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.fp-section-title{font-size:13px;font-weight:600;color:var(--sys-text-primary)}
+.fp-section-x{cursor:pointer;color:var(--sys-text-secondary);font-size:16px;line-height:1;padding:2px}
+.fp-section-x:hover{color:var(--sys-text-primary)}
+.fp-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.fp-chip{display:inline-flex;align-items:center;gap:4px;padding:4px 8px 4px 10px;background:var(--blue-50);border:1px solid var(--blue-200);border-radius:1024px;font-size:12px;font-weight:500;color:var(--sys-primary-default)}
+.fp-chip-x{cursor:pointer;opacity:.55;line-height:1;font-size:14px;padding:0 1px}
+.fp-chip-x:hover{opacity:1}
+.fp-add-btn{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border:1.5px dashed var(--sys-border-base);border-radius:50%;cursor:pointer;color:var(--sys-text-secondary);font-size:18px;line-height:1}
+.fp-add-btn:hover{border-color:var(--sys-primary-default);color:var(--sys-primary-default)}
+.fp-divider{height:1px;background:var(--sys-border-soft);margin:4px 16px 0}
+.fp-add-filter-row{display:flex;align-items:center;justify-content:space-between;padding:12px 16px 0}
+.fp-add-filter{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--sys-primary-default);cursor:pointer}
+.fp-remove-all{display:inline-flex;align-items:center;gap:4px;font-size:13px;color:var(--sys-danger-content);cursor:pointer}
+.fp-footer{padding:12px 16px;border-top:1px solid var(--sys-border-soft);display:flex;align-items:center;gap:8px;flex-shrink:0;margin-top:auto}
+.fp-applied{font-size:12px;color:var(--sys-text-secondary);flex:1}
+.fp-btn-discard{padding:6px 14px;border:1px solid var(--sys-border-base);border-radius:7px;font-size:13px;font-weight:500;color:var(--sys-text-secondary);background:var(--sys-background-base);cursor:pointer}
+.fp-btn-discard:hover{background:var(--sys-background-neutral)}
+.fp-btn-apply{padding:6px 16px;border-radius:7px;font-size:13px;font-weight:600;color:var(--grey-white);background:var(--sys-primary-default);border:none;cursor:pointer}
+.fp-btn-apply:hover{background:var(--sys-primary-hover)}
 /* ── MONTH / DAY VIEWS ── */
 .month-view{flex:1;overflow-y:auto;padding:16px 20px;display:none}
 .month-view.is-active{display:block}
@@ -218,6 +325,76 @@ body{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;background:var(--sy
   </div>
 </header>
 
+<!-- PAGE TITLE BAR -->
+<div class="page-title-bar">
+  <div class="ptb-left">
+    <h1 class="ptb-title">All Posts, Campaigns &amp; Events</h1>
+    <button class="ptb-chevron-btn" title="Change view">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 13.2256L7.70711 8.80182C7.31658 8.39939 6.68342 8.39939 6.29289 8.80182C5.90237 9.20425 5.90237 9.85672 6.29289 10.2592L10.9393 15.0473C11.5251 15.6509 12.4749 15.6509 13.0607 15.0473L17.7071 10.2592C18.0976 9.85672 18.0976 9.20425 17.7071 8.80182C17.3166 8.39939 16.6834 8.39939 16.2929 8.80182L12 13.2256Z" fill="currentColor"/></svg>
+    </button>
+    <button class="ptb-more" id="ptb-actions-btn" title="Calendar Actions">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12C5 11.1716 5.67157 10.5 6.5 10.5C7.32843 10.5 8 11.1716 8 12C8 12.8284 7.32843 13.5 6.5 13.5C5.67157 13.5 5 12.8284 5 12ZM10.5 12C10.5 11.1716 11.1716 10.5 12 10.5C12.8284 10.5 13.5 11.1716 13.5 12C13.5 12.8284 12.8284 13.5 12 13.5C11.1716 13.5 10.5 12.8284 10.5 12ZM16 12C16 11.1716 16.6716 10.5 17.5 10.5C18.3284 10.5 19 11.1716 19 12C19 12.8284 18.3284 13.5 17.5 13.5C16.6716 13.5 16 12.8284 16 12Z" fill="currentColor"/></svg>
+      <!-- Calendar Actions dropdown -->
+      <div class="page-dropdown" id="actions-dropdown" style="left:0;right:auto">
+        <div class="pd-item pd-disabled">
+          <svg class="pd-icon" viewBox="0 0 24 24" fill="none"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="currentColor"/></svg>
+          Rename View
+        </div>
+        <div class="pd-item">
+          <svg class="pd-icon" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4ZM6 8C6 4.68629 8.68629 2 12 2C15.3137 2 18 4.68629 18 8C18 11.3137 15.3137 14 12 14C8.68629 14 6 11.3137 6 8ZM3 22C3 18.134 7.02944 15 12 15C16.9706 15 21 18.134 21 22H19C19 19.2386 15.866 17 12 17C8.13401 17 5 19.2386 5 22H3Z" fill="currentColor"/></svg>
+          Team Assignment
+        </div>
+        <div class="pd-item pd-disabled">
+          <svg class="pd-icon" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M6 4C4.89543 4 4 4.89543 4 6V18C4 19.1046 4.89543 20 6 20H18C19.1046 20 20 19.1046 20 18V6C20 4.89543 19.1046 4 18 4H6ZM2 6C2 3.79086 3.79086 2 6 2H18C20.2091 2 22 3.79086 22 6V18C22 20.2091 20.2091 22 18 22H6C3.79086 22 2 20.2091 2 18V6Z" fill="currentColor"/></svg>
+          Duplicate View
+        </div>
+        <div class="pd-divider"></div>
+        <div class="pd-item pd-danger pd-disabled">
+          <svg class="pd-icon" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.8673 6H21C21.5523 6 22 6.44772 22 7C22 7.55229 21.5523 8 21 8H20L19.2258 17.3322C19.053 19.4054 17.32 21 15.2396 21H8.76039C6.68004 21 4.94697 19.4054 4.77421 17.3322L4.00345 8H3C2.44772 8 2 7.55229 2 7C2 6.44772 2.44772 6 3 6H7.13271L7.52016 3.28787C7.62572 2.5489 8.2586 2 9.00508 2H14.9949C15.7414 2 16.3743 2.54889 16.4799 3.28787L16.8673 6ZM9.15301 6H14.847L14.5613 4H9.43873L9.15301 6Z" fill="currentColor"/></svg>
+          Delete View
+        </div>
+      </div>
+    </button>
+  </div>
+  <div class="ptb-right">
+    <button class="ptb-btn-ghost">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C12.5523 2 13 2.44772 13 3V11H21C21.5523 11 22 11.4477 22 12C22 12.5523 21.5523 13 21 13H13V21C13 21.5523 12.5523 22 12 22C11.4477 22 11 21.5523 11 21V13H3C2.44772 13 2 12.5523 2 12C2 11.4477 2.44772 11 3 11H11V3C11 2.44772 11.4477 2 12 2Z" fill="currentColor"/></svg>
+      Help
+    </button>
+    <div class="ptb-split" style="position:relative">
+      <button class="ptb-split-main">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 3C12.5523 3 13 3.44772 13 4V11H20C20.5523 11 21 11.4477 21 12C21 12.5523 20.5523 13 20 13H13V20C13 20.5523 12.5523 21 12 21C11.4477 21 11 20.5523 11 20V13H4C3.44772 13 3 12.5523 3 12C3 11.4477 3.44772 11 4 11H11V4C11 3.44772 11.4477 3 12 3Z" fill="currentColor"/></svg>
+        Export
+      </button>
+      <button class="ptb-split-caret" id="export-caret-btn" title="Export options">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 13.2256L7.70711 8.80182C7.31658 8.39939 6.68342 8.39939 6.29289 8.80182C5.90237 9.20425 5.90237 9.85672 6.29289 10.2592L10.9393 15.0473C11.5251 15.6509 12.4749 15.6509 13.0607 15.0473L17.7071 10.2592C18.0976 9.85672 18.0976 9.20425 17.7071 8.80182C17.3166 8.39939 16.6834 8.39939 16.2929 8.80182L12 13.2256Z" fill="currentColor"/></svg>
+      </button>
+      <div class="page-dropdown" id="export-dropdown" style="right:0;left:auto;min-width:180px">
+        <div class="pd-item"><span class="pd-icon"><svg viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M6 6C4.89543 6 4 6.89543 4 8V18C4 19.1046 4.89543 20 6 20H18C19.1046 20 20 19.1046 20 18V8C20 6.89543 19.1046 6 18 6H6ZM9 4H15V3C15 2.44772 15.4477 2 16 2C16.5523 2 17 2.44772 17 3V4H18C20.2091 4 22 5.79086 22 8V18C22 20.2091 20.2091 22 18 22H6C3.79086 22 2 20.2091 2 18V8C2 5.79086 3.79086 4 6 4H7V3C7 2.44772 7.44772 2 8 2C8.55228 2 9 2.44772 9 3V4Z" fill="currentColor"/></svg></span> Export Calendar</div>
+        <div class="pd-item"><span class="pd-icon"><svg viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM13 7C13 6.44772 12.5523 6 12 6C11.4477 6 11 6.44772 11 7V12C11 12.3788 11.214 12.725 11.5528 12.8944L14.5528 14.3944C15.0468 14.6414 15.6474 14.4468 15.8944 13.9528C16.1414 13.4588 15.9468 12.8582 15.4528 12.6112L13 11.382V7Z" fill="currentColor"/></svg></span> Export iCal</div>
+      </div>
+    </div>
+    <div class="ptb-blue" style="position:relative">
+      <button class="ptb-blue-main" id="ptb-create-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M11 18C11 18.5523 11.4477 19 12 19C12.5523 19 13 18.5523 13 18V13H18C18.5523 13 19 12.5523 19 12C19 11.4477 18.5523 11 18 11H13V6C13 5.44772 12.5523 5 12 5C11.4477 5 11 5.44772 11 6V11H6C5.44772 11 5 11.4477 5 12C5 12.5523 5.44772 13 6 13H11V18Z" fill="currentColor"/></svg>
+        Create Post Set
+      </button>
+      <button class="ptb-blue-caret" id="create-caret-btn" title="More creation options">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 13.2256L7.70711 8.80182C7.31658 8.39939 6.68342 8.39939 6.29289 8.80182C5.90237 9.20425 5.90237 9.85672 6.29289 10.2592L10.9393 15.0473C11.5251 15.6509 12.4749 15.6509 13.0607 15.0473L17.7071 10.2592C18.0976 9.85672 18.0976 9.20425 17.7071 8.80182C17.3166 8.39939 16.6834 8.39939 16.2929 8.80182L12 13.2256Z" fill="currentColor"/></svg>
+      </button>
+      <div class="page-dropdown" id="create-dropdown" style="right:0;left:auto;min-width:200px">
+        <div class="pd-item"><span class="pd-icon"><svg viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M4 6C4 4.89543 4.89543 4 6 4H18C19.1046 4 20 4.89543 20 6V18C20 19.1046 19.1046 20 18 20H6C4.89543 20 4 19.1046 4 18V6ZM2 6C2 3.79086 3.79086 2 6 2H18C20.2091 2 22 3.79086 22 6V18C22 20.2091 20.2091 22 18 22H6C3.79086 22 2 20.2091 2 18V6Z" fill="currentColor"/></svg></span> Create Content</div>
+        <div class="pd-item"><span class="pd-icon"><svg viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M3 5C3 3.89543 3.89543 3 5 3H19C20.1046 3 21 3.89543 21 5V15C21 16.1046 20.1046 17 19 17H5C3.89543 17 3 16.1046 3 15V5ZM5 5V15H19V5H5ZM1 20C1 19.4477 1.44772 19 2 19H22C22.5523 19 23 19.4477 23 20C23 20.5523 22.5523 21 22 21H2C1.44772 21 1 20.5523 1 20Z" fill="currentColor"/></svg></span> Create Frame</div>
+        <div class="pd-item"><span class="pd-icon"><svg viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M9 2C8.44772 2 8 2.44772 8 3V5H6C4.89543 5 4 5.89543 4 7V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V7C20 5.89543 19.1046 5 18 5H16V3C16 2.44772 15.5523 2 15 2H9ZM14 5V4H10V5H14ZM8 9C7.44772 9 7 9.44772 7 10C7 10.5523 7.44772 11 8 11H16C16.5523 11 17 10.5523 17 10C17 9.44772 16.5523 9 16 9H8ZM7 14C7 13.4477 7.44772 13 8 13H13C13.5523 13 14 13.4477 14 14C14 14.5523 13.5523 15 13 15H8C7.44772 15 7 14.5523 7 14Z" fill="currentColor"/></svg></span> Create Template</div>
+        <div class="pd-divider"></div>
+        <div class="pd-item"><span class="pd-icon"><svg viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C12.5523 2 13 2.44772 13 3V11H21C21.5523 11 22 11.4477 22 12C22 12.5523 21.5523 13 21 13H13V21C13 21.5523 12.5523 22 12 22C11.4477 22 11 21.5523 11 21V13H3C2.44772 13 2 12.5523 2 12C2 11.4477 2.44772 11 3 11H11V3C11 2.44772 11.4477 2 12 2Z" fill="currentColor"/></svg></span> Create Task</div>
+        <div class="pd-item"><span class="pd-icon"><svg viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M3 3H21C21.5523 3 22 3.44772 22 4V16C22 16.5523 21.5523 17 21 17H13V19H15C15.5523 19 16 19.4477 16 20C16 20.5523 15.5523 21 15 21H9C8.44772 21 8 20.5523 8 20C8 19.4477 8.44772 19 9 19H11V17H3C2.44772 17 2 16.5523 2 16V4C2 3.44772 2.44772 3 3 3ZM4 15H20V5H4V15Z" fill="currentColor"/></svg></span> Create Campaign</div>
+        <div class="pd-item"><span class="pd-icon"><svg viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M6 6C4.89543 6 4 6.89543 4 8V18C4 19.1046 4.89543 20 6 20H18C19.1046 20 20 19.1046 20 18V8C20 6.89543 19.1046 6 18 6H6ZM9 4H15V3C15 2.44772 15.4477 2 16 2C16.5523 2 17 2.44772 17 3V4H18C20.2091 4 22 5.79086 22 8V18C22 20.2091 20.2091 22 18 22H6C3.79086 22 2 20.2091 2 18V8C2 5.79086 3.79086 4 6 4H7V3C7 2.44772 7.44772 2 8 2C8.55228 2 9 2.44772 9 3V4Z" fill="currentColor"/></svg></span> Create Event</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- APP BODY -->
 <div class="app-body">
 
@@ -259,23 +436,37 @@ body{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;background:var(--sy
   </div>
   <button class="today-btn">Today</button>
   <div class="toolbar-sep"></div>
-  <button class="filter-chip">
-    All Networks
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 13.2256L7.70711 8.80182C7.31658 8.39939 6.68342 8.39939 6.29289 8.80182C5.90237 9.20425 5.90237 9.85672 6.29289 10.2592L10.9393 15.0473C11.5251 15.6509 12.4749 15.6509 13.0607 15.0473L17.7071 10.2592C18.0976 9.85672 18.0976 9.20425 17.7071 8.80182C17.3166 8.39939 16.6834 8.39939 16.2929 8.80182L12 13.2256Z" fill="currentColor"/></svg>
-  </button>
-  <button class="filter-chip">
-    All Campaigns
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 13.2256L7.70711 8.80182C7.31658 8.39939 6.68342 8.39939 6.29289 8.80182C5.90237 9.20425 5.90237 9.85672 6.29289 10.2592L10.9393 15.0473C11.5251 15.6509 12.4749 15.6509 13.0607 15.0473L17.7071 10.2592C18.0976 9.85672 18.0976 9.20425 17.7071 8.80182C17.3166 8.39939 16.6834 8.39939 16.2929 8.80182L12 13.2256Z" fill="currentColor"/></svg>
-  </button>
-  <button class="filter-chip">
-    All Statuses
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 13.2256L7.70711 8.80182C7.31658 8.39939 6.68342 8.39939 6.29289 8.80182C5.90237 9.20425 5.90237 9.85672 6.29289 10.2592L10.9393 15.0473C11.5251 15.6509 12.4749 15.6509 13.0607 15.0473L17.7071 10.2592C18.0976 9.85672 18.0976 9.20425 17.7071 8.80182C17.3166 8.39939 16.6834 8.39939 16.2929 8.80182L12 13.2256Z" fill="currentColor"/></svg>
-  </button>
+  <span class="entries-count">24 Entries</span>
   <div class="toolbar-spacer"></div>
-  <button class="btn-primary">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M11 18C11 18.5523 11.4477 19 12 19C12.5523 19 13 18.5523 13 18V13H18C18.5523 13 19 12.5523 19 12C19 11.4477 18.5523 11 18 11H13V6C13 5.44772 12.5523 5 12 5C11.4477 5 11 5.44772 11 6V11H6C5.44772 11 5 11.4477 5 12C5 12.5523 5.44772 13 6 13H11V18Z" fill="currentColor"/></svg>
-    Create Post
-  </button>
+  <div class="toolbar-icon-grp">
+    <!-- Calendar grid view icon -->
+    <button class="toolbar-icon-btn is-active" id="cal-icon-btn" title="Calendar view">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M3 5C3 3.89543 3.89543 3 5 3H19C20.1046 3 21 3.89543 21 5V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V5ZM9 5H5V9H9V5ZM11 5V9H13V5H11ZM15 5V9H19V5H15ZM19 11H15V13H19V11ZM19 15H15V19H19V15ZM13 15H11V19H13V15ZM9 15H5V19H9V15ZM5 13H9V11H5V13ZM11 11V13H13V11H11Z" fill="currentColor"/></svg>
+    </button>
+    <!-- List view icon -->
+    <button class="toolbar-icon-btn" id="list-icon-btn" title="List view">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M3 6C3 5.44772 3.44772 5 4 5H20C20.5523 5 21 5.44772 21 6C21 6.55228 20.5523 7 20 7H4C3.44772 7 3 6.55228 3 6ZM3 10C3 9.44772 3.44772 9 4 9H20C20.5523 9 21 9.44772 21 10C21 10.5523 20.5523 11 20 11H4C3.44772 11 3 10.5523 3 10ZM3 14C3 13.4477 3.44772 13 4 13H20C20.5523 13 21 13.4477 21 14C21 14.5523 20.5523 15 20 15H4C3.44772 15 3 14.5523 3 14ZM3 18C3 17.4477 3.44772 17 4 17H20C20.5523 17 21 17.4477 21 18C21 18.5523 20.5523 19 20 19H4C3.44772 19 3 18.5523 3 18Z" fill="currentColor"/></svg>
+    </button>
+  </div>
+  <div class="toolbar-vdiv"></div>
+  <div class="toolbar-icon-grp">
+    <button class="toolbar-icon-btn" title="View settings">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.9332 2C10.1873 2 9.55471 2.54811 9.44851 3.28644L9.39437 3.66278C9.28072 4.45292 8.33263 4.79793 7.73774 4.26562L7.51932 4.07018C6.92603 3.53931 6.02137 3.5644 5.45843 4.12735L4.1169 5.46887C3.5669 6.01888 3.52856 6.89805 4.0286 7.49384L4.35074 7.87766C4.87448 8.50169 4.4722 9.45658 3.65981 9.51771L3.38744 9.53821C2.60489 9.5971 2 10.2492 2 11.034V12.966C2 13.7508 2.60489 14.4029 3.38744 14.4618L3.65979 14.4823C4.47219 14.5434 4.87447 15.4983 4.35072 16.1223L4.02861 16.5061C3.52856 17.1019 3.5669 17.9811 4.1169 18.5311L5.45536 19.8696C6.02204 20.4362 6.93408 20.4574 7.5264 19.9176L7.73104 19.7311C8.32468 19.19 9.2817 19.5343 9.39469 20.3295L9.44889 20.711C9.55397 21.4505 10.1871 22 10.934 22H13.0384C13.8204 22 14.4713 21.3991 14.5336 20.6196L14.5518 20.3927C14.6166 19.5825 15.5697 19.184 16.192 19.7069L16.5056 19.9705C17.1013 20.4712 17.9811 20.4331 18.5313 19.8829L19.9024 18.5118C20.4277 17.9865 20.4894 17.1557 20.0473 16.5586L19.7 16.0894C19.2131 15.4317 19.6826 14.5 20.5009 14.5C21.3288 14.5 22 13.8288 22 13.0009V10.9698C22 10.1776 21.3839 9.52195 20.5932 9.47272L20.4307 9.4626C19.6236 9.41235 19.2068 8.47476 19.7102 7.84196L20.0047 7.47182C20.4796 6.8749 20.4309 6.01666 19.8915 5.4773L18.5345 4.12028C17.9803 3.56605 17.0928 3.53196 16.4977 4.04206L16.2209 4.2793C15.611 4.80202 14.6649 4.42877 14.5762 3.63047L14.5433 3.33435C14.4589 2.5747 13.8168 2 13.0525 2H10.9332ZM14 12C14 13.1046 13.1046 14 12 14C10.8954 14 10 13.1046 10 12C10 10.8954 10.8954 10 12 10C13.1046 10 14 10.8954 14 12Z" fill="currentColor"/></svg>
+    </button>
+  </div>
+  <div class="toolbar-vdiv"></div>
+  <div class="toolbar-icon-grp">
+    <button class="toolbar-icon-btn" id="search-icon-btn" title="Search posts">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.5 3C6.35786 3 3 6.35786 3 10.5C3 14.6421 6.35786 18 10.5 18C12.2557 18 13.8695 17.4048 15.1517 16.4115L19.2929 20.5527C19.6834 20.9432 20.3166 20.9432 20.7071 20.5527C21.0976 20.1622 21.0976 19.529 20.7071 19.1385L16.5659 14.9973C17.5592 13.7151 18.1544 12.1013 18.1544 10.3456C18.1544 6.20346 14.7965 3 10.5 3ZM5 10.5C5 7.46243 7.46243 5 10.5 5C13.5376 5 16 7.46243 16 10.5C16 13.5376 13.5376 16 10.5 16C7.46243 16 5 13.5376 5 10.5Z" fill="currentColor"/></svg>
+    </button>
+    <button class="toolbar-icon-btn" title="Columns">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M3 5C3 3.89543 3.89543 3 5 3H19C20.1046 3 21 3.89543 21 5V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V5ZM5 5V19H8V5H5ZM10 5V19H14V5H10ZM16 5V19H19V5H16Z" fill="currentColor"/></svg>
+    </button>
+    <button class="filter-icon-btn" id="filter-icon-btn" title="Filters">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M2 5C2 4.44772 2.44772 4 3 4H21C21.5523 4 22 4.44772 22 5C22 5.55228 21.5523 6 21 6H3C2.44772 6 2 5.55228 2 5ZM5 12C5 11.4477 5.44772 11 6 11H18C18.5523 11 19 11.4477 19 12C19 12.5523 18.5523 13 18 13H6C5.44772 13 5 12.5523 5 12ZM9 19C9 18.4477 9.44772 18 10 18H14C14.5523 18 15 18.4477 15 19C15 19.5523 14.5523 20 14 20H10C9.44772 20 9 19.5523 9 19Z" fill="currentColor"/></svg>
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 13.2256L7.70711 8.80182C7.31658 8.39939 6.68342 8.39939 6.29289 8.80182C5.90237 9.20425 5.90237 9.85672 6.29289 10.2592L10.9393 15.0473C11.5251 15.6509 12.4749 15.6509 13.0607 15.0473L17.7071 10.2592C18.0976 9.85672 18.0976 9.20425 17.7071 8.80182C17.3166 8.39939 16.6834 8.39939 16.2929 8.80182L12 13.2256Z" fill="currentColor"/></svg>
+    </button>
+  </div>
 </div>
 
 <!-- CALENDAR WRAP -->
@@ -451,6 +642,290 @@ body{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;background:var(--sy
   </div><!-- .day-scroll -->
 
 </div><!-- .cal-wrap -->
+
+<!-- LIST VIEW -->
+<div id="list-view" class="list-view">
+  <table class="list-table">
+    <thead>
+      <tr>
+        <th style="width:40px"><input type="checkbox" style="accent-color:var(--sys-primary-default);width:14px;height:14px"></th>
+        <th>Name</th>
+        <th>Status</th>
+        <th>Networks</th>
+        <th>Tags</th>
+        <th>Interactions</th>
+        <th style="cursor:pointer">Date
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" style="vertical-align:middle;margin-left:2px"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 3L5 10H9V21H15V10H19L12 3Z" fill="currentColor" opacity=".4"/><path fill-rule="evenodd" clip-rule="evenodd" d="M12 21L19 14H15V3H9V14H5L12 21Z" fill="currentColor" opacity=".4"/></svg>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Row 1 -->
+      <tr>
+        <td><input type="checkbox" style="accent-color:var(--sys-primary-default);width:14px;height:14px"></td>
+        <td><div class="lt-name-cell">
+          <div class="lt-thumb" style="background:var(--blue-50);display:flex;align-items:center;justify-content:center">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M19.5754 2H4.42606C3.08587 2 2 3.08714 2 4.42857V19.5743C2 20.9157 3.0873 22 4.42606 22H19.5739C20.9155 22 22 20.9129 22 19.5743V4.42857C22.0028 3.08714 20.9155 2 19.5754 2ZM7.6465 19.0971H4.90039V10.2314H7.6465V19.0971ZM6.2606 9.33718C5.36333 9.33718 4.63751 8.60433 4.63751 7.70147C4.63751 6.79861 5.36476 6.06576 6.2606 6.06576C7.15787 6.06576 7.88369 6.79861 7.88369 7.70147C7.88369 8.60433 7.15787 9.33718 6.2606 9.33718ZM19.0496 19.1414H16.3178V14.4871C16.3178 13.21 15.8334 12.4986 14.8247 12.4986C13.726 12.4986 13.153 13.2414 13.153 14.4871V19.1414H10.5184V10.2757H13.1502V11.47C13.9431 10.0057 15.822 10.0057 15.822 10.0057C17.7008 10.0057 19.0482 11.1529 19.0482 13.5286V19.1429L19.0496 19.1414Z" fill="#0A66C2"/></svg>
+          </div>
+          <div><div class="lt-name">Collaboration Guidelines</div><div class="lt-type">Post Set</div></div>
+        </div></td>
+        <td><span class="lt-status" style="color:var(--sys-primary-default)">
+          <svg width="14" height="14" viewBox="0 0 10 10" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M5 0C7.76142 0 10 2.23858 10 5C10 7.76142 7.76142 10 5 10C2.23858 10 0 7.76142 0 5C0 2.23858 2.23858 0 5 0ZM5 8.75V5V1.25C2.92893 1.25 1.25 2.92893 1.25 5C1.25 7.07107 2.92893 8.75 5 8.75Z" fill="var(--sys-primary-default)"/><path fill-rule="evenodd" clip-rule="evenodd" d="M8.53553 1.46447C10.4882 3.41709 10.4882 6.58291 8.53553 8.53553C6.58291 10.4882 3.41709 10.4882 1.46447 8.53553C-0.488155 6.58291 -0.488155 3.41709 1.46447 1.46447C3.41709 -0.488155 6.58291 -0.488155 8.53553 1.46447ZM2.34835 7.65165L5 5L7.65165 2.34835C6.18718 0.88388 3.81282 0.88388 2.34835 2.34835C0.88388 3.81282 0.88388 6.18718 2.34835 7.65165Z" fill="var(--sys-primary-default)"/></svg>
+          Scheduled
+        </span></td>
+        <td><div class="lt-nets">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M19.5754 2H4.42606C3.08587 2 2 3.08714 2 4.42857V19.5743C2 20.9157 3.0873 22 4.42606 22H19.5739C20.9155 22 22 20.9129 22 19.5743V4.42857C22.0028 3.08714 20.9155 2 19.5754 2ZM7.6465 19.0971H4.90039V10.2314H7.6465V19.0971ZM6.2606 9.33718C5.36333 9.33718 4.63751 8.60433 4.63751 7.70147C4.63751 6.79861 5.36476 6.06576 6.2606 6.06576C7.15787 6.06576 7.88369 6.79861 7.88369 7.70147C7.88369 8.60433 7.15787 9.33718 6.2606 9.33718ZM19.0496 19.1414H16.3178V14.4871C16.3178 13.21 15.8334 12.4986 14.8247 12.4986C13.726 12.4986 13.153 13.2414 13.153 14.4871V19.1414H10.5184V10.2757H13.1502V11.47C13.9431 10.0057 15.822 10.0057 15.822 10.0057C17.7008 10.0057 19.0482 11.1529 19.0482 13.5286V19.1429L19.0496 19.1414Z" fill="#0A66C2"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.0357 3.86108C14.9802 3.81346 14.6667 3.80155 11.996 3.80155C9.32539 3.80155 9.0119 3.80949 7.95634 3.86108C6.98015 3.90473 6.45238 4.07139 6.0992 4.20632C5.63095 4.38489 5.29761 4.60314 4.94841 4.95235C4.5992 5.30155 4.38492 5.63489 4.20238 6.10314C4.06349 6.45632 3.90079 6.98409 3.85714 7.96028C3.80952 9.01584 3.79761 9.32933 3.79761 12C3.79761 14.6706 3.80952 14.9841 3.85714 16.0396C3.90079 17.0158 4.06745 17.5436 4.20238 17.8968C4.38095 18.365 4.5992 18.6984 4.94841 19.0476C5.29761 19.3968 5.63095 19.6111 6.0992 19.7936C6.45238 19.9325 6.98015 20.0952 7.95634 20.1389C9.0119 20.1865 9.32539 20.1984 11.996 20.1984C14.6667 20.1984 14.9802 20.1865 16.0357 20.1389C17.0119 20.0952 17.5397 19.9285 17.8929 19.7936C18.3611 19.615 18.6944 19.3968 19.0436 19.0476C19.3929 18.6984 19.6071 18.365 19.7897 17.8968C19.9286 17.5436 20.0913 17.0158 20.1349 16.0396C20.1825 14.9841 20.1944 14.6706 20.1944 12C20.1944 9.32933 20.1825 9.01584 20.1349 7.96028C20.0913 6.98409 19.9246 6.45632 19.7897 6.10314C19.6111 5.63489 19.3929 5.30155 19.0436 4.95235C18.6944 4.60314 18.3611 4.38885 17.8929 4.20632C17.5397 4.06743 17.0119 3.90473 16.0357 3.86108ZM8.6627 11.9959C8.6627 13.8372 10.1548 15.3292 11.996 15.3292C13.8373 15.3292 15.3294 13.8372 15.3294 11.9959C15.3294 10.1546 13.8373 8.66257 11.996 8.66257C10.1548 8.66257 8.6627 10.1546 8.6627 11.9959Z" fill="#E2007A"/></svg>
+        </div></td>
+        <td><div class="lt-tags"><span class="lt-tag" style="background:var(--blue-50);color:var(--sys-primary-default)">Brand</span></div></td>
+        <td><div class="lt-interactions"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M2 6C2 4.89543 2.89543 4 4 4H20C21.1046 4 22 4.89543 22 6V16C22 17.1046 21.1046 18 20 18H13L8 21V18H4C2.89543 18 2 17.1046 2 16V6Z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg> 24</div></td>
+        <td><span class="lt-date">Jun 12, 09:00</span></td>
+      </tr>
+      <!-- Row 2 -->
+      <tr>
+        <td><input type="checkbox" style="accent-color:var(--sys-primary-default);width:14px;height:14px"></td>
+        <td><div class="lt-name-cell">
+          <div class="lt-thumb" style="background:var(--purple-50);display:flex;align-items:center;justify-content:center">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.0357 3.86108C14.9802 3.81346 14.6667 3.80155 11.996 3.80155C9.32539 3.80155 9.0119 3.80949 7.95634 3.86108C6.98015 3.90473 6.45238 4.07139 6.0992 4.20632C5.63095 4.38489 5.29761 4.60314 4.94841 4.95235C4.5992 5.30155 4.38492 5.63489 4.20238 6.10314C4.06349 6.45632 3.90079 6.98409 3.85714 7.96028C3.80952 9.01584 3.79761 9.32933 3.79761 12C3.79761 14.6706 3.80952 14.9841 3.85714 16.0396C3.90079 17.0158 4.06745 17.5436 4.20238 17.8968C4.38095 18.365 4.5992 18.6984 4.94841 19.0476C5.29761 19.3968 5.63095 19.6111 6.0992 19.7936C6.45238 19.9325 6.98015 20.0952 7.95634 20.1389C9.0119 20.1865 9.32539 20.1984 11.996 20.1984C14.6667 20.1984 14.9802 20.1865 16.0357 20.1389C17.0119 20.0952 17.5397 19.9285 17.8929 19.7936C18.3611 19.615 18.6944 19.3968 19.0436 19.0476C19.3929 18.6984 19.6071 18.365 19.7897 17.8968C19.9286 17.5436 20.0913 17.0158 20.1349 16.0396C20.1825 14.9841 20.1944 14.6706 20.1944 12C20.1944 9.32933 20.1825 9.01584 20.1349 7.96028C20.0913 6.98409 19.9246 6.45632 19.7897 6.10314C19.6111 5.63489 19.3929 5.30155 19.0436 4.95235C18.6944 4.60314 18.3611 4.38885 17.8929 4.20632C17.5397 4.06743 17.0119 3.90473 16.0357 3.86108ZM8.6627 11.9959C8.6627 13.8372 10.1548 15.3292 11.996 15.3292C13.8373 15.3292 15.3294 13.8372 15.3294 11.9959C15.3294 10.1546 13.8373 8.66257 11.996 8.66257C10.1548 8.66257 8.6627 10.1546 8.6627 11.9959Z" fill="#E2007A"/></svg>
+          </div>
+          <div><div class="lt-name">Collaboration Guidelines</div><div class="lt-type">Post Set</div></div>
+        </div></td>
+        <td><span class="lt-status" style="color:var(--sys-text-secondary)">
+          <svg width="14" height="14" viewBox="0 0 10 10" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M10 5C10 7.76142 7.76142 10 5 10C2.23858 10 0 7.76142 0 5C0 2.23858 2.23858 0 5 0C7.76142 0 10 2.23858 10 5ZM1.25 5H8.75C8.75 2.92893 7.07107 1.25 5 1.25C2.92893 1.25 1.25 2.92893 1.25 5Z" fill="var(--sys-text-placeholder)"/></svg>
+          Draft
+        </span></td>
+        <td><div class="lt-nets">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.0357 3.86108C14.9802 3.81346 14.6667 3.80155 11.996 3.80155C9.32539 3.80155 9.0119 3.80949 7.95634 3.86108C6.98015 3.90473 6.45238 4.07139 6.0992 4.20632C5.63095 4.38489 5.29761 4.60314 4.94841 4.95235C4.5992 5.30155 4.38492 5.63489 4.20238 6.10314C4.06349 6.45632 3.90079 6.98409 3.85714 7.96028C3.80952 9.01584 3.79761 9.32933 3.79761 12C3.79761 14.6706 3.80952 14.9841 3.85714 16.0396C3.90079 17.0158 4.06745 17.5436 4.20238 17.8968C4.38095 18.365 4.5992 18.6984 4.94841 19.0476C5.29761 19.3968 5.63095 19.6111 6.0992 19.7936C6.45238 19.9325 6.98015 20.0952 7.95634 20.1389C9.0119 20.1865 9.32539 20.1984 11.996 20.1984C14.6667 20.1984 14.9802 20.1865 16.0357 20.1389C17.0119 20.0952 17.5397 19.9285 17.8929 19.7936C18.3611 19.615 18.6944 19.3968 19.0436 19.0476C19.3929 18.6984 19.6071 18.365 19.7897 17.8968C19.9286 17.5436 20.0913 17.0158 20.1349 16.0396C20.1825 14.9841 20.1944 14.6706 20.1944 12C20.1944 9.32933 20.1825 9.01584 20.1349 7.96028C20.0913 6.98409 19.9246 6.45632 19.7897 6.10314C19.6111 5.63489 19.3929 5.30155 19.0436 4.95235C18.6944 4.60314 18.3611 4.38885 17.8929 4.20632C17.5397 4.06743 17.0119 3.90473 16.0357 3.86108ZM8.6627 11.9959C8.6627 13.8372 10.1548 15.3292 11.996 15.3292C13.8373 15.3292 15.3294 13.8372 15.3294 11.9959C15.3294 10.1546 13.8373 8.66257 11.996 8.66257C10.1548 8.66257 8.6627 10.1546 8.6627 11.9959Z" fill="#E2007A"/></svg>
+        </div></td>
+        <td><div class="lt-tags"><span class="lt-tag" style="background:var(--emerald-50);color:var(--sys-success-content)">Product</span></div></td>
+        <td><div class="lt-interactions"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M2 6C2 4.89543 2.89543 4 4 4H20C21.1046 4 22 4.89543 22 6V16C22 17.1046 21.1046 18 20 18H13L8 21V18H4C2.89543 18 2 17.1046 2 16V6Z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg> —</div></td>
+        <td><span class="lt-date">Jun 13, Draft</span></td>
+      </tr>
+      <!-- Row 3 -->
+      <tr>
+        <td><input type="checkbox" style="accent-color:var(--sys-primary-default);width:14px;height:14px"></td>
+        <td><div class="lt-name-cell">
+          <div class="lt-thumb" style="background:var(--green-50);display:flex;align-items:center;justify-content:center">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M22 12.0611C22 6.50451 17.5229 2 12 2C6.47715 2 2 6.50451 2 12.0611C2 17.0829 5.65686 21.2452 10.4375 22V14.9694H7.89844V12.0611H10.4375V9.84452C10.4375 7.32296 11.9304 5.93012 14.2146 5.93012C15.3087 5.93012 16.4531 6.12663 16.4531 6.12663V8.60261H15.1921C13.9499 8.60261 13.5625 9.37816 13.5625 10.1738V12.0611H16.3359L15.8926 14.9694H13.5625V22C18.3431 21.2452 22 17.0829 22 12.0611Z" fill="#1877F2"/></svg>
+          </div>
+          <div><div class="lt-name">Collaboration Guidelines</div><div class="lt-type">Post Set</div></div>
+        </div></td>
+        <td><span class="lt-status" style="color:var(--sys-success-content)">
+          <svg width="14" height="14" viewBox="0 0 10 10" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M0 4.99995L4.99995 0L9.99989 4.99994L4.99995 10L0 4.99995ZM1.41421 4.99995L4.99995 1.41421L8.58568 4.99994L1.41421 4.99995Z" fill="var(--sys-success-content)"/></svg>
+          Published
+        </span></td>
+        <td><div class="lt-nets">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M22 12.0611C22 6.50451 17.5229 2 12 2C6.47715 2 2 6.50451 2 12.0611C2 17.0829 5.65686 21.2452 10.4375 22V14.9694H7.89844V12.0611H10.4375V9.84452C10.4375 7.32296 11.9304 5.93012 14.2146 5.93012C15.3087 5.93012 16.4531 6.12663 16.4531 6.12663V8.60261H15.1921C13.9499 8.60261 13.5625 9.37816 13.5625 10.1738V12.0611H16.3359L15.8926 14.9694H13.5625V22C18.3431 21.2452 22 17.0829 22 12.0611Z" fill="#1877F2"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M19.5754 2H4.42606C3.08587 2 2 3.08714 2 4.42857V19.5743C2 20.9157 3.0873 22 4.42606 22H19.5739C20.9155 22 22 20.9129 22 19.5743V4.42857C22.0028 3.08714 20.9155 2 19.5754 2ZM7.6465 19.0971H4.90039V10.2314H7.6465V19.0971ZM6.2606 9.33718C5.36333 9.33718 4.63751 8.60433 4.63751 7.70147C4.63751 6.79861 5.36476 6.06576 6.2606 6.06576C7.15787 6.06576 7.88369 6.79861 7.88369 7.70147C7.88369 8.60433 7.15787 9.33718 6.2606 9.33718ZM19.0496 19.1414H16.3178V14.4871C16.3178 13.21 15.8334 12.4986 14.8247 12.4986C13.726 12.4986 13.153 13.2414 13.153 14.4871V19.1414H10.5184V10.2757H13.1502V11.47C13.9431 10.0057 15.822 10.0057 15.822 10.0057C17.7008 10.0057 19.0482 11.1529 19.0482 13.5286V19.1429L19.0496 19.1414Z" fill="#0A66C2"/></svg>
+        </div></td>
+        <td><div class="lt-tags"><span class="lt-tag" style="background:var(--amber-50);color:var(--amber-700)">Campaign</span><span class="lt-tag" style="background:var(--blue-50);color:var(--sys-primary-default)">Brand</span></div></td>
+        <td><div class="lt-interactions"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M2 6C2 4.89543 2.89543 4 4 4H20C21.1046 4 22 4.89543 22 6V16C22 17.1046 21.1046 18 20 18H13L8 21V18H4C2.89543 18 2 17.1046 2 16V6Z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg> 142</div></td>
+        <td><span class="lt-date">Jun 10, 10:00</span></td>
+      </tr>
+      <!-- Row 4 -->
+      <tr>
+        <td><input type="checkbox" style="accent-color:var(--sys-primary-default);width:14px;height:14px"></td>
+        <td><div class="lt-name-cell">
+          <div class="lt-thumb" style="background:var(--red-50);display:flex;align-items:center;justify-content:center">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M20.818 3H17.7512L12.6976 8.75169L8.32828 3H2L9.5613 12.8446L2.39494 21H5.46359L10.9946 14.7074L15.8284 21H22L14.1179 10.6246L20.818 3ZM18.3742 19.1722H16.6749L5.58136 4.73163H7.40494L18.3742 19.1722Z" fill="#0F1419"/></svg>
+          </div>
+          <div><div class="lt-name">Collaboration Guidelines</div><div class="lt-type">Post Set</div></div>
+        </div></td>
+        <td><span class="lt-status" style="color:var(--sys-danger-content)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2L2 20H22L12 2ZM12 5.41421L20.5858 19H3.41421L12 5.41421ZM11 10V14H13V10H11ZM11 16V18H13V16H11Z" fill="var(--sys-danger-content)"/></svg>
+          Failed
+        </span></td>
+        <td><div class="lt-nets">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M20.818 3H17.7512L12.6976 8.75169L8.32828 3H2L9.5613 12.8446L2.39494 21H5.46359L10.9946 14.7074L15.8284 21H22L14.1179 10.6246L20.818 3ZM18.3742 19.1722H16.6749L5.58136 4.73163H7.40494L18.3742 19.1722Z" fill="#0F1419"/></svg>
+        </div></td>
+        <td><div class="lt-tags"><span class="lt-tag" style="background:var(--purple-50);color:var(--purple-700)">GTM</span></div></td>
+        <td><div class="lt-interactions"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M2 6C2 4.89543 2.89543 4 4 4H20C21.1046 4 22 4.89543 22 6V16C22 17.1046 21.1046 18 20 18H13L8 21V18H4C2.89543 18 2 17.1046 2 16V6Z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg> 7</div></td>
+        <td><span class="lt-date">Jun 8, 14:00</span></td>
+      </tr>
+      <!-- Row 5 -->
+      <tr>
+        <td><input type="checkbox" style="accent-color:var(--sys-primary-default);width:14px;height:14px"></td>
+        <td><div class="lt-name-cell">
+          <div class="lt-thumb" style="background:var(--petrol-50);display:flex;align-items:center;justify-content:center">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M19.5754 2H4.42606C3.08587 2 2 3.08714 2 4.42857V19.5743C2 20.9157 3.0873 22 4.42606 22H19.5739C20.9155 22 22 20.9129 22 19.5743V4.42857C22.0028 3.08714 20.9155 2 19.5754 2ZM7.6465 19.0971H4.90039V10.2314H7.6465V19.0971ZM6.2606 9.33718C5.36333 9.33718 4.63751 8.60433 4.63751 7.70147C4.63751 6.79861 5.36476 6.06576 6.2606 6.06576C7.15787 6.06576 7.88369 6.79861 7.88369 7.70147C7.88369 8.60433 7.15787 9.33718 6.2606 9.33718ZM19.0496 19.1414H16.3178V14.4871C16.3178 13.21 15.8334 12.4986 14.8247 12.4986C13.726 12.4986 13.153 13.2414 13.153 14.4871V19.1414H10.5184V10.2757H13.1502V11.47C13.9431 10.0057 15.822 10.0057 15.822 10.0057C17.7008 10.0057 19.0482 11.1529 19.0482 13.5286V19.1429L19.0496 19.1414Z" fill="#0A66C2"/></svg>
+          </div>
+          <div><div class="lt-name">Collaboration Guidelines</div><div class="lt-type">Post Set</div></div>
+        </div></td>
+        <td><span class="lt-status" style="color:var(--sys-primary-default)">
+          <svg width="14" height="14" viewBox="0 0 10 10" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M5 0C7.76142 0 10 2.23858 10 5C10 7.76142 7.76142 10 5 10C2.23858 10 0 7.76142 0 5C0 2.23858 2.23858 0 5 0ZM5 8.75V5V1.25C2.92893 1.25 1.25 2.92893 1.25 5C1.25 7.07107 2.92893 8.75 5 8.75Z" fill="var(--sys-primary-default)"/><path fill-rule="evenodd" clip-rule="evenodd" d="M8.53553 1.46447C10.4882 3.41709 10.4882 6.58291 8.53553 8.53553C6.58291 10.4882 3.41709 10.4882 1.46447 8.53553C-0.488155 6.58291 -0.488155 3.41709 1.46447 1.46447C3.41709 -0.488155 6.58291 -0.488155 8.53553 1.46447ZM2.34835 7.65165L5 5L7.65165 2.34835C6.18718 0.88388 3.81282 0.88388 2.34835 2.34835C0.88388 3.81282 0.88388 6.18718 2.34835 7.65165Z" fill="var(--sys-primary-default)"/></svg>
+          Scheduled
+        </span></td>
+        <td><div class="lt-nets">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M19.5754 2H4.42606C3.08587 2 2 3.08714 2 4.42857V19.5743C2 20.9157 3.0873 22 4.42606 22H19.5739C20.9155 22 22 20.9129 22 19.5743V4.42857C22.0028 3.08714 20.9155 2 19.5754 2ZM7.6465 19.0971H4.90039V10.2314H7.6465V19.0971ZM6.2606 9.33718C5.36333 9.33718 4.63751 8.60433 4.63751 7.70147C4.63751 6.79861 5.36476 6.06576 6.2606 6.06576C7.15787 6.06576 7.88369 6.79861 7.88369 7.70147C7.88369 8.60433 7.15787 9.33718 6.2606 9.33718ZM19.0496 19.1414H16.3178V14.4871C16.3178 13.21 15.8334 12.4986 14.8247 12.4986C13.726 12.4986 13.153 13.2414 13.153 14.4871V19.1414H10.5184V10.2757H13.1502V11.47C13.9431 10.0057 15.822 10.0057 15.822 10.0057C17.7008 10.0057 19.0482 11.1529 19.0482 13.5286V19.1429L19.0496 19.1414Z" fill="#0A66C2"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.0357 3.86108C14.9802 3.81346 14.6667 3.80155 11.996 3.80155C9.32539 3.80155 9.0119 3.80949 7.95634 3.86108C6.98015 3.90473 6.45238 4.07139 6.0992 4.20632C5.63095 4.38489 5.29761 4.60314 4.94841 4.95235C4.5992 5.30155 4.38492 5.63489 4.20238 6.10314C4.06349 6.45632 3.90079 6.98409 3.85714 7.96028C3.80952 9.01584 3.79761 9.32933 3.79761 12C3.79761 14.6706 3.80952 14.9841 3.85714 16.0396C3.90079 17.0158 4.06745 17.5436 4.20238 17.8968C4.38095 18.365 4.5992 18.6984 4.94841 19.0476C5.29761 19.3968 5.63095 19.6111 6.0992 19.7936C6.45238 19.9325 6.98015 20.0952 7.95634 20.1389C9.0119 20.1865 9.32539 20.1984 11.996 20.1984C14.6667 20.1984 14.9802 20.1865 16.0357 20.1389C17.0119 20.0952 17.5397 19.9285 17.8929 19.7936C18.3611 19.615 18.6944 19.3968 19.0436 19.0476C19.3929 18.6984 19.6071 18.365 19.7897 17.8968C19.9286 17.5436 20.0913 17.0158 20.1349 16.0396C20.1825 14.9841 20.1944 14.6706 20.1944 12C20.1944 9.32933 20.1825 9.01584 20.1349 7.96028C20.0913 6.98409 19.9246 6.45632 19.7897 6.10314C19.6111 5.63489 19.3929 5.30155 19.0436 4.95235C18.6944 4.60314 18.3611 4.38885 17.8929 4.20632C17.5397 4.06743 17.0119 3.90473 16.0357 3.86108ZM8.6627 11.9959C8.6627 13.8372 10.1548 15.3292 11.996 15.3292C13.8373 15.3292 15.3294 13.8372 15.3294 11.9959C15.3294 10.1546 13.8373 8.66257 11.996 8.66257C10.1548 8.66257 8.6627 10.1546 8.6627 11.9959Z" fill="#E2007A"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M22 12.0611C22 6.50451 17.5229 2 12 2C6.47715 2 2 6.50451 2 12.0611C2 17.0829 5.65686 21.2452 10.4375 22V14.9694H7.89844V12.0611H10.4375V9.84452C10.4375 7.32296 11.9304 5.93012 14.2146 5.93012C15.3087 5.93012 16.4531 6.12663 16.4531 6.12663V8.60261H15.1921C13.9499 8.60261 13.5625 9.37816 13.5625 10.1738V12.0611H16.3359L15.8926 14.9694H13.5625V22C18.3431 21.2452 22 17.0829 22 12.0611Z" fill="#1877F2"/></svg>
+        </div></td>
+        <td><div class="lt-tags"><span class="lt-tag" style="background:var(--blue-50);color:var(--sys-primary-default)">Brand</span><span class="lt-tag" style="background:var(--emerald-50);color:var(--sys-success-content)">Product</span></div></td>
+        <td><div class="lt-interactions"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M2 6C2 4.89543 2.89543 4 4 4H20C21.1046 4 22 4.89543 22 6V16C22 17.1046 21.1046 18 20 18H13L8 21V18H4C2.89543 18 2 17.1046 2 16V6Z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg> 56</div></td>
+        <td><span class="lt-date">Jun 15, 11:30</span></td>
+      </tr>
+      <!-- Rows 6-10 (abbreviated variants) -->
+      <tr>
+        <td><input type="checkbox" style="accent-color:var(--sys-primary-default);width:14px;height:14px"></td>
+        <td><div class="lt-name-cell"><div class="lt-thumb" style="background:var(--amber-50);display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.0357 3.86108C14.9802 3.81346 14.6667 3.80155 11.996 3.80155C9.32539 3.80155 9.0119 3.80949 7.95634 3.86108C6.98015 3.90473 6.45238 4.07139 6.0992 4.20632C5.63095 4.38489 5.29761 4.60314 4.94841 4.95235C4.5992 5.30155 4.38492 5.63489 4.20238 6.10314C4.06349 6.45632 3.90079 6.98409 3.85714 7.96028C3.80952 9.01584 3.79761 9.32933 3.79761 12C3.79761 14.6706 3.80952 14.9841 3.85714 16.0396C3.90079 17.0158 4.06745 17.5436 4.20238 17.8968C4.38095 18.365 4.5992 18.6984 4.94841 19.0476C5.29761 19.3968 5.63095 19.6111 6.0992 19.7936C6.45238 19.9325 6.98015 20.0952 7.95634 20.1389C9.0119 20.1865 9.32539 20.1984 11.996 20.1984C14.6667 20.1984 14.9802 20.1865 16.0357 20.1389C17.0119 20.0952 17.5397 19.9285 17.8929 19.7936C18.3611 19.615 18.6944 19.3968 19.0436 19.0476C19.3929 18.6984 19.6071 18.365 19.7897 17.8968C19.9286 17.5436 20.0913 17.0158 20.1349 16.0396C20.1825 14.9841 20.1944 14.6706 20.1944 12C20.1944 9.32933 20.1825 9.01584 20.1349 7.96028C20.0913 6.98409 19.9246 6.45632 19.7897 6.10314C19.6111 5.63489 19.3929 5.30155 19.0436 4.95235C18.6944 4.60314 18.3611 4.38885 17.8929 4.20632C17.5397 4.06743 17.0119 3.90473 16.0357 3.86108ZM8.6627 11.9959C8.6627 13.8372 10.1548 15.3292 11.996 15.3292C13.8373 15.3292 15.3294 13.8372 15.3294 11.9959C15.3294 10.1546 13.8373 8.66257 11.996 8.66257C10.1548 8.66257 8.6627 10.1546 8.6627 11.9959Z" fill="#E2007A"/></svg></div><div><div class="lt-name">Social Media Calendar Q2</div><div class="lt-type">Post Set</div></div></div></td>
+        <td><span class="lt-status" style="color:var(--sys-text-secondary)"><svg width="14" height="14" viewBox="0 0 10 10" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M10 5C10 7.76142 7.76142 10 5 10C2.23858 10 0 7.76142 0 5C0 2.23858 2.23858 0 5 0C7.76142 0 10 2.23858 10 5ZM1.25 5H8.75C8.75 2.92893 7.07107 1.25 5 1.25C2.92893 1.25 1.25 2.92893 1.25 5Z" fill="var(--sys-text-placeholder)"/></svg> Draft</span></td>
+        <td><div class="lt-nets"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.0357 3.86108C14.9802 3.81346 14.6667 3.80155 11.996 3.80155C9.32539 3.80155 9.0119 3.80949 7.95634 3.86108C6.98015 3.90473 6.45238 4.07139 6.0992 4.20632C5.63095 4.38489 5.29761 4.60314 4.94841 4.95235C4.5992 5.30155 4.38492 5.63489 4.20238 6.10314C4.06349 6.45632 3.90079 6.98409 3.85714 7.96028C3.80952 9.01584 3.79761 9.32933 3.79761 12C3.79761 14.6706 3.80952 14.9841 3.85714 16.0396C3.90079 17.0158 4.06745 17.5436 4.20238 17.8968C4.38095 18.365 4.5992 18.6984 4.94841 19.0476C5.29761 19.3968 5.63095 19.6111 6.0992 19.7936C6.45238 19.9325 6.98015 20.0952 7.95634 20.1389C9.0119 20.1865 9.32539 20.1984 11.996 20.1984C14.6667 20.1984 14.9802 20.1865 16.0357 20.1389C17.0119 20.0952 17.5397 19.9285 17.8929 19.7936C18.3611 19.615 18.6944 19.3968 19.0436 19.0476C19.3929 18.6984 19.6071 18.365 19.7897 17.8968C19.9286 17.5436 20.0913 17.0158 20.1349 16.0396C20.1825 14.9841 20.1944 14.6706 20.1944 12C20.1944 9.32933 20.1825 9.01584 20.1349 7.96028C20.0913 6.98409 19.9246 6.45632 19.7897 6.10314C19.6111 5.63489 19.3929 5.30155 19.0436 4.95235C18.6944 4.60314 18.3611 4.38885 17.8929 4.20632C17.5397 4.06743 17.0119 3.90473 16.0357 3.86108ZM8.6627 11.9959C8.6627 13.8372 10.1548 15.3292 11.996 15.3292C13.8373 15.3292 15.3294 13.8372 15.3294 11.9959C15.3294 10.1546 13.8373 8.66257 11.996 8.66257C10.1548 8.66257 8.6627 10.1546 8.6627 11.9959Z" fill="#E2007A"/></svg></div></td>
+        <td><div class="lt-tags"><span class="lt-tag" style="background:var(--amber-50);color:var(--amber-700)">Campaign</span></div></td>
+        <td><div class="lt-interactions"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M2 6C2 4.89543 2.89543 4 4 4H20C21.1046 4 22 4.89543 22 6V16C22 17.1046 21.1046 18 20 18H13L8 21V18H4C2.89543 18 2 17.1046 2 16V6Z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg> —</div></td>
+        <td><span class="lt-date">Jun 18, Draft</span></td>
+      </tr>
+      <tr>
+        <td><input type="checkbox" style="accent-color:var(--sys-primary-default);width:14px;height:14px"></td>
+        <td><div class="lt-name-cell"><div class="lt-thumb" style="background:var(--coral-50);display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M22 12.0611C22 6.50451 17.5229 2 12 2C6.47715 2 2 6.50451 2 12.0611C2 17.0829 5.65686 21.2452 10.4375 22V14.9694H7.89844V12.0611H10.4375V9.84452C10.4375 7.32296 11.9304 5.93012 14.2146 5.93012C15.3087 5.93012 16.4531 6.12663 16.4531 6.12663V8.60261H15.1921C13.9499 8.60261 13.5625 9.37816 13.5625 10.1738V12.0611H16.3359L15.8926 14.9694H13.5625V22C18.3431 21.2452 22 17.0829 22 12.0611Z" fill="#1877F2"/></svg></div><div><div class="lt-name">Product Launch Announcement</div><div class="lt-type">Post Set</div></div></div></td>
+        <td><span class="lt-status" style="color:var(--sys-success-content)"><svg width="14" height="14" viewBox="0 0 10 10" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M0 4.99995L4.99995 0L9.99989 4.99994L4.99995 10L0 4.99995ZM1.41421 4.99995L4.99995 1.41421L8.58568 4.99994L1.41421 4.99995Z" fill="var(--sys-success-content)"/></svg> Published</span></td>
+        <td><div class="lt-nets"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M22 12.0611C22 6.50451 17.5229 2 12 2C6.47715 2 2 6.50451 2 12.0611C2 17.0829 5.65686 21.2452 10.4375 22V14.9694H7.89844V12.0611H10.4375V9.84452C10.4375 7.32296 11.9304 5.93012 14.2146 5.93012C15.3087 5.93012 16.4531 6.12663 16.4531 6.12663V8.60261H15.1921C13.9499 8.60261 13.5625 9.37816 13.5625 10.1738V12.0611H16.3359L15.8926 14.9694H13.5625V22C18.3431 21.2452 22 17.0829 22 12.0611Z" fill="#1877F2"/></svg></div></td>
+        <td><div class="lt-tags"><span class="lt-tag" style="background:var(--blue-50);color:var(--sys-primary-default)">Brand</span></div></td>
+        <td><div class="lt-interactions"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M2 6C2 4.89543 2.89543 4 4 4H20C21.1046 4 22 4.89543 22 6V16C22 17.1046 21.1046 18 20 18H13L8 21V18H4C2.89543 18 2 17.1046 2 16V6Z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg> 318</div></td>
+        <td><span class="lt-date">Jun 5, 09:00</span></td>
+      </tr>
+      <tr>
+        <td><input type="checkbox" style="accent-color:var(--sys-primary-default);width:14px;height:14px"></td>
+        <td><div class="lt-name-cell"><div class="lt-thumb" style="background:var(--violet-50);display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M19.5754 2H4.42606C3.08587 2 2 3.08714 2 4.42857V19.5743C2 20.9157 3.0873 22 4.42606 22H19.5739C20.9155 22 22 20.9129 22 19.5743V4.42857C22.0028 3.08714 20.9155 2 19.5754 2ZM7.6465 19.0971H4.90039V10.2314H7.6465V19.0971ZM6.2606 9.33718C5.36333 9.33718 4.63751 8.60433 4.63751 7.70147C4.63751 6.79861 5.36476 6.06576 6.2606 6.06576C7.15787 6.06576 7.88369 6.79861 7.88369 7.70147C7.88369 8.60433 7.15787 9.33718 6.2606 9.33718ZM19.0496 19.1414H16.3178V14.4871C16.3178 13.21 15.8334 12.4986 14.8247 12.4986C13.726 12.4986 13.153 13.2414 13.153 14.4871V19.1414H10.5184V10.2757H13.1502V11.47C13.9431 10.0057 15.822 10.0057 15.822 10.0057C17.7008 10.0057 19.0482 11.1529 19.0482 13.5286V19.1429L19.0496 19.1414Z" fill="#0A66C2"/></svg></div><div><div class="lt-name">Weekly Digest — May 2026</div><div class="lt-type">Post Set</div></div></div></td>
+        <td><span class="lt-status" style="color:var(--sys-primary-default)"><svg width="14" height="14" viewBox="0 0 10 10" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M5 0C7.76142 0 10 2.23858 10 5C10 7.76142 7.76142 10 5 10C2.23858 10 0 7.76142 0 5C0 2.23858 2.23858 0 5 0ZM5 8.75V5V1.25C2.92893 1.25 1.25 2.92893 1.25 5C1.25 7.07107 2.92893 8.75 5 8.75Z" fill="var(--sys-primary-default)"/><path fill-rule="evenodd" clip-rule="evenodd" d="M8.53553 1.46447C10.4882 3.41709 10.4882 6.58291 8.53553 8.53553C6.58291 10.4882 3.41709 10.4882 1.46447 8.53553C-0.488155 6.58291 -0.488155 3.41709 1.46447 1.46447C3.41709 -0.488155 6.58291 -0.488155 8.53553 1.46447ZM2.34835 7.65165L5 5L7.65165 2.34835C6.18718 0.88388 3.81282 0.88388 2.34835 2.34835C0.88388 3.81282 0.88388 6.18718 2.34835 7.65165Z" fill="var(--sys-primary-default)"/></svg> Scheduled</span></td>
+        <td><div class="lt-nets"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M19.5754 2H4.42606C3.08587 2 2 3.08714 2 4.42857V19.5743C2 20.9157 3.0873 22 4.42606 22H19.5739C20.9155 22 22 20.9129 22 19.5743V4.42857C22.0028 3.08714 20.9155 2 19.5754 2ZM7.6465 19.0971H4.90039V10.2314H7.6465V19.0971ZM6.2606 9.33718C5.36333 9.33718 4.63751 8.60433 4.63751 7.70147C4.63751 6.79861 5.36476 6.06576 6.2606 6.06576C7.15787 6.06576 7.88369 6.79861 7.88369 7.70147C7.88369 8.60433 7.15787 9.33718 6.2606 9.33718ZM19.0496 19.1414H16.3178V14.4871C16.3178 13.21 15.8334 12.4986 14.8247 12.4986C13.726 12.4986 13.153 13.2414 13.153 14.4871V19.1414H10.5184V10.2757H13.1502V11.47C13.9431 10.0057 15.822 10.0057 15.822 10.0057C17.7008 10.0057 19.0482 11.1529 19.0482 13.5286V19.1429L19.0496 19.1414Z" fill="#0A66C2"/></svg></div></td>
+        <td><div class="lt-tags"><span class="lt-tag" style="background:var(--purple-50);color:var(--purple-700)">GTM</span><span class="lt-tag" style="background:var(--blue-50);color:var(--sys-primary-default)">Brand</span></div></td>
+        <td><div class="lt-interactions"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M2 6C2 4.89543 2.89543 4 4 4H20C21.1046 4 22 4.89543 22 6V16C22 17.1046 21.1046 18 20 18H13L8 21V18H4C2.89543 18 2 17.1046 2 16V6Z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg> 12</div></td>
+        <td><span class="lt-date">Jun 20, 08:00</span></td>
+      </tr>
+      <tr>
+        <td><input type="checkbox" style="accent-color:var(--sys-primary-default);width:14px;height:14px"></td>
+        <td><div class="lt-name-cell"><div class="lt-thumb" style="background:var(--emerald-50);display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M20.818 3H17.7512L12.6976 8.75169L8.32828 3H2L9.5613 12.8446L2.39494 21H5.46359L10.9946 14.7074L15.8284 21H22L14.1179 10.6246L20.818 3ZM18.3742 19.1722H16.6749L5.58136 4.73163H7.40494L18.3742 19.1722Z" fill="#0F1419"/></svg></div><div><div class="lt-name">Summer Campaign 2026</div><div class="lt-type">Post Set</div></div></div></td>
+        <td><span class="lt-status" style="color:var(--sys-danger-content)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2L2 20H22L12 2ZM12 5.41421L20.5858 19H3.41421L12 5.41421ZM11 10V14H13V10H11ZM11 16V18H13V16H11Z" fill="var(--sys-danger-content)"/></svg> Failed</span></td>
+        <td><div class="lt-nets"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M20.818 3H17.7512L12.6976 8.75169L8.32828 3H2L9.5613 12.8446L2.39494 21H5.46359L10.9946 14.7074L15.8284 21H22L14.1179 10.6246L20.818 3ZM18.3742 19.1722H16.6749L5.58136 4.73163H7.40494L18.3742 19.1722Z" fill="#0F1419"/></svg><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.0357 3.86108C14.9802 3.81346 14.6667 3.80155 11.996 3.80155C9.32539 3.80155 9.0119 3.80949 7.95634 3.86108C6.98015 3.90473 6.45238 4.07139 6.0992 4.20632C5.63095 4.38489 5.29761 4.60314 4.94841 4.95235C4.5992 5.30155 4.38492 5.63489 4.20238 6.10314C4.06349 6.45632 3.90079 6.98409 3.85714 7.96028C3.80952 9.01584 3.79761 9.32933 3.79761 12C3.79761 14.6706 3.80952 14.9841 3.85714 16.0396C3.90079 17.0158 4.06745 17.5436 4.20238 17.8968C4.38095 18.365 4.5992 18.6984 4.94841 19.0476C5.29761 19.3968 5.63095 19.6111 6.0992 19.7936C6.45238 19.9325 6.98015 20.0952 7.95634 20.1389C9.0119 20.1865 9.32539 20.1984 11.996 20.1984C14.6667 20.1984 14.9802 20.1865 16.0357 20.1389C17.0119 20.0952 17.5397 19.9285 17.8929 19.7936C18.3611 19.615 18.6944 19.3968 19.0436 19.0476C19.3929 18.6984 19.6071 18.365 19.7897 17.8968C19.9286 17.5436 20.0913 17.0158 20.1349 16.0396C20.1825 14.9841 20.1944 14.6706 20.1944 12C20.1944 9.32933 20.1825 9.01584 20.1349 7.96028C20.0913 6.98409 19.9246 6.45632 19.7897 6.10314C19.6111 5.63489 19.3929 5.30155 19.0436 4.95235C18.6944 4.60314 18.3611 4.38885 17.8929 4.20632C17.5397 4.06743 17.0119 3.90473 16.0357 3.86108ZM8.6627 11.9959C8.6627 13.8372 10.1548 15.3292 11.996 15.3292C13.8373 15.3292 15.3294 13.8372 15.3294 11.9959C15.3294 10.1546 13.8373 8.66257 11.996 8.66257C10.1548 8.66257 8.6627 10.1546 8.6627 11.9959Z" fill="#E2007A"/></svg></div></td>
+        <td><div class="lt-tags"><span class="lt-tag" style="background:var(--emerald-50);color:var(--sys-success-content)">Product</span></div></td>
+        <td><div class="lt-interactions"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M2 6C2 4.89543 2.89543 4 4 4H20C21.1046 4 22 4.89543 22 6V16C22 17.1046 21.1046 18 20 18H13L8 21V18H4C2.89543 18 2 17.1046 2 16V6Z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg> 3</div></td>
+        <td><span class="lt-date">Jun 22, 13:00</span></td>
+      </tr>
+      <tr>
+        <td><input type="checkbox" style="accent-color:var(--sys-primary-default);width:14px;height:14px"></td>
+        <td><div class="lt-name-cell"><div class="lt-thumb" style="background:var(--blue-50);display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M19.5754 2H4.42606C3.08587 2 2 3.08714 2 4.42857V19.5743C2 20.9157 3.0873 22 4.42606 22H19.5739C20.9155 22 22 20.9129 22 19.5743V4.42857C22.0028 3.08714 20.9155 2 19.5754 2ZM7.6465 19.0971H4.90039V10.2314H7.6465V19.0971ZM6.2606 9.33718C5.36333 9.33718 4.63751 8.60433 4.63751 7.70147C4.63751 6.79861 5.36476 6.06576 6.2606 6.06576C7.15787 6.06576 7.88369 6.79861 7.88369 7.70147C7.88369 8.60433 7.15787 9.33718 6.2606 9.33718ZM19.0496 19.1414H16.3178V14.4871C16.3178 13.21 15.8334 12.4986 14.8247 12.4986C13.726 12.4986 13.153 13.2414 13.153 14.4871V19.1414H10.5184V10.2757H13.1502V11.47C13.9431 10.0057 15.822 10.0057 15.822 10.0057C17.7008 10.0057 19.0482 11.1529 19.0482 13.5286V19.1429L19.0496 19.1414Z" fill="#0A66C2"/></svg></div><div><div class="lt-name">Agency Partnership Series</div><div class="lt-type">Post Set</div></div></div></td>
+        <td><span class="lt-status" style="color:var(--sys-primary-default)"><svg width="14" height="14" viewBox="0 0 10 10" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M5 0C7.76142 0 10 2.23858 10 5C10 7.76142 7.76142 10 5 10C2.23858 10 0 7.76142 0 5C0 2.23858 2.23858 0 5 0ZM5 8.75V5V1.25C2.92893 1.25 1.25 2.92893 1.25 5C1.25 7.07107 2.92893 8.75 5 8.75Z" fill="var(--sys-primary-default)"/><path fill-rule="evenodd" clip-rule="evenodd" d="M8.53553 1.46447C10.4882 3.41709 10.4882 6.58291 8.53553 8.53553C6.58291 10.4882 3.41709 10.4882 1.46447 8.53553C-0.488155 6.58291 -0.488155 3.41709 1.46447 1.46447C3.41709 -0.488155 6.58291 -0.488155 8.53553 1.46447ZM2.34835 7.65165L5 5L7.65165 2.34835C6.18718 0.88388 3.81282 0.88388 2.34835 2.34835C0.88388 3.81282 0.88388 6.18718 2.34835 7.65165Z" fill="var(--sys-primary-default)"/></svg> Scheduled</span></td>
+        <td><div class="lt-nets"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M19.5754 2H4.42606C3.08587 2 2 3.08714 2 4.42857V19.5743C2 20.9157 3.0873 22 4.42606 22H19.5739C20.9155 22 22 20.9129 22 19.5743V4.42857C22.0028 3.08714 20.9155 2 19.5754 2ZM7.6465 19.0971H4.90039V10.2314H7.6465V19.0971ZM6.2606 9.33718C5.36333 9.33718 4.63751 8.60433 4.63751 7.70147C4.63751 6.79861 5.36476 6.06576 6.2606 6.06576C7.15787 6.06576 7.88369 6.79861 7.88369 7.70147C7.88369 8.60433 7.15787 9.33718 6.2606 9.33718ZM19.0496 19.1414H16.3178V14.4871C16.3178 13.21 15.8334 12.4986 14.8247 12.4986C13.726 12.4986 13.153 13.2414 13.153 14.4871V19.1414H10.5184V10.2757H13.1502V11.47C13.9431 10.0057 15.822 10.0057 15.822 10.0057C17.7008 10.0057 19.0482 11.1529 19.0482 13.5286V19.1429L19.0496 19.1414Z" fill="#0A66C2"/></svg><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M22 12.0611C22 6.50451 17.5229 2 12 2C6.47715 2 2 6.50451 2 12.0611C2 17.0829 5.65686 21.2452 10.4375 22V14.9694H7.89844V12.0611H10.4375V9.84452C10.4375 7.32296 11.9304 5.93012 14.2146 5.93012C15.3087 5.93012 16.4531 6.12663 16.4531 6.12663V8.60261H15.1921C13.9499 8.60261 13.5625 9.37816 13.5625 10.1738V12.0611H16.3359L15.8926 14.9694H13.5625V22C18.3431 21.2452 22 17.0829 22 12.0611Z" fill="#1877F2"/></svg></div></td>
+        <td><div class="lt-tags"><span class="lt-tag" style="background:var(--blue-50);color:var(--sys-primary-default)">Brand</span></div></td>
+        <td><div class="lt-interactions"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M2 6C2 4.89543 2.89543 4 4 4H20C21.1046 4 22 4.89543 22 6V16C22 17.1046 21.1046 18 20 18H13L8 21V18H4C2.89543 18 2 17.1046 2 16V6Z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg> 88</div></td>
+        <td><span class="lt-date">Jun 25, 10:30</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div><!-- #list-view -->
+
+<!-- SEARCH PANEL -->
+<div class="search-panel" id="search-panel">
+  <div class="sp-header">
+    <span class="sp-title">Search</span>
+    <button class="sp-close" id="sp-close-btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+  <div class="sp-search-wrap">
+    <svg class="sp-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.5 3C6.35786 3 3 6.35786 3 10.5C3 14.6421 6.35786 18 10.5 18C12.2557 18 13.8695 17.4048 15.1517 16.4115L19.2929 20.5527C19.6834 20.9432 20.3166 20.9432 20.7071 20.5527C21.0976 20.1622 21.0976 19.529 20.7071 19.1385L16.5659 14.9973C17.5592 13.7151 18.1544 12.1013 18.1544 10.3456C18.1544 6.20346 14.7965 3 10.5 3ZM5 10.5C5 7.46243 7.46243 5 10.5 5C13.5376 5 16 7.46243 16 10.5C16 13.5376 13.5376 16 10.5 16C7.46243 16 5 13.5376 5 10.5Z" fill="currentColor"/></svg>
+    <input class="sp-input" id="sp-input" type="text" placeholder="Search posts…">
+    <button class="sp-clear" id="sp-clear-btn">×</button>
+  </div>
+  <div class="sp-results" id="sp-results">
+    <div class="sp-results-hdr">
+      <span>NAME</span>
+      <span>STATUS</span>
+      <span>DATE</span>
+    </div>
+    <!-- Search result rows, data-name used for filtering -->
+    <div class="sp-row" data-name="collaboration guidelines">
+      <div><div class="sp-row-name">Collaboration Guidelines</div><div class="sp-row-type">Post Set</div></div>
+      <div><span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--sys-primary-default)"><svg width="11" height="11" viewBox="0 0 10 10" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M5 0C7.76142 0 10 2.23858 10 5C10 7.76142 7.76142 10 5 10C2.23858 10 0 7.76142 0 5C0 2.23858 2.23858 0 5 0ZM5 8.75V5V1.25C2.92893 1.25 1.25 2.92893 1.25 5C1.25 7.07107 2.92893 8.75 5 8.75Z" fill="var(--sys-primary-default)"/><path fill-rule="evenodd" clip-rule="evenodd" d="M8.53553 1.46447C10.4882 3.41709 10.4882 6.58291 8.53553 8.53553C6.58291 10.4882 3.41709 10.4882 1.46447 8.53553C-0.488155 6.58291 -0.488155 3.41709 1.46447 1.46447C3.41709 -0.488155 6.58291 -0.488155 8.53553 1.46447ZM2.34835 7.65165L5 5L7.65165 2.34835C6.18718 0.88388 3.81282 0.88388 2.34835 2.34835C0.88388 3.81282 0.88388 6.18718 2.34835 7.65165Z" fill="var(--sys-primary-default)"/></svg>Scheduled</span></div>
+      <div class="sp-row-date">Jun 12</div>
+    </div>
+    <div class="sp-row" data-name="collaboration guidelines">
+      <div><div class="sp-row-name">Collaboration Guidelines</div><div class="sp-row-type">Post Set</div></div>
+      <div><span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--sys-text-secondary)"><svg width="11" height="11" viewBox="0 0 10 10" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M10 5C10 7.76142 7.76142 10 5 10C2.23858 10 0 7.76142 0 5C0 2.23858 2.23858 0 5 0C7.76142 0 10 2.23858 10 5ZM1.25 5H8.75C8.75 2.92893 7.07107 1.25 5 1.25C2.92893 1.25 1.25 2.92893 1.25 5Z" fill="var(--sys-text-placeholder)"/></svg>Draft</span></div>
+      <div class="sp-row-date">Jun 13</div>
+    </div>
+    <div class="sp-row" data-name="collaboration guidelines">
+      <div><div class="sp-row-name">Collaboration Guidelines</div><div class="sp-row-type">Post Set</div></div>
+      <div><span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--sys-success-content)"><svg width="11" height="11" viewBox="0 0 10 10" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M0 4.99995L4.99995 0L9.99989 4.99994L4.99995 10L0 4.99995ZM1.41421 4.99995L4.99995 1.41421L8.58568 4.99994L1.41421 4.99995Z" fill="var(--sys-success-content)"/></svg>Published</span></div>
+      <div class="sp-row-date">Jun 10</div>
+    </div>
+    <div class="sp-row" data-name="product launch announcement">
+      <div><div class="sp-row-name">Product Launch Announcement</div><div class="sp-row-type">Post Set</div></div>
+      <div><span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--sys-success-content)"><svg width="11" height="11" viewBox="0 0 10 10" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M0 4.99995L4.99995 0L9.99989 4.99994L4.99995 10L0 4.99995ZM1.41421 4.99995L4.99995 1.41421L8.58568 4.99994L1.41421 4.99995Z" fill="var(--sys-success-content)"/></svg>Published</span></div>
+      <div class="sp-row-date">Jun 5</div>
+    </div>
+    <div class="sp-row" data-name="summer campaign 2026">
+      <div><div class="sp-row-name">Summer Campaign 2026</div><div class="sp-row-type">Post Set</div></div>
+      <div><span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--sys-danger-content)"><svg width="11" height="11" viewBox="0 0 10 10" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M5 0L0 10H10L5 0ZM5 2.7L8.79 9H1.21L5 2.7ZM4.5 5V7H5.5V5H4.5ZM4.5 7.5V8.5H5.5V7.5H4.5Z" fill="var(--sys-danger-content)"/></svg>Failed</span></div>
+      <div class="sp-row-date">Jun 22</div>
+    </div>
+  </div>
+</div><!-- #search-panel -->
+
+<!-- FILTERS PANEL -->
+<div class="filters-panel" id="filters-panel">
+  <div class="fp-header">
+    <span class="fp-title">Filters</span>
+    <button class="fp-close" id="fp-close-btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+  <div class="fp-body">
+    <!-- Status section -->
+    <div class="fp-section">
+      <div class="fp-section-hdr">
+        <span class="fp-section-title">Post Set Status</span>
+        <span class="fp-section-x" data-section="status" title="Remove filter">×</span>
+      </div>
+      <div class="fp-chips" id="fp-status-chips">
+        <span class="fp-chip" data-filter="Scheduled">Scheduled <span class="fp-chip-x">×</span></span>
+        <span class="fp-chip" data-filter="Draft">Draft <span class="fp-chip-x">×</span></span>
+        <button class="fp-add-btn" title="Add status filter">+</button>
+      </div>
+    </div>
+    <div class="fp-divider"></div>
+    <!-- Networks section -->
+    <div class="fp-section">
+      <div class="fp-section-hdr">
+        <span class="fp-section-title">Networks</span>
+        <span class="fp-section-x" data-section="networks" title="Remove filter">×</span>
+      </div>
+      <div class="fp-chips" id="fp-networks-chips">
+        <span class="fp-chip" data-filter="Instagram">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.0357 3.86108C14.9802 3.81346 14.6667 3.80155 11.996 3.80155C9.32539 3.80155 9.0119 3.80949 7.95634 3.86108C6.98015 3.90473 6.45238 4.07139 6.0992 4.20632C5.63095 4.38489 5.29761 4.60314 4.94841 4.95235C4.5992 5.30155 4.38492 5.63489 4.20238 6.10314C4.06349 6.45632 3.90079 6.98409 3.85714 7.96028C3.80952 9.01584 3.79761 9.32933 3.79761 12C3.79761 14.6706 3.80952 14.9841 3.85714 16.0396C3.90079 17.0158 4.06745 17.5436 4.20238 17.8968C4.38095 18.365 4.5992 18.6984 4.94841 19.0476C5.29761 19.3968 5.63095 19.6111 6.0992 19.7936C6.45238 19.9325 6.98015 20.0952 7.95634 20.1389C9.0119 20.1865 9.32539 20.1984 11.996 20.1984C14.6667 20.1984 14.9802 20.1865 16.0357 20.1389C17.0119 20.0952 17.5397 19.9285 17.8929 19.7936C18.3611 19.615 18.6944 19.3968 19.0436 19.0476C19.3929 18.6984 19.6071 18.365 19.7897 17.8968C19.9286 17.5436 20.0913 17.0158 20.1349 16.0396C20.1825 14.9841 20.1944 14.6706 20.1944 12C20.1944 9.32933 20.1825 9.01584 20.1349 7.96028C20.0913 6.98409 19.9246 6.45632 19.7897 6.10314C19.6111 5.63489 19.3929 5.30155 19.0436 4.95235C18.6944 4.60314 18.3611 4.38885 17.8929 4.20632C17.5397 4.06743 17.0119 3.90473 16.0357 3.86108ZM8.6627 11.9959C8.6627 13.8372 10.1548 15.3292 11.996 15.3292C13.8373 15.3292 15.3294 13.8372 15.3294 11.9959C15.3294 10.1546 13.8373 8.66257 11.996 8.66257C10.1548 8.66257 8.6627 10.1546 8.6627 11.9959Z" fill="#E2007A"/></svg>
+          Instagram <span class="fp-chip-x">×</span>
+        </span>
+        <span class="fp-chip" data-filter="Facebook">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M22 12.0611C22 6.50451 17.5229 2 12 2C6.47715 2 2 6.50451 2 12.0611C2 17.0829 5.65686 21.2452 10.4375 22V14.9694H7.89844V12.0611H10.4375V9.84452C10.4375 7.32296 11.9304 5.93012 14.2146 5.93012C15.3087 5.93012 16.4531 6.12663 16.4531 6.12663V8.60261H15.1921C13.9499 8.60261 13.5625 9.37816 13.5625 10.1738V12.0611H16.3359L15.8926 14.9694H13.5625V22C18.3431 21.2452 22 17.0829 22 12.0611Z" fill="#1877F2"/></svg>
+          Facebook <span class="fp-chip-x">×</span>
+        </span>
+        <span class="fp-chip" data-filter="LinkedIn">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M19.5754 2H4.42606C3.08587 2 2 3.08714 2 4.42857V19.5743C2 20.9157 3.0873 22 4.42606 22H19.5739C20.9155 22 22 20.9129 22 19.5743V4.42857C22.0028 3.08714 20.9155 2 19.5754 2ZM7.6465 19.0971H4.90039V10.2314H7.6465V19.0971ZM6.2606 9.33718C5.36333 9.33718 4.63751 8.60433 4.63751 7.70147C4.63751 6.79861 5.36476 6.06576 6.2606 6.06576C7.15787 6.06576 7.88369 6.79861 7.88369 7.70147C7.88369 8.60433 7.15787 9.33718 6.2606 9.33718ZM19.0496 19.1414H16.3178V14.4871C16.3178 13.21 15.8334 12.4986 14.8247 12.4986C13.726 12.4986 13.153 13.2414 13.153 14.4871V19.1414H10.5184V10.2757H13.1502V11.47C13.9431 10.0057 15.822 10.0057 15.822 10.0057C17.7008 10.0057 19.0482 11.1529 19.0482 13.5286V19.1429L19.0496 19.1414Z" fill="#0A66C2"/></svg>
+          LinkedIn <span class="fp-chip-x">×</span>
+        </span>
+        <button class="fp-add-btn" title="Add network filter">+</button>
+      </div>
+    </div>
+    <div class="fp-divider"></div>
+    <!-- Add/Remove all row -->
+    <div class="fp-add-filter-row">
+      <span class="fp-add-filter" id="fp-add-filter-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C12.5523 2 13 2.44772 13 3V11H21C21.5523 11 22 11.4477 22 12C22 12.5523 21.5523 13 21 13H13V21C13 21.5523 12.5523 22 12 22C11.4477 22 11 21.5523 11 21V13H3C2.44772 13 2 12.5523 2 12C2 11.4477 2.44772 11 3 11H11V3C11 2.44772 11.4477 2 12 2Z" fill="currentColor"/></svg>
+        Add filter
+      </span>
+      <span class="fp-remove-all" id="fp-remove-all-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        Remove all
+      </span>
+    </div>
+  </div>
+  <div class="fp-footer">
+    <span class="fp-applied" id="fp-applied-label">Applied filters 2</span>
+    <button class="fp-btn-discard" id="fp-discard-btn">Discard</button>
+    <button class="fp-btn-apply" id="fp-apply-btn">Apply</button>
+  </div>
+</div><!-- #filters-panel -->
+
 </main>
 </div><!-- .app-body -->
 </div><!-- .app -->
@@ -610,36 +1085,8 @@ document.querySelectorAll('.seg-btn').forEach((btn, i) => {
 });
 
 // ─────────────────────────────────────────
-// 4. FILTER CHIP DROPDOWNS
+// 4. FILTER CHIP DROPDOWNS (toolbar chips removed; filters now in filters panel)
 // ─────────────────────────────────────────
-const CHIP_OPTIONS = {
-  'All Networks':  ['Instagram','Facebook','LinkedIn','X / Twitter','Threads','TikTok','Pinterest'],
-  'All Campaigns': ['Getting Things Done','Product Webinar','GTM Phase 2: Launch','P1 Product Release','P2 Product Release'],
-  'All Statuses':  ['Scheduled','Approved','Draft','Published','Failed'],
-};
-
-document.querySelectorAll('.filter-chip').forEach(chip => {
-  const rawLabel = chip.childNodes[0].textContent.trim();
-  const defaultLabel = rawLabel;
-  const dd = document.createElement('div');
-  dd.className = 'chip-dropdown';
-  dd.innerHTML = (CHIP_OPTIONS[rawLabel]||[]).map(o => `<label class="chip-option"><input type="checkbox"> ${o}</label>`).join('');
-  chip.appendChild(dd);
-
-  chip.addEventListener('click', e => {
-    e.stopPropagation();
-    const wasOpen = dd.classList.contains('is-open');
-    document.querySelectorAll('.chip-dropdown').forEach(d => d.classList.remove('is-open'));
-    if (!wasOpen) dd.classList.add('is-open');
-  });
-
-  dd.addEventListener('change', () => {
-    const checked = [...dd.querySelectorAll('input:checked')].map(i => i.parentElement.textContent.trim());
-    const tn = [...chip.childNodes].find(n => n.nodeType === 3);
-    if (tn) tn.textContent = checked.length === 0 ? defaultLabel+' ' : checked.length === 1 ? checked[0]+' ' : `${checked.length} selected `;
-  });
-});
-document.addEventListener('click', () => document.querySelectorAll('.chip-dropdown').forEach(d => d.classList.remove('is-open')));
 
 // ─────────────────────────────────────────
 // 5. POST CARD SLIDE-OVER
@@ -765,10 +1212,184 @@ modalBd.querySelectorAll('.modal-net-pill').forEach(p => p.addEventListener('cli
 function openModal() { modalBd.classList.add('is-open'); document.getElementById('m-content').focus(); }
 function closeModal(){ modalBd.classList.remove('is-open'); }
 
-document.querySelector('.btn-primary').addEventListener('click', openModal);
+document.getElementById('ptb-create-btn').addEventListener('click', openModal);
 document.getElementById('m-close').addEventListener('click', closeModal);
 document.getElementById('m-cancel').addEventListener('click', closeModal);
 modalBd.addEventListener('click', e => { if (e.target === modalBd) closeModal(); });
+
+// ─────────────────────────────────────────
+// 7. PAGE TITLE BAR DROPDOWNS
+// ─────────────────────────────────────────
+const allDropdowns = document.querySelectorAll('.page-dropdown');
+
+function closeAllDropdowns(except) {
+  allDropdowns.forEach(d => { if (d !== except) d.classList.remove('is-open'); });
+}
+
+// ⋯ Calendar Actions
+document.getElementById('ptb-actions-btn').addEventListener('click', e => {
+  e.stopPropagation();
+  const dd = document.getElementById('actions-dropdown');
+  const wasOpen = dd.classList.contains('is-open');
+  closeAllDropdowns(dd);
+  dd.classList.toggle('is-open', !wasOpen);
+});
+
+// Export caret
+document.getElementById('export-caret-btn').addEventListener('click', e => {
+  e.stopPropagation();
+  const dd = document.getElementById('export-dropdown');
+  const wasOpen = dd.classList.contains('is-open');
+  closeAllDropdowns(dd);
+  dd.classList.toggle('is-open', !wasOpen);
+});
+
+// Create Post Set caret
+document.getElementById('create-caret-btn').addEventListener('click', e => {
+  e.stopPropagation();
+  const dd = document.getElementById('create-dropdown');
+  const wasOpen = dd.classList.contains('is-open');
+  closeAllDropdowns(dd);
+  dd.classList.toggle('is-open', !wasOpen);
+});
+
+document.addEventListener('click', () => closeAllDropdowns(null));
+allDropdowns.forEach(dd => dd.addEventListener('click', e => e.stopPropagation()));
+
+// ─────────────────────────────────────────
+// 8. LIST / CALENDAR VIEW TOGGLE
+// ─────────────────────────────────────────
+const calWrapEl  = document.querySelector('.cal-wrap');
+const listViewEl = document.getElementById('list-view');
+const calIconBtn = document.getElementById('cal-icon-btn');
+const listIconBtn= document.getElementById('list-icon-btn');
+
+calIconBtn.addEventListener('click', () => {
+  calWrapEl.style.display  = '';
+  listViewEl.style.display = 'none';
+  calIconBtn.classList.add('is-active');
+  listIconBtn.classList.remove('is-active');
+});
+
+listIconBtn.addEventListener('click', () => {
+  calWrapEl.style.display  = 'none';
+  listViewEl.style.display = 'flex';
+  listIconBtn.classList.add('is-active');
+  calIconBtn.classList.remove('is-active');
+});
+
+// ─────────────────────────────────────────
+// 9. SEARCH PANEL
+// ─────────────────────────────────────────
+const searchPanel  = document.getElementById('search-panel');
+const searchIconBtn= document.getElementById('search-icon-btn');
+const spCloseBtn   = document.getElementById('sp-close-btn');
+const spInput      = document.getElementById('sp-input');
+const spClearBtn   = document.getElementById('sp-clear-btn');
+
+function openSearchPanel() {
+  searchPanel.classList.add('is-open');
+  searchIconBtn.classList.add('is-active');
+  // close filters if open
+  document.getElementById('filters-panel').classList.remove('is-open');
+  document.getElementById('filter-icon-btn').classList.remove('is-active');
+  setTimeout(() => spInput.focus(), 220);
+}
+
+function closeSearchPanel() {
+  searchPanel.classList.remove('is-open');
+  searchIconBtn.classList.remove('is-active');
+}
+
+searchIconBtn.addEventListener('click', () => {
+  if (searchPanel.classList.contains('is-open')) closeSearchPanel();
+  else openSearchPanel();
+});
+spCloseBtn.addEventListener('click', closeSearchPanel);
+
+spInput.addEventListener('input', () => {
+  const val = spInput.value.toLowerCase().trim();
+  spClearBtn.style.display = val ? 'block' : 'none';
+  document.querySelectorAll('#sp-results .sp-row').forEach(row => {
+    const name = (row.dataset.name || '').toLowerCase();
+    row.classList.toggle('sp-hidden', val !== '' && !name.includes(val));
+  });
+});
+
+spClearBtn.addEventListener('click', () => {
+  spInput.value = '';
+  spClearBtn.style.display = 'none';
+  document.querySelectorAll('#sp-results .sp-row').forEach(row => row.classList.remove('sp-hidden'));
+  spInput.focus();
+});
+
+// ─────────────────────────────────────────
+// 10. FILTERS PANEL
+// ─────────────────────────────────────────
+const filtersPanel  = document.getElementById('filters-panel');
+const filterIconBtn = document.getElementById('filter-icon-btn');
+const fpCloseBtn    = document.getElementById('fp-close-btn');
+const fpApplyBtn    = document.getElementById('fp-apply-btn');
+const fpDiscardBtn  = document.getElementById('fp-discard-btn');
+const fpAppliedLbl  = document.getElementById('fp-applied-label');
+
+function countAppliedFilters() {
+  return document.querySelectorAll('.fp-chip').length;
+}
+
+function updateAppliedCount() {
+  const n = countAppliedFilters();
+  fpAppliedLbl.textContent = `Applied filters ${n}`;
+}
+
+function openFiltersPanel() {
+  filtersPanel.classList.add('is-open');
+  filterIconBtn.classList.add('is-active');
+  // close search if open
+  searchPanel.classList.remove('is-open');
+  searchIconBtn.classList.remove('is-active');
+  updateAppliedCount();
+}
+
+function closeFiltersPanel() {
+  filtersPanel.classList.remove('is-open');
+  filterIconBtn.classList.remove('is-active');
+}
+
+filterIconBtn.addEventListener('click', () => {
+  if (filtersPanel.classList.contains('is-open')) closeFiltersPanel();
+  else openFiltersPanel();
+});
+fpCloseBtn.addEventListener('click', closeFiltersPanel);
+fpApplyBtn.addEventListener('click', closeFiltersPanel);
+fpDiscardBtn.addEventListener('click', closeFiltersPanel);
+
+// Remove individual chip on × click
+document.addEventListener('click', e => {
+  if (e.target.classList.contains('fp-chip-x')) {
+    const chip = e.target.closest('.fp-chip');
+    if (chip) {
+      chip.remove();
+      updateAppliedCount();
+    }
+  }
+});
+
+// Remove all chips in a section
+document.querySelectorAll('.fp-section-x').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const section = btn.closest('.fp-section');
+    if (!section) return;
+    section.querySelectorAll('.fp-chip').forEach(c => c.remove());
+    updateAppliedCount();
+  });
+});
+
+// Remove all chips across all sections
+document.getElementById('fp-remove-all-btn').addEventListener('click', () => {
+  document.querySelectorAll('.fp-chip').forEach(c => c.remove());
+  updateAppliedCount();
+});
 
 document.getElementById('m-submit').addEventListener('click', () => {
   const content = document.getElementById('m-content').value.trim();
