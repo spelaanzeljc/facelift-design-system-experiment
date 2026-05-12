@@ -481,7 +481,10 @@
           if (!checker) { this.style.marginTop = '-' + (preview.offsetTop + 16) + 'px'; return; }
           var rect = checker.getBoundingClientRect();
           var centerY = rect.top + rect.height / 2;
-          this.style.marginTop = '-' + Math.max(0, centerY - 60) + 'px';
+          // Clamp: never scroll above preview-wrap so tiny components
+          // don't expose the "Preview" heading from the page above
+          var offset = Math.max(preview.offsetTop, Math.max(0, centerY - 60));
+          this.style.marginTop = '-' + offset + 'px';
         }
       } catch (e) {}
     });

@@ -514,29 +514,76 @@ async function exportComponents(fileKey, outputDir) {
     console.log(`  ✓ Fetched ${vectorSvgMap.size}/${uniqueVectorIds.size} vector SVGs`);
   }
 
-  // ── Phase 5: patch HTML with inline SVGs and write to disk ──────────────
-  let written = 0;
-  for (const { filePath, html } of pending) {
-    let patched = html;
-    if (vectorSvgMap.size > 0) {
-      patched = patched.replace(
+  // ── Phase 5: apply individual vector SVG patches in memory ─────────────
+  if (vectorSvgMap.size > 0) {
+    for (let i = 0; i < pending.length; i++) {
+      pending[i].html = pending[i].html.replace(
         /<div data-vector-id="([^"]+)"([^>]*)><\/div>/g,
         (match, id, attrs) => {
           const svg = vectorSvgMap.get(id);
-          if (!svg) return match; // leave placeholder if unavailable
-          // SVG fills the positioned wrapper div 100%
+          if (!svg) return match;
           const inlined = svg.replace('<svg ', '<svg style="display:block;width:100%;height:100%" ');
           return `<div${attrs}>${inlined}</div>`;
         }
       );
     }
-    fs.writeFileSync(filePath, patched);
+  }
+
+  // ── Phase 6: full component SVG for anything still with unresolved vectors ─
+  // Instance-override IDs (format "I123:456;789:012") can't be rendered
+  // individually — the path data lives in a library file. Fall back to
+  // rendering the ENTIRE component as SVG from the current file.
+  const remainingEntries = [];
+  for (let i = 0; i < pending.length; i++) {
+    if (pending[i].html.includes('data-vector-id=')) {
+      const [nodeId] = entries[i];
+      remainingEntries.push({ nodeId, idx: i });
+    }
+  }
+
+  if (remainingEntries.length > 0) {
+    const SVG_BATCH = 200;
+    const totalFallback = Math.ceil(remainingEntries.length / SVG_BATCH);
+    console.log(`  ${remainingEntries.length} components with unresolved icons — fetching full component SVGs…`);
+    for (let i = 0; i < remainingEntries.length; i += SVG_BATCH) {
+      const batch = remainingEntries.slice(i, i + SVG_BATCH);
+      const batchNum = Math.floor(i / SVG_BATCH) + 1;
+      process.stdout.write(`  Full SVG batch ${batchNum}/${totalFallback}…\r`);
+      try {
+        const urlMap = await fetchSvgBatch(fileKey, batch.map((e) => e.nodeId));
+        await Promise.all(
+          batch.map(async ({ nodeId, idx }) => {
+            const url = urlMap[nodeId];
+            if (!url) return;
+            try {
+              const raw = await downloadSvg(url);
+              const clean = raw.replace(/<\?xml[^?]*\?>\s*/i, '').trim();
+              // Replace the entire checker div content with the full SVG.
+              // The checker div is always on a single line, so this regex is safe.
+              pending[idx].html = pending[idx].html.replace(
+                /<div class="checker">.*<\/div>/,
+                `<div class="checker">${clean}</div>`
+              );
+            } catch (_) {}
+          })
+        );
+      } catch (err) {
+        console.warn(`\n  ⚠ Full SVG batch ${batchNum} failed: ${err.message}`);
+      }
+    }
+    process.stdout.write('\n');
+  }
+
+  // ── Phase 7: write all files to disk ────────────────────────────────────
+  let written = 0;
+  for (const { filePath, html } of pending) {
+    fs.writeFileSync(filePath, html);
     written++;
     if (written % 50 === 0) process.stdout.write(`  … wrote ${written}/${count}\r`);
   }
   console.log(`  ✓ Wrote ${written} component HTML files`);
 
-  // ── Phase 6: SVG fallback for fully-blank components (remote refs) ──────
+  // ── Phase 8: SVG fallback for fully-blank components (remote refs) ───────
   if (blankEntries.length > 0) {
     console.log(`  ${blankEntries.length} blank previews — resolving component sources…`);
     await patchWithSvg(blankEntries, components);
