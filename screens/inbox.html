@@ -171,6 +171,30 @@ body{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;background:var(--sy
 .send-btn{height:32px;padding:0 16px;background:var(--sys-primary-default);color:var(--grey-white);border:none;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:inherit}
 .send-btn:hover{background:var(--sys-primary-hover)}
 .send-btn svg path{fill:var(--grey-white)}
+
+/* ── Extra interactive states ── */
+.fi-checkbox.checked{background:var(--sys-primary-default);border-color:var(--sys-primary-default)}
+.feed-item.resolved .fi-title{text-decoration:line-through;color:var(--sys-text-secondary)}
+.feed-item.resolved{opacity:.6}
+.feed-item.flagged{border-left-color:var(--amber-500)!important}
+.feed-item.flagged .fi-title{color:var(--amber-700)}
+.bulk-bar{height:44px;background:var(--blue-50);border-bottom:1px solid var(--sys-border-soft);display:none;align-items:center;padding:0 16px;gap:8px;flex-shrink:0}
+.bulk-bar.is-visible{display:flex}
+.bulk-bar-count{font-size:13px;font-weight:600;color:var(--sys-primary-default)}
+.bulk-btn{height:28px;padding:0 10px;border-radius:5px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--sys-border-base);background:var(--sys-background-base);color:var(--sys-text-secondary)}
+.bulk-btn:hover{background:var(--sys-background-neutral)}
+.bulk-spacer{flex:1}
+.bulk-clear{font-size:12px;color:var(--sys-text-secondary);cursor:pointer}
+.bulk-clear:hover{color:var(--sys-text-primary)}
+.sort-dropdown{position:absolute;top:calc(100% + 4px);right:0;background:var(--sys-background-base);border:1px solid var(--sys-border-base);border-radius:8px;box-shadow:var(--shadows-shadow-md);padding:4px;min-width:160px;z-index:50;display:none}
+.sort-dropdown.is-open{display:block}
+.sort-wrap{position:relative}
+.sort-option{padding:7px 12px;border-radius:5px;font-size:13px;color:var(--sys-text-primary);cursor:pointer}
+.sort-option:hover{background:var(--sys-background-neutral)}
+.sort-option.active-sort{color:var(--sys-primary-default);font-weight:600}
+.detail-action-btn.resolved-state{background:var(--sys-success-default);color:var(--sys-success-content);border-color:var(--sys-success-content)}
+.detail-action-btn.flagged-state{background:var(--amber-50);color:var(--amber-700);border-color:var(--amber-300)}
+.char-count.over{color:var(--sys-danger-content)}
 </style>
 </head>
 <body>
@@ -549,5 +573,398 @@ body{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;background:var(--sy
   </div>
 
 </div>
+
+<script>
+(function(){
+'use strict';
+
+// ─────────────────────────────────────────
+// ITEM DATA (drives detail panel swap)
+// ─────────────────────────────────────────
+const IG_NET = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.0357 3.86108C14.9802 3.81346 14.6667 3.80155 11.996 3.80155C9.32539 3.80155 9.0119 3.80949 7.95634 3.86108C6.98015 3.90473 6.45238 4.07139 6.0992 4.20632C5.63095 4.38489 5.29761 4.60314 4.94841 4.95235C4.5992 5.30155 4.38492 5.63489 4.20238 6.10314C4.06349 6.45632 3.90079 6.98409 3.85714 7.96028C3.80952 9.01584 3.79761 9.32933 3.79761 12C3.79761 14.6706 3.80952 14.9841 3.85714 16.0396C3.90079 17.0158 4.06745 17.5436 4.20238 17.8968C4.38095 18.365 4.5992 18.6984 4.94841 19.0476C5.29761 19.3968 5.63095 19.6111 6.0992 19.7936C6.45238 19.9325 6.98015 20.0952 7.95634 20.1389C9.0119 20.1865 9.32539 20.1984 11.996 20.1984C14.6667 20.1984 14.9802 20.1865 16.0357 20.1389C17.0119 20.0952 17.5397 19.9285 17.8929 19.7936C18.3611 19.615 18.6944 19.3968 19.0436 19.0476C19.3929 18.6984 19.6071 18.365 19.7897 17.8968C19.9286 17.5436 20.0913 17.0158 20.1349 16.0396C20.1825 14.9841 20.1944 14.6706 20.1944 12C20.1944 9.32933 20.1825 9.01584 20.1349 7.96028C20.0913 6.98409 19.9246 6.45632 19.7897 6.10314C19.6111 5.63489 19.3929 5.30155 19.0436 4.95235C18.6944 4.60314 18.3611 4.38885 17.8929 4.20632C17.5397 4.06743 17.0119 3.90473 16.0357 3.86108ZM8.6627 11.9959C8.6627 13.8372 10.1548 15.3292 11.996 15.3292C13.8373 15.3292 15.3294 13.8372 15.3294 11.9959C15.3294 10.1546 13.8373 8.66257 11.996 8.66257C10.1548 8.66257 8.6627 10.1546 8.6627 11.9959Z" fill="#E2007A"/></svg>`;
+const FB_NET = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M22 12.0611C22 6.50451 17.5229 2 12 2C6.47715 2 2 6.50451 2 12.0611C2 17.0829 5.65686 21.2452 10.4375 22V14.9694H7.89844V12.0611H10.4375V9.84452C10.4375 7.32296 11.9304 5.93012 14.2146 5.93012C15.3087 5.93012 16.4531 6.12663 16.4531 6.12663V8.60261H15.1921C13.9499 8.60261 13.5625 9.37816 13.5625 10.1738V12.0611H16.3359L15.8926 14.9694H13.5625V22C18.3431 21.2452 22 17.0829 22 12.0611Z" fill="#1877F2"/></svg>`;
+const LI_NET = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M19.5754 2H4.42606C3.08587 2 2 3.08714 2 4.42857V19.5743C2 20.9157 3.0873 22 4.42606 22H19.5739C20.9155 22 22 20.9129 22 19.5743V4.42857C22.0028 3.08714 20.9155 2 19.5754 2ZM7.6465 19.0971H4.90039V10.2314H7.6465V19.0971ZM6.2606 9.33718C5.36333 9.33718 4.63751 8.60433 4.63751 7.70147C4.63751 6.79861 5.36476 6.06576 6.2606 6.06576C7.15787 6.06576 7.88369 6.79861 7.88369 7.70147C7.88369 8.60433 7.15787 9.33718 6.2606 9.33718ZM19.0496 19.1414H16.3178V14.4871C16.3178 13.21 15.8334 12.4986 14.8247 12.4986C13.726 12.4986 13.153 13.2414 13.153 14.4871V19.1414H10.5184V10.2757H13.1502V11.47C13.9431 10.0057 15.822 10.0057 15.822 10.0057C17.7008 10.0057 19.0482 11.1529 19.0482 13.5286V19.1429L19.0496 19.1414Z" fill="#0A66C2"/></svg>`;
+const X_NET  = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M20.818 3H17.7512L12.6976 8.75169L8.32828 3H2L9.5613 12.8446L2.39494 21H5.46359L10.9946 14.7074L15.8284 21H22L14.1179 10.6246L20.818 3ZM18.3742 19.1722H16.6749L5.58136 4.73163H7.40494L18.3742 19.1722Z" fill="#0F1419"/></svg>`;
+const TH_NET = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.7841 11.2696C16.698 11.2283 16.6105 11.1886 16.5219 11.1505C16.3676 8.30606 14.8139 6.6776 12.2051 6.66094C10.6614 6.66086 9.39842 7.28349 8.59438 8.42021C8.01103 9.18181 8.08358 9.72917 8.46593 10.022C8.84828 10.3149 9.39564 10.2424 9.68851 9.86C10.6594 8.59538 11.5235 8.4255 12.1704 8.4255C13.0533 8.43105 13.7014 8.6809 14.121 9.16813C14.4263 9.52284 14.6305 10.013 14.7316 10.6316C13.97 10.5022 13.1464 10.4623 12.2659 10.5128C9.78554 10.6558 8.19099 12.1029 8.29808 14.1138C8.35243 15.1338 8.86038 16.0113 9.7283 16.5845C10.4621 17.0691 11.4072 17.306 12.3895 17.2524C13.6867 17.1813 14.7043 16.6861 15.4142 15.7808C15.9534 15.0933 16.2944 14.2024 16.445 13.0798C17.0632 13.453 17.5213 13.9442 17.7743 14.5346C18.2046 15.5382 18.2297 17.1875 16.8845 18.5321C15.7059 19.71 14.2891 20.2196 12.148 20.2353C9.77299 20.2177 7.97677 19.4557 6.80892 17.9705C5.71532 16.5798 5.15015 14.571 5.12906 12C5.15015 9.42894 5.71532 7.42017 6.80892 6.02945C7.97677 4.54426 9.77296 3.78229 12.148 3.76464C14.5403 3.78243 16.3678 4.54806 17.5804 6.04042C18.1749 6.77225 18.6232 7.69258 18.9187 8.76566L19.0307 9.12896C19.1644 9.58677 19.6439 9.84949 20.1018 9.71575C20.5596 9.58201 20.8223 9.10247 20.6885 8.64466C20.2418 6.99606 19.6782 5.85789 18.9112 4.91396C17.3567 3.0007 15.0832 2.02033 12.1539 2H12.1421C9.21877 2.02026 6.97073 3.00435 5.46051 4.92493C4.11661 6.634 3.42339 9.01205 3.4001 11.993L3.4001 12.007C3.42339 14.9879 4.11661 17.366 5.46051 19.0751C6.97073 20.9956 9.21877 21.9798 12.1421 22H12.1539C14.7529 21.982 16.5849 21.3013 18.0941 19.7928C20.0687 17.8194 20.0092 15.3457 19.3584 13.8272C18.8915 12.7382 18.0013 11.8538 16.7841 11.2696ZM12.2966 15.4903C11.2095 15.5516 10.0802 15.0634 10.0245 14.0179C9.98322 13.2427 10.576 12.3777 12.3633 12.2747C13.6154 12.2571 14.2228 12.3202 14.775 12.4409C14.569 15.0141 13.361 15.4319 12.2966 15.4903Z" fill="#111317"/></svg>`;
+
+const ITEMS = [
+  { id: 1, net: IG_NET, handle: '@facelift_hq', date: 'Summer Campaign Launch · May 10, 2026 · 14:32',
+    postText: 'Exciting news! 🌟 Our Summer Campaign 2026 is officially live. We\'ve poured our hearts into this one — from the visuals to the messaging. Ready to see social media done differently? Stay tuned this week for daily drops. #SummerCampaign #SocialMedia #Facelift',
+    imageCaption: '📸 Summer Campaign Visual', stats: {likes:'1.2k',comments:'84',shares:'203',reach:'18.4k'},
+    comments: [
+      {av:'MK',bg:'linear-gradient(135deg,#f97316,#ec4899)',name:'Maya Kowalski',time:'2 minutes ago',text:"This looks absolutely amazing! Can't wait to see what you have planned for the full campaign rollout 🔥",reply:false},
+      {av:'FL',bg:'linear-gradient(135deg,var(--azure-400),var(--blue-500))',name:'Facelift HQ',time:'1 minute ago',text:'Thank you Maya! We\'re so excited about this one. Keep an eye out — there\'s a lot more coming throughout the week! ✨',reply:true,brand:true},
+      {av:'JP',bg:'linear-gradient(135deg,#10b981,#059669)',name:'Jordan Park',time:'47 minutes ago',text:'The visual direction is really fresh. Who did the creative direction on this? Would love to know the agency behind it.',reply:false},
+    ]
+  },
+  { id: 2, net: FB_NET, handle: '@FaceliftHQ', date: 'Q2 Product Update · May 12, 2026 · 09:15',
+    postText: 'Big Q2 update is here! 🚀 We\'ve been heads down building features you\'ve been asking for. Check out everything that\'s new in our latest release. #ProductUpdate #SaaS',
+    imageCaption: null, stats: {likes:'342',comments:'29',shares:'55',reach:'6.1k'},
+    comments: [
+      {av:'TR',bg:'linear-gradient(135deg,#3b82f6,#1d4ed8)',name:'Tom Reynolds',time:'14 minutes ago',text:'When will this feature be available for enterprise customers? We\'ve been waiting for a while now.',reply:false},
+    ]
+  },
+  { id: 3, net: LI_NET, handle: '@facelift',  date: 'Direct Message · May 12, 2026 · 08:44',
+    postText: 'Hi there! I saw your recent post about social media strategies and I\'d love to connect and discuss potential collaboration opportunities. Our agency works with several Fortune 500 brands.',
+    imageCaption: null, stats: {likes:'—',comments:'—',shares:'—',reach:'—'},
+    comments: []
+  },
+  { id: 4, net: X_NET,  handle: '@FaceliftHQ', date: 'Mention · May 12, 2026 · 07:30',
+    postText: '@FaceliftHQ the scheduling tool keeps breaking on mobile. Third time this week. Not acceptable for a paid product.',
+    imageCaption: null, stats: {likes:'12',comments:'4',shares:'8',reach:'2.3k'},
+    comments: [
+      {av:'CW',bg:'linear-gradient(135deg,#14b8a6,#0f766e)',name:'Chris Wright',time:'3 hours ago',text:'@FaceliftHQ the scheduling tool keeps breaking on mobile. Third time this week. Not acceptable for a paid product.',reply:false},
+    ]
+  },
+  { id: 5, net: TH_NET, handle: '@facelift_hq', date: 'Brand Story — Origin · May 11, 2026 · 18:00',
+    postText: 'We started Facelift in a small office in Hamburg with one mission: make social media management actually enjoyable. Five years and 2,000 customers later, the mission hasn\'t changed.',
+    imageCaption: '🎬 Origin Story Video', stats: {likes:'892',comments:'61',shares:'134',reach:'14.2k'},
+    comments: [
+      {av:'BS',bg:'linear-gradient(135deg,#f59e0b,#d97706)',name:'Beth Sanders',time:'5 hours ago',text:'Love seeing the behind-the-scenes content! This is exactly the kind of authenticity brands should be sharing more of.',reply:false},
+      {av:'FL',bg:'linear-gradient(135deg,var(--azure-400),var(--blue-500))',name:'Facelift HQ',time:'4 hours ago',text:'Thank you Beth! 🙏 Authenticity is at the heart of everything we do. More stories like this coming soon!',reply:true,brand:true},
+    ]
+  },
+];
+
+// ─────────────────────────────────────────
+// HELPERS
+// ─────────────────────────────────────────
+function buildComments(comments) {
+  if (!comments.length) return '<p style="font-size:13px;color:var(--sys-text-secondary);padding:8px 0">No comments yet.</p>';
+  return comments.map(c => `
+    <div class="comment${c.reply?' reply':''}">
+      <div class="comment-avatar" style="background:${c.bg}">${c.av}</div>
+      <div class="comment-body">
+        <div class="comment-header">
+          <span class="comment-name">${c.name}</span>
+          ${c.brand ? '<span style="font-size:11px;color:var(--sys-primary-default);font-weight:500">Brand</span>' : ''}
+          <span class="comment-time">${c.time}</span>
+        </div>
+        <div class="comment-text">${c.text}</div>
+        <div class="comment-actions"><span class="comment-action">Like</span><span class="comment-action">Reply</span></div>
+      </div>
+    </div>`).join('');
+}
+
+function renderDetail(item) {
+  const db = document.querySelector('.detail-body');
+  const dh = document.querySelector('.detail-header');
+
+  // Update header
+  dh.querySelector('.detail-net-icon').innerHTML = item.net;
+  dh.querySelector('.detail-handle').textContent = item.handle;
+  dh.querySelector('.detail-date').textContent = item.date;
+
+  // Build detail body
+  const imgBlock = item.imageCaption
+    ? `<div class="op-image"><div class="op-image-inner">${item.imageCaption}</div></div>`
+    : '';
+  db.innerHTML = `
+    <div class="original-post">
+      <div class="op-header">
+        <div class="op-avatar" style="background:linear-gradient(135deg,var(--azure-400),var(--blue-500))">FL</div>
+        <div class="op-meta">
+          <div class="op-name">Facelift HQ</div>
+          <div class="op-handle-date">${item.handle} · ${item.date.split('·')[1]?.trim() || ''}</div>
+        </div>
+        <div class="op-net">${item.net.replace('width="20" height="20"','width="18" height="18"')}</div>
+      </div>
+      ${imgBlock}
+      <div class="op-text">${item.postText}</div>
+      <div class="op-stats">
+        <div class="op-stat"><strong>${item.stats.likes}</strong> Likes</div>
+        <div class="op-stat"><strong>${item.stats.comments}</strong> Comments</div>
+        <div class="op-stat"><strong>${item.stats.shares}</strong> Shares</div>
+        <div class="op-stat"><strong>${item.stats.reach}</strong> Reach</div>
+      </div>
+    </div>
+    <div class="thread-label" id="thread-count-label">${item.comments.length} Comment${item.comments.length !== 1 ? 's' : ''}</div>
+    <div id="comments-thread">${buildComments(item.comments)}</div>`;
+
+  // Update composer placeholder
+  const senderName = item.comments.find(c => !c.brand)?.name || 'this conversation';
+  const ta = document.querySelector('.composer-textarea');
+  if (ta) ta.placeholder = `Write a reply to ${senderName}…`;
+
+  db.scrollTop = 0;
+}
+
+// ─────────────────────────────────────────
+// A. SIDEBAR SWITCHING
+// ─────────────────────────────────────────
+const SIDEBAR_SECTIONS = {
+  0: {title:'Inbox', filter: () => true},
+  1: {title:'Starred', filter: item => item.dataset.starred === 'true'},
+  2: {title:'Assigned to Me', filter: item => item.querySelector('.fi-assignees').children.length > 0},
+  3: {title:'Resolved', filter: item => item.classList.contains('resolved')},
+};
+
+document.querySelectorAll('.sidebar-btn').forEach((btn, i) => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const section = SIDEBAR_SECTIONS[i] || {title:'Inbox', filter: () => true};
+    document.querySelector('.feed-panel-title').textContent = section.title;
+    document.querySelectorAll('.feed-item').forEach(item => {
+      item.style.display = section.filter(item) ? '' : 'none';
+    });
+  });
+});
+
+// ─────────────────────────────────────────
+// B. TAB SWITCHING
+// ─────────────────────────────────────────
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    const label = tab.textContent.trim().replace(/\d+/g,'').trim();
+    document.querySelectorAll('.feed-item').forEach(item => {
+      let show = true;
+      if (label === 'Unread')   show = item.classList.contains('unread');
+      if (label === 'Assigned') show = item.querySelector('.fi-assignees').children.length > 0;
+      if (label === 'Flagged')  show = item.classList.contains('flagged');
+      item.style.display = show ? '' : 'none';
+    });
+  });
+});
+
+// ─────────────────────────────────────────
+// C. FEED ITEM SELECTION
+// ─────────────────────────────────────────
+document.querySelectorAll('.feed-item').forEach((item, i) => {
+  item.dataset.itemId = i + 1;
+  item.addEventListener('click', e => {
+    if (e.target.closest('.fi-checkbox') || e.target.closest('.fi-action-btn')) return;
+    document.querySelectorAll('.feed-item').forEach(fi => fi.classList.remove('active'));
+    item.classList.add('active');
+    item.classList.remove('unread');
+    const data = ITEMS[i];
+    if (data) renderDetail(data);
+  });
+});
+
+// ─────────────────────────────────────────
+// D. SEARCH INPUT
+// ─────────────────────────────────────────
+const searchInput = document.querySelector('.search-input');
+if (searchInput) {
+  searchInput.addEventListener('input', () => {
+    const q = searchInput.value.toLowerCase();
+    document.querySelectorAll('.feed-item').forEach(item => {
+      const title   = item.querySelector('.fi-title')?.textContent.toLowerCase() || '';
+      const preview = item.querySelector('.fi-preview')?.textContent.toLowerCase() || '';
+      item.style.display = (!q || title.includes(q) || preview.includes(q)) ? '' : 'none';
+    });
+  });
+}
+
+// ─────────────────────────────────────────
+// E. SORT DROPDOWN
+// ─────────────────────────────────────────
+const sortBtnWrap = document.querySelector('.filter-row');
+if (sortBtnWrap) {
+  const sortBtn = sortBtnWrap.querySelector('.sort-btn');
+  const sortWrap = document.createElement('div');
+  sortWrap.className = 'sort-wrap';
+  sortBtn.parentNode.insertBefore(sortWrap, sortBtn);
+  sortWrap.appendChild(sortBtn);
+
+  const sortDd = document.createElement('div');
+  sortDd.className = 'sort-dropdown';
+  sortDd.innerHTML = ['Newest','Oldest','Unread first','By network'].map((o,i) =>
+    `<div class="sort-option${i===0?' active-sort':''}" data-sort="${o}">${o}</div>`).join('');
+  sortWrap.appendChild(sortDd);
+
+  sortBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    sortDd.classList.toggle('is-open');
+  });
+
+  sortDd.querySelectorAll('.sort-option').forEach(opt => {
+    opt.addEventListener('click', () => {
+      sortDd.querySelectorAll('.sort-option').forEach(o => o.classList.remove('active-sort'));
+      opt.classList.add('active-sort');
+      const label = opt.dataset.sort;
+      const tn = sortBtn.childNodes[0];
+      if (tn && tn.nodeType === 3) tn.textContent = label + ' ';
+      sortDd.classList.remove('is-open');
+    });
+  });
+
+  document.addEventListener('click', () => sortDd.classList.remove('is-open'));
+}
+
+// ─────────────────────────────────────────
+// F. REPLY COMPOSER
+// ─────────────────────────────────────────
+const textarea = document.querySelector('.composer-textarea');
+const charCount = document.querySelector('.char-count');
+const MAX_CHARS = 2200;
+
+if (textarea && charCount) {
+  textarea.addEventListener('input', () => {
+    const len = textarea.value.length;
+    charCount.textContent = `${len} / ${MAX_CHARS.toLocaleString()}`;
+    charCount.classList.toggle('over', len > MAX_CHARS);
+  });
+}
+
+// Network pill toggle
+document.querySelectorAll('.net-pill').forEach(pill => {
+  pill.addEventListener('click', () => {
+    document.querySelectorAll('.net-pill').forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+  });
+});
+
+// Send Reply
+const sendBtn = document.querySelector('.send-btn');
+if (sendBtn && textarea) {
+  sendBtn.addEventListener('click', () => {
+    const text = textarea.value.trim();
+    if (!text) { textarea.style.borderColor = 'var(--sys-danger-content)'; textarea.focus(); return; }
+    textarea.style.borderColor = '';
+
+    const thread = document.getElementById('comments-thread');
+    if (thread) {
+      const newComment = document.createElement('div');
+      newComment.className = 'comment reply';
+      newComment.innerHTML = `
+        <div class="comment-avatar" style="background:linear-gradient(135deg,var(--azure-400),var(--blue-500))">FL</div>
+        <div class="comment-body">
+          <div class="comment-header">
+            <span class="comment-name">Facelift HQ</span>
+            <span style="font-size:11px;color:var(--sys-primary-default);font-weight:500">Brand</span>
+            <span class="comment-time">Just now</span>
+          </div>
+          <div class="comment-text">${text.replace(/</g,'&lt;')}</div>
+          <div class="comment-actions"><span class="comment-action">Like</span><span class="comment-action">Reply</span></div>
+        </div>`;
+      thread.appendChild(newComment);
+
+      // Update comment count label
+      const lbl = document.getElementById('thread-count-label');
+      if (lbl) {
+        const n = thread.querySelectorAll('.comment').length;
+        lbl.textContent = `${n} Comment${n !== 1 ? 's' : ''}`;
+      }
+
+      textarea.value = '';
+      if (charCount) charCount.textContent = `0 / ${MAX_CHARS.toLocaleString()}`;
+      document.querySelector('.detail-body').scrollTop = 99999;
+    }
+  });
+}
+
+// ─────────────────────────────────────────
+// G. RESOLVE / FLAG ACTIONS
+// ─────────────────────────────────────────
+// Per-item action buttons (on hover)
+document.querySelectorAll('.feed-item').forEach((item, i) => {
+  const btns = item.querySelectorAll('.fi-action-btn');
+  if (btns[0]) { // Flag button
+    btns[0].addEventListener('click', e => {
+      e.stopPropagation();
+      item.classList.toggle('flagged');
+    });
+  }
+  if (btns[1]) { // Resolve button
+    btns[1].addEventListener('click', e => {
+      e.stopPropagation();
+      item.classList.toggle('resolved');
+    });
+  }
+});
+
+// Detail header buttons
+const headerBtns = document.querySelectorAll('.detail-action-btn');
+headerBtns.forEach(btn => {
+  const txt = btn.textContent.trim();
+  if (txt === 'Resolve') {
+    btn.addEventListener('click', () => {
+      const activeItem = document.querySelector('.feed-item.active');
+      if (activeItem) {
+        activeItem.classList.toggle('resolved');
+        const isResolved = activeItem.classList.contains('resolved');
+        btn.textContent = isResolved ? '✓ Resolved' : 'Resolve';
+        btn.classList.toggle('resolved-state', isResolved);
+      }
+    });
+  }
+  if (txt === 'Flag') {
+    btn.addEventListener('click', () => {
+      const activeItem = document.querySelector('.feed-item.active');
+      if (activeItem) {
+        activeItem.classList.toggle('flagged');
+        const isFlagged = activeItem.classList.contains('flagged');
+        btn.classList.toggle('flagged-state', isFlagged);
+      }
+    });
+  }
+});
+
+// ─────────────────────────────────────────
+// H. CHECKBOX + BULK ACTION BAR
+// ─────────────────────────────────────────
+// Insert bulk bar after tab row
+const bulkBar = document.createElement('div');
+bulkBar.className = 'bulk-bar';
+bulkBar.innerHTML = `
+  <span class="bulk-bar-count" id="bulk-count">0 selected</span>
+  <button class="bulk-btn" id="bulk-resolve">Resolve all</button>
+  <button class="bulk-btn" id="bulk-assign">Assign all</button>
+  <div class="bulk-spacer"></div>
+  <span class="bulk-clear" id="bulk-clear">Clear selection</span>`;
+const tabRow = document.querySelector('.tab-row');
+tabRow.parentNode.insertBefore(bulkBar, tabRow.nextSibling);
+
+function updateBulkBar() {
+  const checked = document.querySelectorAll('.fi-checkbox.checked');
+  const count = checked.length;
+  bulkBar.classList.toggle('is-visible', count > 0);
+  document.getElementById('bulk-count').textContent = `${count} selected`;
+}
+
+document.querySelectorAll('.fi-checkbox').forEach(cb => {
+  cb.addEventListener('click', e => {
+    e.stopPropagation();
+    cb.classList.toggle('checked');
+    const isChecked = cb.classList.contains('checked');
+    cb.innerHTML = isChecked
+      ? `<svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9L10 3" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+      : '';
+    updateBulkBar();
+  });
+});
+
+document.getElementById('bulk-resolve').addEventListener('click', () => {
+  document.querySelectorAll('.fi-checkbox.checked').forEach(cb => {
+    const item = cb.closest('.feed-item');
+    if (item) item.classList.add('resolved');
+    cb.classList.remove('checked');
+    cb.innerHTML = '';
+  });
+  updateBulkBar();
+});
+
+document.getElementById('bulk-assign').addEventListener('click', () => {
+  document.querySelectorAll('.fi-checkbox.checked').forEach(cb => {
+    cb.classList.remove('checked');
+    cb.innerHTML = '';
+  });
+  updateBulkBar();
+});
+
+document.getElementById('bulk-clear').addEventListener('click', () => {
+  document.querySelectorAll('.fi-checkbox.checked').forEach(cb => {
+    cb.classList.remove('checked');
+    cb.innerHTML = '';
+  });
+  updateBulkBar();
+});
+
+})();
+</script>
 </body>
 </html>

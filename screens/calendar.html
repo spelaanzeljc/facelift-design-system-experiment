@@ -109,6 +109,85 @@ body{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;background:var(--sy
 
 /* STATUS DOT SVG shortcuts */
 .dot-scheduled,.dot-approved,.dot-draft{display:inline-block;flex-shrink:0}
+
+/* ── FILTER CHIP DROPDOWN ── */
+.filter-chip{position:relative}
+.chip-dropdown{position:absolute;top:calc(100% + 6px);left:0;background:var(--sys-background-base);border:1px solid var(--sys-border-base);border-radius:8px;box-shadow:var(--shadows-shadow-md);padding:6px;min-width:190px;z-index:100;display:none}
+.chip-dropdown.is-open{display:block}
+.chip-option{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:5px;cursor:pointer;font-size:13px;color:var(--sys-text-primary)}
+.chip-option:hover{background:var(--sys-background-neutral)}
+.chip-option input[type=checkbox]{accent-color:var(--sys-primary-default);width:14px;height:14px;flex-shrink:0;cursor:pointer}
+
+/* ── SLIDE-OVER ── */
+.slide-over-backdrop{position:fixed;inset:0;background:var(--alpha-black-40);z-index:200;opacity:0;pointer-events:none;transition:opacity .2s}
+.slide-over-backdrop.is-open{opacity:1;pointer-events:auto}
+.slide-over{position:fixed;top:0;right:0;bottom:0;width:440px;background:var(--sys-background-base);box-shadow:-8px 0 32px rgba(0,0,0,0.14);z-index:201;transform:translateX(100%);transition:transform .25s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;overflow:hidden}
+.slide-over.is-open{transform:translateX(0)}
+.so-header{height:56px;display:flex;align-items:center;padding:0 16px;gap:10px;border-bottom:1px solid var(--sys-border-soft);flex-shrink:0}
+.so-close{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--sys-text-secondary)}
+.so-close:hover{background:var(--sys-background-neutral)}
+.so-body{flex:1;overflow-y:auto;padding:20px}
+.so-thumb{width:100%;height:160px;border-radius:8px;margin-bottom:16px;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--sys-text-secondary)}
+.so-title{font-size:15px;font-weight:700;line-height:1.45;margin-bottom:10px;color:var(--sys-text-primary)}
+.so-meta-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:13px;color:var(--sys-text-secondary)}
+.so-meta-row strong{color:var(--sys-text-primary);font-weight:600}
+.so-divider{height:1px;background:var(--sys-border-soft);margin:16px 0}
+.so-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.so-stat{background:var(--sys-background-neutral);border-radius:8px;padding:12px;text-align:center}
+.so-stat-val{font-size:20px;font-weight:700;color:var(--sys-text-primary)}
+.so-stat-lbl{font-size:11px;color:var(--sys-text-secondary);margin-top:2px}
+.so-actions{display:flex;gap:8px}
+.so-btn{flex:1;padding:8px 14px;border-radius:7px;font-size:13px;font-weight:600;text-align:center;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.so-btn-secondary{border:1px solid var(--sys-border-base);color:var(--sys-text-primary);background:var(--sys-background-base)}
+.so-btn-secondary:hover{background:var(--sys-background-neutral)}
+.so-btn-primary{background:var(--sys-primary-default);color:var(--grey-white);border:none}
+.so-btn-primary:hover{background:var(--sys-primary-hover)}
+
+/* ── CREATE POST MODAL ── */
+.modal-backdrop{position:fixed;inset:0;background:var(--alpha-black-40);z-index:300;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
+.modal-backdrop.is-open{opacity:1;pointer-events:auto}
+.modal{background:var(--sys-background-base);border-radius:12px;width:520px;max-height:84vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.2);transform:scale(.96) translateY(8px);transition:transform .2s}
+.modal-backdrop.is-open .modal{transform:scale(1) translateY(0)}
+.modal-header{padding:20px 20px 0;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.modal-title{font-size:16px;font-weight:700;color:var(--sys-text-primary)}
+.modal-close{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--sys-text-secondary)}
+.modal-close:hover{background:var(--sys-background-neutral)}
+.modal-body{padding:20px;overflow-y:auto;flex:1}
+.modal-label{font-size:11px;font-weight:600;color:var(--sys-text-secondary);margin-bottom:7px;text-transform:uppercase;letter-spacing:.05em}
+.modal-net-pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.modal-net-pill{padding:5px 12px;border:1px solid var(--sys-border-base);border-radius:1024px;font-size:12px;font-weight:500;color:var(--sys-text-secondary);cursor:pointer;display:flex;align-items:center;gap:5px;user-select:none}
+.modal-net-pill.is-active{background:var(--blue-50);border-color:var(--sys-primary-default);color:var(--sys-primary-default)}
+.modal-textarea{width:100%;height:100px;border:1px solid var(--sys-border-base);border-radius:8px;padding:10px 12px;font-size:13px;font-family:inherit;color:var(--sys-text-primary);resize:none;outline:none;margin-bottom:16px;line-height:1.5}
+.modal-textarea:focus{border-color:var(--sys-border-focus);box-shadow:0 0 0 3px var(--blue-50)}
+.modal-row{display:flex;gap:10px;margin-bottom:16px}
+.modal-input{flex:1;height:36px;border:1px solid var(--sys-border-base);border-radius:7px;padding:0 12px;font-size:13px;font-family:inherit;color:var(--sys-text-primary);outline:none;background:var(--sys-background-base)}
+.modal-input:focus{border-color:var(--sys-border-focus);box-shadow:0 0 0 3px var(--blue-50)}
+.modal-footer{padding:16px 20px;border-top:1px solid var(--sys-border-soft);display:flex;justify-content:flex-end;gap:8px;flex-shrink:0}
+.modal-btn-cancel{padding:8px 16px;border:1px solid var(--sys-border-base);border-radius:7px;font-size:13px;font-weight:600;color:var(--sys-text-secondary);background:var(--sys-background-base);cursor:pointer}
+.modal-btn-cancel:hover{background:var(--sys-background-neutral)}
+.modal-btn-submit{padding:8px 16px;border-radius:7px;font-size:13px;font-weight:600;color:var(--grey-white);background:var(--sys-primary-default);border:none;cursor:pointer}
+.modal-btn-submit:hover{background:var(--sys-primary-hover)}
+
+/* ── MONTH / DAY VIEWS ── */
+.month-view{flex:1;overflow-y:auto;padding:16px 20px;display:none}
+.month-view.is-active{display:block}
+.month-day-headers{display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:4px}
+.month-day-hdr{padding:6px 10px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--sys-text-placeholder)}
+.month-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--sys-border-soft);border:1px solid var(--sys-border-soft);border-radius:8px;overflow:hidden}
+.month-cell{background:var(--sys-background-base);padding:8px 10px;min-height:96px;cursor:pointer}
+.month-cell:hover{background:var(--sys-background-neutral)}
+.month-cell.is-today{background:var(--blue-50)}
+.month-cell.is-wknd{background:var(--sys-background-neutral)}
+.month-cell.is-wknd:hover,.month-cell.is-today:hover{opacity:.85}
+.month-cell-num{font-size:13px;font-weight:600;color:var(--sys-text-secondary);margin-bottom:5px;display:inline-flex;width:24px;height:24px;align-items:center;justify-content:center;border-radius:50%}
+.month-cell.is-today .month-cell-num{background:var(--sys-primary-default);color:var(--grey-white)}
+.month-other .month-cell-num{color:var(--sys-text-placeholder)}
+.month-post-dot{height:18px;border-radius:3px;background:var(--blue-50);border:1px solid var(--sys-border-soft);font-size:10px;color:var(--sys-text-secondary);padding:0 5px;display:flex;align-items:center;gap:3px;margin-bottom:2px;overflow:hidden}
+.day-view{flex:1;overflow-y:auto;display:none}
+.day-view.is-active{display:flex;flex-direction:column}
+.day-single-col{max-width:640px;margin:0 auto;padding:20px;flex:1}
+.day-view-hdr{font-size:17px;font-weight:700;margin-bottom:16px;color:var(--sys-text-primary);display:flex;align-items:center;gap:10px}
+.day-today-badge{font-size:11px;font-weight:600;background:var(--sys-primary-default);color:var(--grey-white);padding:2px 8px;border-radius:1024px}
 </style>
 </head>
 <body>
@@ -375,5 +454,360 @@ body{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;background:var(--sy
 </main>
 </div><!-- .app-body -->
 </div><!-- .app -->
+<script>
+(function(){
+'use strict';
+
+// ─────────────────────────────────────────
+// 1. SIDEBAR SWITCHING
+// ─────────────────────────────────────────
+document.querySelectorAll('.sidebar-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('is-active'));
+    btn.classList.add('is-active');
+  });
+});
+
+// ─────────────────────────────────────────
+// 2. DATE NAVIGATION
+// ─────────────────────────────────────────
+const BASE_MON = new Date(2026, 4, 11); // May 11 2026 (month=4 = May)
+const TODAY    = new Date(2026, 4, 12); // May 12 2026 = Tuesday
+const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const DAY_NAMES   = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+let weekOffset = 0;
+
+function getMondayForOffset(off) {
+  const d = new Date(BASE_MON);
+  d.setDate(d.getDate() + off * 7);
+  return d;
+}
+
+function fmtWeek(mon) {
+  const sun = new Date(mon); sun.setDate(sun.getDate() + 6);
+  if (mon.getMonth() === sun.getMonth()) {
+    return `${MONTH_NAMES[mon.getMonth()]} ${mon.getDate()} – ${sun.getDate()}, ${sun.getFullYear()}`;
+  }
+  return `${MONTH_NAMES[mon.getMonth()].slice(0,3)} ${mon.getDate()} – ${MONTH_NAMES[sun.getMonth()].slice(0,3)} ${sun.getDate()}, ${sun.getFullYear()}`;
+}
+
+function refreshWeek() {
+  const mon = getMondayForOffset(weekOffset);
+  document.querySelector('.nav-label').textContent = fmtWeek(mon);
+  const headers = document.querySelectorAll('.col-header');
+  const dayCols = document.querySelectorAll('.day-col');
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(mon); d.setDate(d.getDate() + i);
+    const isToday = d.toDateString() === TODAY.toDateString();
+    const isWknd  = i >= 5;
+    if (headers[i]) {
+      headers[i].querySelector('.col-day-num').textContent = d.getDate();
+      headers[i].classList.toggle('is-today', isToday);
+      headers[i].classList.toggle('is-wknd', isWknd);
+    }
+    if (dayCols[i]) {
+      dayCols[i].classList.toggle('is-today', isToday);
+      dayCols[i].classList.toggle('is-wknd', isWknd);
+    }
+  }
+}
+
+document.querySelector('.nav-arrow[title="Previous week"]').addEventListener('click', () => { weekOffset--; refreshWeek(); });
+document.querySelector('.nav-arrow[title="Next week"]').addEventListener('click',    () => { weekOffset++; refreshWeek(); });
+document.querySelector('.today-btn').addEventListener('click', () => { weekOffset = 0; refreshWeek(); });
+
+// ─────────────────────────────────────────
+// 3. MONTH / WEEK / DAY VIEWS
+// ─────────────────────────────────────────
+const calWrap    = document.querySelector('.cal-wrap');
+const colHeaders = document.querySelector('.col-headers');
+const campSection= document.querySelector('.camp-section');
+const dayScroll  = document.querySelector('.day-scroll');
+
+// Build month view
+const monthView = document.createElement('div');
+monthView.className = 'month-view';
+monthView.innerHTML = (function(){
+  const hdrs = DAY_NAMES.map(d => `<div class="month-day-hdr">${d}</div>`).join('');
+  const cells = [
+    // Week Apr 27 – May 3
+    {d:27,m:'Apr',wknd:false,other:true,posts:[]},{d:28,m:'Apr',wknd:false,other:true,posts:[]},
+    {d:29,m:'Apr',wknd:false,other:true,posts:[]},{d:30,m:'Apr',wknd:false,other:true,posts:[]},
+    {d:1, m:'May',wknd:false,other:false,posts:['LinkedIn','Instagram']},
+    {d:2, m:'May',wknd:true, other:false,posts:[]},{d:3,m:'May',wknd:true,other:false,posts:['Facebook']},
+    // May 4–10
+    {d:4,m:'May',wknd:false,other:false,posts:['Instagram','LinkedIn']},
+    {d:5,m:'May',wknd:false,other:false,posts:['X']},
+    {d:6,m:'May',wknd:false,other:false,posts:['Facebook']},
+    {d:7,m:'May',wknd:false,other:false,posts:['LinkedIn','Instagram','Facebook']},
+    {d:8,m:'May',wknd:false,other:false,posts:['Threads']},
+    {d:9,m:'May',wknd:true,other:false,posts:[]},{d:10,m:'May',wknd:true,other:false,posts:['Instagram']},
+    // May 11–17 (current)
+    {d:11,m:'May',wknd:false,other:false,posts:['LinkedIn','Instagram']},
+    {d:12,m:'May',wknd:false,other:false,today:true,posts:['Facebook','X']},
+    {d:13,m:'May',wknd:false,other:false,posts:['Threads']},
+    {d:14,m:'May',wknd:false,other:false,posts:['Instagram','Facebook']},
+    {d:15,m:'May',wknd:false,other:false,posts:['LinkedIn']},
+    {d:16,m:'May',wknd:true,other:false,posts:[]},{d:17,m:'May',wknd:true,other:false,posts:['Instagram']},
+    // May 18–24
+    {d:18,m:'May',wknd:false,other:false,posts:['LinkedIn']},
+    {d:19,m:'May',wknd:false,other:false,posts:['Instagram','Facebook']},
+    {d:20,m:'May',wknd:false,other:false,posts:['X']},
+    {d:21,m:'May',wknd:false,other:false,posts:['LinkedIn']},
+    {d:22,m:'May',wknd:false,other:false,posts:['Instagram']},
+    {d:23,m:'May',wknd:true,other:false,posts:[]},{d:24,m:'May',wknd:true,other:false,posts:['Threads']},
+    // May 25–31
+    {d:25,m:'May',wknd:false,other:false,posts:['LinkedIn','Instagram']},
+    {d:26,m:'May',wknd:false,other:false,posts:['Facebook']},
+    {d:27,m:'May',wknd:false,other:false,posts:['X','LinkedIn']},
+    {d:28,m:'May',wknd:false,other:false,posts:['Instagram']},
+    {d:29,m:'May',wknd:false,other:false,posts:['Facebook','LinkedIn']},
+    {d:30,m:'May',wknd:true,other:false,posts:[]},{d:31,m:'May',wknd:true,other:false,posts:['Instagram']},
+  ];
+  const cellsHtml = cells.map(c => {
+    const cls = ['month-cell', c.today?'is-today':'', c.wknd?'is-wknd':'', c.other?'month-other':''].filter(Boolean).join(' ');
+    const dots = c.posts.slice(0,3).map(p => `<div class="month-post-dot">${p}</div>`).join('');
+    return `<div class="${cls}"><div class="month-cell-num">${c.d}</div>${dots}</div>`;
+  }).join('');
+  return `<div class="month-day-headers">${hdrs}</div><div class="month-grid">${cellsHtml}</div>`;
+})();
+calWrap.appendChild(monthView);
+
+// Build day view
+const dayView = document.createElement('div');
+dayView.className = 'day-view';
+dayView.innerHTML = `<div class="day-single-col"><div class="day-view-hdr">Tuesday, May 12 <span class="day-today-badge">Today</span></div><div id="day-cards-wrap" style="display:flex;flex-direction:column;gap:12px"></div></div>`;
+calWrap.appendChild(dayView);
+
+function setView(v) {
+  const isWeek  = v === 'week';
+  const isMonth = v === 'month';
+  const isDay   = v === 'day';
+  colHeaders.style.display  = isWeek ? '' : 'none';
+  campSection.style.display = isWeek ? '' : 'none';
+  dayScroll.style.display   = isWeek ? '' : 'none';
+  monthView.classList.toggle('is-active', isMonth);
+  dayView.classList.toggle('is-active', isDay);
+  if (isDay) {
+    const wrap = document.getElementById('day-cards-wrap');
+    wrap.innerHTML = '';
+    const todayCol = document.querySelector('.day-col.is-today');
+    if (todayCol) todayCol.querySelectorAll('.post-card').forEach(card => {
+      const clone = card.cloneNode(true);
+      clone.style.maxWidth = '100%';
+      clone.addEventListener('click', () => openSlideOver(clone));
+      wrap.appendChild(clone);
+    });
+  }
+}
+
+document.querySelectorAll('.seg-btn').forEach((btn, i) => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('is-active'));
+    btn.classList.add('is-active');
+    setView(['month','week','day'][i]);
+  });
+});
+
+// ─────────────────────────────────────────
+// 4. FILTER CHIP DROPDOWNS
+// ─────────────────────────────────────────
+const CHIP_OPTIONS = {
+  'All Networks':  ['Instagram','Facebook','LinkedIn','X / Twitter','Threads','TikTok','Pinterest'],
+  'All Campaigns': ['Getting Things Done','Product Webinar','GTM Phase 2: Launch','P1 Product Release','P2 Product Release'],
+  'All Statuses':  ['Scheduled','Approved','Draft','Published','Failed'],
+};
+
+document.querySelectorAll('.filter-chip').forEach(chip => {
+  const rawLabel = chip.childNodes[0].textContent.trim();
+  const defaultLabel = rawLabel;
+  const dd = document.createElement('div');
+  dd.className = 'chip-dropdown';
+  dd.innerHTML = (CHIP_OPTIONS[rawLabel]||[]).map(o => `<label class="chip-option"><input type="checkbox"> ${o}</label>`).join('');
+  chip.appendChild(dd);
+
+  chip.addEventListener('click', e => {
+    e.stopPropagation();
+    const wasOpen = dd.classList.contains('is-open');
+    document.querySelectorAll('.chip-dropdown').forEach(d => d.classList.remove('is-open'));
+    if (!wasOpen) dd.classList.add('is-open');
+  });
+
+  dd.addEventListener('change', () => {
+    const checked = [...dd.querySelectorAll('input:checked')].map(i => i.parentElement.textContent.trim());
+    const tn = [...chip.childNodes].find(n => n.nodeType === 3);
+    if (tn) tn.textContent = checked.length === 0 ? defaultLabel+' ' : checked.length === 1 ? checked[0]+' ' : `${checked.length} selected `;
+  });
+});
+document.addEventListener('click', () => document.querySelectorAll('.chip-dropdown').forEach(d => d.classList.remove('is-open')));
+
+// ─────────────────────────────────────────
+// 5. POST CARD SLIDE-OVER
+// ─────────────────────────────────────────
+const soBackdrop = document.createElement('div');
+soBackdrop.className = 'slide-over-backdrop';
+soBackdrop.innerHTML = `
+<div class="slide-over" id="slide-over">
+  <div class="so-header">
+    <span id="so-net-icon" style="width:20px;height:20px;display:flex;align-items:center;flex-shrink:0"></span>
+    <div style="flex:1;min-width:0">
+      <div id="so-platform" style="font-size:13px;font-weight:600;color:var(--sys-text-primary)"></div>
+      <div id="so-status-row" style="font-size:11px;color:var(--sys-text-secondary)"></div>
+    </div>
+    <button class="so-btn so-btn-secondary" style="flex:0;padding:5px 10px;font-size:12px;margin-right:4px">Edit</button>
+    <button class="so-close" id="so-close-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></button>
+  </div>
+  <div class="so-body">
+    <div class="so-thumb" id="so-thumb"></div>
+    <div class="so-title" id="so-title"></div>
+    <div class="so-divider"></div>
+    <div style="font-size:12px;font-weight:600;color:var(--sys-text-secondary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">Performance</div>
+    <div class="so-stats">
+      <div class="so-stat"><div class="so-stat-val">—</div><div class="so-stat-lbl">Likes</div></div>
+      <div class="so-stat"><div class="so-stat-val">—</div><div class="so-stat-lbl">Comments</div></div>
+      <div class="so-stat"><div class="so-stat-val">—</div><div class="so-stat-lbl">Shares</div></div>
+    </div>
+    <div class="so-actions">
+      <button class="so-btn so-btn-secondary">Reschedule</button>
+      <button class="so-btn so-btn-primary">View Live Post</button>
+    </div>
+  </div>
+</div>`;
+document.body.appendChild(soBackdrop);
+
+function detectNet(svgStr) {
+  if (svgStr.includes('#0A66C2')) return 'LinkedIn';
+  if (svgStr.includes('#E2007A')) return 'Instagram';
+  if (svgStr.includes('#1877F2')) return 'Facebook';
+  if (svgStr.includes('#0F1419')) return 'X / Twitter';
+  if (svgStr.includes('sys-text-primary')) return 'Threads';
+  return 'Social';
+}
+
+function openSlideOver(card) {
+  const title    = card.querySelector('.post-txt')?.textContent || '';
+  const time     = card.querySelector('.post-time')?.textContent || '';
+  const thumbBg  = card.querySelector('.post-thumb')?.style.background || 'var(--sys-background-neutral)';
+  const netSvgEl = card.querySelector('.post-net');
+  const netSvgStr= netSvgEl ? netSvgEl.outerHTML : '';
+  const net      = detectNet(netSvgStr);
+  const isDraft  = time === 'Draft';
+  const statusTxt= isDraft ? 'Draft · Not yet scheduled' : `Scheduled · ${time}`;
+
+  document.getElementById('so-title').textContent  = title;
+  document.getElementById('so-platform').textContent = net;
+  document.getElementById('so-status-row').textContent = statusTxt;
+  document.getElementById('so-thumb').style.background = thumbBg;
+  document.getElementById('so-net-icon').innerHTML = netSvgStr.replace('class="post-net"','style="width:20px;height:20px"');
+  soBackdrop.classList.add('is-open');
+  document.getElementById('slide-over').classList.add('is-open');
+}
+
+function closeSlideOver() {
+  soBackdrop.classList.remove('is-open');
+  document.getElementById('slide-over').classList.remove('is-open');
+}
+
+document.getElementById('so-close-btn').addEventListener('click', closeSlideOver);
+soBackdrop.addEventListener('click', e => { if (e.target === soBackdrop) closeSlideOver(); });
+
+document.querySelectorAll('.post-card').forEach(card => {
+  card.addEventListener('click', () => openSlideOver(card));
+});
+
+// ─────────────────────────────────────────
+// 6. CREATE POST MODAL
+// ─────────────────────────────────────────
+const IG_SVG  = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.0357 3.86108C14.9802 3.81346 14.6667 3.80155 11.996 3.80155C9.32539 3.80155 9.0119 3.80949 7.95634 3.86108C6.98015 3.90473 6.45238 4.07139 6.0992 4.20632C5.63095 4.38489 5.29761 4.60314 4.94841 4.95235C4.5992 5.30155 4.38492 5.63489 4.20238 6.10314C4.06349 6.45632 3.90079 6.98409 3.85714 7.96028C3.80952 9.01584 3.79761 9.32933 3.79761 12C3.79761 14.6706 3.80952 14.9841 3.85714 16.0396C3.90079 17.0158 4.06745 17.5436 4.20238 17.8968C4.38095 18.365 4.5992 18.6984 4.94841 19.0476C5.29761 19.3968 5.63095 19.6111 6.0992 19.7936C6.45238 19.9325 6.98015 20.0952 7.95634 20.1389C9.0119 20.1865 9.32539 20.1984 11.996 20.1984C14.6667 20.1984 14.9802 20.1865 16.0357 20.1389C17.0119 20.0952 17.5397 19.9285 17.8929 19.7936C18.3611 19.615 18.6944 19.3968 19.0436 19.0476C19.3929 18.6984 19.6071 18.365 19.7897 17.8968C19.9286 17.5436 20.0913 17.0158 20.1349 16.0396C20.1825 14.9841 20.1944 14.6706 20.1944 12C20.1944 9.32933 20.1825 9.01584 20.1349 7.96028C20.0913 6.98409 19.9246 6.45632 19.7897 6.10314C19.6111 5.63489 19.3929 5.30155 19.0436 4.95235C18.6944 4.60314 18.3611 4.38885 17.8929 4.20632C17.5397 4.06743 17.0119 3.90473 16.0357 3.86108ZM8.6627 11.9959C8.6627 13.8372 10.1548 15.3292 11.996 15.3292C13.8373 15.3292 15.3294 13.8372 15.3294 11.9959C15.3294 10.1546 13.8373 8.66257 11.996 8.66257C10.1548 8.66257 8.6627 10.1546 8.6627 11.9959Z" fill="#E2007A"/></svg>`;
+const FB_SVG  = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M22 12.0611C22 6.50451 17.5229 2 12 2C6.47715 2 2 6.50451 2 12.0611C2 17.0829 5.65686 21.2452 10.4375 22V14.9694H7.89844V12.0611H10.4375V9.84452C10.4375 7.32296 11.9304 5.93012 14.2146 5.93012C15.3087 5.93012 16.4531 6.12663 16.4531 6.12663V8.60261H15.1921C13.9499 8.60261 13.5625 9.37816 13.5625 10.1738V12.0611H16.3359L15.8926 14.9694H13.5625V22C18.3431 21.2452 22 17.0829 22 12.0611Z" fill="#1877F2"/></svg>`;
+const LI_SVG  = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M19.5754 2H4.42606C3.08587 2 2 3.08714 2 4.42857V19.5743C2 20.9157 3.0873 22 4.42606 22H19.5739C20.9155 22 22 20.9129 22 19.5743V4.42857C22.0028 3.08714 20.9155 2 19.5754 2ZM7.6465 19.0971H4.90039V10.2314H7.6465V19.0971ZM6.2606 9.33718C5.36333 9.33718 4.63751 8.60433 4.63751 7.70147C4.63751 6.79861 5.36476 6.06576 6.2606 6.06576C7.15787 6.06576 7.88369 6.79861 7.88369 7.70147C7.88369 8.60433 7.15787 9.33718 6.2606 9.33718ZM19.0496 19.1414H16.3178V14.4871C16.3178 13.21 15.8334 12.4986 14.8247 12.4986C13.726 12.4986 13.153 13.2414 13.153 14.4871V19.1414H10.5184V10.2757H13.1502V11.47C13.9431 10.0057 15.822 10.0057 15.822 10.0057C17.7008 10.0057 19.0482 11.1529 19.0482 13.5286V19.1429L19.0496 19.1414Z" fill="#0A66C2"/></svg>`;
+const X_SVG   = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M20.818 3H17.7512L12.6976 8.75169L8.32828 3H2L9.5613 12.8446L2.39494 21H5.46359L10.9946 14.7074L15.8284 21H22L14.1179 10.6246L20.818 3ZM18.3742 19.1722H16.6749L5.58136 4.73163H7.40494L18.3742 19.1722Z" fill="#0F1419"/></svg>`;
+
+const modalBd = document.createElement('div');
+modalBd.className = 'modal-backdrop';
+modalBd.innerHTML = `
+<div class="modal">
+  <div class="modal-header">
+    <span class="modal-title">Create Post</span>
+    <button class="modal-close" id="m-close"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></button>
+  </div>
+  <div class="modal-body">
+    <div class="modal-label">Networks</div>
+    <div class="modal-net-pills">
+      <div class="modal-net-pill is-active" data-net="ig">${IG_SVG} Instagram</div>
+      <div class="modal-net-pill" data-net="fb">${FB_SVG} Facebook</div>
+      <div class="modal-net-pill" data-net="li">${LI_SVG} LinkedIn</div>
+      <div class="modal-net-pill" data-net="x">${X_SVG} X / Twitter</div>
+    </div>
+    <div class="modal-label">Post Content</div>
+    <textarea class="modal-textarea" id="m-content" placeholder="What do you want to share?"></textarea>
+    <div class="modal-label">Schedule</div>
+    <div class="modal-row">
+      <input type="date" class="modal-input" id="m-date" value="2026-05-12">
+      <input type="time" class="modal-input" id="m-time" value="10:00">
+    </div>
+    <div class="modal-label">Campaign (optional)</div>
+    <select class="modal-input" id="m-campaign" style="cursor:pointer">
+      <option value="">None</option>
+      <option>Getting Things Done</option><option>Product Webinar</option>
+      <option>GTM Phase 2: Launch</option><option>P1 Product Release</option><option>P2 Product Release</option>
+    </select>
+  </div>
+  <div class="modal-footer">
+    <button class="modal-btn-cancel" id="m-cancel">Cancel</button>
+    <button class="modal-btn-submit" id="m-submit">Schedule Post</button>
+  </div>
+</div>`;
+document.body.appendChild(modalBd);
+
+modalBd.querySelectorAll('.modal-net-pill').forEach(p => p.addEventListener('click', () => p.classList.toggle('is-active')));
+
+function openModal() { modalBd.classList.add('is-open'); document.getElementById('m-content').focus(); }
+function closeModal(){ modalBd.classList.remove('is-open'); }
+
+document.querySelector('.btn-primary').addEventListener('click', openModal);
+document.getElementById('m-close').addEventListener('click', closeModal);
+document.getElementById('m-cancel').addEventListener('click', closeModal);
+modalBd.addEventListener('click', e => { if (e.target === modalBd) closeModal(); });
+
+document.getElementById('m-submit').addEventListener('click', () => {
+  const content = document.getElementById('m-content').value.trim();
+  const ta = document.getElementById('m-content');
+  if (!content) { ta.style.borderColor = 'var(--sys-danger-content)'; ta.focus(); return; }
+  ta.style.borderColor = '';
+
+  const dateVal = document.getElementById('m-date').value;
+  const timeVal = document.getElementById('m-time').value;
+  const selDate = new Date(dateVal + 'T12:00:00');
+  const mon = getMondayForOffset(weekOffset);
+  let colIdx = -1;
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(mon); d.setDate(d.getDate() + i);
+    if (d.toDateString() === selDate.toDateString()) { colIdx = i; break; }
+  }
+
+  const cols = document.querySelectorAll('.day-col');
+  const targetCol = colIdx >= 0 ? cols[colIdx] : null;
+  if (targetCol) {
+    const colors = ['var(--blue-50)','var(--purple-50)','var(--emerald-50)','var(--amber-50)','var(--coral-50)'];
+    const bg = colors[Math.floor(Math.random()*colors.length)];
+    const newCard = document.createElement('div');
+    newCard.className = 'post-card';
+    newCard.innerHTML = `
+      <div class="post-thumb" style="background:${bg}"></div>
+      <div class="post-body">
+        <div class="post-meta"><svg class="post-net" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.0357 3.86108C14.9802 3.81346 14.6667 3.80155 11.996 3.80155C9.32539 3.80155 9.0119 3.80949 7.95634 3.86108C6.98015 3.90473 6.45238 4.07139 6.0992 4.20632C5.63095 4.38489 5.29761 4.60314 4.94841 4.95235C4.5992 5.30155 4.38492 5.63489 4.20238 6.10314C4.06349 6.45632 3.90079 6.98409 3.85714 7.96028C3.80952 9.01584 3.79761 9.32933 3.79761 12C3.79761 14.6706 3.80952 14.9841 3.85714 16.0396C3.90079 17.0158 4.06745 17.5436 4.20238 17.8968C4.38095 18.365 4.5992 18.6984 4.94841 19.0476C5.29761 19.3968 5.63095 19.6111 6.0992 19.7936C6.45238 19.9325 6.98015 20.0952 7.95634 20.1389C9.0119 20.1865 9.32539 20.1984 11.996 20.1984C14.6667 20.1984 14.9802 20.1865 16.0357 20.1389C17.0119 20.0952 17.5397 19.9285 17.8929 19.7936C18.3611 19.615 18.6944 19.3968 19.0436 19.0476C19.3929 18.6984 19.6071 18.365 19.7897 17.8968C19.9286 17.5436 20.0913 17.0158 20.1349 16.0396C20.1825 14.9841 20.1944 14.6706 20.1944 12C20.1944 9.32933 20.1825 9.01584 20.1349 7.96028C20.0913 6.98409 19.9246 6.45632 19.7897 6.10314C19.6111 5.63489 19.3929 5.30155 19.0436 4.95235C18.6944 4.60314 18.3611 4.38885 17.8929 4.20632C17.5397 4.06743 17.0119 3.90473 16.0357 3.86108ZM8.6627 11.9959C8.6627 13.8372 10.1548 15.3292 11.996 15.3292C13.8373 15.3292 15.3294 13.8372 15.3294 11.9959C15.3294 10.1546 13.8373 8.66257 11.996 8.66257C10.1548 8.66257 8.6627 10.1546 8.6627 11.9959Z" fill="#E2007A"/></svg></div>
+        <p class="post-txt">${content.slice(0,80)}${content.length>80?'…':''}</p>
+        <div class="post-foot"><span class="post-time">${timeVal}</span><div class="post-av" style="background:var(--blue-600)">MA</div></div>
+      </div>`;
+    newCard.addEventListener('click', () => openSlideOver(newCard));
+    targetCol.appendChild(newCard);
+  }
+  closeModal();
+  document.getElementById('m-content').value = '';
+});
+
+})();
+</script>
 </body>
 </html>
