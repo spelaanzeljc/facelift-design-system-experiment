@@ -279,8 +279,11 @@ function nodeToStyle(node, parent) {
     const { paddingTop: pt = 0, paddingRight: pr = 0, paddingBottom: pb = 0, paddingLeft: pl = 0 } = node;
     if (pt || pr || pb || pl) r.padding = `${pt}px ${pr}px ${pb}px ${pl}px`;
     if (node.layoutWrap === 'WRAP') r['flex-wrap'] = 'wrap';
-  } else if (!parentIsAutoLayout && (node.children?.length ?? 0) > 0) {
-    // Non-auto-layout container needs relative so absolute children are anchored
+  } else if ((node.children?.length ?? 0) > 0) {
+    // Non-auto-layout container: ensure it creates a positioning context so that
+    // position:absolute grandchildren anchor here, not to a distant ancestor.
+    // Works whether this node is a flex child (no position yet → relative) or
+    // is itself absolute (absolute already establishes a context, ?? is a no-op).
     r.position = r.position ?? 'relative';
   }
 

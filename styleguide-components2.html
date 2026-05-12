@@ -200,9 +200,24 @@
   document.querySelectorAll('.comp-frame iframe').forEach(function (iframe) {
     iframe.addEventListener('load', function () {
       try {
-        var preview = this.contentDocument.querySelector('.preview-wrap');
+        var doc = this.contentDocument;
+        var s = doc.createElement('style');
+        s.textContent = '.checker{background-image:none!important;background-color:#fff!important}.checker div{position:relative}';
+        doc.head.appendChild(s);
+
+        var isWide = this.parentElement && this.parentElement.classList.contains('comp-frame--wide');
+        var preview = doc.querySelector('.preview-wrap');
         if (!preview) return;
-        this.style.marginTop = '-' + (preview.offsetTop + 16) + 'px';
+
+        if (isWide) {
+          this.style.marginTop = '-' + (preview.offsetTop + 16) + 'px';
+        } else {
+          var checker = doc.querySelector('.checker');
+          if (!checker) { this.style.marginTop = '-' + (preview.offsetTop + 16) + 'px'; return; }
+          var rect = checker.getBoundingClientRect();
+          var centerY = rect.top + rect.height / 2;
+          this.style.marginTop = '-' + Math.max(0, centerY - 60) + 'px';
+        }
       } catch (e) {}
     });
   });
