@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Facelift — Engage Inbox</title>
+<link rel="stylesheet" href="../output/tokens/tokens.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;background:var(--sys-background-neutral);color:var(--sys-text-primary);min-width:1440px;height:100vh;overflow:hidden}
+
+/* ── App shell ── */
+.app{display:flex;flex-direction:column;height:100vh}
+
+/* ── Header ── */
+.app-header{height:56px;background:var(--grey-900);display:flex;align-items:center;padding:0 16px;gap:12px;flex-shrink:0;z-index:100}
+.header-left{display:flex;align-items:center;gap:10px}
+.burger-btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:6px;cursor:pointer;color:var(--alpha-white-16);transition:background .15s}
+.burger-btn:hover{background:var(--alpha-white-16)}
+.burger-btn svg path{fill:var(--grey-white)}
+.logo-mark{width:28px;height:28px;background:var(--sys-primary-default);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--grey-white);letter-spacing:-.5px}
+.module-badge{background:var(--alpha-white-16);color:var(--grey-white);font-size:11px;font-weight:500;padding:3px 8px;border-radius:1024px;letter-spacing:.02em}
+.header-spacer{flex:1}
+.header-right{display:flex;align-items:center;gap:4px}
+.header-icon-btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:6px;cursor:pointer;position:relative;color:var(--grey-white)}
+.header-icon-btn:hover{background:var(--alpha-white-16)}
+.header-icon-btn svg path{fill:var(--grey-white)}
+.notif-dot{position:absolute;top:6px;right:6px;width:7px;height:7px;background:#ef4444;border-radius:50%;border:1.5px solid var(--grey-900)}
+.avatar-btn{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--azure-400),var(--blue-500));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--grey-white);cursor:pointer;margin-left:4px}
+
+/* ── Body ── */
+.app-body{display:flex;flex:1;overflow:hidden}
+
+/* ── Sidebar ── */
+.sidebar{width:68px;background:var(--grey-900);display:flex;flex-direction:column;align-items:center;padding:12px 0;gap:4px;flex-shrink:0;border-right:1px solid rgba(255,255,255,.06)}
+.sidebar-btn{width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:8px;cursor:pointer;color:var(--grey-400);transition:background .15s,color .15s;position:relative}
+.sidebar-btn:hover{background:var(--alpha-white-16);color:var(--grey-white)}
+.sidebar-btn.active{background:var(--alpha-white-16);color:var(--blue-400)}
+.sidebar-btn svg path{fill:currentColor}
+.sidebar-divider{width:28px;height:1px;background:rgba(255,255,255,.08);margin:6px 0}
+.sidebar-badge{position:absolute;top:5px;right:5px;min-width:16px;height:16px;background:var(--sys-primary-default);border-radius:8px;font-size:9px;font-weight:700;color:var(--grey-white);display:flex;align-items:center;justify-content:center;padding:0 3px;border:1.5px solid var(--grey-900)}
+.sidebar-spacer{flex:1}
+
+/* ── Feed list panel ── */
+.feed-panel{width:412px;background:var(--sys-background-base);border-right:1px solid var(--sys-border-soft);display:flex;flex-direction:column;flex-shrink:0}
+.feed-panel-header{padding:0 16px;height:56px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--sys-border-soft);flex-shrink:0}
+.feed-panel-title{font-size:16px;font-weight:700;color:var(--sys-text-primary)}
+.count-badge{background:var(--sys-background-neutral);color:var(--sys-text-secondary);font-size:11px;font-weight:600;padding:2px 7px;border-radius:1024px;border:1px solid var(--sys-border-soft)}
+.feed-panel-header .spacer{flex:1}
+.icon-btn-sm{width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:6px;cursor:pointer;color:var(--sys-text-secondary)}
+.icon-btn-sm:hover{background:var(--sys-background-neutral)}
+.icon-btn-sm svg path{fill:currentColor}
+
+.tab-row{display:flex;padding:0 16px;border-bottom:1px solid var(--sys-border-soft);flex-shrink:0}
+.tab{padding:10px 12px;font-size:13px;font-weight:500;color:var(--sys-text-secondary);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.tab.active{color:var(--sys-primary-default);border-bottom-color:var(--sys-primary-default);font-weight:600}
+.tab:hover:not(.active){color:var(--sys-text-primary)}
+
+.filter-row{display:flex;align-items:center;gap:8px;padding:10px 16px;border-bottom:1px solid var(--sys-border-soft);flex-shrink:0}
+.search-input{flex:1;height:32px;border:1px solid var(--sys-border-base);border-radius:6px;padding:0 8px 0 30px;font-size:13px;color:var(--sys-text-primary);outline:none;background:var(--sys-background-base);position:relative}
+.search-wrap{flex:1;position:relative;display:flex;align-items:center}
+.search-icon{position:absolute;left:8px;color:var(--sys-text-placeholder);pointer-events:none}
+.search-icon svg path{fill:currentColor}
+.sort-btn{height:32px;padding:0 10px;border:1px solid var(--sys-border-base);border-radius:6px;font-size:12px;font-weight:500;color:var(--sys-text-secondary);cursor:pointer;display:flex;align-items:center;gap:4px;background:var(--sys-background-base);white-space:nowrap}
+.sort-btn:hover{background:var(--sys-background-neutral)}
+.sort-btn svg path{fill:currentColor}
+
+.feed-list{flex:1;overflow-y:auto;padding:8px 0}
+.feed-list::-webkit-scrollbar{width:4px}
+.feed-list::-webkit-scrollbar-thumb{background:var(--sys-border-base);border-radius:2px}
+
+/* ── Feed item ── */
+.feed-item{padding:12px 16px;cursor:pointer;border-left:3px solid transparent;transition:background .1s}
+.feed-item:hover{background:var(--sys-background-neutral)}
+.feed-item.active{background:var(--blue-50);border-left-color:var(--sys-primary-default)}
+.feed-item.unread .fi-title{font-weight:600}
+
+.fi-top{display:flex;align-items:flex-start;gap:8px;margin-bottom:6px}
+.fi-checkbox{width:16px;height:16px;border:1.5px solid var(--sys-border-base);border-radius:3px;flex-shrink:0;margin-top:2px;cursor:pointer}
+.fi-avatar-wrap{position:relative;flex-shrink:0}
+.fi-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--grey-white);border:2px solid var(--grey-white)}
+.fi-net-badge{position:absolute;bottom:-2px;right:-2px;width:14px;height:14px;border-radius:50%;background:var(--grey-white);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.fi-net-badge svg{width:10px;height:10px}
+.fi-content{flex:1;min-width:0}
+.fi-title-row{display:flex;align-items:flex-start;gap:6px;margin-bottom:3px}
+.fi-title{font-size:13px;font-weight:500;color:var(--sys-text-primary);flex:1;line-height:1.4}
+.fi-time{font-size:11px;color:var(--sys-text-secondary);white-space:nowrap;flex-shrink:0;margin-top:1px}
+.fi-tags{display:flex;gap:4px;margin-bottom:5px;flex-wrap:wrap}
+.fi-tag{font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px;letter-spacing:.03em;text-transform:uppercase}
+.fi-tag.positive{background:var(--sys-success-default);color:var(--sys-success-content)}
+.fi-tag.negative{background:var(--sys-danger-default);color:var(--sys-danger-content)}
+.fi-tag.neutral{background:var(--sys-background-neutral);color:var(--sys-text-secondary)}
+.fi-tag.source{background:var(--azure-50);color:var(--azure-700);border:1px solid var(--azure-100)}
+.fi-preview{font-size:12px;color:var(--sys-text-secondary);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:7px}
+.fi-bottom{display:flex;align-items:center;gap:6px}
+.fi-assignees{display:flex}
+.fi-assignee{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--grey-white);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:var(--grey-white);margin-right:-5px}
+.fi-actions{display:flex;gap:2px;margin-left:auto}
+.fi-action-btn{width:22px;height:22px;display:flex;align-items:center;justify-content:center;border-radius:4px;cursor:pointer;color:var(--sys-text-secondary);opacity:0}
+.feed-item:hover .fi-action-btn{opacity:1}
+.fi-action-btn:hover{background:var(--sys-border-soft);color:var(--sys-text-primary)}
+.fi-action-btn svg path{fill:currentColor}
+
+/* ── Detail panel ── */
+.detail-panel{flex:1;display:flex;flex-direction:column;min-width:0;background:var(--sys-background-base)}
+.detail-header{height:56px;display:flex;align-items:center;padding:0 20px;gap:12px;border-bottom:1px solid var(--sys-border-soft);flex-shrink:0}
+.detail-post-meta{display:flex;align-items:center;gap:8px;flex:1}
+.detail-net-icon{width:24px;height:24px;display:flex;align-items:center;justify-content:center}
+.detail-handle{font-size:14px;font-weight:600;color:var(--sys-text-primary)}
+.detail-date{font-size:12px;color:var(--sys-text-secondary)}
+.detail-actions{display:flex;gap:4px}
+.detail-action-btn{height:32px;padding:0 12px;border:1px solid var(--sys-border-base);border-radius:6px;font-size:12px;font-weight:500;color:var(--sys-text-secondary);cursor:pointer;display:flex;align-items:center;gap:6px;background:var(--sys-background-base)}
+.detail-action-btn:hover{background:var(--sys-background-neutral)}
+.detail-action-btn svg path{fill:currentColor}
+.detail-action-btn.primary-action{background:var(--sys-primary-default);color:var(--grey-white);border-color:var(--sys-primary-default)}
+.detail-action-btn.primary-action:hover{background:var(--sys-primary-hover)}
+.detail-action-btn.primary-action svg path{fill:var(--grey-white)}
+
+.detail-body{flex:1;overflow-y:auto;padding:20px}
+.detail-body::-webkit-scrollbar{width:4px}
+.detail-body::-webkit-scrollbar-thumb{background:var(--sys-border-base);border-radius:2px}
+
+/* Original post */
+.original-post{background:var(--sys-background-neutral);border:1px solid var(--sys-border-soft);border-radius:10px;padding:16px;margin-bottom:20px}
+.op-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.op-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--grey-white)}
+.op-meta{flex:1}
+.op-name{font-size:14px;font-weight:600;color:var(--sys-text-primary)}
+.op-handle-date{font-size:12px;color:var(--sys-text-secondary)}
+.op-net{width:20px;height:20px;display:flex;align-items:center;justify-content:center}
+.op-image{width:100%;height:140px;background:var(--sys-border-soft);border-radius:6px;margin-bottom:12px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.op-image-inner{width:100%;height:100%;background:linear-gradient(135deg,var(--azure-100),var(--blue-50));display:flex;align-items:center;justify-content:center;color:var(--azure-400);font-size:12px;font-weight:500}
+.op-text{font-size:14px;line-height:1.6;color:var(--sys-text-primary)}
+.op-stats{display:flex;gap:16px;margin-top:12px;padding-top:12px;border-top:1px solid var(--sys-border-soft)}
+.op-stat{font-size:12px;color:var(--sys-text-secondary);display:flex;align-items:center;gap:4px}
+.op-stat strong{color:var(--sys-text-primary);font-weight:600}
+
+/* Comments thread */
+.thread-label{font-size:11px;font-weight:600;color:var(--sys-text-secondary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px}
+.comment{display:flex;gap:10px;margin-bottom:16px}
+.comment-avatar{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--grey-white)}
+.comment-body{flex:1}
+.comment-header{display:flex;align-items:baseline;gap:8px;margin-bottom:4px}
+.comment-name{font-size:13px;font-weight:600;color:var(--sys-text-primary)}
+.comment-time{font-size:11px;color:var(--sys-text-secondary)}
+.comment-text{font-size:13px;line-height:1.55;color:var(--sys-text-primary)}
+.comment-actions{display:flex;gap:8px;margin-top:5px}
+.comment-action{font-size:11px;color:var(--sys-text-secondary);cursor:pointer}
+.comment-action:hover{color:var(--sys-primary-default)}
+.comment.reply{margin-left:42px}
+.comment.reply .comment-avatar{width:26px;height:26px;font-size:10px}
+
+/* Reply composer */
+.reply-composer{border-top:1px solid var(--sys-border-soft);padding:14px 20px;background:var(--sys-background-base);flex-shrink:0}
+.composer-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.composer-label{font-size:12px;font-weight:600;color:var(--sys-text-secondary)}
+.composer-network-select{display:flex;gap:4px}
+.net-pill{height:24px;padding:0 8px;border-radius:1024px;font-size:11px;font-weight:500;display:flex;align-items:center;gap:4px;cursor:pointer;border:1px solid var(--sys-border-soft);background:var(--sys-background-base);color:var(--sys-text-secondary)}
+.net-pill.active{background:var(--blue-50);border-color:var(--sys-primary-default);color:var(--sys-primary-default)}
+.net-pill svg{width:12px;height:12px}
+.composer-textarea-wrap{position:relative;margin-bottom:10px}
+.composer-textarea{width:100%;height:72px;border:1px solid var(--sys-border-base);border-radius:8px;padding:10px 12px;font-size:13px;color:var(--sys-text-primary);font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;resize:none;outline:none;line-height:1.5;background:var(--sys-background-base)}
+.composer-textarea:focus{border-color:var(--sys-border-focus);box-shadow:0 0 0 3px var(--blue-50)}
+.composer-textarea::placeholder{color:var(--sys-text-placeholder)}
+.composer-footer{display:flex;align-items:center;gap:8px}
+.composer-tools{display:flex;gap:2px}
+.composer-tool-btn{width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:5px;cursor:pointer;color:var(--sys-text-secondary)}
+.composer-tool-btn:hover{background:var(--sys-background-neutral)}
+.composer-tool-btn svg path{fill:currentColor}
+.char-count{font-size:11px;color:var(--sys-text-secondary);margin-left:auto}
+.send-btn{height:32px;padding:0 16px;background:var(--sys-primary-default);color:var(--grey-white);border:none;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:inherit}
+.send-btn:hover{background:var(--sys-primary-hover)}
+.send-btn svg path{fill:var(--grey-white)}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="burger-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M3 7C3 6.44772 3.44772 6 4 6H20C20.5523 6 21 6.44772 21 7C21 7.55228 20.5523 8 20 8H4C3.44772 8 3 7.55228 3 7ZM3 12C3 11.4477 3.44772 11 4 11H20C20.5523 11 21 11.4477 21 12C21 12.5523 20.5523 13 20 13H4C3.44772 13 3 12.5523 3 12ZM4 16C3.44772 16 3 16.4477 3 17C3 17.5523 3.44772 18 4 18H20C20.5523 18 21 17.5523 21 17C21 16.4477 20.5523 16 20 16H4Z" fill="white"/></svg>
+      </div>
+      <div class="logo-mark">FL</div>
+      <span class="module-badge">Engage</span>
+    </div>
+    <div class="header-spacer"></div>
+    <div class="header-right">
+      <div class="header-icon-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C12.5523 2 13 2.44772 13 3V4.07089C16.3923 4.55612 19 7.47353 19 11V17H20C20.5523 17 21 17.4477 21 18C21 18.5523 20.5523 19 20 19H4C3.44772 19 3 18.5523 3 18C3 17.4477 3.44772 17 4 17H5V11C5 7.47353 7.60771 4.55612 11 4.07089V3C11 2.44772 11.4477 2 12 2ZM12 6C9.23858 6 7 8.23858 7 11V17H17V11C17 8.23858 14.7614 6 12 6ZM10 21C10 20.4477 10.4477 20 11 20H13C13.5523 20 14 20.4477 14 21C14 21.5523 13.5523 22 13 22H11C10.4477 22 10 21.5523 10 21Z" fill="#111317"/></svg>
+        <span class="notif-dot"></span>
+      </div>
+      <div class="header-icon-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C12.5523 2 13 2.44772 13 3V3.05002C15.8377 3.51664 18 5.98325 18 9V14L20 16V17H4V16L6 14V9C6 5.98325 8.16229 3.51664 11 3.05002V3C11 2.44772 11.4477 2 12 2ZM12 22C10.3431 22 9 20.6569 9 19H15C15 20.6569 13.6569 22 12 22Z" fill="#111317"/></svg>
+      </div>
+      <div class="avatar-btn">SA</div>
+    </div>
+  </header>
+
+  <div class="app-body">
+    <!-- Left Sidebar -->
+    <nav class="sidebar">
+      <div class="sidebar-btn active" title="Inbox">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M6.91983 3C5.76547 3 4.7135 3.66234 4.21454 4.7033L2.29725 8.70329C1.99144 9.34131 1.93259 10.0115 2.06648 10.6279V18C2.06648 19.6569 3.40962 21 5.06648 21H18.9272C20.584 21 21.9272 19.6569 21.9272 18V10.6523C22.082 9.96965 22.0005 9.22154 21.6116 8.52975L19.3626 4.52975C18.8314 3.58482 17.8317 3 16.7476 3H6.91983ZM19.9975 10.031C19.9562 10.1349 19.9318 10.2474 19.9278 10.3651C19.7853 10.7254 19.4381 11 18.9965 11H16.9735C16.103 11 15.394 11.4004 14.8596 11.8215C14.3934 12.189 13.9722 12.6458 13.6389 13.0073C13.2869 13.387 12.8641 13.6667 11.9967 13.6667C11.1293 13.6667 10.7065 13.387 10.4778 13.1407C10.0212 12.6458 9.60004 12.189 9.13382 11.8215C8.59945 11.4004 7.89043 11 7.01992 11H5.00253C4.55715 11 4.20412 10.7187 4.06522 10.3494C4.05994 10.2435 4.03818 10.1419 4.00244 10.0472C3.99482 9.88927 4.02514 9.72556 4.10077 9.56776L6.01807 5.56777C6.18438 5.22078 6.53504 5 6.91983 5H16.7476C17.109 5 17.4422 5.19494 17.6193 5.50992L19.8682 9.50992C19.9632 9.67886 20.0032 9.85787 19.9975 10.031ZM4.06648 12.8536C4.35781 12.9483 4.67167 13 5.00253 13H7.01992C7.25398 13 7.53173 13.1054 7.89584 13.3923C8.22883 13.6548 8.53707 13.988 8.88543 14.3647L9.012 14.5013C9.65522 15.1943 10.6285 15.6667 11.9967 15.6667C13.3649 15.6667 14.3382 15.1943 14.9814 14.5013L15.108 14.3647C15.4563 13.988 15.7646 13.6548 16.0976 13.3923C16.4617 13.1054 16.7394 13 16.9735 13H18.9965C19.326 13 19.6379 12.9491 19.9272 12.8559V18C19.9272 18.5523 19.4795 19 18.9272 19H5.06648C4.51419 19 4.06648 18.5523 4.06648 18V12.8536Z" fill="currentColor"/></svg>
+        <span class="sidebar-badge">7</span>
+      </div>
+      <div class="sidebar-btn" title="Starred">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.5506 11.1199L6.26714 11.11L9.73942 13.4717L8.32214 17.5451L12 15.0166L15.677 17.5445L14.2589 13.4718L17.7321 11.11L13.4477 11.1199L11.9997 6.89119L10.5506 11.1199ZM21.5537 10.9299L16.6521 14.2629L18.5354 19.6718C18.8456 20.5629 17.8208 21.3115 16.9949 20.869L16.8837 20.8012L12 17.4436L7.11633 20.8012C6.31168 21.3541 5.23841 20.6683 5.4304 19.7923L5.46457 19.6718L7.34653 14.2629L2.44629 10.9299C1.64048 10.3817 1.99881 9.21291 2.939 9.10985L3.07721 9.10256L9.12292 9.11658L10.9792 3.69976C11.2986 2.76675 12.7014 2.76675 13.0208 3.69976L14.8757 9.11658L20.9228 9.10256C21.9171 9.1003 22.3572 10.2441 21.661 10.8475L21.5537 10.9299Z" fill="currentColor"/></svg>
+      </div>
+      <div class="sidebar-btn" title="Assigned to me">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M20 12C20 13.549 19.5598 14.9952 18.7976 16.2203C18.533 15.899 18.2254 15.5668 17.8962 15.253C17.3884 14.7686 16.7792 14.2795 16.1425 13.9393C16.502 13.2745 16.7061 12.5134 16.7061 11.7047C16.7061 9.10635 14.5997 7 12.0014 7C9.40312 7 7.29677 9.10635 7.29677 11.7047C7.29677 12.5133 7.50079 13.2743 7.86014 13.9389C7.22629 14.2788 6.61664 14.7712 6.10928 15.2554C5.77916 15.5705 5.47016 15.9034 5.20469 16.2239C4.44111 14.998 4 13.5505 4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12ZM8.98771 15.6116C9.98189 16.0654 10.9515 16.4093 12.0014 16.4093C13.051 16.4093 14.0203 16.0656 14.803 15.4846C14.8663 15.5344 14.9367 15.5772 15.0136 15.6116C15.4682 15.8147 16.0053 16.2133 16.5159 16.7003C16.9203 17.0859 17.2651 17.4857 17.5005 17.8091C16.0668 19.1671 14.1306 20 12 20C9.8701 20 7.9346 19.1677 6.50104 17.8105C6.73825 17.4888 7.08529 17.0886 7.49009 16.7023C8.00511 16.2108 8.5419 15.8107 8.98771 15.6116ZM22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM14.7061 11.7047C14.7061 13.1984 13.4952 14.4093 12.0014 14.4093C10.5077 14.4093 9.29677 13.1984 9.29677 11.7047C9.29677 10.2109 10.5077 9 12.0014 9C13.4952 9 14.7061 10.2109 14.7061 11.7047Z" fill="currentColor"/></svg>
+      </div>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-btn" title="Resolved">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M20 12C20 16.4183 16.4183 20 12 20C7.58172 20 4 16.4183 4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12ZM22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM11.5298 15.2597L16.6555 10.1095C17.0454 9.71845 17.0454 9.08441 16.6555 8.69333C16.2655 8.30225 15.6333 8.30225 15.2434 8.79289L10.8238 13.1354L8.70458 11.0081C8.31463 10.6171 7.68241 10.6171 7.29246 11.0081C6.90251 11.3992 6.90251 12.0332 7.29246 12.4243L10.1177 15.2597C10.5077 15.6508 11.1399 15.6508 11.5298 15.2597Z" fill="currentColor"/></svg>
+      </div>
+      <div class="sidebar-spacer"></div>
+      <div class="sidebar-btn" title="Settings">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.54938 3.81946C9.72849 3.03198 10.4301 2.5 11.2369 2.5H12.7631C13.5699 2.5 14.2715 3.03198 14.4506 3.81946L14.6842 4.84003C14.7543 5.14807 14.986 5.39308 15.2924 5.51102C15.5987 5.62896 15.9434 5.60154 16.2228 5.4386L17.1138 4.91756C17.8028 4.51698 18.6706 4.63982 19.2108 5.21096L20.295 6.35534C20.8351 6.92649 20.9361 7.79693 20.5416 8.47899L20.0259 9.37432C19.8636 9.65677 19.8379 9.99974 19.9565 10.3033C20.0751 10.6069 20.3218 10.8354 20.6328 10.9051L21.6451 11.1387C22.4218 11.3192 22.9461 12.0154 22.9461 12.8333V14.1667C22.9461 14.9846 22.4218 15.6808 21.6451 15.8613L20.6328 16.0949C20.3218 16.1646 20.0751 16.3931 19.9565 16.6967C19.8379 17.0003 19.8636 17.3432 20.0259 17.6257L20.5416 18.521C20.9361 19.2031 20.8351 20.0735 20.295 20.6447L19.2108 21.789C18.6706 22.3602 17.8028 22.483 17.1138 22.0824L16.2228 21.5614C15.9434 21.3985 15.5987 21.371 15.2924 21.489C14.986 21.6069 14.7543 21.8519 14.6842 22.16L14.4506 23.1805C14.2715 23.968 13.5699 24.5 12.7631 24.5H11.2369C10.4301 24.5 9.72849 23.968 9.54938 23.1805L9.31581 22.16C9.24567 21.8519 9.01402 21.6069 8.70761 21.489C8.40121 21.371 8.0565 21.3985 7.77716 21.5614L6.88617 22.0824C6.19718 22.483 5.32939 22.3602 4.78924 21.789L3.70504 20.6447C3.16489 20.0735 3.06387 19.2031 3.45843 18.521L3.97413 17.6257C4.13638 17.3432 4.16208 17.0003 4.04349 16.6967C3.9249 16.3931 3.67819 16.1646 3.36716 16.0949L2.35495 15.8613C1.57823 15.6808 1.05396 14.9846 1.05396 14.1667V12.8333C1.05396 12.0154 1.57823 11.3192 2.35495 11.1387L3.36716 10.9051C3.67819 10.8354 3.9249 10.6069 4.04349 10.3033C4.16208 9.99974 4.13638 9.65677 3.97413 9.37432L3.45843 8.47899C3.06387 7.79693 3.16489 6.92649 3.70504 6.35534L4.78924 5.21096C5.32939 4.63982 6.19718 4.51698 6.88617 4.91756L7.77716 5.4386C8.0565 5.60154 8.40121 5.62896 8.70761 5.51102C9.01402 5.39308 9.24567 5.14807 9.31581 4.84003L9.54938 3.81946ZM12 16C13.6569 16 15 14.6569 15 13C15 11.3431 13.6569 10 12 10C10.3431 10 9 11.3431 9 13C9 14.6569 10.3431 16 12 16Z" fill="currentColor"/></svg>
+      </div>
+    </nav>
+
+    <!-- Feed List Panel -->
+    <aside class="feed-panel">
+      <div class="feed-panel-header">
+        <span class="feed-panel-title">Inbox</span>
+        <span class="count-badge">23</span>
+        <div class="spacer"></div>
+        <div class="icon-btn-sm" title="Filter">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M3 6C3 5.44772 3.44772 5 4 5H20C20.5523 5 21 5.44772 21 6C21 6.55228 20.5523 7 20 7H4C3.44772 7 3 6.55228 3 6ZM6 12C6 11.4477 6.44772 11 7 11H17C17.5523 11 18 11.4477 18 12C18 12.5523 17.5523 13 17 13H7C6.44772 13 6 12.5523 6 12ZM10 17C9.44772 17 9 17.4477 9 18C9 18.5523 9.44772 19 10 19H14C14.5523 19 15 18.5523 15 18C15 17.4477 14.5523 17 14 17H10Z" fill="currentColor"/></svg>
+        </div>
+      </div>
+
+      <div class="tab-row">
+        <div class="tab active">All</div>
+        <div class="tab">Unread <span style="margin-left:4px;background:var(--sys-primary-default);color:var(--grey-white);border-radius:8px;padding:0 5px;font-size:10px;font-weight:700">12</span></div>
+        <div class="tab">Assigned</div>
+        <div class="tab">Flagged</div>
+      </div>
+
+      <div class="filter-row">
+        <div class="search-wrap">
+          <span class="search-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M17.3173 15.9089C18.3719 14.5537 19 12.8502 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19C12.8472 19 14.5482 18.3739 15.9024 17.3224L19.3058 20.7258C19.6834 21.1034 20.3061 21.0929 20.6966 20.7024C21.0871 20.3118 21.0976 19.6892 20.72 19.3116L17.3173 15.9089ZM15.3642 15.1176C16.3783 14.0431 17 12.5941 17 11C17 7.68629 14.3137 5 11 5C7.68629 5 5 7.68629 5 11C5 14.3137 7.68629 17 11 17C12.5916 17 14.0385 16.3803 15.1125 15.369C15.1461 15.3212 15.1843 15.2757 15.2271 15.2329C15.2702 15.1898 15.3161 15.1514 15.3642 15.1176Z" fill="currentColor"/></svg></span>
+          <input type="text" class="search-input" placeholder="Search conversations…">
+        </div>
+        <button class="sort-btn">
+          Newest
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.06492 8.5L16.9351 8.5L17.7076 8.77616C18.0542 9.10347 18.0927 9.61154 17.8231 9.97901L17.7076 10.1096L12.6866 14.8515C12.3012 15.2155 11.6988 15.2155 11.3134 14.8515L6.29241 10.1096C5.90253 9.74138 5.90253 9.14438 6.29241 8.77616C6.45271 8.62477 6.65396 8.53563 6.86248 8.50872L7.06492 8.5Z" fill="currentColor"/></svg>
+        </button>
+      </div>
+
+      <div class="feed-list">
+
+        <!-- Item 1 — active/selected -->
+        <div class="feed-item active unread">
+          <div class="fi-top">
+            <div class="fi-checkbox"></div>
+            <div class="fi-avatar-wrap">
+              <div class="fi-avatar" style="background:linear-gradient(135deg,#f97316,#ec4899)">MK</div>
+              <div class="fi-net-badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.0357 3.86108C14.9802 3.81346 14.6667 3.80155 11.996 3.80155C9.32539 3.80155 9.0119 3.80949 7.95634 3.86108C6.98015 3.90473 6.45238 4.07139 6.0992 4.20632C5.63095 4.38489 5.29761 4.60314 4.94841 4.95235C4.5992 5.30155 4.38492 5.63489 4.20238 6.10314C4.06349 6.45632 3.90079 6.98409 3.85714 7.96028C3.80952 9.01584 3.79761 9.32933 3.79761 12C3.79761 14.6706 3.80952 14.9841 3.85714 16.0396C3.90079 17.0158 4.06745 17.5436 4.20238 17.8968C4.38095 18.365 4.5992 18.6984 4.94841 19.0476C5.29761 19.3968 5.63095 19.6111 6.0992 19.7936C6.45238 19.9325 6.98015 20.0952 7.95634 20.1389C9.0119 20.1865 9.32539 20.1984 11.996 20.1984C14.6667 20.1984 14.9802 20.1865 16.0357 20.1389C17.0119 20.0952 17.5397 19.9285 17.8929 19.7936C18.3611 19.615 18.6944 19.3968 19.0436 19.0476C19.3929 18.6984 19.6071 18.365 19.7897 17.8968C19.9286 17.5436 20.0913 17.0158 20.1349 16.0396C20.1825 14.9841 20.1944 14.6706 20.1944 12C20.1944 9.32933 20.1825 9.01584 20.1349 7.96028C20.0913 6.98409 19.9246 6.45632 19.7897 6.10314C19.6111 5.63489 19.3929 5.30155 19.0436 4.95235C18.6944 4.60314 18.3611 4.38885 17.8929 4.20632C17.5397 4.06743 17.0119 3.90473 16.0357 3.86108ZM6.86108 11.9959C6.86108 9.15863 9.16267 6.86101 11.996 6.86101C14.8293 6.86101 17.1309 9.1626 17.1309 11.9959C17.1309 14.8293 14.8293 17.1309 11.996 17.1309C9.16267 17.1309 6.86108 14.8332 6.86108 11.9959ZM8.6627 11.9959C8.6627 13.8372 10.1548 15.3292 11.996 15.3292C13.8373 15.3292 15.3294 13.8372 15.3294 11.9959C15.3294 10.1546 13.8373 8.66257 11.996 8.66257C10.1548 8.66257 8.6627 10.1546 8.6627 11.9959Z" fill="#E2007A"/></svg></div>
+            </div>
+            <div class="fi-content">
+              <div class="fi-title-row">
+                <div class="fi-title">Comment on "Summer Campaign Launch"</div>
+                <div class="fi-time">2m ago</div>
+              </div>
+              <div class="fi-tags">
+                <span class="fi-tag positive">Positive</span>
+                <span class="fi-tag source">Instagram</span>
+              </div>
+              <div class="fi-preview">This looks absolutely amazing! Can't wait to see what you have planned for the full campaign rollout 🔥</div>
+              <div class="fi-bottom">
+                <div class="fi-assignees">
+                  <div class="fi-assignee" style="background:var(--azure-500)">JD</div>
+                  <div class="fi-assignee" style="background:var(--emerald-500)">AL</div>
+                </div>
+                <div class="fi-actions">
+                  <div class="fi-action-btn" title="Flag"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M6 4.9368V13.3573C6.88629 13.0634 7.91493 12.9354 8.9375 12.9354C10.4004 12.9354 11.9837 13.1969 13.3632 13.7345C13.9371 13.9582 15.1027 14.0865 16.2339 13.9699C16.7863 13.913 17.2636 13.8036 17.61 13.6581C17.8273 13.5668 17.942 13.4837 18 13.4299V5.58094C16.879 5.70097 15.933 5.68794 14.9371 5.52021C13.8061 5.32972 12.6502 4.94531 11.1568 4.39959C8.75043 3.52029 6.97348 4.27607 6 4.9368ZM6 15.5323C6.62173 15.1688 7.66943 14.9354 8.9375 14.9354C10.183 14.9354 11.5163 15.1612 12.6368 15.598C13.6103 15.9774 15.1246 16.0949 16.439 15.9594C17.1094 15.8903 17.7962 15.7491 18.3845 15.502C18.9487 15.2651 19.5819 14.8623 19.8853 14.1715C19.9791 13.9581 20 13.7563 20 13.6087V5.02252C20 4.08877 19.169 3.40997 18.2824 3.53151C17.054 3.69991 16.1761 3.70072 15.2693 3.54799C14.3378 3.3911 13.3352 3.06625 11.8432 2.52108C8.40867 1.26606 5.83987 2.54922 4.58737 3.48855C4.19787 3.78065 4 4.22955 4 4.67281V21C4 21.5523 4.44772 22 5 22C5.55228 22 6 21.5523 6 21V15.5323Z" fill="currentColor"/></svg></div>
+                  <div class="fi-action-btn" title="Resolve"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M20 12C20 16.4183 16.4183 20 12 20C7.58172 20 4 16.4183 4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12ZM22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM11.5298 15.2597L16.6555 10.1095C17.0454 9.71845 17.0454 9.08441 16.6555 8.69333C16.2655 8.30225 15.6333 8.30225 15.2434 8.79289L10.8238 13.1354L8.70458 11.0081C8.31463 10.6171 7.68241 10.6171 7.29246 11.0081C6.90251 11.3992 6.90251 12.0332 7.29246 12.4243L10.1177 15.2597C10.5077 15.6508 11.1399 15.6508 11.5298 15.2597Z" fill="currentColor"/></svg></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="feed-item unread">
+          <div class="fi-top">
+            <div class="fi-checkbox"></div>
+            <div class="fi-avatar-wrap">
+              <div class="fi-avatar" style="background:linear-gradient(135deg,#3b82f6,#1d4ed8)">TR</div>
+              <div class="fi-net-badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M22 12.0611C22 6.50451 17.5229 2 12 2C6.47715 2 2 6.50451 2 12.0611C2 17.0829 5.65686 21.2452 10.4375 22V14.9694H7.89844V12.0611H10.4375V9.84452C10.4375 7.32296 11.9304 5.93012 14.2146 5.93012C15.3087 5.93012 16.4531 6.12663 16.4531 6.12663V8.60261H15.1921C13.9499 8.60261 13.5625 9.37816 13.5625 10.1738V12.0611H16.3359L15.8926 14.9694H13.5625V22C18.3431 21.2452 22 17.0829 22 12.0611Z" fill="#1877F2"/></svg></div>
+            </div>
+            <div class="fi-content">
+              <div class="fi-title-row">
+                <div class="fi-title">Reply to your post "Q2 Product Update"</div>
+                <div class="fi-time">14m ago</div>
+              </div>
+              <div class="fi-tags">
+                <span class="fi-tag neutral">Neutral</span>
+                <span class="fi-tag source">Facebook</span>
+              </div>
+              <div class="fi-preview">When will this feature be available for enterprise customers? We've been waiting for a while now.</div>
+              <div class="fi-bottom">
+                <div class="fi-assignees">
+                  <div class="fi-assignee" style="background:var(--coral-500)">SM</div>
+                </div>
+                <div class="fi-actions">
+                  <div class="fi-action-btn" title="Flag"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M6 4.9368V13.3573C6.88629 13.0634 7.91493 12.9354 8.9375 12.9354C10.4004 12.9354 11.9837 13.1969 13.3632 13.7345C13.9371 13.9582 15.1027 14.0865 16.2339 13.9699C16.7863 13.913 17.2636 13.8036 17.61 13.6581C17.8273 13.5668 17.942 13.4837 18 13.4299V5.58094C16.879 5.70097 15.933 5.68794 14.9371 5.52021C13.8061 5.32972 12.6502 4.94531 11.1568 4.39959C8.75043 3.52029 6.97348 4.27607 6 4.9368ZM6 15.5323C6.62173 15.1688 7.66943 14.9354 8.9375 14.9354C10.183 14.9354 11.5163 15.1612 12.6368 15.598C13.6103 15.9774 15.1246 16.0949 16.439 15.9594C17.7962 15.7491 18.3845 15.502C18.9487 15.2651 19.5819 14.8623 19.8853 14.1715C19.9791 13.9581 20 13.7563 20 13.6087V5.02252C20 4.08877 19.169 3.40997 18.2824 3.53151C17.054 3.69991 16.1761 3.70072 15.2693 3.54799C14.3378 3.3911 13.3352 3.06625 11.8432 2.52108C8.40867 1.26606 5.83987 2.54922 4.58737 3.48855C4.19787 3.78065 4 4.22955 4 4.67281V21C4 21.5523 4.44772 22 5 22C5.55228 22 6 21.5523 6 21V15.5323Z" fill="currentColor"/></svg></div>
+                  <div class="fi-action-btn" title="Resolve"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M20 12C20 16.4183 16.4183 20 12 20C7.58172 20 4 16.4183 4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12ZM22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM11.5298 15.2597L16.6555 10.1095C17.0454 9.71845 17.0454 9.08441 16.6555 8.69333C16.2655 8.30225 15.6333 8.30225 15.2434 8.79289L10.8238 13.1354L8.70458 11.0081C8.31463 10.6171 7.68241 10.6171 7.29246 11.0081C6.90251 11.3992 6.90251 12.0332 7.29246 12.4243L10.1177 15.2597C10.5077 15.6508 11.1399 15.6508 11.5298 15.2597Z" fill="currentColor"/></svg></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 3 -->
+        <div class="feed-item">
+          <div class="fi-top">
+            <div class="fi-checkbox"></div>
+            <div class="fi-avatar-wrap">
+              <div class="fi-avatar" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed)">AP</div>
+              <div class="fi-net-badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M19.5754 2H4.42606C3.08587 2 2 3.08714 2 4.42857V19.5743C2 20.9157 3.0873 22 4.42606 22H19.5739C20.9155 22 22 20.9129 22 19.5743V4.42857C22.0028 3.08714 20.9155 2 19.5754 2ZM7.6465 19.0971H4.90039V10.2314H7.6465V19.0971ZM6.2606 9.33718C5.36333 9.33718 4.63751 8.60433 4.63751 7.70147C4.63751 6.79861 5.36476 6.06576 6.2606 6.06576C7.15787 6.06576 7.88369 6.79861 7.88369 7.70147C7.88369 8.60433 7.15787 9.33718 6.2606 9.33718ZM19.0496 19.1414H16.3178V14.4871C16.3178 13.21 15.8334 12.4986 14.8247 12.4986C13.726 12.4986 13.153 13.2414 13.153 14.4871V19.1414H10.5184V10.2757H13.1502V11.47C13.9431 10.0057 15.822 10.0057 15.822 10.0057C17.7008 10.0057 19.0482 11.1529 19.0482 13.5286L19.0496 19.1414Z" fill="#0A66C2"/></svg></div>
+            </div>
+            <div class="fi-content">
+              <div class="fi-title-row">
+                <div class="fi-title">Direct message from Arjun Patel</div>
+                <div class="fi-time">1h ago</div>
+              </div>
+              <div class="fi-tags">
+                <span class="fi-tag positive">Positive</span>
+                <span class="fi-tag source">LinkedIn</span>
+              </div>
+              <div class="fi-preview">Hi there! I saw your recent post about social media strategies and I'd love to connect and discuss potential collaboration opportunities.</div>
+              <div class="fi-bottom">
+                <div class="fi-assignees"></div>
+                <div class="fi-actions">
+                  <div class="fi-action-btn" title="Flag"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M6 4.9368V13.3573C6.88629 13.0634 7.91493 12.9354 8.9375 12.9354C10.4004 12.9354 11.9837 13.1969 13.3632 13.7345C13.9371 13.9582 15.1027 14.0865 16.2339 13.9699C16.7863 13.913 17.2636 13.8036 17.61 13.6581C17.8273 13.5668 17.942 13.4837 18 13.4299V5.58094C16.879 5.70097 15.933 5.68794 14.9371 5.52021C13.8061 5.32972 12.6502 4.94531 11.1568 4.39959C8.75043 3.52029 6.97348 4.27607 6 4.9368ZM6 15.5323C6.62173 15.1688 7.66943 14.9354 8.9375 14.9354C10.183 14.9354 11.5163 15.1612 12.6368 15.598C13.6103 15.9774 15.1246 16.0949 16.439 15.9594C17.7962 15.7491 18.3845 15.502C18.9487 15.2651 19.5819 14.8623 19.8853 14.1715C19.9791 13.9581 20 13.7563 20 13.6087V5.02252C20 4.08877 19.169 3.40997 18.2824 3.53151C17.054 3.69991 16.1761 3.70072 15.2693 3.54799C14.3378 3.3911 13.3352 3.06625 11.8432 2.52108C8.40867 1.26606 5.83987 2.54922 4.58737 3.48855C4.19787 3.78065 4 4.22955 4 4.67281V21C4 21.5523 4.44772 22 5 22C5.55228 22 6 21.5523 6 21V15.5323Z" fill="currentColor"/></svg></div>
+                  <div class="fi-action-btn" title="Resolve"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M20 12C20 16.4183 16.4183 20 12 20C7.58172 20 4 16.4183 4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12ZM22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM11.5298 15.2597L16.6555 10.1095C17.0454 9.71845 17.0454 9.08441 16.6555 8.69333C16.2655 8.30225 15.6333 8.30225 15.2434 8.79289L10.8238 13.1354L8.70458 11.0081C8.31463 10.6171 7.68241 10.6171 7.29246 11.0081C6.90251 11.3992 6.90251 12.0332 7.29246 12.4243L10.1177 15.2597C10.5077 15.6508 11.1399 15.6508 11.5298 15.2597Z" fill="currentColor"/></svg></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 4 -->
+        <div class="feed-item">
+          <div class="fi-top">
+            <div class="fi-checkbox"></div>
+            <div class="fi-avatar-wrap">
+              <div class="fi-avatar" style="background:linear-gradient(135deg,#14b8a6,#0f766e)">CW</div>
+              <div class="fi-net-badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M20.818 3H17.7512L12.6976 8.75169L8.32828 3H2L9.5613 12.8446L2.39494 21H5.46359L10.9946 14.7074L15.8284 21H22L14.1179 10.6246L20.818 3ZM18.3742 19.1722H16.6749L5.58136 4.73163H7.40494L18.3742 19.1722Z" fill="#0F1419"/></svg></div>
+            </div>
+            <div class="fi-content">
+              <div class="fi-title-row">
+                <div class="fi-title">Mention in thread "Agency Tools 2026"</div>
+                <div class="fi-time">3h ago</div>
+              </div>
+              <div class="fi-tags">
+                <span class="fi-tag negative">Negative</span>
+                <span class="fi-tag source">X</span>
+              </div>
+              <div class="fi-preview">@FaceliftHQ the scheduling tool keeps breaking on mobile. Third time this week. Not acceptable for a paid product.</div>
+              <div class="fi-bottom">
+                <div class="fi-assignees">
+                  <div class="fi-assignee" style="background:var(--petrol-500)">KL</div>
+                </div>
+                <div class="fi-actions">
+                  <div class="fi-action-btn" title="Flag"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M6 4.9368V13.3573C6.88629 13.0634 7.91493 12.9354 8.9375 12.9354C10.4004 12.9354 11.9837 13.1969 13.3632 13.7345C13.9371 13.9582 15.1027 14.0865 16.2339 13.9699C16.7863 13.913 17.2636 13.8036 17.61 13.6581C17.8273 13.5668 17.942 13.4837 18 13.4299V5.58094C16.879 5.70097 15.933 5.68794 14.9371 5.52021C13.8061 5.32972 12.6502 4.94531 11.1568 4.39959C8.75043 3.52029 6.97348 4.27607 6 4.9368ZM6 15.5323C6.62173 15.1688 7.66943 14.9354 8.9375 14.9354C10.183 14.9354 11.5163 15.1612 12.6368 15.598C13.6103 15.9774 15.1246 16.0949 16.439 15.9594C17.7962 15.7491 18.3845 15.502C18.9487 15.2651 19.5819 14.8623 19.8853 14.1715C19.9791 13.9581 20 13.7563 20 13.6087V5.02252C20 4.08877 19.169 3.40997 18.2824 3.53151C17.054 3.69991 16.1761 3.70072 15.2693 3.54799C14.3378 3.3911 13.3352 3.06625 11.8432 2.52108C8.40867 1.26606 5.83987 2.54922 4.58737 3.48855C4.19787 3.78065 4 4.22955 4 4.67281V21C4 21.5523 4.44772 22 5 22C5.55228 22 6 21.5523 6 21V15.5323Z" fill="currentColor"/></svg></div>
+                  <div class="fi-action-btn" title="Resolve"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M20 12C20 16.4183 16.4183 20 12 20C7.58172 20 4 16.4183 4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12ZM22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM11.5298 15.2597L16.6555 10.1095C17.0454 9.71845 17.0454 9.08441 16.6555 8.69333C16.2655 8.30225 15.6333 8.30225 15.2434 8.79289L10.8238 13.1354L8.70458 11.0081C8.31463 10.6171 7.68241 10.6171 7.29246 11.0081C6.90251 11.3992 6.90251 12.0332 7.29246 12.4243L10.1177 15.2597C10.5077 15.6508 11.1399 15.6508 11.5298 15.2597Z" fill="currentColor"/></svg></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 5 -->
+        <div class="feed-item">
+          <div class="fi-top">
+            <div class="fi-checkbox"></div>
+            <div class="fi-avatar-wrap">
+              <div class="fi-avatar" style="background:linear-gradient(135deg,#f59e0b,#d97706)">BS</div>
+              <div class="fi-net-badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.7841 11.2696C16.698 11.2283 16.6105 11.1886 16.5219 11.1505C16.3676 8.30606 14.8139 6.6776 12.2051 6.66094C10.6614 6.66086 9.39842 7.28349 8.59438 8.42021L8.3039 8.79946C8.01103 9.18181 8.08358 9.72917 8.46593 10.022C8.84828 10.3149 9.39564 10.2424 9.68851 9.86L9.94634 9.52339C10.6594 8.59538 11.5235 8.4255 12.1704 8.4255C13.0533 8.43105 13.7014 8.6809 14.121 9.16813C14.4263 9.52284 14.6305 10.013 14.7316 10.6316C13.97 10.5022 13.1464 10.4623 12.2659 10.5128C9.78554 10.6558 8.19099 12.1029 8.29808 14.1138C8.35243 15.1338 8.86038 16.0113 9.7283 16.5845C10.4621 17.0691 11.4072 17.306 12.3895 17.2524C13.6867 17.1813 14.7043 16.6861 15.4142 15.7808C15.9534 15.0933 16.2944 14.2024 16.445 13.0798C17.0632 13.453 17.5213 13.9442 17.7743 14.5346C18.2046 15.5382 18.2297 17.1875 16.8845 18.5321C15.7059 19.71 14.2891 20.2196 12.148 20.2353C9.77299 20.2177 7.97677 19.4557 6.80892 17.9705C5.71532 16.5798 5.15015 14.571 5.12906 12C5.15015 9.42894 5.71532 7.42017 6.80892 6.02945C7.97677 4.54426 9.77296 3.78229 12.148 3.76464C14.5403 3.78243 16.3678 4.54806 17.5804 6.04042C18.1749 6.77225 18.6232 7.69258 18.9187 8.76566L19.0307 9.12896C19.1644 9.58677 19.6439 9.84949 20.1018 9.71575C20.5596 9.58201 20.8223 9.10247 20.6885 8.64466L20.5933 8.31869C20.2418 6.99606 19.6782 5.85789 18.9112 4.91396C17.3567 3.0007 15.0832 2.02033 12.1539 2H12.1421C9.21877 2.02026 6.97073 3.00435 5.46051 4.92493C4.11661 6.634 3.42339 9.01205 3.4001 11.993L3.4001 12.007C3.42339 14.9879 4.11661 17.366 5.46051 19.0751C6.97073 20.9956 9.21877 21.9798 12.1421 22H12.1539C14.7529 21.982 16.5849 21.3013 18.0941 19.7928C20.0687 17.8194 20.0092 15.3457 19.3584 13.8272C18.8915 12.7382 18.0013 11.8538 16.7841 11.2696ZM12.2966 15.4903C11.2095 15.5516 10.0802 15.0634 10.0245 14.0179C9.98322 13.2427 10.576 12.3777 12.3633 12.2747C13.6154 12.2571 14.2228 12.3202 14.775 12.4409C14.569 15.0141 13.361 15.4319 12.2966 15.4903Z" fill="#111317"/></svg></div>
+            </div>
+            <div class="fi-content">
+              <div class="fi-title-row">
+                <div class="fi-title">Comment on "Brand Story — Origin"</div>
+                <div class="fi-time">5h ago</div>
+              </div>
+              <div class="fi-tags">
+                <span class="fi-tag positive">Positive</span>
+                <span class="fi-tag source">Threads</span>
+              </div>
+              <div class="fi-preview">Love seeing the behind-the-scenes content! This is exactly the kind of authenticity brands should be sharing more of.</div>
+              <div class="fi-bottom">
+                <div class="fi-assignees"></div>
+                <div class="fi-actions">
+                  <div class="fi-action-btn" title="Flag"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M6 4.9368V13.3573C6.88629 13.0634 7.91493 12.9354 8.9375 12.9354C10.4004 12.9354 11.9837 13.1969 13.3632 13.7345C13.9371 13.9582 15.1027 14.0865 16.2339 13.9699C16.7863 13.913 17.2636 13.8036 17.61 13.6581C17.8273 13.5668 17.942 13.4837 18 13.4299V5.58094C16.879 5.70097 15.933 5.68794 14.9371 5.52021C13.8061 5.32972 12.6502 4.94531 11.1568 4.39959C8.75043 3.52029 6.97348 4.27607 6 4.9368ZM6 15.5323C6.62173 15.1688 7.66943 14.9354 8.9375 14.9354C10.183 14.9354 11.5163 15.1612 12.6368 15.598C13.6103 15.9774 15.1246 16.0949 16.439 15.9594C17.7962 15.7491 18.3845 15.502C18.9487 15.2651 19.5819 14.8623 19.8853 14.1715C19.9791 13.9581 20 13.7563 20 13.6087V5.02252C20 4.08877 19.169 3.40997 18.2824 3.53151C17.054 3.69991 16.1761 3.70072 15.2693 3.54799C14.3378 3.3911 13.3352 3.06625 11.8432 2.52108C8.40867 1.26606 5.83987 2.54922 4.58737 3.48855C4.19787 3.78065 4 4.22955 4 4.67281V21C4 21.5523 4.44772 22 5 22C5.55228 22 6 21.5523 6 21V15.5323Z" fill="currentColor"/></svg></div>
+                  <div class="fi-action-btn" title="Resolve"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M20 12C20 16.4183 16.4183 20 12 20C7.58172 20 4 16.4183 4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12ZM22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM11.5298 15.2597L16.6555 10.1095C17.0454 9.71845 17.0454 9.08441 16.6555 8.69333C16.2655 8.30225 15.6333 8.30225 15.2434 8.79289L10.8238 13.1354L8.70458 11.0081C8.31463 10.6171 7.68241 10.6171 7.29246 11.0081C6.90251 11.3992 6.90251 12.0332 7.29246 12.4243L10.1177 15.2597C10.5077 15.6508 11.1399 15.6508 11.5298 15.2597Z" fill="currentColor"/></svg></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </aside>
+
+    <!-- Detail Panel -->
+    <section class="detail-panel">
+      <div class="detail-header">
+        <div class="detail-post-meta">
+          <div class="detail-net-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.0357 3.86108C14.9802 3.81346 14.6667 3.80155 11.996 3.80155C9.32539 3.80155 9.0119 3.80949 7.95634 3.86108C6.98015 3.90473 6.45238 4.07139 6.0992 4.20632C5.63095 4.38489 5.29761 4.60314 4.94841 4.95235C4.5992 5.30155 4.38492 5.63489 4.20238 6.10314C4.06349 6.45632 3.90079 6.98409 3.85714 7.96028C3.80952 9.01584 3.79761 9.32933 3.79761 12C3.79761 14.6706 3.80952 14.9841 3.85714 16.0396C3.90079 17.0158 4.06745 17.5436 4.20238 17.8968C4.38095 18.365 4.5992 18.6984 4.94841 19.0476C5.29761 19.3968 5.63095 19.6111 6.0992 19.7936C6.45238 19.9325 6.98015 20.0952 7.95634 20.1389C9.0119 20.1865 9.32539 20.1984 11.996 20.1984C14.6667 20.1984 14.9802 20.1865 16.0357 20.1389C17.0119 20.0952 17.5397 19.9285 17.8929 19.7936C18.3611 19.615 18.6944 19.3968 19.0436 19.0476C19.3929 18.6984 19.6071 18.365 19.7897 17.8968C19.9286 17.5436 20.0913 17.0158 20.1349 16.0396C20.1825 14.9841 20.1944 14.6706 20.1944 12C20.1944 9.32933 20.1825 9.01584 20.1349 7.96028C20.0913 6.98409 19.9246 6.45632 19.7897 6.10314C19.6111 5.63489 19.3929 5.30155 19.0436 4.95235C18.6944 4.60314 18.3611 4.38885 17.8929 4.20632C17.5397 4.06743 17.0119 3.90473 16.0357 3.86108ZM6.86108 11.9959C6.86108 9.15863 9.16267 6.86101 11.996 6.86101C14.8293 6.86101 17.1309 9.1626 17.1309 11.9959C17.1309 14.8293 14.8293 17.1309 11.996 17.1309C9.16267 17.1309 6.86108 14.8332 6.86108 11.9959ZM8.6627 11.9959C8.6627 13.8372 10.1548 15.3292 11.996 15.3292C13.8373 15.3292 15.3294 13.8372 15.3294 11.9959C15.3294 10.1546 13.8373 8.66257 11.996 8.66257C10.1548 8.66257 8.6627 10.1546 8.6627 11.9959Z" fill="#E2007A"/></svg></div>
+          <div>
+            <div class="detail-handle">@facelift_hq</div>
+            <div class="detail-date">Summer Campaign Launch · May 10, 2026 · 14:32</div>
+          </div>
+        </div>
+        <div class="detail-actions">
+          <button class="detail-action-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M6 4.9368V13.3573C6.88629 13.0634 7.91493 12.9354 8.9375 12.9354C10.4004 12.9354 11.9837 13.1969 13.3632 13.7345C13.9371 13.9582 15.1027 14.0865 16.2339 13.9699C16.7863 13.913 17.2636 13.8036 17.61 13.6581C17.8273 13.5668 17.942 13.4837 18 13.4299V5.58094C16.879 5.70097 15.933 5.68794 14.9371 5.52021C13.8061 5.32972 12.6502 4.94531 11.1568 4.39959C8.75043 3.52029 6.97348 4.27607 6 4.9368ZM6 15.5323C6.62173 15.1688 7.66943 14.9354 8.9375 14.9354C10.183 14.9354 11.5163 15.1612 12.6368 15.598C13.6103 15.9774 15.1246 16.0949 16.439 15.9594C17.7962 15.7491 18.3845 15.502C18.9487 15.2651 19.5819 14.8623 19.8853 14.1715C19.9791 13.9581 20 13.7563 20 13.6087V5.02252C20 4.08877 19.169 3.40997 18.2824 3.53151C17.054 3.69991 16.1761 3.70072 15.2693 3.54799C14.3378 3.3911 13.3352 3.06625 11.8432 2.52108C8.40867 1.26606 5.83987 2.54922 4.58737 3.48855C4.19787 3.78065 4 4.22955 4 4.67281V21C4 21.5523 4.44772 22 5 22C5.55228 22 6 21.5523 6 21V15.5323Z" fill="currentColor"/></svg>
+            Flag
+          </button>
+          <button class="detail-action-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M20 12C20 16.4183 16.4183 20 12 20C7.58172 20 4 16.4183 4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12ZM22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM11.5298 15.2597L16.6555 10.1095C17.0454 9.71845 17.0454 9.08441 16.6555 8.69333C16.2655 8.30225 15.6333 8.30225 15.2434 8.79289L10.8238 13.1354L8.70458 11.0081C8.31463 10.6171 7.68241 10.6171 7.29246 11.0081C6.90251 11.3992 6.90251 12.0332 7.29246 12.4243L10.1177 15.2597C10.5077 15.6508 11.1399 15.6508 11.5298 15.2597Z" fill="currentColor"/></svg>
+            Resolve
+          </button>
+          <button class="detail-action-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M20 12C20 16.4183 16.4183 20 12 20C7.58172 20 4 16.4183 4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12ZM22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM11 8C11 7.44772 11.4477 7 12 7C12.5523 7 13 7.44772 13 8V12C13 12.5523 12.5523 13 12 13C11.4477 13 11 12.5523 11 12V8ZM12 15C11.4477 15 11 15.4477 11 16C11 16.5523 11.4477 17 12 17C12.5523 17 13 16.5523 13 16C13 15.4477 12.5523 15 12 15Z" fill="currentColor"/></svg>
+            More
+          </button>
+          <button class="detail-action-btn primary-action">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.54938 3.81946C9.72849 3.03198 10.4301 2.5 11.2369 2.5H12.7631C13.5699 2.5 14.2715 3.03198 14.4506 3.81946L14.6842 4.84003C14.7543 5.14807 14.986 5.39308 15.2924 5.51102C15.5987 5.62896 15.9434 5.60154 16.2228 5.4386L17.1138 4.91756C17.8028 4.51698 18.6706 4.63982 19.2108 5.21096L20.295 6.35534C20.8351 6.92649 20.9361 7.79693 20.5416 8.47899L20.0259 9.37432C19.8636 9.65677 19.8379 9.99974 19.9565 10.3033C20.0751 10.6069 20.3218 10.8354 20.6328 10.9051L21.6451 11.1387C22.4218 11.3192 22.9461 12.0154 22.9461 12.8333V14.1667C22.9461 14.9846 22.4218 15.6808 21.6451 15.8613L20.6328 16.0949C20.3218 16.1646 20.0751 16.3931 19.9565 16.6967C19.8379 17.0003 19.8636 17.3432 20.0259 17.6257L20.5416 18.521C20.9361 19.2031 20.8351 20.0735 20.295 20.6447L19.2108 21.789C18.6706 22.3602 17.8028 22.483 17.1138 22.0824L16.2228 21.5614C15.9434 21.3985 15.5987 21.371 15.2924 21.489C14.986 21.6069 14.7543 21.8519 14.6842 22.16L14.4506 23.1805C14.2715 23.968 13.5699 24.5 12.7631 24.5H11.2369C10.4301 24.5 9.72849 23.968 9.54938 23.1805L9.31581 22.16C9.24567 21.8519 9.01402 21.6069 8.70761 21.489C8.40121 21.371 8.0565 21.3985 7.77716 21.5614L6.88617 22.0824C6.19718 22.483 5.32939 22.3602 4.78924 21.789L3.70504 20.6447C3.16489 20.0735 3.06387 19.2031 3.45843 18.521L3.97413 17.6257C4.13638 17.3432 4.16208 17.0003 4.04349 16.6967C3.9249 16.3931 3.67819 16.1646 3.36716 16.0949L2.35495 15.8613C1.57823 15.6808 1.05396 14.9846 1.05396 14.1667V12.8333C1.05396 12.0154 1.57823 11.3192 2.35495 11.1387L3.36716 10.9051C3.67819 10.8354 3.9249 10.6069 4.04349 10.3033C4.16208 9.99974 4.13638 9.65677 3.97413 9.37432L3.45843 8.47899C3.06387 7.79693 3.16489 6.92649 3.70504 6.35534L4.78924 5.21096C5.32939 4.63982 6.19718 4.51698 6.88617 4.91756L7.77716 5.4386C8.0565 5.60154 8.40121 5.62896 8.70761 5.51102C9.01402 5.39308 9.24567 5.14807 9.31581 4.84003L9.54938 3.81946Z" fill="white"/></svg>
+            Assign
+          </button>
+        </div>
+      </div>
+
+      <div class="detail-body">
+        <!-- Original post -->
+        <div class="original-post">
+          <div class="op-header">
+            <div class="op-avatar" style="background:linear-gradient(135deg,var(--azure-400),var(--blue-500))">FL</div>
+            <div class="op-meta">
+              <div class="op-name">Facelift HQ</div>
+              <div class="op-handle-date">@facelift_hq · May 10, 2026</div>
+            </div>
+            <div class="op-net"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.0357 3.86108C14.9802 3.81346 14.6667 3.80155 11.996 3.80155C9.32539 3.80155 9.0119 3.80949 7.95634 3.86108C6.98015 3.90473 6.45238 4.07139 6.0992 4.20632C5.63095 4.38489 5.29761 4.60314 4.94841 4.95235C4.5992 5.30155 4.38492 5.63489 4.20238 6.10314C4.06349 6.45632 3.90079 6.98409 3.85714 7.96028C3.80952 9.01584 3.79761 9.32933 3.79761 12C3.79761 14.6706 3.80952 14.9841 3.85714 16.0396C3.90079 17.0158 4.06745 17.5436 4.20238 17.8968C4.38095 18.365 4.5992 18.6984 4.94841 19.0476C5.29761 19.3968 5.63095 19.6111 6.0992 19.7936C6.45238 19.9325 6.98015 20.0952 7.95634 20.1389C9.0119 20.1865 9.32539 20.1984 11.996 20.1984C14.6667 20.1984 14.9802 20.1865 16.0357 20.1389C17.0119 20.0952 17.5397 19.9285 17.8929 19.7936C18.3611 19.615 18.6944 19.3968 19.0436 19.0476C19.3929 18.6984 19.6071 18.365 19.7897 17.8968C19.9286 17.5436 20.0913 17.0158 20.1349 16.0396C20.1825 14.9841 20.1944 14.6706 20.1944 12C20.1944 9.32933 20.1825 9.01584 20.1349 7.96028C20.0913 6.98409 19.9246 6.45632 19.7897 6.10314C19.6111 5.63489 19.3929 5.30155 19.0436 4.95235C18.6944 4.60314 18.3611 4.38885 17.8929 4.20632C17.5397 4.06743 17.0119 3.90473 16.0357 3.86108ZM6.86108 11.9959C6.86108 9.15863 9.16267 6.86101 11.996 6.86101C14.8293 6.86101 17.1309 9.1626 17.1309 11.9959C17.1309 14.8293 14.8293 17.1309 11.996 17.1309C9.16267 17.1309 6.86108 14.8332 6.86108 11.9959ZM8.6627 11.9959C8.6627 13.8372 10.1548 15.3292 11.996 15.3292C13.8373 15.3292 15.3294 13.8372 15.3294 11.9959C15.3294 10.1546 13.8373 8.66257 11.996 8.66257C10.1548 8.66257 8.6627 10.1546 8.6627 11.9959Z" fill="#E2007A"/></svg></div>
+          </div>
+          <div class="op-image">
+            <div class="op-image-inner">
+              <span>📸 Summer Campaign Visual</span>
+            </div>
+          </div>
+          <div class="op-text">Exciting news! 🌟 Our Summer Campaign 2026 is officially live. We've poured our hearts into this one — from the visuals to the messaging. Ready to see social media done differently? Stay tuned this week for daily drops. #SummerCampaign #SocialMedia #Facelift</div>
+          <div class="op-stats">
+            <div class="op-stat"><strong>1.2k</strong> Likes</div>
+            <div class="op-stat"><strong>84</strong> Comments</div>
+            <div class="op-stat"><strong>203</strong> Shares</div>
+            <div class="op-stat"><strong>18.4k</strong> Reach</div>
+          </div>
+        </div>
+
+        <!-- Comments thread -->
+        <div class="thread-label">3 Comments</div>
+
+        <div class="comment">
+          <div class="comment-avatar" style="background:linear-gradient(135deg,#f97316,#ec4899)">MK</div>
+          <div class="comment-body">
+            <div class="comment-header">
+              <span class="comment-name">Maya Kowalski</span>
+              <span class="comment-time">2 minutes ago</span>
+            </div>
+            <div class="comment-text">This looks absolutely amazing! Can't wait to see what you have planned for the full campaign rollout 🔥</div>
+            <div class="comment-actions">
+              <span class="comment-action">Like</span>
+              <span class="comment-action">Reply</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="comment reply">
+          <div class="comment-avatar" style="background:linear-gradient(135deg,var(--azure-400),var(--blue-500))">FL</div>
+          <div class="comment-body">
+            <div class="comment-header">
+              <span class="comment-name">Facelift HQ</span>
+              <span class="comment-time" style="color:var(--sys-primary-default);font-weight:500">Brand · 1 minute ago</span>
+            </div>
+            <div class="comment-text">Thank you Maya! We're so excited about this one. Keep an eye out — there's a lot more coming throughout the week! ✨</div>
+            <div class="comment-actions">
+              <span class="comment-action">Like</span>
+              <span class="comment-action">Reply</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="comment">
+          <div class="comment-avatar" style="background:linear-gradient(135deg,#10b981,#059669)">JP</div>
+          <div class="comment-body">
+            <div class="comment-header">
+              <span class="comment-name">Jordan Park</span>
+              <span class="comment-time">47 minutes ago</span>
+            </div>
+            <div class="comment-text">The visual direction is really fresh. Who did the creative direction on this? Would love to know the agency behind it.</div>
+            <div class="comment-actions">
+              <span class="comment-action">Like</span>
+              <span class="comment-action">Reply</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reply Composer -->
+      <div class="reply-composer">
+        <div class="composer-header">
+          <span class="composer-label">Reply as</span>
+          <div class="composer-network-select">
+            <div class="net-pill active">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.0357 3.86108C14.9802 3.81346 14.6667 3.80155 11.996 3.80155C9.32539 3.80155 9.0119 3.80949 7.95634 3.86108C6.98015 3.90473 6.45238 4.07139 6.0992 4.20632C5.63095 4.38489 5.29761 4.60314 4.94841 4.95235C4.5992 5.30155 4.38492 5.63489 4.20238 6.10314C4.06349 6.45632 3.90079 6.98409 3.85714 7.96028C3.80952 9.01584 3.79761 9.32933 3.79761 12C3.79761 14.6706 3.80952 14.9841 3.85714 16.0396C3.90079 17.0158 4.06745 17.5436 4.20238 17.8968C4.38095 18.365 4.5992 18.6984 4.94841 19.0476C5.29761 19.3968 5.63095 19.6111 6.0992 19.7936C6.45238 19.9325 6.98015 20.0952 7.95634 20.1389C9.0119 20.1865 9.32539 20.1984 11.996 20.1984C14.6667 20.1984 14.9802 20.1865 16.0357 20.1389C17.0119 20.0952 17.5397 19.9285 17.8929 19.7936C18.3611 19.615 18.6944 19.3968 19.0436 19.0476C19.3929 18.6984 19.6071 18.365 19.7897 17.8968C19.9286 17.5436 20.0913 17.0158 20.1349 16.0396C20.1825 14.9841 20.1944 14.6706 20.1944 12C20.1944 9.32933 20.1825 9.01584 20.1349 7.96028C20.0913 6.98409 19.9246 6.45632 19.7897 6.10314C19.6111 5.63489 19.3929 5.30155 19.0436 4.95235C18.6944 4.60314 18.3611 4.38885 17.8929 4.20632C17.5397 4.06743 17.0119 3.90473 16.0357 3.86108ZM6.86108 11.9959C6.86108 9.15863 9.16267 6.86101 11.996 6.86101C14.8293 6.86101 17.1309 9.1626 17.1309 11.9959C17.1309 14.8293 14.8293 17.1309 11.996 17.1309C9.16267 17.1309 6.86108 14.8332 6.86108 11.9959ZM8.6627 11.9959C8.6627 13.8372 10.1548 15.3292 11.996 15.3292C13.8373 15.3292 15.3294 13.8372 15.3294 11.9959C15.3294 10.1546 13.8373 8.66257 11.996 8.66257C10.1548 8.66257 8.6627 10.1546 8.6627 11.9959Z" fill="#E2007A"/></svg>
+              @facelift_hq
+            </div>
+          </div>
+        </div>
+        <div class="composer-textarea-wrap">
+          <textarea class="composer-textarea" placeholder="Write a reply to Maya Kowalski…"></textarea>
+        </div>
+        <div class="composer-footer">
+          <div class="composer-tools">
+            <div class="composer-tool-btn" title="Attach">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M14.5 3C12.0147 3 10 5.01472 10 7.5V16C10 17.6569 11.3431 19 13 19C14.6569 19 16 17.6569 16 16V8C16 7.44772 15.5523 7 15 7C14.4477 7 14 7.44772 14 8V16C14 16.5523 13.5523 17 13 17C12.4477 17 12 16.5523 12 16V7.5C12 6.11929 13.1193 5 14.5 5C15.8807 5 17 6.11929 17 7.5V16C17 18.7614 14.7614 21 12 21C9.23858 21 7 18.7614 7 16V7.5C7 6.94772 6.55228 6.5 6 6.5C5.44772 6.5 5 6.94772 5 7.5V16C5 19.866 8.13401 23 12 23C15.866 23 19 19.866 19 16V7.5C19 5.01472 16.9853 3 14.5 3Z" fill="currentColor"/></svg>
+            </div>
+            <div class="composer-tool-btn" title="Emoji">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4ZM2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM9 10C9 9.44772 9.44772 9 10 9C10.5523 9 11 9.44772 11 10C11 10.5523 10.5523 11 10 11C9.44772 11 9 10.5523 9 10ZM13 10C13 9.44772 13.4477 9 14 9C14.5523 9 15 9.44772 15 10C15 10.5523 14.5523 11 14 11C13.4477 11 13 10.5523 13 10ZM8.8 14.4C8.46863 13.9582 7.84314 13.8686 7.4 14.2C6.95817 14.5314 6.86863 15.1569 7.2 15.6C8.06663 16.7555 9.4 18 12 18C14.6 18 15.9334 16.7555 16.8 15.6C17.1314 15.1569 17.0419 14.5314 16.6 14.2C16.1582 13.8686 15.5327 13.9582 15.2 14.4C14.6333 15.1445 13.8 16 12 16C10.2 16 9.36667 15.1445 8.8 14.4Z" fill="currentColor"/></svg>
+            </div>
+            <div class="composer-tool-btn" title="AI Assist">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2L13.09 8.26L19 6L14.74 10.74L21 12L14.74 13.26L19 18L13.09 15.74L12 22L10.91 15.74L5 18L9.26 13.26L3 12L9.26 10.74L5 6L10.91 8.26L12 2Z" fill="currentColor"/></svg>
+            </div>
+          </div>
+          <span class="char-count">0 / 2,200</span>
+          <button class="send-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.76 6.99955L4.70127 6.67646L7.83269 10.5705L16.76 6.99955ZM8.70605 12.376L9.66715 18.3405L17.9521 8.67749L8.70605 12.376ZM20.4438 5.08971C21.7012 5.12339 22.347 6.61206 21.5218 7.5745L10.4737 20.4603C9.64268 21.4295 8.07334 20.9903 7.87055 19.7318L6.69977 12.466C6.68594 12.3802 6.65016 12.2996 6.59596 12.2322L2.4675 7.09828C1.66516 6.10053 2.403 4.60635 3.68114 4.64059L20.4438 5.08971Z" fill="white"/></svg>
+            Send Reply
+          </button>
+        </div>
+      </div>
+
+    </section>
+  </div>
+
+</div>
+</body>
+</html>
