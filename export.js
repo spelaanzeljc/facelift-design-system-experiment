@@ -320,6 +320,11 @@ function nodeToStyle(node, parent) {
 
 const SKIP_TYPES = new Set(['SLICE', 'STICKY', 'CONNECTOR', 'SHAPE_WITH_TEXT', 'CODE_BLOCK', 'WASHI_TAPE']);
 
+// Nodes whose geometry is arbitrary vector paths — CSS can only approximate
+// them as coloured rectangles. We emit a placeholder instead so exportComponents
+// can substitute an actual SVG render from the Figma images API.
+const VECTOR_TYPES = new Set(['VECTOR', 'BOOLEAN_OPERATION', 'STAR', 'POLYGON', 'LINE']);
+
 function nodeToHtml(node, parent, depth = 0) {
   if (!node || node.visible === false) return '';
   if (SKIP_TYPES.has(node.type)) return '';
@@ -328,6 +333,12 @@ function nodeToHtml(node, parent, depth = 0) {
   const style = nodeToStyle(node, parent);
   const sa = style ? ` style="${style}"` : '';
   const da = node.name ? ` data-name="${escapeHtml(node.name)}"` : '';
+
+  if (VECTOR_TYPES.has(node.type)) {
+    // Emit a placeholder div tagged with the Figma node ID.
+    // exportComponents replaces these with inline SVG after a batch image fetch.
+    return `<div data-vector-id="${node.id}"${sa}${da}></div>`;
+  }
 
   if (node.type === 'TEXT') {
     const text = escapeHtml(node.characters ?? '').replace(/\n/g, '<br>');
@@ -429,7 +440,7 @@ async function exportComponents(fileKey, outputDir) {
   console.log(`  Found ${count} components`);
   if (count === 0) { console.log('  No components found — skipping'); return; }
 
-  // Fetch full node trees in batches
+  // ── Phase 1: fetch full node trees in batches ────────────────────────────
   const BATCH = 50;
   const nodeData = {};
   const totalBatches = Math.ceil(count / BATCH);
@@ -449,26 +460,83 @@ async function exportComponents(fileKey, outputDir) {
   }
   process.stdout.write('\n');
 
-  // Write HTML files, collecting blank entries for SVG fallback
+  // ── Phase 2: generate all HTML in memory ────────────────────────────────
   const seen = new Map();
+  const pending = []; // [{filePath, html}]
   const blankEntries = [];
-  let written = 0;
+
   for (const [nodeId, meta] of entries) {
     let base = sanitizeFilename(meta.name);
-    if (seen.has(base)) {
-      base = `${base}_${nodeId.replace(/[^a-z0-9]/gi, '-')}`;
-    }
+    if (seen.has(base)) base = `${base}_${nodeId.replace(/[^a-z0-9]/gi, '-')}`;
     seen.set(base, true);
     const filePath = path.join(outputDir, base + '.html');
     const html = componentToHtml(meta, nodeData[nodeId] ?? null);
-    fs.writeFileSync(filePath, html);
+    pending.push({ filePath, html });
     if (isBlank(html)) blankEntries.push({ nodeId, filePath });
+  }
+
+  // ── Phase 3: collect all unique VECTOR node IDs across generated HTML ───
+  const VECTOR_RE = /data-vector-id="([^"]+)"/g;
+  const uniqueVectorIds = new Set();
+  for (const { html } of pending) {
+    for (const m of html.matchAll(VECTOR_RE)) uniqueVectorIds.add(m[1]);
+  }
+
+  // ── Phase 4: batch-fetch SVG renders for every vector node ──────────────
+  const vectorSvgMap = new Map(); // nodeId → inlineable SVG string
+  if (uniqueVectorIds.size > 0) {
+    const allIds = [...uniqueVectorIds];
+    const SVG_BATCH = 200;
+    const totalSvgBatches = Math.ceil(allIds.length / SVG_BATCH);
+    console.log(`  ${uniqueVectorIds.size} unique vector nodes — fetching SVG renders…`);
+    for (let i = 0; i < allIds.length; i += SVG_BATCH) {
+      const batch = allIds.slice(i, i + SVG_BATCH);
+      const batchNum = Math.floor(i / SVG_BATCH) + 1;
+      process.stdout.write(`  Vector SVG batch ${batchNum}/${totalSvgBatches}…\r`);
+      try {
+        const urlMap = await fetchSvgBatch(fileKey, batch);
+        await Promise.all(
+          Object.entries(urlMap).map(async ([id, url]) => {
+            if (!url) return;
+            try {
+              const raw = await downloadSvg(url);
+              // Strip XML declaration so it can be embedded inline
+              const clean = raw.replace(/<\?xml[^?]*\?>\s*/i, '').trim();
+              vectorSvgMap.set(id, clean);
+            } catch (_) {}
+          })
+        );
+      } catch (err) {
+        console.warn(`\n  ⚠ Vector SVG batch ${batchNum} failed: ${err.message}`);
+      }
+    }
+    process.stdout.write('\n');
+    console.log(`  ✓ Fetched ${vectorSvgMap.size}/${uniqueVectorIds.size} vector SVGs`);
+  }
+
+  // ── Phase 5: patch HTML with inline SVGs and write to disk ──────────────
+  let written = 0;
+  for (const { filePath, html } of pending) {
+    let patched = html;
+    if (vectorSvgMap.size > 0) {
+      patched = patched.replace(
+        /<div data-vector-id="([^"]+)"([^>]*)><\/div>/g,
+        (match, id, attrs) => {
+          const svg = vectorSvgMap.get(id);
+          if (!svg) return match; // leave placeholder if unavailable
+          // SVG fills the positioned wrapper div 100%
+          const inlined = svg.replace('<svg ', '<svg style="display:block;width:100%;height:100%" ');
+          return `<div${attrs}>${inlined}</div>`;
+        }
+      );
+    }
+    fs.writeFileSync(filePath, patched);
     written++;
     if (written % 50 === 0) process.stdout.write(`  … wrote ${written}/${count}\r`);
   }
   console.log(`  ✓ Wrote ${written} component HTML files`);
 
-  // SVG fallback for blank components (remote references)
+  // ── Phase 6: SVG fallback for fully-blank components (remote refs) ──────
   if (blankEntries.length > 0) {
     console.log(`  ${blankEntries.length} blank previews — resolving component sources…`);
     await patchWithSvg(blankEntries, components);
@@ -685,7 +753,8 @@ async function exportIcons() {
 // ─── Main ────────────────────────────────────────────────────────────────────
 
 async function main() {
-  const fixOnly = process.argv.includes('--fix-blanks-only');
+  const fixOnly      = process.argv.includes('--fix-blanks-only');
+  const compOnly     = process.argv.includes('--export-components-only');
 
   if (fixOnly) {
     console.log('=== Fix Blank Component Previews ===\n');
@@ -693,6 +762,21 @@ async function main() {
     const steps = [
       ['Fix blanks (library 1)', () => fixBlanks(FILE_KEYS.components,  OUTPUT.components)],
       ['Fix blanks (library 2)', () => fixBlanks(FILE_KEYS.components2, OUTPUT.components2)],
+    ];
+    for (const [label, fn] of steps) {
+      console.log(`\n[${label}]`);
+      try { await fn(); } catch (err) { console.error(`  ✗ Failed: ${err.message}`); }
+    }
+    console.log('\n=== Done ===');
+    return;
+  }
+
+  if (compOnly) {
+    console.log('=== Export Components Only ===\n');
+    ensureDirs();
+    const steps = [
+      ['Components (library 1) → HTML', () => exportComponents(FILE_KEYS.components,  OUTPUT.components)],
+      ['Components (library 2) → HTML', () => exportComponents(FILE_KEYS.components2, OUTPUT.components2)],
     ];
     for (const [label, fn] of steps) {
       console.log(`\n[${label}]`);
