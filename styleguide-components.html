@@ -40,294 +40,417 @@
     <div class="page-decoration"></div>
     <div class="page-header-eyebrow">Components</div>
     <h1>Library 1 — Primitives</h1>
-    <p class="page-header-desc">1,517 atomic components in <code>output/components/</code>. Covers buttons with full variant × state matrices, form controls, status badges, appearance chips, tooltips, popovers, and table primitives. Check this library before building anything interactive.</p>
+    <p class="page-header-desc">1,517 atomic components in <code>output/components/</code>. Every card below is a live preview of the actual exported file — click any card to open the full component page with dimensions and token references.</p>
   </div>
 
-  <!-- Action Buttons -->
+  <!-- Primary Action Buttons -->
   <section class="section">
     <div class="section-header">
-      <h2>Action — Buttons</h2>
-      <span class="section-count">Family: action_primary_* · action_secondary_* · action_danger_*</span>
+      <h2>Primary Buttons</h2>
+      <span class="section-count">action_primary_*</span>
     </div>
-    <p class="section-intro">Four action families (primary, secondary, danger, success, warning), three emphasis levels (bold, subtle, minimal), three sizes, six states. File naming: <code>action_primary_-size_medium_-emphasis_bold_-state_default_-icon-only_false_-shape_rectangle.html</code></p>
+    <p class="section-intro">Bold, subtle, and minimal emphasis × six states (default, hover, active, focused, pressed, disabled) × three sizes × icon-only variants. File pattern: <code>action_primary_-size_medium_-emphasis_bold_-state_default_-icon-only_false_-shape_rectangle.html</code></p>
 
-    <div class="divider-label">Primary — Bold</div>
+    <div class="divider-label">Bold</div>
     <div class="components-grid">
-      <div class="component-card">
-        <div class="component-preview">
-          <div style="width:187px;height:36px;background-color:#1339ec;border-radius:8px;display:flex;flex-direction:row;align-items:center;justify-content:center">
-            <div style="width:151px;height:36px;display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:8px;padding:8px 10px">
-              <div style="width:20px;height:20px;background:rgba(255,255,255,0.4);border-radius:3px"></div>
-              <span style="color:#ffffff;font-family:'Helvetica Neue',sans-serif;font-size:14px;font-weight:500;line-height:20px">Button Text</span>
-              <div style="width:20px;height:20px;background:rgba(255,255,255,0.4);border-radius:3px"></div>
-            </div>
-            <div style="width:36px;height:36px;border:1px solid rgba(255,255,255,0.24);display:flex;align-items:center;justify-content:center;padding:8px">
-              <div style="width:12px;height:7px;background:#ffffff;border-radius:1px"></div>
-            </div>
+      <a href="output/components/action_primary_-size_medium_-emphasis_bold_-state_default_-icon-only_false_-shape_rectangle.html" class="comp-link" target="_blank">
+        <div class="component-card">
+          <div class="comp-frame">
+            <iframe src="output/components/action_primary_-size_medium_-emphasis_bold_-state_default_-icon-only_false_-shape_rectangle.html" loading="lazy" scrolling="no" title="Primary Bold Default"></iframe>
+          </div>
+          <div class="component-info">
+            <div class="name">Bold · Medium · Default</div>
+            <span class="lib-tag">Lib 1</span>
           </div>
         </div>
-        <div class="component-info">
-          <div class="name">Primary · Bold · Medium · Default</div>
-          <span class="lib-tag">Lib 1</span>
-        </div>
-      </div>
-
-      <div class="component-card">
-        <div class="component-preview">
-          <div style="width:187px;height:36px;background-color:#0f2ebd;border-radius:8px;display:flex;flex-direction:row;align-items:center;justify-content:center">
-            <div style="width:151px;height:36px;display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:8px;padding:8px 10px">
-              <div style="width:20px;height:20px;background:rgba(255,255,255,0.4);border-radius:3px"></div>
-              <span style="color:#ffffff;font-family:'Helvetica Neue',sans-serif;font-size:14px;font-weight:500;line-height:20px">Button Text</span>
-              <div style="width:20px;height:20px;background:rgba(255,255,255,0.4);border-radius:3px"></div>
-            </div>
-            <div style="width:36px;height:36px;border:1px solid rgba(255,255,255,0.24);display:flex;align-items:center;justify-content:center;padding:8px">
-              <div style="width:12px;height:7px;background:#ffffff;border-radius:1px"></div>
-            </div>
+      </a>
+      <a href="output/components/action_primary_-size_medium_-emphasis_bold_-state_hover_-icon-only_false_-shape_rectangle.html" class="comp-link" target="_blank">
+        <div class="component-card">
+          <div class="comp-frame">
+            <iframe src="output/components/action_primary_-size_medium_-emphasis_bold_-state_hover_-icon-only_false_-shape_rectangle.html" loading="lazy" scrolling="no" title="Primary Bold Hover"></iframe>
+          </div>
+          <div class="component-info">
+            <div class="name">Bold · Medium · Hover</div>
+            <span class="lib-tag">Lib 1</span>
           </div>
         </div>
-        <div class="component-info">
-          <div class="name">Primary · Bold · Medium · Hover</div>
-          <span class="lib-tag">Lib 1</span>
-        </div>
-      </div>
-
-      <div class="component-card">
-        <div class="component-preview" style="background:var(--sys-background-neutral)">
-          <div style="width:187px;height:36px;background-color:rgba(255,255,255,0);border-radius:8px;border:1px solid #1339ec;display:flex;flex-direction:row;align-items:center;justify-content:center">
-            <div style="width:151px;height:36px;display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:8px;padding:8px 10px">
-              <div style="width:20px;height:20px;background:rgba(19,57,236,0.2);border-radius:3px"></div>
-              <span style="color:#1339ec;font-family:'Helvetica Neue',sans-serif;font-size:14px;font-weight:500;line-height:20px">Button Text</span>
-              <div style="width:20px;height:20px;background:rgba(19,57,236,0.2);border-radius:3px"></div>
-            </div>
-            <div style="width:36px;height:36px;border:1px solid rgba(19,57,236,0.24);display:flex;align-items:center;justify-content:center;padding:8px">
-              <div style="width:12px;height:7px;background:#1339ec;border-radius:1px"></div>
-            </div>
+      </a>
+      <a href="output/components/action_primary_-size_medium_-emphasis_bold_-state_disabled_-icon-only_false_-shape_rectangle.html" class="comp-link" target="_blank">
+        <div class="component-card">
+          <div class="comp-frame">
+            <iframe src="output/components/action_primary_-size_medium_-emphasis_bold_-state_disabled_-icon-only_false_-shape_rectangle.html" loading="lazy" scrolling="no" title="Primary Bold Disabled"></iframe>
+          </div>
+          <div class="component-info">
+            <div class="name">Bold · Medium · Disabled</div>
+            <span class="lib-tag">Lib 1</span>
           </div>
         </div>
-        <div class="component-info">
-          <div class="name">Primary · Subtle · Medium · Default</div>
-          <span class="lib-tag">Lib 1</span>
+      </a>
+      <a href="output/components/action_primary_-size_large_-emphasis_bold_-state_default_-icon-only_false_-shape_rectangle.html" class="comp-link" target="_blank">
+        <div class="component-card">
+          <div class="comp-frame">
+            <iframe src="output/components/action_primary_-size_large_-emphasis_bold_-state_default_-icon-only_false_-shape_rectangle.html" loading="lazy" scrolling="no" title="Primary Bold Large"></iframe>
+          </div>
+          <div class="component-info">
+            <div class="name">Bold · Large · Default</div>
+            <span class="lib-tag">Lib 1</span>
+          </div>
         </div>
-      </div>
+      </a>
     </div>
 
-    <div class="divider-label">Secondary — Bold</div>
+    <div class="divider-label">Subtle &amp; Minimal</div>
     <div class="components-grid">
-      <div class="component-card">
-        <div class="component-preview">
-          <div style="width:187px;height:36px;background-color:rgba(95,106,130,0.08);border-radius:8px;display:flex;flex-direction:row;align-items:center;justify-content:center">
-            <div style="width:151px;height:36px;display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:8px;padding:8px 10px">
-              <div style="width:20px;height:20px;background:rgba(17,19,23,0.2);border-radius:3px"></div>
-              <span style="color:#111317;font-family:'Helvetica Neue',sans-serif;font-size:14px;font-weight:500;line-height:20px">Button Text</span>
-              <div style="width:20px;height:20px;background:rgba(17,19,23,0.2);border-radius:3px"></div>
-            </div>
-            <div style="width:36px;height:36px;border:1px solid #e7eaee;display:flex;align-items:center;justify-content:center;padding:8px">
-              <div style="width:12px;height:7px;background:#111317;border-radius:1px"></div>
-            </div>
+      <a href="output/components/action_primary_-size_medium_-emphasis_subtle_-state_default_-icon-only_false_-shape_rectangle.html" class="comp-link" target="_blank">
+        <div class="component-card">
+          <div class="comp-frame">
+            <iframe src="output/components/action_primary_-size_medium_-emphasis_subtle_-state_default_-icon-only_false_-shape_rectangle.html" loading="lazy" scrolling="no" title="Primary Subtle Default"></iframe>
+          </div>
+          <div class="component-info">
+            <div class="name">Subtle · Medium · Default</div>
+            <span class="lib-tag">Lib 1</span>
           </div>
         </div>
-        <div class="component-info">
-          <div class="name">Secondary · Bold · Medium · Default</div>
-          <span class="lib-tag">Lib 1</span>
-        </div>
-      </div>
-
-      <div class="component-card">
-        <div class="component-preview">
-          <div style="width:187px;height:36px;background-color:rgba(95,106,130,0.12);border-radius:8px;display:flex;flex-direction:row;align-items:center;justify-content:center">
-            <div style="width:151px;height:36px;display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:8px;padding:8px 10px">
-              <div style="width:20px;height:20px;background:rgba(17,19,23,0.2);border-radius:3px"></div>
-              <span style="color:#111317;font-family:'Helvetica Neue',sans-serif;font-size:14px;font-weight:500;line-height:20px">Button Text</span>
-              <div style="width:20px;height:20px;background:rgba(17,19,23,0.2);border-radius:3px"></div>
-            </div>
-            <div style="width:36px;height:36px;border:1px solid #e7eaee;display:flex;align-items:center;justify-content:center;padding:8px">
-              <div style="width:12px;height:7px;background:#111317;border-radius:1px"></div>
-            </div>
+      </a>
+      <a href="output/components/action_primary_-size_medium_-emphasis_subtle_-state_hover_-icon-only_false_-shape_rectangle.html" class="comp-link" target="_blank">
+        <div class="component-card">
+          <div class="comp-frame">
+            <iframe src="output/components/action_primary_-size_medium_-emphasis_subtle_-state_hover_-icon-only_false_-shape_rectangle.html" loading="lazy" scrolling="no" title="Primary Subtle Hover"></iframe>
+          </div>
+          <div class="component-info">
+            <div class="name">Subtle · Medium · Hover</div>
+            <span class="lib-tag">Lib 1</span>
           </div>
         </div>
-        <div class="component-info">
-          <div class="name">Secondary · Bold · Medium · Hover</div>
-          <span class="lib-tag">Lib 1</span>
-        </div>
-      </div>
-
-      <div class="component-card">
-        <div class="component-preview">
-          <div style="width:187px;height:36px;background-color:rgba(95,106,130,0.08);border-radius:8px;opacity:0.5;display:flex;flex-direction:row;align-items:center;justify-content:center">
-            <div style="width:151px;height:36px;display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:8px;padding:8px 10px">
-              <div style="width:20px;height:20px;background:rgba(17,19,23,0.2);border-radius:3px"></div>
-              <span style="color:#111317;font-family:'Helvetica Neue',sans-serif;font-size:14px;font-weight:500;line-height:20px">Button Text</span>
-              <div style="width:20px;height:20px;background:rgba(17,19,23,0.2);border-radius:3px"></div>
-            </div>
-            <div style="width:36px;height:36px;border:1px solid #e7eaee;display:flex;align-items:center;justify-content:center;padding:8px">
-              <div style="width:12px;height:7px;background:#111317;border-radius:1px"></div>
-            </div>
+      </a>
+      <a href="output/components/action_primary_-size_medium_-emphasis_minimal_-state_default_-icon-only_false_-shape_rectangle.html" class="comp-link" target="_blank">
+        <div class="component-card">
+          <div class="comp-frame">
+            <iframe src="output/components/action_primary_-size_medium_-emphasis_minimal_-state_default_-icon-only_false_-shape_rectangle.html" loading="lazy" scrolling="no" title="Primary Minimal Default"></iframe>
+          </div>
+          <div class="component-info">
+            <div class="name">Minimal · Medium · Default</div>
+            <span class="lib-tag">Lib 1</span>
           </div>
         </div>
-        <div class="component-info">
-          <div class="name">Secondary · Bold · Medium · Disabled</div>
-          <span class="lib-tag">Lib 1</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="divider-label">Danger — Bold</div>
-    <div class="components-grid">
-      <div class="component-card">
-        <div class="component-preview">
-          <div style="width:187px;height:36px;background-color:#ffebeb;border-radius:8px;display:flex;flex-direction:row;align-items:center;justify-content:center">
-            <div style="width:151px;height:36px;display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:8px;padding:8px 10px">
-              <div style="width:20px;height:20px;background:rgba(229,0,0,0.15);border-radius:3px"></div>
-              <span style="color:#cc0000;font-family:'Helvetica Neue',sans-serif;font-size:14px;font-weight:500;line-height:20px">Delete</span>
-              <div style="width:20px;height:20px;background:rgba(229,0,0,0.15);border-radius:3px"></div>
-            </div>
-            <div style="width:36px;height:36px;border:1px solid rgba(204,0,0,0.24);display:flex;align-items:center;justify-content:center;padding:8px">
-              <div style="width:12px;height:7px;background:#cc0000;border-radius:1px"></div>
-            </div>
+      </a>
+      <a href="output/components/action_primary_-size_medium_-emphasis_minimal_-state_hover_-icon-only_false_-shape_rectangle.html" class="comp-link" target="_blank">
+        <div class="component-card">
+          <div class="comp-frame">
+            <iframe src="output/components/action_primary_-size_medium_-emphasis_minimal_-state_hover_-icon-only_false_-shape_rectangle.html" loading="lazy" scrolling="no" title="Primary Minimal Hover"></iframe>
+          </div>
+          <div class="component-info">
+            <div class="name">Minimal · Medium · Hover</div>
+            <span class="lib-tag">Lib 1</span>
           </div>
         </div>
-        <div class="component-info">
-          <div class="name">Danger · Bold · Medium · Default</div>
-          <span class="lib-tag">Lib 1</span>
-        </div>
-      </div>
-
-      <div class="component-card">
-        <div class="component-preview">
-          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:center">
-            <div style="width:72px;height:28px;background:#ffebeb;border-radius:8px;display:flex;align-items:center;justify-content:center">
-              <span style="color:#cc0000;font-family:'Helvetica Neue',sans-serif;font-size:12px;font-weight:500">Small</span>
-            </div>
-            <div style="width:90px;height:36px;background:#ffebeb;border-radius:8px;display:flex;align-items:center;justify-content:center">
-              <span style="color:#cc0000;font-family:'Helvetica Neue',sans-serif;font-size:14px;font-weight:500">Medium</span>
-            </div>
-            <div style="width:100px;height:44px;background:#ffebeb;border-radius:8px;display:flex;align-items:center;justify-content:center">
-              <span style="color:#cc0000;font-family:'Helvetica Neue',sans-serif;font-size:16px;font-weight:500">Large</span>
-            </div>
-          </div>
-        </div>
-        <div class="component-info">
-          <div class="name">Danger · Bold · Size variants</div>
-          <span class="lib-tag">Lib 1</span>
-        </div>
-      </div>
+      </a>
     </div>
   </section>
 
-  <!-- Status -->
+  <!-- Secondary & Danger -->
+  <section class="section">
+    <div class="section-header">
+      <h2>Secondary &amp; Danger Buttons</h2>
+      <span class="section-count">action_secondary_* · action_danger_*</span>
+    </div>
+    <p class="section-intro">Secondary uses a grey ghost style; danger is a red-tinted destructive action. Both follow the same variant matrix as primary.</p>
+    <div class="components-grid">
+      <a href="output/components/action_secondary_-size_medium_-emphasis_bold_-state_default_-icon-only_false_-shape_rectangle.html" class="comp-link" target="_blank">
+        <div class="component-card">
+          <div class="comp-frame">
+            <iframe src="output/components/action_secondary_-size_medium_-emphasis_bold_-state_default_-icon-only_false_-shape_rectangle.html" loading="lazy" scrolling="no" title="Secondary Bold Default"></iframe>
+          </div>
+          <div class="component-info">
+            <div class="name">Secondary · Bold · Default</div>
+            <span class="lib-tag">Lib 1</span>
+          </div>
+        </div>
+      </a>
+      <a href="output/components/action_secondary_-size_medium_-emphasis_bold_-state_hover_-icon-only_false_-shape_rectangle.html" class="comp-link" target="_blank">
+        <div class="component-card">
+          <div class="comp-frame">
+            <iframe src="output/components/action_secondary_-size_medium_-emphasis_bold_-state_hover_-icon-only_false_-shape_rectangle.html" loading="lazy" scrolling="no" title="Secondary Bold Hover"></iframe>
+          </div>
+          <div class="component-info">
+            <div class="name">Secondary · Bold · Hover</div>
+            <span class="lib-tag">Lib 1</span>
+          </div>
+        </div>
+      </a>
+      <a href="output/components/action_secondary_-size_medium_-emphasis_bold_-state_disabled_-icon-only_false_-shape_rectangle.html" class="comp-link" target="_blank">
+        <div class="component-card">
+          <div class="comp-frame">
+            <iframe src="output/components/action_secondary_-size_medium_-emphasis_bold_-state_disabled_-icon-only_false_-shape_rectangle.html" loading="lazy" scrolling="no" title="Secondary Bold Disabled"></iframe>
+          </div>
+          <div class="component-info">
+            <div class="name">Secondary · Bold · Disabled</div>
+            <span class="lib-tag">Lib 1</span>
+          </div>
+        </div>
+      </a>
+      <a href="output/components/action_danger_-size_medium_-emphasis_bold_-state_default_-icon-only_false_-shape_rectangle.html" class="comp-link" target="_blank">
+        <div class="component-card">
+          <div class="comp-frame">
+            <iframe src="output/components/action_danger_-size_medium_-emphasis_bold_-state_default_-icon-only_false_-shape_rectangle.html" loading="lazy" scrolling="no" title="Danger Bold Default"></iframe>
+          </div>
+          <div class="component-info">
+            <div class="name">Danger · Bold · Default</div>
+            <span class="lib-tag">Lib 1</span>
+          </div>
+        </div>
+      </a>
+      <a href="output/components/action_danger_-size_medium_-emphasis_bold_-state_hover_-icon-only_false_-shape_rectangle.html" class="comp-link" target="_blank">
+        <div class="component-card">
+          <div class="comp-frame">
+            <iframe src="output/components/action_danger_-size_medium_-emphasis_bold_-state_hover_-icon-only_false_-shape_rectangle.html" loading="lazy" scrolling="no" title="Danger Bold Hover"></iframe>
+          </div>
+          <div class="component-info">
+            <div class="name">Danger · Bold · Hover</div>
+            <span class="lib-tag">Lib 1</span>
+          </div>
+        </div>
+      </a>
+      <a href="output/components/action_danger_-size_large_-emphasis_bold_-state_default_-icon-only_false_-shape_rectangle.html" class="comp-link" target="_blank">
+        <div class="component-card">
+          <div class="comp-frame">
+            <iframe src="output/components/action_danger_-size_large_-emphasis_bold_-state_default_-icon-only_false_-shape_rectangle.html" loading="lazy" scrolling="no" title="Danger Bold Large"></iframe>
+          </div>
+          <div class="component-info">
+            <div class="name">Danger · Bold · Large</div>
+            <span class="lib-tag">Lib 1</span>
+          </div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- Form Controls -->
+  <section class="section">
+    <div class="section-header">
+      <h2>Form Controls</h2>
+      <span class="section-count">tab-group_* · range_* · tooltip_*</span>
+    </div>
+    <p class="section-intro">Tab navigation, range sliders, and tooltips. Each has default and interactive states.</p>
+    <div class="components-grid">
+      <a href="output/components/tab-group.html" class="comp-link" target="_blank">
+        <div class="component-card">
+          <div class="comp-frame">
+            <iframe src="output/components/tab-group.html" loading="lazy" scrolling="no" title="Tab Group"></iframe>
+          </div>
+          <div class="component-info">
+            <div class="name">Tab Group</div>
+            <span class="lib-tag">Lib 1</span>
+          </div>
+        </div>
+      </a>
+      <a href="output/components/range_yes.html" class="comp-link" target="_blank">
+        <div class="component-card">
+          <div class="comp-frame">
+            <iframe src="output/components/range_yes.html" loading="lazy" scrolling="no" title="Range Slider"></iframe>
+          </div>
+          <div class="component-info">
+            <div class="name">Range · Active</div>
+            <span class="lib-tag">Lib 1</span>
+          </div>
+        </div>
+      </a>
+      <a href="output/components/tooltip.html" class="comp-link" target="_blank">
+        <div class="component-card">
+          <div class="comp-frame">
+            <iframe src="output/components/tooltip.html" loading="lazy" scrolling="no" title="Tooltip"></iframe>
+          </div>
+          <div class="component-info">
+            <div class="name">Tooltip</div>
+            <span class="lib-tag">Lib 1</span>
+          </div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- Status Badges -->
   <section class="section">
     <div class="section-header">
       <h2>Status Badges</h2>
-      <span class="section-count">Family: status_*</span>
+      <span class="section-count">status_*</span>
     </div>
-    <p class="section-intro">Compact 10×10px coloured dots signalling workflow state. File: <code>status_approved.html</code>, <code>status_draft.html</code>, etc.</p>
-    <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow-card)">
-      <div style="display:flex;gap:28px;flex-wrap:wrap;align-items:flex-start">
-        <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
-          <div style="width:10px;height:10px;background:#2e881b;border-radius:50%"></div>
-          <div style="font-size:11px;color:var(--text-faint)">approved</div>
+    <p class="section-intro">Compact coloured dots signalling workflow state. File: <code>status_approved.html</code>, <code>status_draft.html</code>, <code>status_published.html</code>, etc.</p>
+    <div class="components-grid">
+      <a href="output/components/status_approved.html" class="comp-link" target="_blank">
+        <div class="component-card">
+          <div class="comp-frame">
+            <iframe src="output/components/status_approved.html" loading="lazy" scrolling="no" title="Status Approved"></iframe>
+          </div>
+          <div class="component-info">
+            <div class="name">Approved</div>
+            <span class="lib-tag">Lib 1</span>
+          </div>
         </div>
-        <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
-          <div style="width:10px;height:10px;background:#5f6a82;border-radius:50%"></div>
-          <div style="font-size:11px;color:var(--text-faint)">draft</div>
+      </a>
+      <a href="output/components/status_draft.html" class="comp-link" target="_blank">
+        <div class="component-card">
+          <div class="comp-frame">
+            <iframe src="output/components/status_draft.html" loading="lazy" scrolling="no" title="Status Draft"></iframe>
+          </div>
+          <div class="component-info">
+            <div class="name">Draft</div>
+            <span class="lib-tag">Lib 1</span>
+          </div>
         </div>
-        <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
-          <div style="width:10px;height:10px;background:#1339ec;border-radius:50%"></div>
-          <div style="font-size:11px;color:var(--text-faint)">scheduled</div>
+      </a>
+      <a href="output/components/status_scheduled.html" class="comp-link" target="_blank">
+        <div class="component-card">
+          <div class="comp-frame">
+            <iframe src="output/components/status_scheduled.html" loading="lazy" scrolling="no" title="Status Scheduled"></iframe>
+          </div>
+          <div class="component-info">
+            <div class="name">Scheduled</div>
+            <span class="lib-tag">Lib 1</span>
+          </div>
         </div>
-        <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
-          <div style="width:10px;height:10px;background:#e05a00;border-radius:50%"></div>
-          <div style="font-size:11px;color:var(--text-faint)">review</div>
+      </a>
+      <a href="output/components/status_published.html" class="comp-link" target="_blank">
+        <div class="component-card">
+          <div class="comp-frame">
+            <iframe src="output/components/status_published.html" loading="lazy" scrolling="no" title="Status Published"></iframe>
+          </div>
+          <div class="component-info">
+            <div class="name">Published</div>
+            <span class="lib-tag">Lib 1</span>
+          </div>
         </div>
-        <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
-          <div style="width:10px;height:10px;background:#cc0000;border-radius:50%"></div>
-          <div style="font-size:11px;color:var(--text-faint)">rejected</div>
+      </a>
+      <a href="output/components/status_rejected.html" class="comp-link" target="_blank">
+        <div class="component-card">
+          <div class="comp-frame">
+            <iframe src="output/components/status_rejected.html" loading="lazy" scrolling="no" title="Status Rejected"></iframe>
+          </div>
+          <div class="component-info">
+            <div class="name">Rejected</div>
+            <span class="lib-tag">Lib 1</span>
+          </div>
         </div>
-        <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
-          <div style="width:10px;height:10px;background:#b481c4;border-radius:50%"></div>
-          <div style="font-size:11px;color:var(--text-faint)">connected</div>
+      </a>
+      <a href="output/components/status_error.html" class="comp-link" target="_blank">
+        <div class="component-card">
+          <div class="comp-frame">
+            <iframe src="output/components/status_error.html" loading="lazy" scrolling="no" title="Status Error"></iframe>
+          </div>
+          <div class="component-info">
+            <div class="name">Error</div>
+            <span class="lib-tag">Lib 1</span>
+          </div>
         </div>
-      </div>
+      </a>
+      <a href="output/components/status_connected.html" class="comp-link" target="_blank">
+        <div class="component-card">
+          <div class="comp-frame">
+            <iframe src="output/components/status_connected.html" loading="lazy" scrolling="no" title="Status Connected"></iframe>
+          </div>
+          <div class="component-info">
+            <div class="name">Connected</div>
+            <span class="lib-tag">Lib 1</span>
+          </div>
+        </div>
+      </a>
+      <a href="output/components/status_pending.html" class="comp-link" target="_blank">
+        <div class="component-card">
+          <div class="comp-frame">
+            <iframe src="output/components/status_pending.html" loading="lazy" scrolling="no" title="Status Pending"></iframe>
+          </div>
+          <div class="component-info">
+            <div class="name">Pending</div>
+            <span class="lib-tag">Lib 1</span>
+          </div>
+        </div>
+      </a>
     </div>
   </section>
 
-  <!-- Appearance chips -->
+  <!-- Appearance Chips -->
   <section class="section">
     <div class="section-header">
       <h2>Appearance Chips</h2>
-      <span class="section-count">Family: appearance_colored_* · appearance_subtle_*</span>
+      <span class="section-count">appearance_colored_* · appearance_subtle_*</span>
     </div>
-    <p class="section-intro">Coloured label/badge chips. Variants by <code>color</code> (amber, blue, coral, emerald, purple, grey…) and <code>size</code> (small, medium, large). File: <code>appearance_colored_-color_amber_-size_medium_-slim_false.html</code></p>
-    <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow-card)">
-      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-        <!-- Amber -->
-        <div style="height:28px;background:#fff8eb;border-radius:1024px;display:flex;align-items:center;gap:6px;padding:5px 10px">
-          <div style="width:8px;height:8px;background:#ffb433;border-radius:50%"></div>
-          <span style="color:#b58024;font-family:'Helvetica Neue',sans-serif;font-size:12px;font-weight:500">Amber</span>
+    <p class="section-intro">Coloured label/badge chips. Variants by <code>color</code> (amber, blue, coral, emerald, purple, grey…) and <code>size</code> (xsmall, small, medium, large). File: <code>appearance_colored_-color_amber_-size_medium_-slim_false.html</code></p>
+    <div class="components-grid">
+      <a href="output/components/appearance_colored_-color_amber_-size_medium_-slim_false.html" class="comp-link" target="_blank">
+        <div class="component-card">
+          <div class="comp-frame">
+            <iframe src="output/components/appearance_colored_-color_amber_-size_medium_-slim_false.html" loading="lazy" scrolling="no" title="Appearance Amber Medium"></iframe>
+          </div>
+          <div class="component-info">
+            <div class="name">Colored · Amber · Medium</div>
+            <span class="lib-tag">Lib 1</span>
+          </div>
         </div>
-        <!-- Blue -->
-        <div style="height:28px;background:#eef3fd;border-radius:1024px;display:flex;align-items:center;gap:6px;padding:5px 10px">
-          <div style="width:8px;height:8px;background:#5581f1;border-radius:50%"></div>
-          <span style="color:#1339ec;font-family:'Helvetica Neue',sans-serif;font-size:12px;font-weight:500">Blue</span>
+      </a>
+      <a href="output/components/appearance_colored_-color_blue_-size_medium_-slim_false.html" class="comp-link" target="_blank">
+        <div class="component-card">
+          <div class="comp-frame">
+            <iframe src="output/components/appearance_colored_-color_blue_-size_medium_-slim_false.html" loading="lazy" scrolling="no" title="Appearance Blue Medium"></iframe>
+          </div>
+          <div class="component-info">
+            <div class="name">Colored · Blue · Medium</div>
+            <span class="lib-tag">Lib 1</span>
+          </div>
         </div>
-        <!-- Green -->
-        <div style="height:28px;background:#f4ffe6;border-radius:1024px;display:flex;align-items:center;gap:6px;padding:5px 10px">
-          <div style="width:8px;height:8px;background:#5fbb2f;border-radius:50%"></div>
-          <span style="color:#2e881b;font-family:'Helvetica Neue',sans-serif;font-size:12px;font-weight:500">Emerald</span>
+      </a>
+      <a href="output/components/appearance_colored_-color_amber_-size_large_-slim_false.html" class="comp-link" target="_blank">
+        <div class="component-card">
+          <div class="comp-frame">
+            <iframe src="output/components/appearance_colored_-color_amber_-size_large_-slim_false.html" loading="lazy" scrolling="no" title="Appearance Amber Large"></iframe>
+          </div>
+          <div class="component-info">
+            <div class="name">Colored · Amber · Large</div>
+            <span class="lib-tag">Lib 1</span>
+          </div>
         </div>
-        <!-- Red/Coral -->
-        <div style="height:28px;background:#ffefef;border-radius:1024px;display:flex;align-items:center;gap:6px;padding:5px 10px">
-          <div style="width:8px;height:8px;background:#fc7c7c;border-radius:50%"></div>
-          <span style="color:#b24141;font-family:'Helvetica Neue',sans-serif;font-size:12px;font-weight:500">Coral</span>
+      </a>
+      <a href="output/components/appearance_colored_-color_amber_-size_small_-slim_false.html" class="comp-link" target="_blank">
+        <div class="component-card">
+          <div class="comp-frame">
+            <iframe src="output/components/appearance_colored_-color_amber_-size_small_-slim_false.html" loading="lazy" scrolling="no" title="Appearance Amber Small"></iframe>
+          </div>
+          <div class="component-info">
+            <div class="name">Colored · Amber · Small</div>
+            <span class="lib-tag">Lib 1</span>
+          </div>
         </div>
-        <!-- Purple/Violet -->
-        <div style="height:28px;background:#f9f4fb;border-radius:1024px;display:flex;align-items:center;gap:6px;padding:5px 10px">
-          <div style="width:8px;height:8px;background:#c68ed7;border-radius:50%"></div>
-          <span style="color:#8d6599;font-family:'Helvetica Neue',sans-serif;font-size:12px;font-weight:500">Violet</span>
+      </a>
+      <a href="output/components/appearance_colored_-color_amber_-size_xsmall_-slim_false.html" class="comp-link" target="_blank">
+        <div class="component-card">
+          <div class="comp-frame">
+            <iframe src="output/components/appearance_colored_-color_amber_-size_xsmall_-slim_false.html" loading="lazy" scrolling="no" title="Appearance Amber XSmall"></iframe>
+          </div>
+          <div class="component-info">
+            <div class="name">Colored · Amber · XSmall</div>
+            <span class="lib-tag">Lib 1</span>
+          </div>
         </div>
-        <!-- Grey -->
-        <div style="height:28px;background:#f3f5f7;border-radius:1024px;display:flex;align-items:center;gap:6px;padding:5px 10px">
-          <div style="width:8px;height:8px;background:#848ea4;border-radius:50%"></div>
-          <span style="color:#5f6a82;font-family:'Helvetica Neue',sans-serif;font-size:12px;font-weight:500">Grey</span>
+      </a>
+      <a href="output/components/appearance_colored_-color_amber_-size_small_-slim_true.html" class="comp-link" target="_blank">
+        <div class="component-card">
+          <div class="comp-frame">
+            <iframe src="output/components/appearance_colored_-color_amber_-size_small_-slim_true.html" loading="lazy" scrolling="no" title="Appearance Amber Slim"></iframe>
+          </div>
+          <div class="component-info">
+            <div class="name">Colored · Amber · Slim</div>
+            <span class="lib-tag">Lib 1</span>
+          </div>
         </div>
-      </div>
+      </a>
     </div>
   </section>
 
-  <!-- Sizes overview -->
-  <section class="section">
-    <div class="section-header"><h2>Size System</h2></div>
-    <p class="section-intro">All interactive components come in three sizes. The size affects height, font size, and padding — not border-radius or emphasis.</p>
-    <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:32px;box-shadow:var(--shadow-card)">
-      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
-        <div style="display:flex;flex-direction:column;align-items:center;gap:12px">
-          <div style="height:28px;background:#1339ec;border-radius:8px;padding:0 12px;display:flex;align-items:center">
-            <span style="color:#fff;font-family:'Helvetica Neue',sans-serif;font-size:12px;font-weight:500">Small</span>
-          </div>
-          <div style="font-size:11px;color:var(--text-faint);text-align:center">28px tall<br>12px / 400</div>
-        </div>
-        <div style="display:flex;flex-direction:column;align-items:center;gap:12px">
-          <div style="height:36px;background:#1339ec;border-radius:8px;padding:0 16px;display:flex;align-items:center">
-            <span style="color:#fff;font-family:'Helvetica Neue',sans-serif;font-size:14px;font-weight:500">Medium</span>
-          </div>
-          <div style="font-size:11px;color:var(--text-faint);text-align:center">36px tall<br>14px / 500</div>
-        </div>
-        <div style="display:flex;flex-direction:column;align-items:center;gap:12px">
-          <div style="height:44px;background:#1339ec;border-radius:8px;padding:0 20px;display:flex;align-items:center">
-            <span style="color:#fff;font-family:'Helvetica Neue',sans-serif;font-size:16px;font-weight:500">Large</span>
-          </div>
-          <div style="font-size:11px;color:var(--text-faint);text-align:center">44px tall<br>16px / 500</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- File browser note -->
+  <!-- All components note -->
   <section class="section">
     <div class="section-header"><h2>All 1,517 Components</h2></div>
-    <div class="card" style="max-width:540px">
+    <div class="card" style="max-width:560px">
       <div class="card-label">Browsing the full library</div>
-      <div class="card-name" style="font-size:14px;line-height:1.65;color:var(--text-muted)">Each component variant is a standalone HTML file with a built-in preview. Open any file in a browser to see the exact pixel dimensions, colours, and spacing. Files are in <code>output/components/</code>. Key families: <code>action_primary_*</code>, <code>action_secondary_*</code>, <code>appearance_colored_*</code>, <code>status_*</code>, <code>tab-group_*</code>, <code>table-row_*</code>, <code>check-box_*</code>, <code>tooltip_*</code>, <code>modal-item_*</code>.</div>
+      <div class="card-name" style="font-size:14px;line-height:1.65;color:var(--text-muted)">Each component variant is a standalone HTML file with a built-in preview, pixel dimensions, and token references. Browse <code>output/components/</code> directly or search by family prefix. Key families not shown above: <code>action_success_*</code>, <code>action_warning_*</code>, <code>appearance_subtle_*</code>, <code>appearance_floating_*</code>, <code>appearance_inline_*</code>, <code>check-box_*</code>, <code>counter-input_*</code>, <code>table-row_*</code>, <code>column-header_*</code>, <code>popover_*</code>, <code>modal-item_*</code>, <code>compact_*</code>, <code>row_*</code>.</div>
     </div>
   </section>
 
