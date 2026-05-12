@@ -456,5 +456,19 @@
 
 </main>
 </div>
+<script>
+(function () {
+  document.querySelectorAll('.comp-frame iframe').forEach(function (iframe) {
+    iframe.addEventListener('load', function () {
+      try {
+        var preview = this.contentDocument.querySelector('.preview-wrap');
+        if (!preview) return;
+        // Shift the iframe up so the preview area sits at the top of the clipped window
+        this.style.marginTop = '-' + (preview.offsetTop - 28) + 'px';
+      } catch (e) {}
+    });
+  });
+}());
+</script>
 </body>
 </html>
