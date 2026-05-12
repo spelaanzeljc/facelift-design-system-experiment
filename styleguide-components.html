@@ -464,7 +464,7 @@
         var preview = this.contentDocument.querySelector('.preview-wrap');
         if (!preview) return;
         // Shift the iframe up so the preview area sits at the top of the clipped window
-        this.style.marginTop = '-' + (preview.offsetTop - 28) + 'px';
+        this.style.marginTop = '-' + (preview.offsetTop + 16) + 'px';
       } catch (e) {}
     });
   });

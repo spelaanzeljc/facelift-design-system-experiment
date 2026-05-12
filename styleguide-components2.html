@@ -202,7 +202,7 @@
       try {
         var preview = this.contentDocument.querySelector('.preview-wrap');
         if (!preview) return;
-        this.style.marginTop = '-' + (preview.offsetTop - 28) + 'px';
+        this.style.marginTop = '-' + (preview.offsetTop + 16) + 'px';
       } catch (e) {}
     });
   });
