@@ -5,29 +5,23 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Button Explorer — Design System</title>
 <style>
-/* ── reset ── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
 
-/* ── shell ── */
 body{
   font-family:system-ui,-apple-system,sans-serif;
-  background:#16181c;
-  color:#e4e6ea;
-  display:grid;
-  grid-template-rows:auto 1fr auto;
-  min-height:100vh;
-  font-size:13px;
+  background:#16181c;color:#e4e6ea;
+  display:grid;grid-template-rows:auto 1fr auto;
+  min-height:100vh;font-size:13px;
 }
 
-/* ── top bar ── */
+/* top bar */
 .topbar{
-  display:flex;align-items:center;gap:10px;
-  padding:10px 16px;
-  border-bottom:1px solid #2a2d34;
-  background:#1c1f26;
+  display:flex;align-items:center;gap:8px;
+  padding:9px 16px;border-bottom:1px solid #2a2d34;background:#1c1f26;
+  flex-wrap:wrap;
 }
-.topbar-title{font-size:13px;font-weight:600;color:#fff;margin-right:4px}
+.topbar-title{font-size:13px;font-weight:600;color:#fff;margin-right:4px;flex-shrink:0}
 .preset-pill{
   padding:4px 10px;border-radius:20px;border:1px solid #2e3138;
   background:#21242c;color:#a0a8b8;font-size:11px;cursor:pointer;
@@ -35,184 +29,9 @@ body{
 }
 .preset-pill:hover{border-color:#4a4f5c;color:#e4e6ea}
 .preset-pill.active{background:#1339EC;border-color:#1339EC;color:#fff}
-.topbar-sep{margin-left:auto}
-
-/* ── main layout ── */
-.main{
-  display:grid;
-  grid-template-columns:220px 1fr;
-  overflow:hidden;
-}
-
-/* ── controls sidebar ── */
-.sidebar{
-  border-right:1px solid #2a2d34;
-  background:#1c1f26;
-  overflow-y:auto;
-  padding:16px 14px;
-  display:flex;flex-direction:column;gap:20px;
-}
-.ctrl-group{}
-.ctrl-label{
-  font-size:10px;font-weight:700;letter-spacing:.08em;
-  text-transform:uppercase;color:#606878;
-  margin-bottom:8px;
-}
-.pill-row{display:flex;flex-wrap:wrap;gap:5px}
-.pill{
-  padding:5px 11px;border-radius:6px;border:1px solid #2e3138;
-  background:#21242c;color:#a0a8b8;font-size:12px;cursor:pointer;
-  transition:all .12s;user-select:none;
-}
-.pill:hover{border-color:#4a4f5c;color:#e4e6ea}
-.pill.active{background:#1339EC;border-color:#1339EC;color:#fff}
-.pill.active-danger{background:#8b1a1a;border-color:#cc0000;color:#ffb3b3}
-
-.type-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px}
-.type-card{
-  padding:9px 10px;border-radius:7px;border:1px solid #2e3138;
-  background:#21242c;cursor:pointer;transition:all .12s;
-}
-.type-card:hover{border-color:#4a4f5c}
-.type-card.active{border-color:#1339EC;background:#0d1a4a}
-.type-card-label{font-size:12px;font-weight:500;color:#a0a8b8;display:block;margin-bottom:4px}
-.type-card.active .type-card-label{color:#7fa8ff}
-.type-mini{display:inline-flex;align-items:center;height:20px;padding:0 8px;border-radius:4px;font-size:10px;font-weight:600}
-
-.text-input{
-  width:100%;background:#21242c;border:1px solid #2e3138;border-radius:6px;
-  color:#e4e6ea;font-size:12px;padding:6px 9px;
-  font-family:inherit;
-  transition:border-color .12s;
-}
-.text-input:focus{outline:none;border-color:#1339EC}
-
-.toggle-row{display:flex;align-items:center;justify-content:space-between;cursor:pointer}
-.toggle-row span{font-size:12px;color:#a0a8b8}
-.toggle{
-  width:30px;height:16px;border-radius:8px;
-  background:#2e3138;position:relative;
-  transition:background .15s;cursor:pointer;flex-shrink:0;
-}
-.toggle.on{background:#1339EC}
-.toggle::after{
-  content:'';position:absolute;top:2px;left:2px;
-  width:12px;height:12px;border-radius:50%;background:#fff;
-  transition:transform .15s;
-}
-.toggle.on::after{transform:translateX(14px)}
-
-/* ── right panel ── */
-.right{
-  display:flex;flex-direction:column;
-  overflow:hidden;
-}
-
-/* preview area */
-.preview-area{
-  flex:1;
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  gap:32px;
-  background:#1a1d24;
-  padding:32px;
-  overflow-y:auto;
-}
-.preview-bg-light{background:#f3f5f7}
-.preview-bg-dark{background:#111317}
-
-.preview-label{
-  font-size:10px;font-weight:700;letter-spacing:.08em;
-  text-transform:uppercase;color:#606878;
-  margin-bottom:10px;text-align:center;
-}
-.preview-main{display:flex;flex-direction:column;align-items:center;gap:8px}
-
-/* ── component button styles (matches Figma export) ── */
-
-/* Heights & padding */
-.ds-btn{
-  display:inline-flex;align-items:center;justify-content:center;gap:6px;
-  border-radius:8px;border:none;cursor:pointer;
-  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
-  font-weight:500;line-height:1;
-  white-space:nowrap;transition:background .12s,opacity .12s,color .12s,box-shadow .12s;
-  position:relative;overflow:hidden;
-  text-decoration:none;
-}
-/* sizes */
-.ds-btn.sz-small{height:32px;padding:0 12px;font-size:12px;gap:5px}
-.ds-btn.sz-medium{height:36px;padding:0 16px;font-size:14px}
-.ds-btn.sz-large{height:40px;padding:0 20px;font-size:16px;gap:8px}
-
-/* primary (bold) — #1339EC bg, white text */
-.ds-btn.tp-primary{background:#1339EC;color:#fff;border:none}
-.ds-btn.tp-primary.st-hover{background:#0F2EBD}
-.ds-btn.tp-primary.st-pressed,.ds-btn.tp-primary.st-active{background:#0c228d}
-.ds-btn.tp-primary.st-focused{background:#1339EC;box-shadow:0 0 0 3px rgba(83,129,241,.5)}
-.ds-btn.tp-primary.st-disabled{background:#1339EC;color:#fff;opacity:.38;cursor:not-allowed}
-.ds-btn.tp-primary.st-loading{background:#0F2EBD;color:#fff;cursor:wait}
-
-/* secondary (bold) — white bg, dark border + text */
-.ds-btn.tp-secondary{background:#fff;color:#111317;border:1px solid #111317}
-.ds-btn.tp-secondary.st-hover{background:rgba(95,106,130,.08)}
-.ds-btn.tp-secondary.st-pressed,.ds-btn.tp-secondary.st-active{background:rgba(95,106,130,.15)}
-.ds-btn.tp-secondary.st-focused{background:#fff;box-shadow:0 0 0 3px rgba(83,129,241,.4)}
-.ds-btn.tp-secondary.st-disabled{background:#fff;color:#111317;opacity:.38;cursor:not-allowed}
-.ds-btn.tp-secondary.st-loading{background:rgba(95,106,130,.08);cursor:wait}
-
-/* ghost (primary minimal) — transparent bg, blue text */
-.ds-btn.tp-ghost{background:transparent;color:#1339EC;border:none}
-.ds-btn.tp-ghost.st-hover{background:#eef3fd}
-.ds-btn.tp-ghost.st-pressed,.ds-btn.tp-ghost.st-active{background:#dfe7fd}
-.ds-btn.tp-ghost.st-focused{background:transparent;box-shadow:0 0 0 3px rgba(83,129,241,.4)}
-.ds-btn.tp-ghost.st-disabled{opacity:.38;cursor:not-allowed}
-.ds-btn.tp-ghost.st-loading{background:#eef3fd;cursor:wait}
-
-/* destructive (danger bold) — red-tinted bg, red text */
-.ds-btn.tp-destructive{background:#ffebeb;color:#cc0000;border:none}
-.ds-btn.tp-destructive.st-hover{background:#ffd1d1;color:#b20000}
-.ds-btn.tp-destructive.st-pressed,.ds-btn.tp-destructive.st-active{background:#ffb3b3;color:#990000}
-.ds-btn.tp-destructive.st-focused{background:#ffebeb;box-shadow:0 0 0 3px rgba(204,0,0,.25)}
-.ds-btn.tp-destructive.st-disabled{opacity:.38;cursor:not-allowed}
-.ds-btn.tp-destructive.st-loading{background:#ffd1d1;cursor:wait}
-
-/* round shape */
-.ds-btn.shape-round{border-radius:100px}
-.ds-btn.sz-small.shape-round.icon-only{width:32px;padding:0}
-.ds-btn.sz-medium.shape-round.icon-only{width:36px;padding:0}
-.ds-btn.sz-large.shape-round.icon-only{width:40px;padding:0}
-
-/* icon-only */
-.ds-btn.icon-only.sz-small{width:32px;padding:0;gap:0}
-.ds-btn.icon-only.sz-medium{width:36px;padding:0;gap:0}
-.ds-btn.icon-only.sz-large{width:40px;padding:0;gap:0}
-
-/* spinner for loading */
-.ds-btn .spinner{
-  width:14px;height:14px;border-radius:50%;
-  border:2px solid currentColor;
-  border-top-color:transparent;
-  animation:spin .6s linear infinite;
-  flex-shrink:0;
-}
-.ds-btn.sz-small .spinner{width:11px;height:11px}
-.ds-btn.sz-large .spinner{width:16px;height:16px}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* ── state matrix ── */
-.matrix{
-  width:100%;
-  display:flex;flex-direction:column;gap:0;
-}
-.matrix-row{display:flex;align-items:center;gap:16px;padding:10px 0;border-top:1px solid rgba(255,255,255,.06)}
-.matrix-row:first-child{border-top:none}
-.matrix-state{
-  font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
-  color:#606878;width:64px;flex-shrink:0;text-align:right;
-}
 .bg-toggle{
-  display:flex;gap:4px;padding:3px;background:#21242c;border-radius:6px;border:1px solid #2e3138;
+  display:flex;gap:3px;padding:3px;background:#21242c;border-radius:6px;border:1px solid #2e3138;
+  margin-left:auto;flex-shrink:0;
 }
 .bg-toggle button{
   padding:3px 8px;border-radius:4px;border:none;background:none;
@@ -220,66 +39,219 @@ body{
 }
 .bg-toggle button.active{background:#2e3138;color:#e4e6ea}
 
-/* ── prompt bar ── */
-.prompt-bar{
-  border-top:1px solid #2a2d34;
-  background:#1c1f26;
-  padding:12px 16px;
-  display:flex;gap:10px;align-items:flex-start;
+/* main layout */
+.main{display:grid;grid-template-columns:236px 1fr;overflow:hidden}
+
+/* sidebar */
+.sidebar{
+  border-right:1px solid #2a2d34;background:#1c1f26;
+  overflow-y:auto;padding:14px 12px;
+  display:flex;flex-direction:column;gap:18px;
 }
-.prompt-text{
-  flex:1;font-family:ui-monospace,monospace;font-size:11.5px;
-  line-height:1.55;color:#a0a8b8;
-  background:#21242c;border:1px solid #2e3138;
-  border-radius:6px;padding:8px 10px;
-  min-height:48px;
+.ctrl-label{
+  font-size:10px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:#606878;margin-bottom:7px;
 }
-.copy-btn{
-  padding:8px 14px;border-radius:6px;
-  background:#1339EC;border:none;color:#fff;
-  font-size:12px;font-weight:600;cursor:pointer;
-  transition:background .12s;flex-shrink:0;align-self:stretch;
+.pill-row{display:flex;flex-wrap:wrap;gap:4px}
+.pill{
+  padding:5px 10px;border-radius:6px;border:1px solid #2e3138;
+  background:#21242c;color:#a0a8b8;font-size:12px;cursor:pointer;
+  transition:all .12s;user-select:none;
 }
+.pill:hover{border-color:#4a4f5c;color:#e4e6ea}
+.pill.active{background:#1339EC;border-color:#1339EC;color:#fff}
+
+.type-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.type-card{
+  padding:8px 9px;border-radius:7px;border:1px solid #2e3138;
+  background:#21242c;cursor:pointer;transition:all .12s;
+}
+.type-card:hover{border-color:#4a4f5c}
+.type-card.active{border-color:#1339EC;background:#0d1a4a}
+.type-card-label{font-size:11px;font-weight:500;color:#a0a8b8;display:block;margin-bottom:4px}
+.type-card.active .type-card-label{color:#7fa8ff}
+.type-mini{display:inline-flex;align-items:center;height:19px;padding:0 7px;border-radius:4px;font-size:10px;font-weight:600}
+
+.text-input{
+  width:100%;background:#21242c;border:1px solid #2e3138;border-radius:6px;
+  color:#e4e6ea;font-size:12px;padding:6px 9px;font-family:inherit;
+  transition:border-color .12s;
+}
+.text-input:focus{outline:none;border-color:#1339EC}
+
+.toggle-row{display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:2px 0}
+.toggle-row span{font-size:12px;color:#a0a8b8}
+.toggle{
+  width:28px;height:15px;border-radius:8px;background:#2e3138;
+  position:relative;transition:background .15s;cursor:pointer;flex-shrink:0;
+}
+.toggle.on{background:#1339EC}
+.toggle::after{
+  content:'';position:absolute;top:1.5px;left:1.5px;
+  width:12px;height:12px;border-radius:50%;background:#fff;transition:transform .15s;
+}
+.toggle.on::after{transform:translateX(13px)}
+
+/* ── icon picker ── */
+.icon-search{
+  width:100%;background:#21242c;border:1px solid #2e3138;border-radius:6px;
+  color:#e4e6ea;font-size:12px;padding:5px 8px 5px 26px;font-family:inherit;
+  transition:border-color .12s;margin-bottom:6px;
+}
+.icon-search:focus{outline:none;border-color:#1339EC}
+.icon-search-wrap{position:relative}
+.icon-search-wrap svg{position:absolute;left:7px;top:50%;transform:translateY(-50%);pointer-events:none;opacity:.4}
+
+.icon-grid-wrap{
+  height:192px;overflow-y:auto;border-radius:6px;
+  border:1px solid #2e3138;background:#1a1d24;
+}
+.icon-grid-wrap::-webkit-scrollbar{width:4px}
+.icon-grid-wrap::-webkit-scrollbar-track{background:transparent}
+.icon-grid-wrap::-webkit-scrollbar-thumb{background:#2e3138;border-radius:2px}
+
+.icon-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:0}
+.icon-cell{
+  display:flex;align-items:center;justify-content:center;
+  width:100%;aspect-ratio:1;cursor:pointer;border-radius:4px;
+  transition:background .1s;position:relative;
+}
+.icon-cell:hover{background:#2a2d34}
+.icon-cell.selected{background:#0d1a4a;outline:1px solid #1339EC}
+.icon-cell img{width:16px;height:16px;display:block;filter:invert(.7)}
+.icon-cell.selected img{filter:invert(1)}
+.icon-cell-none{
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;font-weight:600;letter-spacing:.04em;
+  color:#464c58;cursor:pointer;border-radius:4px;transition:all .1s;
+  width:100%;aspect-ratio:1;border:1px dashed #2e3138;
+}
+.icon-cell-none:hover{color:#a0a8b8;border-color:#4a4f5c}
+.icon-cell-none.selected{color:#7fa8ff;border-color:#1339EC;background:#0d1a4a}
+.icon-count{font-size:10px;color:#464c58;margin-top:4px;text-align:right}
+
+/* right panel */
+.right{display:flex;flex-direction:column;overflow:hidden}
+.preview-area{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:32px;
+  background:#1a1d24;padding:32px;overflow-y:auto;
+}
+.preview-label{
+  font-size:10px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:#606878;
+  margin-bottom:10px;text-align:center;
+}
+.preview-main{display:flex;flex-direction:column;align-items:center;gap:8px}
+
+/* ── component button styles (exact Figma values) ── */
+.ds-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  border-radius:8px;border:none;cursor:pointer;
+  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-weight:500;line-height:1;white-space:nowrap;
+  transition:background .12s,opacity .12s,color .12s,box-shadow .12s;
+  position:relative;overflow:hidden;
+}
+.ds-btn.sz-small{height:32px;padding:0 12px;font-size:12px;gap:5px}
+.ds-btn.sz-medium{height:36px;padding:0 16px;font-size:14px}
+.ds-btn.sz-large{height:40px;padding:0 20px;font-size:16px;gap:8px}
+
+/* primary */
+.ds-btn.tp-primary{background:#1339EC;color:#fff;border:none;--icon-filter:brightness(0) invert(1)}
+.ds-btn.tp-primary.st-hover{background:#0F2EBD}
+.ds-btn.tp-primary.st-pressed,.ds-btn.tp-primary.st-active{background:#0c228d}
+.ds-btn.tp-primary.st-focused{background:#1339EC;box-shadow:0 0 0 3px rgba(83,129,241,.5)}
+.ds-btn.tp-primary.st-disabled{opacity:.38;cursor:not-allowed}
+.ds-btn.tp-primary.st-loading{background:#0F2EBD;cursor:wait}
+
+/* secondary */
+.ds-btn.tp-secondary{background:#fff;color:#111317;border:1px solid #111317;--icon-filter:brightness(0)}
+.ds-btn.tp-secondary.st-hover{background:rgba(95,106,130,.08)}
+.ds-btn.tp-secondary.st-pressed,.ds-btn.tp-secondary.st-active{background:rgba(95,106,130,.15)}
+.ds-btn.tp-secondary.st-focused{background:#fff;box-shadow:0 0 0 3px rgba(83,129,241,.4)}
+.ds-btn.tp-secondary.st-disabled{opacity:.38;cursor:not-allowed}
+.ds-btn.tp-secondary.st-loading{background:rgba(95,106,130,.08);cursor:wait}
+
+/* ghost */
+.ds-btn.tp-ghost{background:transparent;color:#1339EC;border:none;
+  --icon-filter:invert(19%) sepia(96%) saturate(4000%) hue-rotate(228deg) brightness(92%)}
+.ds-btn.tp-ghost.st-hover{background:#eef3fd}
+.ds-btn.tp-ghost.st-pressed,.ds-btn.tp-ghost.st-active{background:#dfe7fd}
+.ds-btn.tp-ghost.st-focused{box-shadow:0 0 0 3px rgba(83,129,241,.4)}
+.ds-btn.tp-ghost.st-disabled{opacity:.38;cursor:not-allowed}
+.ds-btn.tp-ghost.st-loading{background:#eef3fd;cursor:wait}
+
+/* destructive */
+.ds-btn.tp-destructive{background:#ffebeb;color:#cc0000;border:none;
+  --icon-filter:invert(13%) sepia(100%) saturate(7500%) hue-rotate(0deg) brightness(95%) contrast(105%)}
+.ds-btn.tp-destructive.st-hover{background:#ffd1d1;color:#b20000}
+.ds-btn.tp-destructive.st-pressed,.ds-btn.tp-destructive.st-active{background:#ffb3b3;color:#990000}
+.ds-btn.tp-destructive.st-focused{background:#ffebeb;box-shadow:0 0 0 3px rgba(204,0,0,.25)}
+.ds-btn.tp-destructive.st-disabled{opacity:.38;cursor:not-allowed}
+.ds-btn.tp-destructive.st-loading{background:#ffd1d1;cursor:wait}
+
+.ds-btn.shape-round{border-radius:100px}
+.ds-btn.icon-only.sz-small{width:32px;padding:0}
+.ds-btn.icon-only.sz-medium{width:36px;padding:0}
+.ds-btn.icon-only.sz-large{width:40px;padding:0}
+
+/* btn icons */
+.btn-icon{display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.btn-icon img{display:block;filter:var(--icon-filter,brightness(0))}
+.btn-icon svg{display:block}
+.sz-small .btn-icon img,.sz-small .btn-icon svg{width:12px;height:12px}
+.sz-medium .btn-icon img,.sz-medium .btn-icon svg{width:14px;height:14px}
+.sz-large .btn-icon img,.sz-large .btn-icon svg{width:16px;height:16px}
+
+/* spinner */
+.ds-btn .spinner{
+  width:14px;height:14px;border-radius:50%;
+  border:2px solid currentColor;border-top-color:transparent;
+  animation:spin .6s linear infinite;flex-shrink:0;
+}
+.ds-btn.sz-small .spinner{width:11px;height:11px}
+.ds-btn.sz-large .spinner{width:16px;height:16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* state matrix */
+.matrix{width:100%;display:flex;flex-direction:column}
+.matrix-row{display:flex;align-items:center;gap:16px;padding:9px 0;border-top:1px solid rgba(255,255,255,.06)}
+.matrix-row:first-child{border-top:none}
+.matrix-state{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#606878;width:60px;flex-shrink:0;text-align:right}
+
+/* prompt */
+.prompt-bar{border-top:1px solid #2a2d34;background:#1c1f26;padding:10px 14px;display:flex;gap:10px;align-items:flex-start}
+.prompt-text{flex:1;font-family:ui-monospace,monospace;font-size:11px;line-height:1.55;color:#a0a8b8;background:#21242c;border:1px solid #2e3138;border-radius:6px;padding:7px 9px;min-height:44px}
+.copy-btn{padding:7px 14px;border-radius:6px;background:#1339EC;border:none;color:#fff;font-size:12px;font-weight:600;cursor:pointer;transition:background .12s;flex-shrink:0;align-self:stretch}
 .copy-btn:hover{background:#0F2EBD}
 .copy-btn.copied{background:#2e881b}
 
-/* ── filename chip ── */
-.filename-chip{
-  font-family:ui-monospace,monospace;font-size:10px;
-  background:#21242c;border:1px solid #2e3138;border-radius:4px;
-  padding:3px 7px;color:#606878;
-  margin-top:6px;word-break:break-all;text-align:center;
-}
+.filename-chip{font-family:ui-monospace,monospace;font-size:10px;background:#21242c;border:1px solid #2e3138;border-radius:4px;padding:3px 7px;color:#606878;margin-top:6px;word-break:break-all;text-align:center;max-width:480px}
 </style>
 </head>
 <body>
 
-<!-- top bar -->
 <div class="topbar">
   <span class="topbar-title">Button Explorer</span>
-  <div id="presets" style="display:flex;gap:5px;flex-wrap:wrap">
-    <button class="preset-pill" onclick="applyPreset('cta')">Primary CTA</button>
-    <button class="preset-pill" onclick="applyPreset('secondary')">Secondary</button>
-    <button class="preset-pill" onclick="applyPreset('ghost')">Ghost</button>
-    <button class="preset-pill" onclick="applyPreset('danger')">Destructive</button>
-    <button class="preset-pill" onclick="applyPreset('icon')">Icon Only</button>
-  </div>
-  <div class="topbar-sep"></div>
-  <div class="bg-toggle" style="margin-left:8px">
+  <button class="preset-pill" onclick="applyPreset('cta')">Primary CTA</button>
+  <button class="preset-pill" onclick="applyPreset('secondary')">Secondary</button>
+  <button class="preset-pill" onclick="applyPreset('ghost')">Ghost</button>
+  <button class="preset-pill" onclick="applyPreset('danger')">Destructive</button>
+  <button class="preset-pill" onclick="applyPreset('icon')">Icon Only</button>
+  <div class="bg-toggle">
     <button id="bg-dark" class="active" onclick="setBg('dark')">Dark</button>
     <button id="bg-neutral" onclick="setBg('neutral')">Neutral</button>
     <button id="bg-light" onclick="setBg('light')">Light</button>
   </div>
 </div>
 
-<!-- main -->
 <div class="main">
 
-  <!-- sidebar controls -->
   <div class="sidebar">
 
     <!-- Type -->
-    <div class="ctrl-group">
+    <div>
       <div class="ctrl-label">Type</div>
       <div class="type-grid" id="type-grid">
         <div class="type-card active" data-type="primary" onclick="set('type','primary')">
@@ -302,7 +274,7 @@ body{
     </div>
 
     <!-- Size -->
-    <div class="ctrl-group">
+    <div>
       <div class="ctrl-label">Size</div>
       <div class="pill-row" id="size-pills">
         <div class="pill" data-size="small" onclick="set('size','small')">S — 32px</div>
@@ -312,7 +284,7 @@ body{
     </div>
 
     <!-- State -->
-    <div class="ctrl-group">
+    <div>
       <div class="ctrl-label">State</div>
       <div class="pill-row" id="state-pills">
         <div class="pill active" data-state="default" onclick="set('state','default')">Default</div>
@@ -322,19 +294,19 @@ body{
         <div class="pill" data-state="disabled" onclick="set('state','disabled')">Disabled</div>
         <div class="pill" data-state="loading" onclick="set('state','loading')">Loading ✦</div>
       </div>
-      <div style="font-size:10px;color:#464c58;margin-top:5px;line-height:1.4">✦ Loading is not a Figma state — simulated with CSS spinner</div>
+      <div style="font-size:10px;color:#3a404e;margin-top:4px;line-height:1.4">✦ CSS-only — no Figma variant</div>
     </div>
 
     <!-- Label -->
-    <div class="ctrl-group">
+    <div>
       <div class="ctrl-label">Label</div>
       <input class="text-input" type="text" id="label-input" value="Button text" oninput="updateAll()">
     </div>
 
     <!-- Options -->
-    <div class="ctrl-group">
+    <div>
       <div class="ctrl-label">Options</div>
-      <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;flex-direction:column;gap:7px">
         <div class="toggle-row" onclick="toggle('iconOnly')">
           <span>Icon only</span>
           <div class="toggle" id="toggle-iconOnly"></div>
@@ -343,9 +315,9 @@ body{
           <span>Leading icon</span>
           <div class="toggle on" id="toggle-leadingIcon"></div>
         </div>
-        <div class="toggle-row" onclick="toggle('trailingIcon')">
+        <div class="toggle-row" onclick="toggle('trailingChevron')">
           <span>Trailing chevron</span>
-          <div class="toggle on" id="toggle-trailingIcon"></div>
+          <div class="toggle on" id="toggle-trailingChevron"></div>
         </div>
         <div class="toggle-row" onclick="toggle('roundShape')">
           <span>Round shape</span>
@@ -354,20 +326,33 @@ body{
       </div>
     </div>
 
+    <!-- Icon picker -->
+    <div>
+      <div class="ctrl-label">Leading Icon</div>
+      <div class="icon-search-wrap">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <circle cx="5.2" cy="5.2" r="3.5" stroke="#a0a8b8" stroke-width="1.2"/>
+          <line x1="7.8" y1="7.8" x2="10.5" y2="10.5" stroke="#a0a8b8" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+        <input class="icon-search" type="text" id="icon-search" placeholder="Search 433 icons…" oninput="renderIconGrid()">
+      </div>
+      <div class="icon-grid-wrap">
+        <div class="icon-grid" id="icon-grid"></div>
+      </div>
+      <div class="icon-count" id="icon-count"></div>
+    </div>
+
   </div><!-- /sidebar -->
 
-  <!-- right panel -->
   <div class="right">
     <div class="preview-area" id="preview-area">
 
-      <!-- single button preview -->
       <div class="preview-main">
         <div class="preview-label">Preview</div>
         <div id="preview-btn-wrap"></div>
         <div class="filename-chip" id="filename-chip">…</div>
       </div>
 
-      <!-- state matrix -->
       <div style="width:100%;max-width:560px">
         <div class="preview-label">All states — <span id="matrix-desc"></span></div>
         <div class="matrix" id="matrix"></div>
@@ -376,87 +361,100 @@ body{
     </div>
   </div>
 
-</div><!-- /main -->
+</div>
 
-<!-- prompt bar -->
 <div class="prompt-bar">
   <div class="prompt-text" id="prompt-text">…</div>
   <button class="copy-btn" id="copy-btn" onclick="copyPrompt()">Copy</button>
 </div>
 
 <script>
+/* ── all 433 icon names ── */
+const ICONS = 'acrobat-logo,admin-company-outline,admin-symbole,admin-team-outline,admins-symbole,alarm-bell,alarm-bell-dot,alarm-bell-gear,alarm-bell-slash,analytics,angry,api-symbole,arrow-check-mark,arrow-down,arrow-dropdown,arrow-left,arrow-right,arrow-up,arrows-edges,arrows-left-right,arrows-up-down,arrows-up-down-rigth-left,artifical-inteligence,artifical-inteligence-outline,at-sign,audio-wave,badge-admin-company,badge-admin-team,badge-check-mark,badge-check-mark-filled,badge-check-mark-outline,badge-cross-mark,benchmarking-logo,beta,beta-symbole,bluesky,bluesky-outline,book,book-pencil,book-plus,briefing,browser-view-rows,browser-view-text,browser-window,browser-window-check-mark,browser-window-circle,browser-window-columns,browser-window-grid,browser-window-pencil,browser-window-plus,browser-window-stacked,browser-window-star,browser-window-template,browser-window-template-clock,browser-window-template-pencil,browser-window-template-plus,browser-window-triangle,business_-products_business_-chart,calendar,calendar-gear,calendar-time,camera,canva,canva-logo,canva-outline,canvas-controler,canvas-cube,chain-link,check-box-checked-outline,check-box-unchecked-outline,check-mark,chevron-down,chevron-down-large,chevron-left-large,chevron-left-small,chevron-right-large,chevron-right-small,chevron-up,chevron-up-large,circle-arrow-right,circle-arrow-up,circle-arrows-left-right,circle-check-mark,circle-exclamation-mark,circle-filled,circle-i-sign,circle-play-symbole,circle-question-mark,circle-slash,circle-slash-broken,clipboard,clipboard-pencil,clipboard-plus,clock,clock-dashed-arrow,clock-z-sign,cloud,cloud-check-mark,code-symbole,collapse,compass,container,content_-edit_document_-content_-notes_planner,credit-card,cube,cube-3d,cube-3d-pencil,cube-3d-plus,cube-gear,cube-pencil,cube-plus,cursor-symbole,dashboard-logo,data-base,desktop-device,dislike,double-check-mark,dropbox-logo,ellipsis-horizontal,ellipsis-vertical,engagement-symbole,envelope,euro-sign-circle,eye,eye-slash,facebook,facebook-network-logo,facebook-outline,facelift-data-studio-logo,facelift-entirely-type,facelift-logo,facelift-type,fb-messenger,fb-messenger-network-logo,fb-messenger-outline,file-blank,file-check-mark,file-check-mark-filled,file-text,filter-symbole,filter-symbole-slash,five-squares-grid,flag-filled,flag-outline,flag-outline-slash,flash-symbole,folder,folder-filled,fontstyle-bold,fontstyle-code,fontstyle-headline-01,fontstyle-headline-02,fontstyle-headline-03,fontstyle-headline-04,fontstyle-headline-05,fontstyle-headline-06,fontstyle-highlight,fontstyle-italic,fontstyle-numbered-list,fontstyle-paragraph,fontstyle-quote,fontstyle-strike-through,fontstyle-text-indent,fontstyle-text-outdent,fontstyle-underline,fontstyle-unnumbered-list,foreign-language-letters,format-landscape,format-portrait,four-squares-grid,frames,frames-pencil,frames-plus,frames-square,gantt-symbole,garbage-can,garbage-can-slash,gearwheel-outline,globe-symbole,google,google-analytics,google-analytics-logo,google-analytics-outline,google-logo,google-outline,haha,hashtag,heart-filled,heart-outline,home-symbole,icon-_-4-eyes,icon-_-add-frames_-list,icon-_-advanced-approval,icon-_-ai_-ai-quick-resolve,icon-_-ai_-artificial-intelligence-updated,icon-_-ai_-email_-spam,icon-_-ai_-refresh-generation,icon-_-ai_-reply,icon-_-ai_-smart-channel-adaptation,icon-_-ai_-summarize,icon-_-ai_-summarize-alt,icon-_-box_-archive,icon-_-browser-window_-half-columns,icon-_-browsers-windows-stacked,icon-_-calendar_-success_-checkmark,icon-_-chevron-down,icon-_-chevron-down-small,icon-_-chevron-left,icon-_-chevron-right,icon-_-chevron-up,icon-_-chevron-up-small,icon-_-clipboard_-rectangle,icon-_-clipboard_-star,icon-_-cloud_-checkmark_-save,icon-_-drag_-dots,icon-_-exchange_-switch_-column,icon-_-folder_-archive,icon-_-frames_-list,icon-_-hide-post,icon-_-history,icon-_-inbox_-critical,icon-_-inbox_-custom,icon-_-inbox_-noise_-irrelevant,icon-_-intagram-grid,icon-_-kanban_-board_-view,icon-_-link_-attachment,icon-_-list_-logbook,icon-_-loading_-spinner,icon-_-menu_-hamburger,icon-_-options,icon-_-overlap,icon-_-pie-chart,icon-_-placeholder,icon-_-question-check_-unresolved,icon-_-quick-filter,icon-_-quickfill,icon-_-quickfill-alt-2,icon-_-quickfill-alt-3,icon-_-quickfill-alt-4,icon-_-resolved-item,icon-_-show-post,icon-_-spam,icon-_-status-circle,icon-_-strategy_-tree,icon-_-sun_-today,icon-_-task-group,icon-_-task-templates,icon-_-tasklist_-checkmark,icon-_-unmark-spam,icon-_-unordered-list,icon-_-user_-user-deactivated,icon-_-user_-user-details,icon-in-progress,image,image-pencil,inbox,inbox-custom,inbox-gear,instagram,instagram-network-logo,instagram-outline,integration-symbole,interface_-essential_analytics-chart-square,interface_-essential_calendar-schedule-1,interface_-essential_chart-analytic-statistics,interface_-essential_chat_-messages,interface_-essential_dashboard,interface_-essential_group-dots-sqaure,interface_-essential_rotate,interface_-essential_search_-loupe_-minus,interface_-essential_thunder_-lightning_-notifications,kanban-symbole,key,light-bulb,like,line-chevron-left,line-chevron-right,linkedin,linkedin-network-logo,linkedin-outline,list-arrow-down,list-arrow-up,list-check-mark,list-symbole,location-group-symbole,location-symbole,lock-close,lock-open,love,magnifying-glass,mastodon,mastodon-outline,maximize-symbole,megaphon,minus-sign-small,mobile-carousel,mobile-device,ms-teams-logo,networks-symbole,octagon-x-sign,paper-clip,paperplane,paperplane-check-mark,pause-symbole,pencil-outline,pin,pinterest,pinterest-network-logo,pinterest-outline,pipe-arrows-left-right,planner-logo,play-symbole,plus-sign-large,plus-sign-small,plus-sign-small-invert,post-pool,profile-symbole,profiles,profiles-symbole,quintly,quintly-logo,rectangle-arrow-down,rectangle-arrow-right,rectangle-arrow-up,rectangle-magnifying-glas,rectangle-play-symbole,rectangle-template,rectangles-outline,reply-arrow,report-clock-symbole,report-symbole,retweet-symbole,rhombus-exclamation-mark-filled,rhombus-exclamation-mark-outline,ribbon-star,rocket-symbole,rss,rss-logo,rss-outline,sad,seo_search_-loupe_-graph_-traffic_-conversion,share-arrow,shield-half-filled,six-squares-grid,slash-arrows-up-down,smiley,smiley-face-negative,smiley-face-neutral,smiley-face-positive,smiley-negative,smiley-neutral,smiley-positive,social-share-logo,speach-bubble-plus,speach-bubble-text,speaker-maximal,speaker-minimal,speaker-muted,speech-bubble-heart,speech-bubble-outline,speech-bubble-outline-slash,speech-bubble-question-mark,speech-bubble-star,speech-bubble-up-text,speech-bubbles-dots,speech-bubbles-filled,speech-bubbles-outline,spotify,spotify-logo,spotify-outline,square-flash-filled,square-gear,squares,star-filled,star-outline,sticker-smiley-face-positive,tag,talkwalker,talkwalker-network-logo,talkwalker-outline,target,target-arrow,target-cursor,teams-symbole,thankful,threads,threads-network-logo,threads-outline,three-connected-squares,three-lines-horizontal,thumb-down-filled,thumb-down-outline,thumb-up-filled,thumb-up-outline,tiktok,tiktok-network-logo,tiktok-outline,tree-node,triangle-exclamation-mark-filled,triangle-exclamation-mark-outline,tweet-symbole,two-images-stacked,two-nested-rhombus,two-nested-squares,two-squares-grid,two-squares-stacked,user-circle,user-circle-dashed,user-lock,user-minus-sign,user-plus-sign,user-symbole,users-symbole,view-analytics,view-tree,whatsapp,whatsapp-network-logo,wordpress,wordpress-network-logo,wordpress-outline,wow,x,x-network-logo,x-outline,x-sign-large,x-sign-small,x-sign-small-invert,xing,xing-network-logo,xing-outline,youtube,youtube-network-logo,youtube-outline'.split(',');
+
 /* ── state ── */
 const DEFAULTS = {
-  type: 'primary',
-  size: 'medium',
-  state: 'default',
-  label: 'Button text',
-  iconOnly: false,
-  leadingIcon: true,
-  trailingIcon: true,
-  roundShape: false,
+  type:'primary', size:'medium', state:'default',
+  label:'Button text',
+  iconOnly:false, leadingIcon:true, trailingChevron:true, roundShape:false,
+  selectedIcon: null, // icon name string or null
 };
-
 const state = { ...DEFAULTS };
 
-let bgMode = 'dark';
+/* ── SVG icon cache (svg text, with currentColor) ── */
+const iconCache = {};
 
-/* ── SVG icons ── */
-const ICON_COMPONENT = `<svg width="14" height="14" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 8V5a1 1 0 011-1h3M16 8V5a1 1 0 00-1-1h-3M4 12v3a1 1 0 001 1h3M16 12v3a1 1 0 01-1 1h-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>`;
-const ICON_CHEVRON   = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 4.5l3.5 3 3.5-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-const ICON_SPINNER   = `<span class="spinner"></span>`;
-const ICON_SINGLE    = `<svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M4 8V5a1 1 0 011-1h3M16 8V5a1 1 0 00-1-1h-3M4 12v3a1 1 0 001 1h3M16 12v3a1 1 0 01-1 1h-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>`;
-
-/* ── Figma filename mapping ── */
-// type → {family, emphasis}
-const TYPE_MAP = {
-  primary:     { family: 'primary',   emphasis: 'bold' },
-  secondary:   { family: 'secondary', emphasis: 'bold' },
-  ghost:       { family: 'primary',   emphasis: 'minimal' },
-  destructive: { family: 'danger',    emphasis: 'bold' },
-};
-// state → Figma state name (loading is not a Figma state)
-const STATE_FIGMA = {
-  default: 'default', hover: 'hover', focused: 'focused',
-  pressed: 'pressed', disabled: 'disabled', loading: null,
-};
-const SIZE_MAP = { small: 'small', medium: 'medium', large: 'large' };
-
-function buildFilename(type, size, stateKey, iconOnly, roundShape) {
-  const { family, emphasis } = TYPE_MAP[type];
-  const figmaState = STATE_FIGMA[stateKey];
-  if (!figmaState) return `(no Figma file — loading is CSS-only)`;
-  const io  = iconOnly ? 'true' : 'false';
-  const shp = roundShape ? 'round' : 'rectangle';
-  return `output/components/action_${family}_-size_${SIZE_MAP[size]}_-emphasis_${emphasis}_-state_${figmaState}_-icon-only_${io}_-shape_${shp}.html`;
+/* ── fetch icon SVG, patch fill to currentColor ── */
+async function loadIconSvg(name) {
+  if (iconCache[name]) return iconCache[name];
+  try {
+    const res = await fetch(`../output/icons/${name}.svg`);
+    if (!res.ok) throw new Error();
+    let txt = await res.text();
+    // replace any non-none fill with currentColor
+    txt = txt.replace(/fill="(?!none)[^"]*"/g, 'fill="currentColor"');
+    txt = txt.replace(/stroke="(?!none)[^"]*"/g, 'stroke="currentColor"');
+    iconCache[name] = { type: 'svg', content: txt };
+  } catch {
+    // file:// restriction — use img with CSS filter
+    iconCache[name] = { type: 'img', name };
+  }
+  return iconCache[name];
 }
 
-/* ── render button element ── */
-function makeBtn(type, size, stateKey, label, iconOnly, leadingIcon, trailingIcon, roundShape) {
-  const btn = document.createElement('button');
-  btn.className = [
-    'ds-btn',
-    `tp-${type}`,
-    `sz-${size}`,
-    `st-${stateKey}`,
-    roundShape ? 'shape-round' : '',
-    iconOnly   ? 'icon-only'   : '',
-  ].filter(Boolean).join(' ');
+/* ── built-in fallback icons (inline SVG using currentColor) ── */
+const FALLBACK_ICON = `<svg width="1em" height="1em" viewBox="0 0 20 20" fill="none"><path d="M4 8V5a1 1 0 011-1h3M16 8V5a1 1 0 00-1-1h-3M4 12v3a1 1 0 001 1h3M16 12v3a1 1 0 01-1 1h-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>`;
+const CHEVRON_ICON  = `<svg width="1em" height="1em" viewBox="0 0 12 12" fill="none"><path d="M2.5 4.5l3.5 3 3.5-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 
+/* ── build icon html for button ── */
+function iconHtml(cachedIcon, px) {
+  if (!cachedIcon) return FALLBACK_ICON.replace(/1em/g, px+'px');
+  if (cachedIcon.type === 'svg') {
+    // resize: replace width/height attrs on the svg element
+    return cachedIcon.content
+      .replace(/<svg([^>]*)width="[^"]*"/, `<svg$1width="${px}"`)
+      .replace(/height="[^"]*"/, `height="${px}"`);
+  }
+  // img fallback — CSS filter on .btn-icon img handles colour
+  return `<img src="../output/icons/${cachedIcon.name}.svg" width="${px}" height="${px}">`;
+}
+
+/* ── make a button DOM element ── */
+function makeBtn(type, size, stateKey, label, iconOnly, leadingIcon, trailingChevron, roundShape) {
+  const px = size === 'small' ? 12 : size === 'large' ? 16 : 14;
+
+  const btn = document.createElement('button');
+  btn.className = ['ds-btn',`tp-${type}`,`sz-${size}`,`st-${stateKey}`,
+    roundShape ? 'shape-round' : '', iconOnly ? 'icon-only' : ''].filter(Boolean).join(' ');
   if (stateKey === 'disabled') btn.disabled = true;
 
+  const cached = state.selectedIcon ? iconCache[state.selectedIcon] : null;
+
+  if (stateKey === 'loading') {
+    const sp = document.createElement('span'); sp.className = 'spinner';
+    if (!iconOnly) { btn.appendChild(sp); btn.append(' ' + label); }
+    else btn.appendChild(sp);
+    return btn;
+  }
+
   if (iconOnly) {
-    btn.innerHTML = (stateKey === 'loading') ? ICON_SPINNER : ICON_SINGLE;
-  } else {
-    let inner = '';
-    if (stateKey === 'loading') {
-      inner = `${ICON_SPINNER}<span>${label}</span>`;
-    } else {
-      if (leadingIcon) inner += ICON_COMPONENT;
-      inner += `<span>${label}</span>`;
-      if (trailingIcon) inner += ICON_CHEVRON;
-    }
-    btn.innerHTML = inner;
+    const wrap = document.createElement('span'); wrap.className = 'btn-icon';
+    wrap.innerHTML = iconHtml(cached, px);
+    btn.appendChild(wrap);
+    return btn;
+  }
+
+  if (leadingIcon) {
+    const wrap = document.createElement('span'); wrap.className = 'btn-icon';
+    wrap.innerHTML = iconHtml(cached, px);
+    btn.appendChild(wrap);
+  }
+  const txt = document.createElement('span'); txt.textContent = label;
+  btn.appendChild(txt);
+  if (trailingChevron) {
+    const wrap = document.createElement('span'); wrap.className = 'btn-icon';
+    wrap.innerHTML = CHEVRON_ICON.replace(/1em/g, (px - 2) + 'px');
+    btn.appendChild(wrap);
   }
   return btn;
 }
@@ -465,13 +463,9 @@ function makeBtn(type, size, stateKey, label, iconOnly, leadingIcon, trailingIco
 function renderPreview() {
   const wrap = document.getElementById('preview-btn-wrap');
   wrap.innerHTML = '';
-  wrap.appendChild(makeBtn(
-    state.type, state.size, state.state,
-    state.label, state.iconOnly, state.leadingIcon, state.trailingIcon, state.roundShape
-  ));
-
-  document.getElementById('filename-chip').textContent =
-    buildFilename(state.type, state.size, state.state, state.iconOnly, state.roundShape);
+  wrap.appendChild(makeBtn(state.type, state.size, state.state, state.label,
+    state.iconOnly, state.leadingIcon, state.trailingChevron, state.roundShape));
+  document.getElementById('filename-chip').textContent = buildFilename();
 }
 
 /* ── render state matrix ── */
@@ -480,147 +474,148 @@ const MATRIX_STATES = ['default','hover','focused','pressed','disabled','loading
 function renderMatrix() {
   const matrix = document.getElementById('matrix');
   matrix.innerHTML = '';
-
   MATRIX_STATES.forEach(s => {
-    const row = document.createElement('div');
-    row.className = 'matrix-row';
-
-    const lbl = document.createElement('div');
-    lbl.className = 'matrix-state';
-    lbl.textContent = s;
+    const row = document.createElement('div'); row.className = 'matrix-row';
+    const lbl = document.createElement('div'); lbl.className = 'matrix-state'; lbl.textContent = s;
     row.appendChild(lbl);
-
-    const btn = makeBtn(
-      state.type, state.size, s,
-      state.label, state.iconOnly, state.leadingIcon, state.trailingIcon, state.roundShape
-    );
-    btn.style.pointerEvents = 'none'; // matrix is read-only
+    const btn = makeBtn(state.type, state.size, s, state.label,
+      state.iconOnly, state.leadingIcon, state.trailingChevron, state.roundShape);
+    btn.style.pointerEvents = 'none';
     row.appendChild(btn);
-
     matrix.appendChild(row);
   });
+  const desc = {primary:'Primary bold',secondary:'Secondary bold',ghost:'Ghost (minimal)',destructive:'Destructive bold'};
+  const sz   = {small:'S 32px',medium:'M 36px',large:'L 40px'};
+  document.getElementById('matrix-desc').textContent = `${desc[state.type]}, ${sz[state.size]}`;
+}
 
-  const desc = { primary:'Primary bold', secondary:'Secondary bold', ghost:'Ghost (minimal)', destructive:'Destructive bold' };
-  const size  = { small:'S 32px', medium:'M 36px', large:'L 40px' };
-  document.getElementById('matrix-desc').textContent = `${desc[state.type]}, ${size[state.size]}`;
+/* ── icon picker ── */
+function renderIconGrid() {
+  const q = (document.getElementById('icon-search').value || '').toLowerCase();
+  const filtered = q ? ICONS.filter(n => n.includes(q)) : ICONS;
+  const grid = document.getElementById('icon-grid');
+
+  // "None" cell
+  let html = `<div class="icon-cell-none ${state.selectedIcon===null?'selected':''}" onclick="selectIcon(null)" title="No icon (use default)">–</div>`;
+
+  filtered.slice(0, 300).forEach(name => {
+    const sel = state.selectedIcon === name ? 'selected' : '';
+    html += `<div class="icon-cell ${sel}" onclick="selectIcon('${name}')" title="${name}">
+      <img src="../output/icons/${name}.svg" alt="">
+    </div>`;
+  });
+
+  grid.innerHTML = html;
+  document.getElementById('icon-count').textContent =
+    filtered.length > 300 ? `Showing 300 of ${filtered.length} — refine search` :
+    q ? `${filtered.length} match${filtered.length!==1?'es':''}` :
+    `${ICONS.length} icons`;
+}
+
+/* ── select icon ── */
+async function selectIcon(name) {
+  state.selectedIcon = name;
+  if (name && !iconCache[name]) {
+    await loadIconSvg(name);
+  }
+  renderIconGrid();
+  updateAll();
+}
+
+/* ── Figma filename ── */
+const TYPE_MAP = {
+  primary:     {family:'primary',   emphasis:'bold'},
+  secondary:   {family:'secondary', emphasis:'bold'},
+  ghost:       {family:'primary',   emphasis:'minimal'},
+  destructive: {family:'danger',    emphasis:'bold'},
+};
+const STATE_FIGMA = {default:'default',hover:'hover',focused:'focused',pressed:'pressed',disabled:'disabled',loading:null};
+
+function buildFilename() {
+  const {family,emphasis} = TYPE_MAP[state.type];
+  const fs = STATE_FIGMA[state.state];
+  if (!fs) return '(loading — CSS only, no Figma variant)';
+  const io  = state.iconOnly ? 'true' : 'false';
+  const shp = state.roundShape ? 'round' : 'rectangle';
+  return `output/components/action_${family}_-size_${state.size}_-emphasis_${emphasis}_-state_${fs}_-icon-only_${io}_-shape_${shp}.html`;
 }
 
 /* ── prompt ── */
 function updatePrompt() {
-  const typeLabels   = { primary:'primary', secondary:'secondary', ghost:'ghost', destructive:'destructive' };
-  const sizeLabels   = { small:'small (S, 32px)', medium:'medium (M, 36px)', large:'large (L, 40px)' };
-  const stateLabels  = { default:'', hover:'hovered', focused:'focused', pressed:'pressed', disabled:'disabled', loading:'loading' };
-  const emphasisNote = { primary:'bold emphasis', secondary:'bold emphasis', ghost:'minimal/ghost emphasis', destructive:'bold emphasis' };
+  const typeL  = {primary:'primary', secondary:'secondary', ghost:'ghost', destructive:'destructive'};
+  const sizeL  = {small:'small (S, 32px)', medium:'medium (M, 36px)', large:'large (L, 40px)'};
+  const stateL = {default:'', hover:'hovered', focused:'focused', pressed:'pressed', disabled:'disabled', loading:'loading'};
+  const emphL  = {primary:'bold emphasis', secondary:'bold emphasis', ghost:'minimal/ghost emphasis', destructive:'bold emphasis'};
 
-  const parts = [];
-
-  parts.push(`Use a ${typeLabels[state.type]} action button`);
-
-  if (state.size !== DEFAULTS.size)  parts.push(`at ${sizeLabels[state.size]}`);
-  if (state.state !== DEFAULTS.state && stateLabels[state.state]) parts.push(`in the ${stateLabels[state.state]} state`);
-
+  let text = `Use a ${typeL[state.type]} action button`;
   const extras = [];
-  if (state.iconOnly)             extras.push('icon-only (no label)');
-  else if (state.label !== DEFAULTS.label) extras.push(`with label "${state.label}"`);
-  if (!state.leadingIcon && !state.iconOnly)  extras.push('no leading icon');
-  if (!state.trailingIcon && !state.iconOnly) extras.push('no trailing chevron');
-  if (state.roundShape)           extras.push('pill/round shape');
+  if (state.size !== DEFAULTS.size) extras.push(`size ${sizeL[state.size]}`);
+  if (state.state !== DEFAULTS.state && stateL[state.state]) extras.push(`${stateL[state.state]} state`);
+  if (state.selectedIcon) extras.push(`"${state.selectedIcon}" icon from output/icons/`);
+  if (state.iconOnly) extras.push('icon-only (no label)');
+  else if (state.label !== DEFAULTS.label) extras.push(`label "${state.label}"`);
+  if (!state.leadingIcon && !state.iconOnly) extras.push('no leading icon');
+  if (!state.trailingChevron && !state.iconOnly) extras.push('no trailing chevron');
+  if (state.roundShape) extras.push('round/pill shape');
+  if (extras.length) text += ` — ${extras.join(', ')}`;
+  text += `. Figma file: ${buildFilename()}`;
 
-  if (extras.length) parts.push(extras.join(', '));
-
-  const { family, emphasis } = TYPE_MAP[state.type];
-  const figmaState  = STATE_FIGMA[state.state];
-  const fileRef     = figmaState
-    ? `(output/components/action_${family}_-size_${SIZE_MAP[state.size]}_-emphasis_${emphasis}_-state_${figmaState}_-icon-only_${state.iconOnly}_-shape_${state.roundShape ? 'round' : 'rectangle'}.html)`
-    : '(loading state: add a CSS spinner — no Figma variant exists)';
-
-  document.getElementById('prompt-text').textContent =
-    `${parts.join(', ')}. ${fileRef}`;
+  document.getElementById('prompt-text').textContent = text;
 }
 
 /* ── background ── */
 function setBg(mode) {
-  bgMode = mode;
-  const area = document.getElementById('preview-area');
-  area.className = 'preview-area';
-  if (mode === 'light')   area.classList.add('preview-bg-light');
-  if (mode === 'dark')    area.style.background = '#1a1d24';
-  else                    area.style.background = '';
-  if (mode === 'neutral') area.classList.add('preview-bg-light');
-
-  const colors = { dark: '#1a1d24', neutral: '#f3f5f7', light: '#ffffff' };
-  area.style.background = colors[mode];
-
-  ['dark','neutral','light'].forEach(m => {
-    document.getElementById(`bg-${m}`)?.classList.toggle('active', m === mode);
-  });
+  const colors = {dark:'#1a1d24', neutral:'#f3f5f7', light:'#ffffff'};
+  document.getElementById('preview-area').style.background = colors[mode];
+  ['dark','neutral','light'].forEach(m =>
+    document.getElementById(`bg-${m}`).classList.toggle('active', m === mode));
 }
 
 /* ── controls ── */
 function set(key, val) {
   state[key] = val;
-
-  // sync pills / cards
-  if (key === 'type') {
-    document.querySelectorAll('#type-grid .type-card').forEach(el =>
-      el.classList.toggle('active', el.dataset.type === val));
-  }
-  if (key === 'size') {
-    document.querySelectorAll('#size-pills .pill').forEach(el =>
-      el.classList.toggle('active', el.dataset.size === val));
-  }
-  if (key === 'state') {
-    document.querySelectorAll('#state-pills .pill').forEach(el =>
-      el.classList.toggle('active', el.dataset.state === val));
-  }
-
+  if (key==='type') document.querySelectorAll('#type-grid .type-card').forEach(el=>el.classList.toggle('active',el.dataset.type===val));
+  if (key==='size') document.querySelectorAll('#size-pills .pill').forEach(el=>el.classList.toggle('active',el.dataset.size===val));
+  if (key==='state') document.querySelectorAll('#state-pills .pill').forEach(el=>el.classList.toggle('active',el.dataset.state===val));
   updateAll();
 }
 
 function toggle(key) {
   state[key] = !state[key];
-  const el = document.getElementById(`toggle-${key}`);
-  if (el) el.classList.toggle('on', state[key]);
+  document.getElementById(`toggle-${key}`)?.classList.toggle('on', state[key]);
   updateAll();
 }
 
 /* ── presets ── */
 const PRESETS = {
-  cta:       { type:'primary',     size:'medium', state:'default', label:'Get started',   iconOnly:false, leadingIcon:false, trailingIcon:true,  roundShape:false },
-  secondary: { type:'secondary',   size:'medium', state:'default', label:'Cancel',         iconOnly:false, leadingIcon:false, trailingIcon:false, roundShape:false },
-  ghost:     { type:'ghost',       size:'medium', state:'default', label:'Learn more',     iconOnly:false, leadingIcon:false, trailingIcon:true,  roundShape:false },
-  danger:    { type:'destructive', size:'medium', state:'default', label:'Delete campaign',iconOnly:false, leadingIcon:true,  trailingIcon:false, roundShape:false },
-  icon:      { type:'primary',     size:'medium', state:'default', label:'',               iconOnly:true,  leadingIcon:false, trailingIcon:false, roundShape:true  },
+  cta:       {type:'primary',     size:'medium', state:'default', label:'Get started',    iconOnly:false, leadingIcon:false, trailingChevron:true,  roundShape:false, selectedIcon:null},
+  secondary: {type:'secondary',   size:'medium', state:'default', label:'Cancel',          iconOnly:false, leadingIcon:false, trailingChevron:false, roundShape:false, selectedIcon:null},
+  ghost:     {type:'ghost',       size:'medium', state:'default', label:'Learn more',      iconOnly:false, leadingIcon:false, trailingChevron:true,  roundShape:false, selectedIcon:null},
+  danger:    {type:'destructive', size:'medium', state:'default', label:'Delete campaign', iconOnly:false, leadingIcon:true,  trailingChevron:false, roundShape:false, selectedIcon:'garbage-can'},
+  icon:      {type:'primary',     size:'medium', state:'default', label:'',                iconOnly:true,  leadingIcon:false, trailingChevron:false, roundShape:true,  selectedIcon:'plus-sign-small'},
 };
 
-function applyPreset(key) {
+async function applyPreset(key) {
   Object.assign(state, PRESETS[key]);
-  // sync input
   document.getElementById('label-input').value = state.label;
-  // sync toggles
-  ['iconOnly','leadingIcon','trailingIcon','roundShape'].forEach(k => {
-    const el = document.getElementById(`toggle-${k}`);
-    if (el) el.classList.toggle('on', state[k]);
-  });
-  // sync pills
-  document.querySelectorAll('#type-grid .type-card').forEach(el =>
-    el.classList.toggle('active', el.dataset.type === state.type));
-  document.querySelectorAll('#size-pills .pill').forEach(el =>
-    el.classList.toggle('active', el.dataset.size === state.size));
-  document.querySelectorAll('#state-pills .pill').forEach(el =>
-    el.classList.toggle('active', el.dataset.state === state.state));
-
+  ['iconOnly','leadingIcon','trailingChevron','roundShape'].forEach(k =>
+    document.getElementById(`toggle-${k}`)?.classList.toggle('on', state[k]));
+  document.querySelectorAll('#type-grid .type-card').forEach(el=>el.classList.toggle('active',el.dataset.type===state.type));
+  document.querySelectorAll('#size-pills .pill').forEach(el=>el.classList.toggle('active',el.dataset.size===state.size));
+  document.querySelectorAll('#state-pills .pill').forEach(el=>el.classList.toggle('active',el.dataset.state===state.state));
+  if (state.selectedIcon && !iconCache[state.selectedIcon]) {
+    await loadIconSvg(state.selectedIcon);
+  }
+  renderIconGrid();
   updateAll();
 }
 
 /* ── copy ── */
 function copyPrompt() {
-  const text = document.getElementById('prompt-text').textContent;
-  navigator.clipboard.writeText(text).then(() => {
+  navigator.clipboard.writeText(document.getElementById('prompt-text').textContent).then(() => {
     const btn = document.getElementById('copy-btn');
-    btn.textContent = 'Copied!';
-    btn.classList.add('copied');
-    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1500);
+    btn.textContent = 'Copied!'; btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied')}, 1500);
   });
 }
 
@@ -633,6 +628,7 @@ function updateAll() {
 }
 
 /* ── init ── */
+renderIconGrid();
 updateAll();
 </script>
 </body>
