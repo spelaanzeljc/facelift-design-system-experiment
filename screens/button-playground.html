@@ -93,42 +93,61 @@ body{
 .toggle.on::after{transform:translateX(13px)}
 
 /* ── icon picker ── */
+.icon-slot-tabs{display:flex;gap:3px;margin-bottom:7px}
+.icon-slot-tab{
+  flex:1;padding:5px 6px;border-radius:6px;border:1px solid #2e3138;
+  background:#21242c;color:#606878;font-size:11px;font-weight:600;
+  cursor:pointer;text-align:center;transition:all .12s;
+  display:flex;align-items:center;justify-content:center;gap:5px;
+}
+.icon-slot-tab:hover{border-color:#4a4f5c;color:#a0a8b8}
+.icon-slot-tab.active{border-color:#1339EC;background:#0d1a4a;color:#7fa8ff}
+.icon-slot-preview{
+  width:14px;height:14px;display:flex;align-items:center;justify-content:center;
+  border-radius:3px;flex-shrink:0;
+}
+.icon-slot-preview img{width:12px;height:12px;display:block;filter:invert(.5)}
+.icon-slot-tab.active .icon-slot-preview img{filter:invert(.8)}
+.slot-none-indicator{
+  font-size:10px;color:#3a404e;font-weight:400;
+}
+
+.icon-search-wrap{position:relative;margin-bottom:6px}
+.icon-search-wrap svg{position:absolute;left:7px;top:50%;transform:translateY(-50%);pointer-events:none;opacity:.4}
 .icon-search{
   width:100%;background:#21242c;border:1px solid #2e3138;border-radius:6px;
   color:#e4e6ea;font-size:12px;padding:5px 8px 5px 26px;font-family:inherit;
-  transition:border-color .12s;margin-bottom:6px;
+  transition:border-color .12s;
 }
 .icon-search:focus{outline:none;border-color:#1339EC}
-.icon-search-wrap{position:relative}
-.icon-search-wrap svg{position:absolute;left:7px;top:50%;transform:translateY(-50%);pointer-events:none;opacity:.4}
 
 .icon-grid-wrap{
-  height:192px;overflow-y:auto;border-radius:6px;
+  height:176px;overflow-y:auto;border-radius:6px;
   border:1px solid #2e3138;background:#1a1d24;
 }
 .icon-grid-wrap::-webkit-scrollbar{width:4px}
 .icon-grid-wrap::-webkit-scrollbar-track{background:transparent}
 .icon-grid-wrap::-webkit-scrollbar-thumb{background:#2e3138;border-radius:2px}
 
-.icon-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:0}
+.icon-grid{display:grid;grid-template-columns:repeat(6,1fr)}
 .icon-cell{
   display:flex;align-items:center;justify-content:center;
-  width:100%;aspect-ratio:1;cursor:pointer;border-radius:4px;
-  transition:background .1s;position:relative;
+  width:100%;aspect-ratio:1;cursor:pointer;
+  transition:background .1s;
 }
 .icon-cell:hover{background:#2a2d34}
-.icon-cell.selected{background:#0d1a4a;outline:1px solid #1339EC}
-.icon-cell img{width:16px;height:16px;display:block;filter:invert(.7)}
+.icon-cell.selected{background:#0d1a4a;outline:1px solid #1339EC;outline-offset:-1px}
+.icon-cell img{width:15px;height:15px;display:block;filter:invert(.65)}
 .icon-cell.selected img{filter:invert(1)}
 .icon-cell-none{
   display:flex;align-items:center;justify-content:center;
-  font-size:9px;font-weight:600;letter-spacing:.04em;
-  color:#464c58;cursor:pointer;border-radius:4px;transition:all .1s;
-  width:100%;aspect-ratio:1;border:1px dashed #2e3138;
+  font-size:14px;color:#3a404e;cursor:pointer;
+  transition:all .1s;width:100%;aspect-ratio:1;
+  border-right:1px solid #2a2d34;border-bottom:1px solid #2a2d34;
 }
-.icon-cell-none:hover{color:#a0a8b8;border-color:#4a4f5c}
-.icon-cell-none.selected{color:#7fa8ff;border-color:#1339EC;background:#0d1a4a}
-.icon-count{font-size:10px;color:#464c58;margin-top:4px;text-align:right}
+.icon-cell-none:hover{color:#a0a8b8;background:#2a2d34}
+.icon-cell-none.selected{color:#7fa8ff;background:#0d1a4a;outline:1px solid #1339EC;outline-offset:-1px}
+.icon-count{font-size:10px;color:#3a404e;margin-top:3px;text-align:right}
 
 /* right panel */
 .right{display:flex;flex-direction:column;overflow:hidden}
@@ -151,7 +170,7 @@ body{
   font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
   font-weight:500;line-height:1;white-space:nowrap;
   transition:background .12s,opacity .12s,color .12s,box-shadow .12s;
-  position:relative;overflow:hidden;
+  position:relative;
 }
 .ds-btn.sz-small{height:32px;padding:0 12px;font-size:12px;gap:5px}
 .ds-btn.sz-medium{height:36px;padding:0 16px;font-size:14px}
@@ -164,7 +183,6 @@ body{
 .ds-btn.tp-primary.st-focused{background:#1339EC;box-shadow:0 0 0 3px rgba(83,129,241,.5)}
 .ds-btn.tp-primary.st-disabled{opacity:.38;cursor:not-allowed}
 .ds-btn.tp-primary.st-loading{background:#0F2EBD;cursor:wait}
-
 /* secondary */
 .ds-btn.tp-secondary{background:#fff;color:#111317;border:1px solid #111317;--icon-filter:brightness(0)}
 .ds-btn.tp-secondary.st-hover{background:rgba(95,106,130,.08)}
@@ -172,7 +190,6 @@ body{
 .ds-btn.tp-secondary.st-focused{background:#fff;box-shadow:0 0 0 3px rgba(83,129,241,.4)}
 .ds-btn.tp-secondary.st-disabled{opacity:.38;cursor:not-allowed}
 .ds-btn.tp-secondary.st-loading{background:rgba(95,106,130,.08);cursor:wait}
-
 /* ghost */
 .ds-btn.tp-ghost{background:transparent;color:#1339EC;border:none;
   --icon-filter:invert(19%) sepia(96%) saturate(4000%) hue-rotate(228deg) brightness(92%)}
@@ -181,7 +198,6 @@ body{
 .ds-btn.tp-ghost.st-focused{box-shadow:0 0 0 3px rgba(83,129,241,.4)}
 .ds-btn.tp-ghost.st-disabled{opacity:.38;cursor:not-allowed}
 .ds-btn.tp-ghost.st-loading{background:#eef3fd;cursor:wait}
-
 /* destructive */
 .ds-btn.tp-destructive{background:#ffebeb;color:#cc0000;border:none;
   --icon-filter:invert(13%) sepia(100%) saturate(7500%) hue-rotate(0deg) brightness(95%) contrast(105%)}
@@ -196,15 +212,12 @@ body{
 .ds-btn.icon-only.sz-medium{width:36px;padding:0}
 .ds-btn.icon-only.sz-large{width:40px;padding:0}
 
-/* btn icons */
 .btn-icon{display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .btn-icon img{display:block;filter:var(--icon-filter,brightness(0))}
-.btn-icon svg{display:block}
 .sz-small .btn-icon img,.sz-small .btn-icon svg{width:12px;height:12px}
 .sz-medium .btn-icon img,.sz-medium .btn-icon svg{width:14px;height:14px}
 .sz-large .btn-icon img,.sz-large .btn-icon svg{width:16px;height:16px}
 
-/* spinner */
 .ds-btn .spinner{
   width:14px;height:14px;border-radius:50%;
   border:2px solid currentColor;border-top-color:transparent;
@@ -226,7 +239,6 @@ body{
 .copy-btn{padding:7px 14px;border-radius:6px;background:#1339EC;border:none;color:#fff;font-size:12px;font-weight:600;cursor:pointer;transition:background .12s;flex-shrink:0;align-self:stretch}
 .copy-btn:hover{background:#0F2EBD}
 .copy-btn.copied{background:#2e881b}
-
 .filename-chip{font-family:ui-monospace,monospace;font-size:10px;background:#21242c;border:1px solid #2e3138;border-radius:4px;padding:3px 7px;color:#606878;margin-top:6px;word-break:break-all;text-align:center;max-width:480px}
 </style>
 </head>
@@ -247,7 +259,6 @@ body{
 </div>
 
 <div class="main">
-
   <div class="sidebar">
 
     <!-- Type -->
@@ -311,14 +322,6 @@ body{
           <span>Icon only</span>
           <div class="toggle" id="toggle-iconOnly"></div>
         </div>
-        <div class="toggle-row" onclick="toggle('leadingIcon')">
-          <span>Leading icon</span>
-          <div class="toggle on" id="toggle-leadingIcon"></div>
-        </div>
-        <div class="toggle-row" onclick="toggle('trailingChevron')">
-          <span>Trailing chevron</span>
-          <div class="toggle on" id="toggle-trailingChevron"></div>
-        </div>
         <div class="toggle-row" onclick="toggle('roundShape')">
           <span>Round shape</span>
           <div class="toggle" id="toggle-roundShape"></div>
@@ -326,9 +329,31 @@ body{
       </div>
     </div>
 
-    <!-- Icon picker -->
+    <!-- Icon picker — shared for leading + trailing -->
     <div>
-      <div class="ctrl-label">Leading Icon</div>
+      <div class="ctrl-label">Icons</div>
+
+      <!-- slot tabs -->
+      <div class="icon-slot-tabs">
+        <div class="icon-slot-tab active" id="tab-leading" onclick="setActiveSlot('leading')">
+          <div class="icon-slot-preview" id="preview-leading">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+              <path d="M2 5h6M5 2l3 3-3 3" stroke="#606878" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          Leading
+        </div>
+        <div class="icon-slot-tab" id="tab-trailing" onclick="setActiveSlot('trailing')">
+          Trailing
+          <div class="icon-slot-preview" id="preview-trailing">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+              <path d="M2 5h6M5 2l3 3-3 3" stroke="#606878" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- search -->
       <div class="icon-search-wrap">
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
           <circle cx="5.2" cy="5.2" r="3.5" stroke="#a0a8b8" stroke-width="1.2"/>
@@ -336,6 +361,8 @@ body{
         </svg>
         <input class="icon-search" type="text" id="icon-search" placeholder="Search 433 icons…" oninput="renderIconGrid()">
       </div>
+
+      <!-- grid -->
       <div class="icon-grid-wrap">
         <div class="icon-grid" id="icon-grid"></div>
       </div>
@@ -360,7 +387,6 @@ body{
 
     </div>
   </div>
-
 </div>
 
 <div class="prompt-bar">
@@ -376,84 +402,88 @@ const ICONS = 'acrobat-logo,admin-company-outline,admin-symbole,admin-team-outli
 const DEFAULTS = {
   type:'primary', size:'medium', state:'default',
   label:'Button text',
-  iconOnly:false, leadingIcon:true, trailingChevron:true, roundShape:false,
-  selectedIcon: null, // icon name string or null
+  iconOnly:false, roundShape:false,
+  leadingIcon: null,  // icon name or null
+  trailingIcon: null, // icon name or null
 };
 const state = { ...DEFAULTS };
 
-/* ── SVG icon cache (svg text, with currentColor) ── */
+let activeSlot = 'leading'; // which slot the picker is editing
+
+/* ── SVG cache ── */
 const iconCache = {};
 
-/* ── fetch icon SVG, patch fill to currentColor ── */
 async function loadIconSvg(name) {
   if (iconCache[name]) return iconCache[name];
   try {
     const res = await fetch(`../output/icons/${name}.svg`);
     if (!res.ok) throw new Error();
     let txt = await res.text();
-    // replace any non-none fill with currentColor
     txt = txt.replace(/fill="(?!none)[^"]*"/g, 'fill="currentColor"');
     txt = txt.replace(/stroke="(?!none)[^"]*"/g, 'stroke="currentColor"');
-    iconCache[name] = { type: 'svg', content: txt };
+    iconCache[name] = { type:'svg', content:txt };
   } catch {
-    // file:// restriction — use img with CSS filter
-    iconCache[name] = { type: 'img', name };
+    iconCache[name] = { type:'img', name };
   }
   return iconCache[name];
 }
 
-/* ── built-in fallback icons (inline SVG using currentColor) ── */
-const FALLBACK_ICON = `<svg width="1em" height="1em" viewBox="0 0 20 20" fill="none"><path d="M4 8V5a1 1 0 011-1h3M16 8V5a1 1 0 00-1-1h-3M4 12v3a1 1 0 001 1h3M16 12v3a1 1 0 01-1 1h-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>`;
-const CHEVRON_ICON  = `<svg width="1em" height="1em" viewBox="0 0 12 12" fill="none"><path d="M2.5 4.5l3.5 3 3.5-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-
-/* ── build icon html for button ── */
-function iconHtml(cachedIcon, px) {
-  if (!cachedIcon) return FALLBACK_ICON.replace(/1em/g, px+'px');
-  if (cachedIcon.type === 'svg') {
-    // resize: replace width/height attrs on the svg element
-    return cachedIcon.content
+/* ── icon html for button slot ── */
+function iconHtml(name, px) {
+  if (!name) return null;
+  const cached = iconCache[name];
+  if (!cached) {
+    // not yet loaded — use img immediately (will update once fetched)
+    return `<img src="../output/icons/${name}.svg" width="${px}" height="${px}">`;
+  }
+  if (cached.type === 'svg') {
+    return cached.content
       .replace(/<svg([^>]*)width="[^"]*"/, `<svg$1width="${px}"`)
       .replace(/height="[^"]*"/, `height="${px}"`);
   }
-  // img fallback — CSS filter on .btn-icon img handles colour
-  return `<img src="../output/icons/${cachedIcon.name}.svg" width="${px}" height="${px}">`;
+  return `<img src="../output/icons/${name}.svg" width="${px}" height="${px}">`;
 }
 
-/* ── make a button DOM element ── */
-function makeBtn(type, size, stateKey, label, iconOnly, leadingIcon, trailingChevron, roundShape) {
+/* ── build button element ── */
+function makeBtn(type, size, stateKey, label, iconOnly, roundShape, leadingIcon, trailingIcon) {
   const px = size === 'small' ? 12 : size === 'large' ? 16 : 14;
 
   const btn = document.createElement('button');
   btn.className = ['ds-btn',`tp-${type}`,`sz-${size}`,`st-${stateKey}`,
-    roundShape ? 'shape-round' : '', iconOnly ? 'icon-only' : ''].filter(Boolean).join(' ');
+    roundShape ? 'shape-round':'', iconOnly ? 'icon-only':''].filter(Boolean).join(' ');
   if (stateKey === 'disabled') btn.disabled = true;
-
-  const cached = state.selectedIcon ? iconCache[state.selectedIcon] : null;
 
   if (stateKey === 'loading') {
     const sp = document.createElement('span'); sp.className = 'spinner';
-    if (!iconOnly) { btn.appendChild(sp); btn.append(' ' + label); }
-    else btn.appendChild(sp);
+    if (!iconOnly) {
+      btn.appendChild(sp);
+      const t = document.createElement('span'); t.textContent = label; btn.appendChild(t);
+    } else {
+      btn.appendChild(sp);
+    }
     return btn;
   }
 
   if (iconOnly) {
+    const icon = leadingIcon || trailingIcon; // show whichever is set
     const wrap = document.createElement('span'); wrap.className = 'btn-icon';
-    wrap.innerHTML = iconHtml(cached, px);
+    const html = iconHtml(icon, px);
+    if (html) wrap.innerHTML = html;
+    else wrap.innerHTML = `<svg width="${px}" height="${px}" viewBox="0 0 20 20" fill="none"><rect x="3" y="3" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.6"/></svg>`;
     btn.appendChild(wrap);
     return btn;
   }
 
   if (leadingIcon) {
     const wrap = document.createElement('span'); wrap.className = 'btn-icon';
-    wrap.innerHTML = iconHtml(cached, px);
+    wrap.innerHTML = iconHtml(leadingIcon, px);
     btn.appendChild(wrap);
   }
   const txt = document.createElement('span'); txt.textContent = label;
   btn.appendChild(txt);
-  if (trailingChevron) {
+  if (trailingIcon) {
     const wrap = document.createElement('span'); wrap.className = 'btn-icon';
-    wrap.innerHTML = CHEVRON_ICON.replace(/1em/g, (px - 2) + 'px');
+    wrap.innerHTML = iconHtml(trailingIcon, px);
     btn.appendChild(wrap);
   }
   return btn;
@@ -464,13 +494,12 @@ function renderPreview() {
   const wrap = document.getElementById('preview-btn-wrap');
   wrap.innerHTML = '';
   wrap.appendChild(makeBtn(state.type, state.size, state.state, state.label,
-    state.iconOnly, state.leadingIcon, state.trailingChevron, state.roundShape));
+    state.iconOnly, state.roundShape, state.leadingIcon, state.trailingIcon));
   document.getElementById('filename-chip').textContent = buildFilename();
 }
 
-/* ── render state matrix ── */
+/* ── state matrix ── */
 const MATRIX_STATES = ['default','hover','focused','pressed','disabled','loading'];
-
 function renderMatrix() {
   const matrix = document.getElementById('matrix');
   matrix.innerHTML = '';
@@ -479,7 +508,7 @@ function renderMatrix() {
     const lbl = document.createElement('div'); lbl.className = 'matrix-state'; lbl.textContent = s;
     row.appendChild(lbl);
     const btn = makeBtn(state.type, state.size, s, state.label,
-      state.iconOnly, state.leadingIcon, state.trailingChevron, state.roundShape);
+      state.iconOnly, state.roundShape, state.leadingIcon, state.trailingIcon);
     btn.style.pointerEvents = 'none';
     row.appendChild(btn);
     matrix.appendChild(row);
@@ -490,31 +519,58 @@ function renderMatrix() {
 }
 
 /* ── icon picker ── */
+function setActiveSlot(slot) {
+  activeSlot = slot;
+  document.getElementById('tab-leading').classList.toggle('active', slot === 'leading');
+  document.getElementById('tab-trailing').classList.toggle('active', slot === 'trailing');
+  // clear search when switching slots
+  document.getElementById('icon-search').value = '';
+  renderIconGrid();
+}
+
 function renderIconGrid() {
   const q = (document.getElementById('icon-search').value || '').toLowerCase();
   const filtered = q ? ICONS.filter(n => n.includes(q)) : ICONS;
+  const current = activeSlot === 'leading' ? state.leadingIcon : state.trailingIcon;
   const grid = document.getElementById('icon-grid');
 
-  // "None" cell
-  let html = `<div class="icon-cell-none ${state.selectedIcon===null?'selected':''}" onclick="selectIcon(null)" title="No icon (use default)">–</div>`;
-
+  let html = `<div class="icon-cell-none ${current === null ? 'selected' : ''}" onclick="selectIcon(null)" title="No icon">✕</div>`;
   filtered.slice(0, 300).forEach(name => {
-    const sel = state.selectedIcon === name ? 'selected' : '';
-    html += `<div class="icon-cell ${sel}" onclick="selectIcon('${name}')" title="${name}">
-      <img src="../output/icons/${name}.svg" alt="">
+    html += `<div class="icon-cell ${current === name ? 'selected' : ''}" onclick="selectIcon('${name}')" title="${name}">
+      <img src="../output/icons/${name}.svg" alt="${name}">
     </div>`;
   });
 
   grid.innerHTML = html;
   document.getElementById('icon-count').textContent =
-    filtered.length > 300 ? `Showing 300 of ${filtered.length} — refine search` :
-    q ? `${filtered.length} match${filtered.length!==1?'es':''}` :
-    `${ICONS.length} icons`;
+    filtered.length > 300
+      ? `Showing 300 of ${filtered.length} — refine search`
+      : q ? `${filtered.length} match${filtered.length !== 1 ? 'es' : ''}` : `${ICONS.length} icons`;
+
+  updateSlotPreviews();
 }
 
-/* ── select icon ── */
+function updateSlotPreviews() {
+  // leading tab preview
+  const lp = document.getElementById('preview-leading');
+  if (state.leadingIcon) {
+    lp.innerHTML = `<img src="../output/icons/${state.leadingIcon}.svg" style="width:12px;height:12px;filter:invert(.5)">`;
+  } else {
+    lp.innerHTML = `<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 5h4M3 3l2 2-2 2" stroke="#3a404e" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  }
+  // trailing tab preview
+  const tp = document.getElementById('preview-trailing');
+  if (state.trailingIcon) {
+    tp.innerHTML = `<img src="../output/icons/${state.trailingIcon}.svg" style="width:12px;height:12px;filter:invert(.5)">`;
+  } else {
+    tp.innerHTML = `<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 5h4M7 3l2 2-2 2" stroke="#3a404e" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  }
+}
+
 async function selectIcon(name) {
-  state.selectedIcon = name;
+  if (activeSlot === 'leading') state.leadingIcon = name;
+  else state.trailingIcon = name;
+
   if (name && !iconCache[name]) {
     await loadIconSvg(name);
   }
@@ -542,20 +598,18 @@ function buildFilename() {
 
 /* ── prompt ── */
 function updatePrompt() {
-  const typeL  = {primary:'primary', secondary:'secondary', ghost:'ghost', destructive:'destructive'};
-  const sizeL  = {small:'small (S, 32px)', medium:'medium (M, 36px)', large:'large (L, 40px)'};
-  const stateL = {default:'', hover:'hovered', focused:'focused', pressed:'pressed', disabled:'disabled', loading:'loading'};
-  const emphL  = {primary:'bold emphasis', secondary:'bold emphasis', ghost:'minimal/ghost emphasis', destructive:'bold emphasis'};
+  const typeL  = {primary:'primary',secondary:'secondary',ghost:'ghost',destructive:'destructive'};
+  const sizeL  = {small:'small (S, 32px)',medium:'medium (M, 36px)',large:'large (L, 40px)'};
+  const stateL = {default:'',hover:'hovered',focused:'focused',pressed:'pressed',disabled:'disabled',loading:'loading'};
 
   let text = `Use a ${typeL[state.type]} action button`;
   const extras = [];
   if (state.size !== DEFAULTS.size) extras.push(`size ${sizeL[state.size]}`);
   if (state.state !== DEFAULTS.state && stateL[state.state]) extras.push(`${stateL[state.state]} state`);
-  if (state.selectedIcon) extras.push(`"${state.selectedIcon}" icon from output/icons/`);
+  if (state.leadingIcon) extras.push(`leading icon "${state.leadingIcon}" (output/icons/${state.leadingIcon}.svg)`);
+  if (state.trailingIcon) extras.push(`trailing icon "${state.trailingIcon}" (output/icons/${state.trailingIcon}.svg)`);
   if (state.iconOnly) extras.push('icon-only (no label)');
   else if (state.label !== DEFAULTS.label) extras.push(`label "${state.label}"`);
-  if (!state.leadingIcon && !state.iconOnly) extras.push('no leading icon');
-  if (!state.trailingChevron && !state.iconOnly) extras.push('no trailing chevron');
   if (state.roundShape) extras.push('round/pill shape');
   if (extras.length) text += ` — ${extras.join(', ')}`;
   text += `. Figma file: ${buildFilename()}`;
@@ -565,7 +619,7 @@ function updatePrompt() {
 
 /* ── background ── */
 function setBg(mode) {
-  const colors = {dark:'#1a1d24', neutral:'#f3f5f7', light:'#ffffff'};
+  const colors = {dark:'#1a1d24',neutral:'#f3f5f7',light:'#ffffff'};
   document.getElementById('preview-area').style.background = colors[mode];
   ['dark','neutral','light'].forEach(m =>
     document.getElementById(`bg-${m}`).classList.toggle('active', m === mode));
@@ -574,12 +628,11 @@ function setBg(mode) {
 /* ── controls ── */
 function set(key, val) {
   state[key] = val;
-  if (key==='type') document.querySelectorAll('#type-grid .type-card').forEach(el=>el.classList.toggle('active',el.dataset.type===val));
-  if (key==='size') document.querySelectorAll('#size-pills .pill').forEach(el=>el.classList.toggle('active',el.dataset.size===val));
+  if (key==='type')  document.querySelectorAll('#type-grid .type-card').forEach(el=>el.classList.toggle('active',el.dataset.type===val));
+  if (key==='size')  document.querySelectorAll('#size-pills .pill').forEach(el=>el.classList.toggle('active',el.dataset.size===val));
   if (key==='state') document.querySelectorAll('#state-pills .pill').forEach(el=>el.classList.toggle('active',el.dataset.state===val));
   updateAll();
 }
-
 function toggle(key) {
   state[key] = !state[key];
   document.getElementById(`toggle-${key}`)?.classList.toggle('on', state[key]);
@@ -588,24 +641,24 @@ function toggle(key) {
 
 /* ── presets ── */
 const PRESETS = {
-  cta:       {type:'primary',     size:'medium', state:'default', label:'Get started',    iconOnly:false, leadingIcon:false, trailingChevron:true,  roundShape:false, selectedIcon:null},
-  secondary: {type:'secondary',   size:'medium', state:'default', label:'Cancel',          iconOnly:false, leadingIcon:false, trailingChevron:false, roundShape:false, selectedIcon:null},
-  ghost:     {type:'ghost',       size:'medium', state:'default', label:'Learn more',      iconOnly:false, leadingIcon:false, trailingChevron:true,  roundShape:false, selectedIcon:null},
-  danger:    {type:'destructive', size:'medium', state:'default', label:'Delete campaign', iconOnly:false, leadingIcon:true,  trailingChevron:false, roundShape:false, selectedIcon:'garbage-can'},
-  icon:      {type:'primary',     size:'medium', state:'default', label:'',                iconOnly:true,  leadingIcon:false, trailingChevron:false, roundShape:true,  selectedIcon:'plus-sign-small'},
+  cta:       {type:'primary',     size:'medium', state:'default', label:'Get started',    iconOnly:false, roundShape:false, leadingIcon:null,          trailingIcon:'arrow-right'},
+  secondary: {type:'secondary',   size:'medium', state:'default', label:'Cancel',          iconOnly:false, roundShape:false, leadingIcon:null,          trailingIcon:null},
+  ghost:     {type:'ghost',       size:'medium', state:'default', label:'Learn more',      iconOnly:false, roundShape:false, leadingIcon:null,          trailingIcon:'chevron-right-small'},
+  danger:    {type:'destructive', size:'medium', state:'default', label:'Delete campaign', iconOnly:false, roundShape:false, leadingIcon:'garbage-can', trailingIcon:null},
+  icon:      {type:'primary',     size:'medium', state:'default', label:'',                iconOnly:true,  roundShape:true,  leadingIcon:'plus-sign-small', trailingIcon:null},
 };
 
 async function applyPreset(key) {
   Object.assign(state, PRESETS[key]);
   document.getElementById('label-input').value = state.label;
-  ['iconOnly','leadingIcon','trailingChevron','roundShape'].forEach(k =>
+  ['iconOnly','roundShape'].forEach(k =>
     document.getElementById(`toggle-${k}`)?.classList.toggle('on', state[k]));
   document.querySelectorAll('#type-grid .type-card').forEach(el=>el.classList.toggle('active',el.dataset.type===state.type));
   document.querySelectorAll('#size-pills .pill').forEach(el=>el.classList.toggle('active',el.dataset.size===state.size));
   document.querySelectorAll('#state-pills .pill').forEach(el=>el.classList.toggle('active',el.dataset.state===state.state));
-  if (state.selectedIcon && !iconCache[state.selectedIcon]) {
-    await loadIconSvg(state.selectedIcon);
-  }
+  // pre-cache preset icons
+  const toLoad = [state.leadingIcon, state.trailingIcon].filter(Boolean);
+  await Promise.all(toLoad.map(n => iconCache[n] ? null : loadIconSvg(n)));
   renderIconGrid();
   updateAll();
 }
@@ -615,7 +668,7 @@ function copyPrompt() {
   navigator.clipboard.writeText(document.getElementById('prompt-text').textContent).then(() => {
     const btn = document.getElementById('copy-btn');
     btn.textContent = 'Copied!'; btn.classList.add('copied');
-    setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied')}, 1500);
+    setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied')},1500);
   });
 }
 
