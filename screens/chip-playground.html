@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chip & Badge Explorer</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #111317;
+  --surface: #1c1f26;
+  --surface2: #252932;
+  --border: #2e3340;
+  --text: #e8eaf0;
+  --text-muted: #6b7280;
+  --text-dim: #3d4454;
+  --accent: #1339ec;
+  --accent-hover: #0f2ebd;
+  --radius: 8px;
+  --font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 13px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+header h1 { font-size: 14px; font-weight: 600; color: var(--text); }
+header span { font-size: 11px; color: var(--text-muted); }
+
+.layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  grid-template-rows: 1fr auto;
+  flex: 1;
+  min-height: 0;
+}
+
+/* ── Controls ── */
+.controls {
+  grid-row: 1 / 3;
+  border-right: 1px solid var(--border);
+  padding: 20px 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.ctrl-group { display: flex; flex-direction: column; gap: 8px; }
+.ctrl-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--text-muted); }
+
+.seg {
+  display: flex;
+  background: var(--surface2);
+  border-radius: 6px;
+  padding: 2px;
+  gap: 2px;
+}
+.seg button {
+  flex: 1;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-family: var(--font);
+  padding: 5px 4px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.seg button.active {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 1px 3px rgba(0,0,0,.4);
+}
+.seg button:hover:not(.active) { color: var(--text); }
+
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.toggle-row span { font-size: 12px; color: var(--text); }
+
+.toggle {
+  position: relative;
+  width: 32px;
+  height: 18px;
+}
+.toggle input { opacity: 0; width: 0; height: 0; }
+.toggle-track {
+  position: absolute;
+  inset: 0;
+  background: var(--surface2);
+  border-radius: 9px;
+  cursor: pointer;
+  transition: background .2s;
+}
+.toggle input:checked + .toggle-track { background: var(--accent); }
+.toggle-track::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: #fff;
+  border-radius: 50%;
+  top: 3px;
+  left: 3px;
+  transition: transform .2s;
+}
+.toggle input:checked + .toggle-track::after { transform: translateX(14px); }
+.toggle-disabled .toggle-track { opacity: .35; cursor: not-allowed; }
+
+.text-input {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 12px;
+  padding: 6px 10px;
+  width: 100%;
+  outline: none;
+}
+.text-input:focus { border-color: var(--accent); }
+
+.presets { display: flex; flex-direction: column; gap: 4px; }
+.preset-btn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-muted);
+  font-family: var(--font);
+  font-size: 11px;
+  padding: 6px 10px;
+  text-align: left;
+  cursor: pointer;
+  transition: all .15s;
+}
+.preset-btn:hover { border-color: var(--accent); color: var(--text); background: rgba(19,57,236,.08); }
+
+.divider {
+  height: 1px;
+  background: var(--border);
+}
+
+/* ── Preview ── */
+.preview {
+  padding: 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.section-title {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.chip-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+/* ── Chip styles ── */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all .15s;
+  user-select: none;
+  outline: none;
+  border: 2px solid transparent;
+  font-family: var(--font);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.chip:hover { filter: brightness(1.05); }
+.chip.selected { border-color: #5581f1; box-shadow: 0 0 0 3px rgba(85,129,241,.25); }
+
+/* Size variants */
+.chip-xsmall { height: 18px; padding: 0 6px; font-size: 10px; gap: 3px; }
+.chip-xsmall .chip-icon { width: 10px; height: 10px; }
+.chip-xsmall .chip-dot { width: 3px; height: 3px; }
+.chip-xsmall .chip-x { width: 10px; height: 10px; }
+
+.chip-small { height: 22px; padding: 0 8px; font-size: 11px; gap: 4px; }
+.chip-small .chip-icon { width: 12px; height: 12px; }
+.chip-small .chip-dot { width: 4px; height: 4px; }
+.chip-small .chip-x { width: 12px; height: 12px; }
+
+.chip-medium { height: 28px; padding: 0 10px; font-size: 13px; gap: 5px; }
+.chip-medium .chip-icon { width: 14px; height: 14px; }
+.chip-medium .chip-dot { width: 5px; height: 5px; }
+.chip-medium .chip-x { width: 14px; height: 14px; }
+
+.chip-large { height: 36px; padding: 0 14px; font-size: 14px; gap: 6px; }
+.chip-large .chip-icon { width: 16px; height: 16px; }
+.chip-large .chip-dot { width: 6px; height: 6px; }
+.chip-large .chip-x { width: 16px; height: 16px; }
+
+/* Slim variant */
+.chip-slim {
+  height: 6px;
+  padding: 0;
+  width: 56px;
+  border-radius: 100px;
+  cursor: pointer;
+}
+
+.chip-dot {
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.chip-icon { flex-shrink: 0; }
+.chip-x { flex-shrink: 0; opacity: .7; }
+.chip-label { font-weight: 500; }
+
+/* ── Focused detail ── */
+.detail-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+.detail-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 200px;
+  padding: 24px;
+  background: var(--surface2);
+  border-radius: 6px;
+}
+.detail-preview .chip { transform: scale(1.5); transform-origin: center; }
+.detail-info { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+.detail-name {
+  font-family: monospace;
+  font-size: 11px;
+  color: #5581f1;
+  background: rgba(85,129,241,.1);
+  padding: 4px 8px;
+  border-radius: 4px;
+  word-break: break-all;
+}
+.detail-props { display: flex; flex-wrap: wrap; gap: 6px; }
+.prop-tag {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.prop-tag span { color: var(--text); }
+
+/* ── Prompt ── */
+.prompt-section {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 16px 24px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.prompt-text {
+  flex: 1;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text);
+  font-style: italic;
+}
+.copy-btn {
+  flex-shrink: 0;
+  background: var(--accent);
+  border: none;
+  color: #fff;
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 7px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background .15s;
+  white-space: nowrap;
+}
+.copy-btn:hover { background: var(--accent-hover); }
+.copy-btn.copied { background: #2e881b; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Chip & Badge Explorer</h1>
+  <span>appearance &amp; status components · design system</span>
+</header>
+
+<div class="layout">
+
+  <!-- Controls -->
+  <aside class="controls">
+
+    <div class="ctrl-group">
+      <div class="ctrl-label">Type</div>
+      <div class="seg" id="seg-type">
+        <button data-val="colored" class="active">Colored</button>
+        <button data-val="subtle">Subtle</button>
+      </div>
+    </div>
+
+    <div class="ctrl-group">
+      <div class="ctrl-label">Size</div>
+      <div class="seg" id="seg-size">
+        <button data-val="xsmall">XS</button>
+        <button data-val="small">S</button>
+        <button data-val="medium" class="active">M</button>
+        <button data-val="large">L</button>
+      </div>
+    </div>
+
+    <div class="ctrl-group" id="slim-ctrl">
+      <div class="toggle-row">
+        <span>Slim bar</span>
+        <label class="toggle">
+          <input type="checkbox" id="slim-toggle">
+          <div class="toggle-track"></div>
+        </label>
+      </div>
+      <div style="font-size:11px;color:var(--text-muted);line-height:1.4">Only available for small size. Renders as a 6px colored bar.</div>
+    </div>
+
+    <div class="ctrl-group">
+      <div class="ctrl-label">Label text</div>
+      <input type="text" class="text-input" id="label-input" value="TagText" maxlength="20">
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="ctrl-group">
+      <div class="ctrl-label">Presets</div>
+      <div class="presets">
+        <button class="preset-btn" data-preset="social">Social channels</button>
+        <button class="preset-btn" data-preset="compact">Compact labels</button>
+        <button class="preset-btn" data-preset="subtle">Neutral subtle</button>
+        <button class="preset-btn" data-preset="slim">Slim bars (small)</button>
+        <button class="preset-btn" data-preset="large">Large CTAs</button>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- Preview -->
+  <main class="preview" id="preview-area">
+
+    <div>
+      <div class="section-title">All colors — click to select</div>
+      <div class="chip-grid" id="chip-grid"></div>
+    </div>
+
+    <div>
+      <div class="section-title">Selected chip</div>
+      <div class="detail-card">
+        <div class="detail-preview" id="detail-preview"></div>
+        <div class="detail-info">
+          <div class="detail-name" id="detail-filename"></div>
+          <div class="detail-props" id="detail-props"></div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Prompt output -->
+  <div class="prompt-section">
+    <div class="prompt-text" id="prompt-text"></div>
+    <button class="copy-btn" id="copy-btn">Copy Prompt</button>
+  </div>
+
+</div>
+
+<script>
+// ── Color data ──────────────────────────────────────────────────────────────
+
+const COLORED = {
+  amber:   { bg: '#FFF8EB', accent: '#FFB433', text: '#6B4C15' },
+  azure:   { bg: '#F4F7FB', accent: '#92B0DB', text: '#1B3A5C' },
+  beige:   { bg: '#FDF6EF', accent: '#E9A362', text: '#5C3A1B' },
+  blue:    { bg: '#DFE7FD', accent: '#1339EC', text: '#08175E' },
+  cobalt:  { bg: '#F0F4FF', accent: '#668EFF', text: '#1B2E8C' },
+  coral:   { bg: '#FFEFEF', accent: '#FB5B5B', text: '#7C1B1B' },
+  emerald: { bg: '#F0FCF0', accent: '#64DC64', text: '#1B5C1B' },
+  grey:    { bg: 'rgba(95,106,130,0.08)', accent: '#5F6A82', text: '#2C3347' },
+  indigo:  { bg: '#F0F4FF', accent: '#75BEF2', text: '#1B2E8C' },
+  mint:    { bg: '#ECFCD2', accent: '#B1DE64', text: '#2C5C1B' },
+  peridot: { bg: '#F4F7C3', accent: '#C9CF38', text: '#3C4515' },
+  petrol:  { bg: '#D9FBFE', accent: '#1BCDDF', text: '#0C3A3F' },
+  purple:  { bg: '#FFF0F6', accent: '#FF66A6', text: '#5C1B3A' },
+  violet:  { bg: '#F9F4FB', accent: '#C68ED7', text: '#3A1B5C' },
+  yellow:  { bg: '#FFF9DB', accent: '#FBD928', text: '#5C4A15' },
+};
+
+const SUBTLE_BG = 'rgba(95,106,130,0.08)';
+const SUBTLE_TEXT = '#111317';
+const SUBTLE_X = '#848EA4';
+
+// ── State ────────────────────────────────────────────────────────────────────
+
+const state = {
+  type: 'colored',
+  size: 'medium',
+  slim: false,
+  selected: 'blue',
+  label: 'TagText',
+};
+
+const COLORS = Object.keys(COLORED);
+
+// ── Icon SVGs ────────────────────────────────────────────────────────────────
+
+function iconSvg(color, size) {
+  const s = size;
+  return `<svg class="chip-icon" width="${s}" height="${s}" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M2 5.33V3.33C2 2.6 2.6 2 3.33 2H5.33C5.7 2 6 2.3 6 2.67S5.7 3.33 5.33 3.33H3.33V5.33C3.33 5.7 3.03 6 2.67 6S2 5.7 2 5.33ZM10.67 2H12.67C13.4 2 14 2.6 14 3.33V5.33C14 5.7 13.7 6 13.33 6S12.67 5.7 12.67 5.33V3.33H10.67C10.3 3.33 10 3.03 10 2.67S10.3 2 10.67 2ZM2 10.67V12.67C2 13.4 2.6 14 3.33 14H5.33C5.7 14 6 13.7 6 13.33S5.7 12.67 5.33 12.67H3.33V10.67C3.33 10.3 3.03 10 2.67 10S2 10.3 2 10.67ZM12.67 10.67V12.67H10.67C10.3 12.67 10 12.97 10 13.33S10.3 14 10.67 14H12.67C13.4 14 14 13.4 14 12.67V10.67C14 10.3 13.7 10 13.33 10S12.67 10.3 12.67 10.67Z" fill="${color}"/>
+  </svg>`;
+}
+
+function xSvg(color, size) {
+  return `<svg class="chip-x" width="${size}" height="${size}" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M3.47 3.47a.75.75 0 011.06 0L8 6.94l3.47-3.47a.75.75 0 111.06 1.06L9.06 8l3.47 3.47a.75.75 0 11-1.06 1.06L8 9.06l-3.47 3.47a.75.75 0 01-1.06-1.06L6.94 8 3.47 4.53a.75.75 0 010-1.06z" fill="${color}"/>
+  </svg>`;
+}
+
+// ── Chip sizes map ────────────────────────────────────────────────────────────
+
+const SIZE_ICON = { xsmall: 10, small: 12, medium: 14, large: 16 };
+const SIZE_DOT  = { xsmall: 3,  small: 4,  medium: 5,  large: 6  };
+
+// ── Build chip HTML ───────────────────────────────────────────────────────────
+
+function buildChip(color, { type, size, slim, label, selected }) {
+  const isSelected = color === selected;
+  const isSlim = slim && size === 'small';
+
+  if (isSlim) {
+    const palette = COLORED[color];
+    const bg = type === 'colored' ? palette.bg : SUBTLE_BG;
+    const accent = type === 'colored' ? palette.accent : palette.accent;
+    return `<div
+      class="chip chip-slim${isSelected ? ' selected' : ''}"
+      style="background:${accent};"
+      data-color="${color}"
+      title="${color}"
+      tabindex="0"></div>`;
+  }
+
+  const iconSize = SIZE_ICON[size];
+  const dotSize = SIZE_DOT[size];
+  const palette = COLORED[color];
+
+  let bg, accentColor, textColor, xColor;
+  if (type === 'colored') {
+    bg = palette.bg;
+    accentColor = palette.accent;
+    textColor = palette.text;
+    xColor = palette.text;
+  } else {
+    bg = SUBTLE_BG;
+    accentColor = palette.accent;
+    textColor = SUBTLE_TEXT;
+    xColor = SUBTLE_X;
+  }
+
+  return `<div
+    class="chip chip-${size}${isSelected ? ' selected' : ''}"
+    style="background:${bg};"
+    data-color="${color}"
+    title="${color}"
+    tabindex="0">
+    ${iconSvg(accentColor, iconSize)}
+    <span class="chip-dot" style="background:${accentColor};width:${dotSize}px;height:${dotSize}px;"></span>
+    <span class="chip-label" style="color:${textColor}">${label}</span>
+    ${xSvg(xColor, iconSize)}
+  </div>`;
+}
+
+// ── Render grid ───────────────────────────────────────────────────────────────
+
+function renderGrid() {
+  const grid = document.getElementById('chip-grid');
+  grid.innerHTML = COLORS.map(c => buildChip(c, state)).join('');
+  grid.querySelectorAll('.chip').forEach(el => {
+    el.addEventListener('click', () => {
+      state.selected = el.dataset.color;
+      renderGrid();
+      renderDetail();
+      updatePrompt();
+    });
+    el.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        el.click();
+      }
+    });
+  });
+}
+
+// ── Render detail ─────────────────────────────────────────────────────────────
+
+function renderDetail() {
+  const color = state.selected;
+  const { type, size, slim, label } = state;
+  const isSlim = slim && size === 'small';
+
+  // Large chip preview
+  const previewEl = document.getElementById('detail-preview');
+  if (isSlim) {
+    const palette = COLORED[color];
+    const bg = type === 'colored' ? palette.accent : palette.accent;
+    previewEl.innerHTML = `<div style="width:80px;height:10px;border-radius:100px;background:${bg};"></div>`;
+  } else {
+    const chipHtml = buildChip(color, { ...state, selected: color });
+    previewEl.innerHTML = `<div style="transform:scale(1.5);transform-origin:center;">${chipHtml}</div>`;
+    // remove event listeners from the clone
+    previewEl.querySelector('.chip')?.removeAttribute('data-color');
+  }
+
+  // Filename
+  const slimVal = (slim && size === 'small') ? 'true' : 'false';
+  let filename;
+  if (size !== 'xsmall') {
+    filename = `appearance_${type}_-color_${color}_-size_${size}_-slim_${slimVal}.html`;
+  } else {
+    filename = `appearance_${type}_-color_${color}_-size_${size}_-slim_false.html`;
+  }
+  document.getElementById('detail-filename').textContent = `output/components/${filename}`;
+
+  // Props
+  const palette = COLORED[color];
+  const bgColor = type === 'colored' ? palette.bg : SUBTLE_BG;
+  const accentColor = palette.accent;
+
+  document.getElementById('detail-props').innerHTML = [
+    `<div class="prop-tag">type <span>${type}</span></div>`,
+    `<div class="prop-tag">color <span>${color}</span></div>`,
+    `<div class="prop-tag">size <span>${size}</span></div>`,
+    (size === 'small') ? `<div class="prop-tag">slim <span>${slim}</span></div>` : '',
+    `<div class="prop-tag">bg <span style="font-family:monospace">${typeof bgColor === 'string' && bgColor.startsWith('#') ? bgColor : 'alpha grey'}</span></div>`,
+    `<div class="prop-tag">accent <span style="display:inline-flex;align-items:center;gap:4px"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${accentColor}"></span>${accentColor}</span></div>`,
+  ].join('');
+}
+
+// ── Prompt ───────────────────────────────────────────────────────────────────
+
+function updatePrompt() {
+  const { type, size, slim, selected, label } = state;
+  const isSlim = slim && size === 'small';
+  const palette = COLORED[selected];
+
+  const sizeWords = { xsmall: 'extra-small', small: 'small', medium: 'medium', large: 'large' };
+  const typeDesc = type === 'colored'
+    ? `a lightly tinted background (${palette.bg}) with a ${palette.accent} accent`
+    : `a neutral grey-alpha background with a ${palette.accent} accent icon`;
+
+  let parts = [];
+
+  if (isSlim) {
+    parts.push(`Use the slim ${selected} appearance bar (6px height, full pill shape) as a compact color-coding indicator`);
+  } else {
+    parts.push(`Use the ${type} ${selected} ${sizeWords[size]} appearance chip`);
+    if (label !== 'TagText') parts.push(`with the label "${label}"`);
+    parts.push(`— it has ${typeDesc}, including a leading component icon, a small accent dot, the label text, and a dismiss (×) button`);
+  }
+
+  const slimVal = (slim && size === 'small') ? 'true' : 'false';
+  const sizePart = size !== 'xsmall' ? size : 'xsmall';
+  const filename = `output/components/appearance_${type}_-color_${selected}_-size_${sizePart}_-slim_${slimVal}.html`;
+  parts.push(`Reference file: \`${filename}\``);
+
+  document.getElementById('prompt-text').textContent = parts.join('. ') + '.';
+}
+
+// ── Segments ─────────────────────────────────────────────────────────────────
+
+function setupSeg(id, stateKey) {
+  const seg = document.getElementById(id);
+  seg.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      seg.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state[stateKey] = btn.dataset.val;
+      if (stateKey === 'size') updateSlimCtrl();
+      renderAll();
+    });
+  });
+}
+
+function updateSlimCtrl() {
+  const ctrl = document.getElementById('slim-ctrl');
+  const toggle = document.getElementById('slim-toggle');
+  if (state.size !== 'small') {
+    ctrl.querySelector('.toggle').parentElement.classList.add('toggle-disabled');
+    toggle.disabled = true;
+    state.slim = false;
+    toggle.checked = false;
+  } else {
+    ctrl.querySelector('.toggle').parentElement.classList.remove('toggle-disabled');
+    toggle.disabled = false;
+  }
+}
+
+// ── Presets ───────────────────────────────────────────────────────────────────
+
+const PRESETS = {
+  social:  { type: 'colored', size: 'small', slim: false, selected: 'blue', label: 'Instagram' },
+  compact: { type: 'colored', size: 'xsmall', slim: false, selected: 'purple', label: 'Draft' },
+  subtle:  { type: 'subtle', size: 'medium', slim: false, selected: 'grey', label: 'TagText' },
+  slim:    { type: 'colored', size: 'small', slim: true, selected: 'amber', label: 'TagText' },
+  large:   { type: 'colored', size: 'large', slim: false, selected: 'coral', label: 'Campaign' },
+};
+
+function applyPreset(name) {
+  const p = PRESETS[name];
+  Object.assign(state, p);
+  // Sync UI
+  document.getElementById('seg-type').querySelectorAll('button').forEach(b => {
+    b.classList.toggle('active', b.dataset.val === state.type);
+  });
+  document.getElementById('seg-size').querySelectorAll('button').forEach(b => {
+    b.classList.toggle('active', b.dataset.val === state.size);
+  });
+  document.getElementById('slim-toggle').checked = state.slim;
+  document.getElementById('label-input').value = state.label;
+  updateSlimCtrl();
+  renderAll();
+}
+
+// ── Copy ─────────────────────────────────────────────────────────────────────
+
+document.getElementById('copy-btn').addEventListener('click', function() {
+  const text = document.getElementById('prompt-text').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    this.textContent = 'Copied!';
+    this.classList.add('copied');
+    setTimeout(() => {
+      this.textContent = 'Copy Prompt';
+      this.classList.remove('copied');
+    }, 1800);
+  });
+});
+
+// ── Wire up everything ────────────────────────────────────────────────────────
+
+function renderAll() {
+  renderGrid();
+  renderDetail();
+  updatePrompt();
+}
+
+setupSeg('seg-type', 'type');
+setupSeg('seg-size', 'size');
+
+document.getElementById('slim-toggle').addEventListener('change', function() {
+  state.slim = this.checked;
+  renderAll();
+});
+
+document.getElementById('label-input').addEventListener('input', function() {
+  state.label = this.value || 'Tag';
+  renderAll();
+});
+
+document.querySelectorAll('.preset-btn').forEach(btn => {
+  btn.addEventListener('click', () => applyPreset(btn.dataset.preset));
+});
+
+// Initial render
+renderAll();
+</script>
+</body>
+</html>
