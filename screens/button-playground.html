@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Button Explorer — Design System</title>
+<style>
+/* ── reset ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+
+/* ── shell ── */
+body{
+  font-family:system-ui,-apple-system,sans-serif;
+  background:#16181c;
+  color:#e4e6ea;
+  display:grid;
+  grid-template-rows:auto 1fr auto;
+  min-height:100vh;
+  font-size:13px;
+}
+
+/* ── top bar ── */
+.topbar{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 16px;
+  border-bottom:1px solid #2a2d34;
+  background:#1c1f26;
+}
+.topbar-title{font-size:13px;font-weight:600;color:#fff;margin-right:4px}
+.preset-pill{
+  padding:4px 10px;border-radius:20px;border:1px solid #2e3138;
+  background:#21242c;color:#a0a8b8;font-size:11px;cursor:pointer;
+  transition:all .12s;white-space:nowrap;
+}
+.preset-pill:hover{border-color:#4a4f5c;color:#e4e6ea}
+.preset-pill.active{background:#1339EC;border-color:#1339EC;color:#fff}
+.topbar-sep{margin-left:auto}
+
+/* ── main layout ── */
+.main{
+  display:grid;
+  grid-template-columns:220px 1fr;
+  overflow:hidden;
+}
+
+/* ── controls sidebar ── */
+.sidebar{
+  border-right:1px solid #2a2d34;
+  background:#1c1f26;
+  overflow-y:auto;
+  padding:16px 14px;
+  display:flex;flex-direction:column;gap:20px;
+}
+.ctrl-group{}
+.ctrl-label{
+  font-size:10px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:#606878;
+  margin-bottom:8px;
+}
+.pill-row{display:flex;flex-wrap:wrap;gap:5px}
+.pill{
+  padding:5px 11px;border-radius:6px;border:1px solid #2e3138;
+  background:#21242c;color:#a0a8b8;font-size:12px;cursor:pointer;
+  transition:all .12s;user-select:none;
+}
+.pill:hover{border-color:#4a4f5c;color:#e4e6ea}
+.pill.active{background:#1339EC;border-color:#1339EC;color:#fff}
+.pill.active-danger{background:#8b1a1a;border-color:#cc0000;color:#ffb3b3}
+
+.type-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.type-card{
+  padding:9px 10px;border-radius:7px;border:1px solid #2e3138;
+  background:#21242c;cursor:pointer;transition:all .12s;
+}
+.type-card:hover{border-color:#4a4f5c}
+.type-card.active{border-color:#1339EC;background:#0d1a4a}
+.type-card-label{font-size:12px;font-weight:500;color:#a0a8b8;display:block;margin-bottom:4px}
+.type-card.active .type-card-label{color:#7fa8ff}
+.type-mini{display:inline-flex;align-items:center;height:20px;padding:0 8px;border-radius:4px;font-size:10px;font-weight:600}
+
+.text-input{
+  width:100%;background:#21242c;border:1px solid #2e3138;border-radius:6px;
+  color:#e4e6ea;font-size:12px;padding:6px 9px;
+  font-family:inherit;
+  transition:border-color .12s;
+}
+.text-input:focus{outline:none;border-color:#1339EC}
+
+.toggle-row{display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+.toggle-row span{font-size:12px;color:#a0a8b8}
+.toggle{
+  width:30px;height:16px;border-radius:8px;
+  background:#2e3138;position:relative;
+  transition:background .15s;cursor:pointer;flex-shrink:0;
+}
+.toggle.on{background:#1339EC}
+.toggle::after{
+  content:'';position:absolute;top:2px;left:2px;
+  width:12px;height:12px;border-radius:50%;background:#fff;
+  transition:transform .15s;
+}
+.toggle.on::after{transform:translateX(14px)}
+
+/* ── right panel ── */
+.right{
+  display:flex;flex-direction:column;
+  overflow:hidden;
+}
+
+/* preview area */
+.preview-area{
+  flex:1;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:32px;
+  background:#1a1d24;
+  padding:32px;
+  overflow-y:auto;
+}
+.preview-bg-light{background:#f3f5f7}
+.preview-bg-dark{background:#111317}
+
+.preview-label{
+  font-size:10px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:#606878;
+  margin-bottom:10px;text-align:center;
+}
+.preview-main{display:flex;flex-direction:column;align-items:center;gap:8px}
+
+/* ── component button styles (matches Figma export) ── */
+
+/* Heights & padding */
+.ds-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  border-radius:8px;border:none;cursor:pointer;
+  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-weight:500;line-height:1;
+  white-space:nowrap;transition:background .12s,opacity .12s,color .12s,box-shadow .12s;
+  position:relative;overflow:hidden;
+  text-decoration:none;
+}
+/* sizes */
+.ds-btn.sz-small{height:32px;padding:0 12px;font-size:12px;gap:5px}
+.ds-btn.sz-medium{height:36px;padding:0 16px;font-size:14px}
+.ds-btn.sz-large{height:40px;padding:0 20px;font-size:16px;gap:8px}
+
+/* primary (bold) — #1339EC bg, white text */
+.ds-btn.tp-primary{background:#1339EC;color:#fff;border:none}
+.ds-btn.tp-primary.st-hover{background:#0F2EBD}
+.ds-btn.tp-primary.st-pressed,.ds-btn.tp-primary.st-active{background:#0c228d}
+.ds-btn.tp-primary.st-focused{background:#1339EC;box-shadow:0 0 0 3px rgba(83,129,241,.5)}
+.ds-btn.tp-primary.st-disabled{background:#1339EC;color:#fff;opacity:.38;cursor:not-allowed}
+.ds-btn.tp-primary.st-loading{background:#0F2EBD;color:#fff;cursor:wait}
+
+/* secondary (bold) — white bg, dark border + text */
+.ds-btn.tp-secondary{background:#fff;color:#111317;border:1px solid #111317}
+.ds-btn.tp-secondary.st-hover{background:rgba(95,106,130,.08)}
+.ds-btn.tp-secondary.st-pressed,.ds-btn.tp-secondary.st-active{background:rgba(95,106,130,.15)}
+.ds-btn.tp-secondary.st-focused{background:#fff;box-shadow:0 0 0 3px rgba(83,129,241,.4)}
+.ds-btn.tp-secondary.st-disabled{background:#fff;color:#111317;opacity:.38;cursor:not-allowed}
+.ds-btn.tp-secondary.st-loading{background:rgba(95,106,130,.08);cursor:wait}
+
+/* ghost (primary minimal) — transparent bg, blue text */
+.ds-btn.tp-ghost{background:transparent;color:#1339EC;border:none}
+.ds-btn.tp-ghost.st-hover{background:#eef3fd}
+.ds-btn.tp-ghost.st-pressed,.ds-btn.tp-ghost.st-active{background:#dfe7fd}
+.ds-btn.tp-ghost.st-focused{background:transparent;box-shadow:0 0 0 3px rgba(83,129,241,.4)}
+.ds-btn.tp-ghost.st-disabled{opacity:.38;cursor:not-allowed}
+.ds-btn.tp-ghost.st-loading{background:#eef3fd;cursor:wait}
+
+/* destructive (danger bold) — red-tinted bg, red text */
+.ds-btn.tp-destructive{background:#ffebeb;color:#cc0000;border:none}
+.ds-btn.tp-destructive.st-hover{background:#ffd1d1;color:#b20000}
+.ds-btn.tp-destructive.st-pressed,.ds-btn.tp-destructive.st-active{background:#ffb3b3;color:#990000}
+.ds-btn.tp-destructive.st-focused{background:#ffebeb;box-shadow:0 0 0 3px rgba(204,0,0,.25)}
+.ds-btn.tp-destructive.st-disabled{opacity:.38;cursor:not-allowed}
+.ds-btn.tp-destructive.st-loading{background:#ffd1d1;cursor:wait}
+
+/* round shape */
+.ds-btn.shape-round{border-radius:100px}
+.ds-btn.sz-small.shape-round.icon-only{width:32px;padding:0}
+.ds-btn.sz-medium.shape-round.icon-only{width:36px;padding:0}
+.ds-btn.sz-large.shape-round.icon-only{width:40px;padding:0}
+
+/* icon-only */
+.ds-btn.icon-only.sz-small{width:32px;padding:0;gap:0}
+.ds-btn.icon-only.sz-medium{width:36px;padding:0;gap:0}
+.ds-btn.icon-only.sz-large{width:40px;padding:0;gap:0}
+
+/* spinner for loading */
+.ds-btn .spinner{
+  width:14px;height:14px;border-radius:50%;
+  border:2px solid currentColor;
+  border-top-color:transparent;
+  animation:spin .6s linear infinite;
+  flex-shrink:0;
+}
+.ds-btn.sz-small .spinner{width:11px;height:11px}
+.ds-btn.sz-large .spinner{width:16px;height:16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── state matrix ── */
+.matrix{
+  width:100%;
+  display:flex;flex-direction:column;gap:0;
+}
+.matrix-row{display:flex;align-items:center;gap:16px;padding:10px 0;border-top:1px solid rgba(255,255,255,.06)}
+.matrix-row:first-child{border-top:none}
+.matrix-state{
+  font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  color:#606878;width:64px;flex-shrink:0;text-align:right;
+}
+.bg-toggle{
+  display:flex;gap:4px;padding:3px;background:#21242c;border-radius:6px;border:1px solid #2e3138;
+}
+.bg-toggle button{
+  padding:3px 8px;border-radius:4px;border:none;background:none;
+  font-size:10px;cursor:pointer;color:#606878;transition:all .12s;
+}
+.bg-toggle button.active{background:#2e3138;color:#e4e6ea}
+
+/* ── prompt bar ── */
+.prompt-bar{
+  border-top:1px solid #2a2d34;
+  background:#1c1f26;
+  padding:12px 16px;
+  display:flex;gap:10px;align-items:flex-start;
+}
+.prompt-text{
+  flex:1;font-family:ui-monospace,monospace;font-size:11.5px;
+  line-height:1.55;color:#a0a8b8;
+  background:#21242c;border:1px solid #2e3138;
+  border-radius:6px;padding:8px 10px;
+  min-height:48px;
+}
+.copy-btn{
+  padding:8px 14px;border-radius:6px;
+  background:#1339EC;border:none;color:#fff;
+  font-size:12px;font-weight:600;cursor:pointer;
+  transition:background .12s;flex-shrink:0;align-self:stretch;
+}
+.copy-btn:hover{background:#0F2EBD}
+.copy-btn.copied{background:#2e881b}
+
+/* ── filename chip ── */
+.filename-chip{
+  font-family:ui-monospace,monospace;font-size:10px;
+  background:#21242c;border:1px solid #2e3138;border-radius:4px;
+  padding:3px 7px;color:#606878;
+  margin-top:6px;word-break:break-all;text-align:center;
+}
+</style>
+</head>
+<body>
+
+<!-- top bar -->
+<div class="topbar">
+  <span class="topbar-title">Button Explorer</span>
+  <div id="presets" style="display:flex;gap:5px;flex-wrap:wrap">
+    <button class="preset-pill" onclick="applyPreset('cta')">Primary CTA</button>
+    <button class="preset-pill" onclick="applyPreset('secondary')">Secondary</button>
+    <button class="preset-pill" onclick="applyPreset('ghost')">Ghost</button>
+    <button class="preset-pill" onclick="applyPreset('danger')">Destructive</button>
+    <button class="preset-pill" onclick="applyPreset('icon')">Icon Only</button>
+  </div>
+  <div class="topbar-sep"></div>
+  <div class="bg-toggle" style="margin-left:8px">
+    <button id="bg-dark" class="active" onclick="setBg('dark')">Dark</button>
+    <button id="bg-neutral" onclick="setBg('neutral')">Neutral</button>
+    <button id="bg-light" onclick="setBg('light')">Light</button>
+  </div>
+</div>
+
+<!-- main -->
+<div class="main">
+
+  <!-- sidebar controls -->
+  <div class="sidebar">
+
+    <!-- Type -->
+    <div class="ctrl-group">
+      <div class="ctrl-label">Type</div>
+      <div class="type-grid" id="type-grid">
+        <div class="type-card active" data-type="primary" onclick="set('type','primary')">
+          <span class="type-card-label">Primary</span>
+          <span class="type-mini" style="background:#1339EC;color:#fff">Action</span>
+        </div>
+        <div class="type-card" data-type="secondary" onclick="set('type','secondary')">
+          <span class="type-card-label">Secondary</span>
+          <span class="type-mini" style="background:#fff;color:#111317;border:1px solid #111317">Action</span>
+        </div>
+        <div class="type-card" data-type="ghost" onclick="set('type','ghost')">
+          <span class="type-card-label">Ghost</span>
+          <span class="type-mini" style="background:transparent;color:#1339EC">Action</span>
+        </div>
+        <div class="type-card" data-type="destructive" onclick="set('type','destructive')">
+          <span class="type-card-label">Destructive</span>
+          <span class="type-mini" style="background:#ffebeb;color:#cc0000">Delete</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Size -->
+    <div class="ctrl-group">
+      <div class="ctrl-label">Size</div>
+      <div class="pill-row" id="size-pills">
+        <div class="pill" data-size="small" onclick="set('size','small')">S — 32px</div>
+        <div class="pill active" data-size="medium" onclick="set('size','medium')">M — 36px</div>
+        <div class="pill" data-size="large" onclick="set('size','large')">L — 40px</div>
+      </div>
+    </div>
+
+    <!-- State -->
+    <div class="ctrl-group">
+      <div class="ctrl-label">State</div>
+      <div class="pill-row" id="state-pills">
+        <div class="pill active" data-state="default" onclick="set('state','default')">Default</div>
+        <div class="pill" data-state="hover" onclick="set('state','hover')">Hover</div>
+        <div class="pill" data-state="focused" onclick="set('state','focused')">Focused</div>
+        <div class="pill" data-state="pressed" onclick="set('state','pressed')">Pressed</div>
+        <div class="pill" data-state="disabled" onclick="set('state','disabled')">Disabled</div>
+        <div class="pill" data-state="loading" onclick="set('state','loading')">Loading ✦</div>
+      </div>
+      <div style="font-size:10px;color:#464c58;margin-top:5px;line-height:1.4">✦ Loading is not a Figma state — simulated with CSS spinner</div>
+    </div>
+
+    <!-- Label -->
+    <div class="ctrl-group">
+      <div class="ctrl-label">Label</div>
+      <input class="text-input" type="text" id="label-input" value="Button text" oninput="updateAll()">
+    </div>
+
+    <!-- Options -->
+    <div class="ctrl-group">
+      <div class="ctrl-label">Options</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="toggle-row" onclick="toggle('iconOnly')">
+          <span>Icon only</span>
+          <div class="toggle" id="toggle-iconOnly"></div>
+        </div>
+        <div class="toggle-row" onclick="toggle('leadingIcon')">
+          <span>Leading icon</span>
+          <div class="toggle on" id="toggle-leadingIcon"></div>
+        </div>
+        <div class="toggle-row" onclick="toggle('trailingIcon')">
+          <span>Trailing chevron</span>
+          <div class="toggle on" id="toggle-trailingIcon"></div>
+        </div>
+        <div class="toggle-row" onclick="toggle('roundShape')">
+          <span>Round shape</span>
+          <div class="toggle" id="toggle-roundShape"></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /sidebar -->
+
+  <!-- right panel -->
+  <div class="right">
+    <div class="preview-area" id="preview-area">
+
+      <!-- single button preview -->
+      <div class="preview-main">
+        <div class="preview-label">Preview</div>
+        <div id="preview-btn-wrap"></div>
+        <div class="filename-chip" id="filename-chip">…</div>
+      </div>
+
+      <!-- state matrix -->
+      <div style="width:100%;max-width:560px">
+        <div class="preview-label">All states — <span id="matrix-desc"></span></div>
+        <div class="matrix" id="matrix"></div>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<!-- prompt bar -->
+<div class="prompt-bar">
+  <div class="prompt-text" id="prompt-text">…</div>
+  <button class="copy-btn" id="copy-btn" onclick="copyPrompt()">Copy</button>
+</div>
+
+<script>
+/* ── state ── */
+const DEFAULTS = {
+  type: 'primary',
+  size: 'medium',
+  state: 'default',
+  label: 'Button text',
+  iconOnly: false,
+  leadingIcon: true,
+  trailingIcon: true,
+  roundShape: false,
+};
+
+const state = { ...DEFAULTS };
+
+let bgMode = 'dark';
+
+/* ── SVG icons ── */
+const ICON_COMPONENT = `<svg width="14" height="14" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 8V5a1 1 0 011-1h3M16 8V5a1 1 0 00-1-1h-3M4 12v3a1 1 0 001 1h3M16 12v3a1 1 0 01-1 1h-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>`;
+const ICON_CHEVRON   = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 4.5l3.5 3 3.5-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const ICON_SPINNER   = `<span class="spinner"></span>`;
+const ICON_SINGLE    = `<svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M4 8V5a1 1 0 011-1h3M16 8V5a1 1 0 00-1-1h-3M4 12v3a1 1 0 001 1h3M16 12v3a1 1 0 01-1 1h-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>`;
+
+/* ── Figma filename mapping ── */
+// type → {family, emphasis}
+const TYPE_MAP = {
+  primary:     { family: 'primary',   emphasis: 'bold' },
+  secondary:   { family: 'secondary', emphasis: 'bold' },
+  ghost:       { family: 'primary',   emphasis: 'minimal' },
+  destructive: { family: 'danger',    emphasis: 'bold' },
+};
+// state → Figma state name (loading is not a Figma state)
+const STATE_FIGMA = {
+  default: 'default', hover: 'hover', focused: 'focused',
+  pressed: 'pressed', disabled: 'disabled', loading: null,
+};
+const SIZE_MAP = { small: 'small', medium: 'medium', large: 'large' };
+
+function buildFilename(type, size, stateKey, iconOnly, roundShape) {
+  const { family, emphasis } = TYPE_MAP[type];
+  const figmaState = STATE_FIGMA[stateKey];
+  if (!figmaState) return `(no Figma file — loading is CSS-only)`;
+  const io  = iconOnly ? 'true' : 'false';
+  const shp = roundShape ? 'round' : 'rectangle';
+  return `output/components/action_${family}_-size_${SIZE_MAP[size]}_-emphasis_${emphasis}_-state_${figmaState}_-icon-only_${io}_-shape_${shp}.html`;
+}
+
+/* ── render button element ── */
+function makeBtn(type, size, stateKey, label, iconOnly, leadingIcon, trailingIcon, roundShape) {
+  const btn = document.createElement('button');
+  btn.className = [
+    'ds-btn',
+    `tp-${type}`,
+    `sz-${size}`,
+    `st-${stateKey}`,
+    roundShape ? 'shape-round' : '',
+    iconOnly   ? 'icon-only'   : '',
+  ].filter(Boolean).join(' ');
+
+  if (stateKey === 'disabled') btn.disabled = true;
+
+  if (iconOnly) {
+    btn.innerHTML = (stateKey === 'loading') ? ICON_SPINNER : ICON_SINGLE;
+  } else {
+    let inner = '';
+    if (stateKey === 'loading') {
+      inner = `${ICON_SPINNER}<span>${label}</span>`;
+    } else {
+      if (leadingIcon) inner += ICON_COMPONENT;
+      inner += `<span>${label}</span>`;
+      if (trailingIcon) inner += ICON_CHEVRON;
+    }
+    btn.innerHTML = inner;
+  }
+  return btn;
+}
+
+/* ── render preview ── */
+function renderPreview() {
+  const wrap = document.getElementById('preview-btn-wrap');
+  wrap.innerHTML = '';
+  wrap.appendChild(makeBtn(
+    state.type, state.size, state.state,
+    state.label, state.iconOnly, state.leadingIcon, state.trailingIcon, state.roundShape
+  ));
+
+  document.getElementById('filename-chip').textContent =
+    buildFilename(state.type, state.size, state.state, state.iconOnly, state.roundShape);
+}
+
+/* ── render state matrix ── */
+const MATRIX_STATES = ['default','hover','focused','pressed','disabled','loading'];
+
+function renderMatrix() {
+  const matrix = document.getElementById('matrix');
+  matrix.innerHTML = '';
+
+  MATRIX_STATES.forEach(s => {
+    const row = document.createElement('div');
+    row.className = 'matrix-row';
+
+    const lbl = document.createElement('div');
+    lbl.className = 'matrix-state';
+    lbl.textContent = s;
+    row.appendChild(lbl);
+
+    const btn = makeBtn(
+      state.type, state.size, s,
+      state.label, state.iconOnly, state.leadingIcon, state.trailingIcon, state.roundShape
+    );
+    btn.style.pointerEvents = 'none'; // matrix is read-only
+    row.appendChild(btn);
+
+    matrix.appendChild(row);
+  });
+
+  const desc = { primary:'Primary bold', secondary:'Secondary bold', ghost:'Ghost (minimal)', destructive:'Destructive bold' };
+  const size  = { small:'S 32px', medium:'M 36px', large:'L 40px' };
+  document.getElementById('matrix-desc').textContent = `${desc[state.type]}, ${size[state.size]}`;
+}
+
+/* ── prompt ── */
+function updatePrompt() {
+  const typeLabels   = { primary:'primary', secondary:'secondary', ghost:'ghost', destructive:'destructive' };
+  const sizeLabels   = { small:'small (S, 32px)', medium:'medium (M, 36px)', large:'large (L, 40px)' };
+  const stateLabels  = { default:'', hover:'hovered', focused:'focused', pressed:'pressed', disabled:'disabled', loading:'loading' };
+  const emphasisNote = { primary:'bold emphasis', secondary:'bold emphasis', ghost:'minimal/ghost emphasis', destructive:'bold emphasis' };
+
+  const parts = [];
+
+  parts.push(`Use a ${typeLabels[state.type]} action button`);
+
+  if (state.size !== DEFAULTS.size)  parts.push(`at ${sizeLabels[state.size]}`);
+  if (state.state !== DEFAULTS.state && stateLabels[state.state]) parts.push(`in the ${stateLabels[state.state]} state`);
+
+  const extras = [];
+  if (state.iconOnly)             extras.push('icon-only (no label)');
+  else if (state.label !== DEFAULTS.label) extras.push(`with label "${state.label}"`);
+  if (!state.leadingIcon && !state.iconOnly)  extras.push('no leading icon');
+  if (!state.trailingIcon && !state.iconOnly) extras.push('no trailing chevron');
+  if (state.roundShape)           extras.push('pill/round shape');
+
+  if (extras.length) parts.push(extras.join(', '));
+
+  const { family, emphasis } = TYPE_MAP[state.type];
+  const figmaState  = STATE_FIGMA[state.state];
+  const fileRef     = figmaState
+    ? `(output/components/action_${family}_-size_${SIZE_MAP[state.size]}_-emphasis_${emphasis}_-state_${figmaState}_-icon-only_${state.iconOnly}_-shape_${state.roundShape ? 'round' : 'rectangle'}.html)`
+    : '(loading state: add a CSS spinner — no Figma variant exists)';
+
+  document.getElementById('prompt-text').textContent =
+    `${parts.join(', ')}. ${fileRef}`;
+}
+
+/* ── background ── */
+function setBg(mode) {
+  bgMode = mode;
+  const area = document.getElementById('preview-area');
+  area.className = 'preview-area';
+  if (mode === 'light')   area.classList.add('preview-bg-light');
+  if (mode === 'dark')    area.style.background = '#1a1d24';
+  else                    area.style.background = '';
+  if (mode === 'neutral') area.classList.add('preview-bg-light');
+
+  const colors = { dark: '#1a1d24', neutral: '#f3f5f7', light: '#ffffff' };
+  area.style.background = colors[mode];
+
+  ['dark','neutral','light'].forEach(m => {
+    document.getElementById(`bg-${m}`)?.classList.toggle('active', m === mode);
+  });
+}
+
+/* ── controls ── */
+function set(key, val) {
+  state[key] = val;
+
+  // sync pills / cards
+  if (key === 'type') {
+    document.querySelectorAll('#type-grid .type-card').forEach(el =>
+      el.classList.toggle('active', el.dataset.type === val));
+  }
+  if (key === 'size') {
+    document.querySelectorAll('#size-pills .pill').forEach(el =>
+      el.classList.toggle('active', el.dataset.size === val));
+  }
+  if (key === 'state') {
+    document.querySelectorAll('#state-pills .pill').forEach(el =>
+      el.classList.toggle('active', el.dataset.state === val));
+  }
+
+  updateAll();
+}
+
+function toggle(key) {
+  state[key] = !state[key];
+  const el = document.getElementById(`toggle-${key}`);
+  if (el) el.classList.toggle('on', state[key]);
+  updateAll();
+}
+
+/* ── presets ── */
+const PRESETS = {
+  cta:       { type:'primary',     size:'medium', state:'default', label:'Get started',   iconOnly:false, leadingIcon:false, trailingIcon:true,  roundShape:false },
+  secondary: { type:'secondary',   size:'medium', state:'default', label:'Cancel',         iconOnly:false, leadingIcon:false, trailingIcon:false, roundShape:false },
+  ghost:     { type:'ghost',       size:'medium', state:'default', label:'Learn more',     iconOnly:false, leadingIcon:false, trailingIcon:true,  roundShape:false },
+  danger:    { type:'destructive', size:'medium', state:'default', label:'Delete campaign',iconOnly:false, leadingIcon:true,  trailingIcon:false, roundShape:false },
+  icon:      { type:'primary',     size:'medium', state:'default', label:'',               iconOnly:true,  leadingIcon:false, trailingIcon:false, roundShape:true  },
+};
+
+function applyPreset(key) {
+  Object.assign(state, PRESETS[key]);
+  // sync input
+  document.getElementById('label-input').value = state.label;
+  // sync toggles
+  ['iconOnly','leadingIcon','trailingIcon','roundShape'].forEach(k => {
+    const el = document.getElementById(`toggle-${k}`);
+    if (el) el.classList.toggle('on', state[k]);
+  });
+  // sync pills
+  document.querySelectorAll('#type-grid .type-card').forEach(el =>
+    el.classList.toggle('active', el.dataset.type === state.type));
+  document.querySelectorAll('#size-pills .pill').forEach(el =>
+    el.classList.toggle('active', el.dataset.size === state.size));
+  document.querySelectorAll('#state-pills .pill').forEach(el =>
+    el.classList.toggle('active', el.dataset.state === state.state));
+
+  updateAll();
+}
+
+/* ── copy ── */
+function copyPrompt() {
+  const text = document.getElementById('prompt-text').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1500);
+  });
+}
+
+/* ── update all ── */
+function updateAll() {
+  state.label = document.getElementById('label-input').value || 'Button text';
+  renderPreview();
+  renderMatrix();
+  updatePrompt();
+}
+
+/* ── init ── */
+updateAll();
+</script>
+</body>
+</html>
