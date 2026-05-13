@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Screens — Facelift Design System</title>
+<link rel="stylesheet" href="../output/tokens/tokens.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  background:var(--sys-background-neutral,#f3f5f7);
+  color:var(--sys-text-primary,#111317);
+  min-height:100vh;
+  padding:48px 24px;
+}
+.page{max-width:640px;margin:0 auto}
+h1{
+  font-size:28px;font-weight:700;line-height:36px;
+  margin-bottom:6px;
+}
+.subtitle{
+  font-size:14px;color:var(--sys-text-secondary,#5f6a82);
+  margin-bottom:32px;
+}
+ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+li a{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--sys-background-base,#fff);
+  border:1px solid var(--sys-border-soft,#e7eaee);
+  border-radius:8px;
+  padding:14px 18px;
+  text-decoration:none;
+  color:var(--sys-text-primary,#111317);
+  font-size:14px;font-weight:500;
+  transition:border-color .12s,box-shadow .12s;
+}
+li a:hover{
+  border-color:var(--sys-border-bold,#a7aebe);
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+li a .label{display:flex;align-items:center;gap:10px}
+li a .tag{
+  font-size:11px;font-weight:500;
+  background:var(--sys-background-neutral,#f3f5f7);
+  color:var(--sys-text-secondary,#5f6a82);
+  border-radius:4px;padding:2px 7px;
+}
+li a .arrow{
+  opacity:.35;
+  flex-shrink:0;
+}
+li a:hover .arrow{opacity:.7}
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>Screens</h1>
+  <p class="subtitle">All prototype screens and playgrounds in this design system experiment.</p>
+  <ul>
+    <li>
+      <a href="campaigns.html">
+        <span class="label">
+          Campaigns
+          <span class="tag">screen</span>
+        </span>
+        <svg class="arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="#111317" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </li>
+    <li>
+      <a href="calendar.html">
+        <span class="label">
+          Calendar
+          <span class="tag">screen</span>
+        </span>
+        <svg class="arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="#111317" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </li>
+    <li>
+      <a href="inbox.html">
+        <span class="label">
+          Inbox
+          <span class="tag">screen</span>
+        </span>
+        <svg class="arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="#111317" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </li>
+    <li>
+      <a href="chip-playground.html">
+        <span class="label">
+          Chip Playground
+          <span class="tag">tool</span>
+        </span>
+        <svg class="arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="#111317" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </li>
+    <li>
+      <a href="screen-scratchpad.html">
+        <span class="label">
+          Screen Scratchpad
+          <span class="tag">tool</span>
+        </span>
+        <svg class="arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="#111317" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </li>
+  </ul>
+</div>
+</body>
+</html>
