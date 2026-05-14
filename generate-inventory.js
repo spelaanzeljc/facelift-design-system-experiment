@@ -42,8 +42,6 @@ const FLAGGED = {
   'state_positive':      'Unknown parent component',
   'state_pressed':       'Mixed parent components — needs re-export investigation',
   'state_selected':      'Unknown parent component',
-  // type_text orientation variants — don't match Input Field structure
-  'type_text':     'Orientation variants don\'t match Input Field structure — unknown parent',
 };
 
 // ── Parse a filename into { family, variants, isAlt } ─────────────────────────
