@@ -25,16 +25,24 @@ const ALT_RE = /_\d{4,}-\d{4,}(\.html)?$/;
 // Value = short reason shown in tooltip
 const FLAGGED = {
   // state_* — scattered across many unknown parent components
+  'state_add-new':       'Unknown parent component',
   'state_brand-answer':  'Mixed parent components — needs re-export investigation',
+  'state_completed':     'Unknown parent component',
+  'state_danger':        'Unknown parent component',
   'state_default':       'Mixed parent components — needs re-export investigation',
   'state_disabled':      'Mixed parent components — needs re-export investigation',
   'state_drag':          'Unknown parent component',
+  'state_edit':          'Unknown parent component — numeric-suffix duplicate present',
   'state_focus':         'Mixed parent components — needs re-export investigation',
   'state_focused':       'Mixed parent components — needs re-export investigation',
   'state_hover':         'Mixed parent components — needs re-export investigation',
+  'state_in-progress':   'Unknown parent component',
   'state_no-header':     'Unknown parent component',
+  'state_not-started':   'Unknown parent component',
   'state_open':          'Unknown parent component',
+  'state_positive':      'Unknown parent component',
   'state_pressed':       'Mixed parent components — needs re-export investigation',
+  'state_selected':      'Unknown parent component',
   // status_* — multiple parent components
   'status_approved':     'Multiple parent components — numeric-suffix duplicates present',
   'status_connected':    'Needs parent component verification',
