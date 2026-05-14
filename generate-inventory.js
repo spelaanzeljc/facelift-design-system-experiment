@@ -20,6 +20,65 @@ const OUT = path.join(BASE, 'sitemap', 'component-inventory.html');
 // ── Numeric-suffix pattern (export duplicates like _13953-12345) ───────────────
 const ALT_RE = /_\d{4,}-\d{4,}(\.html)?$/;
 
+// ── Flagged families (Lib 1) — come from multiple unknown parent components ───
+// Key = family prefix string (exact match on the parsed family name)
+// Value = short reason shown in tooltip
+const FLAGGED = {
+  // state_* — scattered across many unknown parent components
+  'state_brand-answer':  'Mixed parent components — needs re-export investigation',
+  'state_default':       'Mixed parent components — needs re-export investigation',
+  'state_disabled':      'Mixed parent components — needs re-export investigation',
+  'state_drag':          'Unknown parent component',
+  'state_focus':         'Mixed parent components — needs re-export investigation',
+  'state_focused':       'Mixed parent components — needs re-export investigation',
+  'state_hover':         'Mixed parent components — needs re-export investigation',
+  'state_no-header':     'Unknown parent component',
+  'state_open':          'Unknown parent component',
+  'state_pressed':       'Mixed parent components — needs re-export investigation',
+  // status_* — multiple parent components
+  'status_approved':     'Multiple parent components — numeric-suffix duplicates present',
+  'status_connected':    'Needs parent component verification',
+  'status_disconneted':  'Needs parent component verification',
+  'status_draft':        'Needs parent component verification',
+  'status_draft-scheduled': 'Needs parent component verification',
+  'status_draft-unscheduled': 'Needs parent component verification',
+  'status_empty-_placeholder_': 'Placeholder — remove after verification',
+  'status_error':        'Needs parent component verification',
+  'status_failed':       'Needs parent component verification',
+  'status_partial-connected': 'Needs parent component verification',
+  'status_pending':      'Multiple parent components — numeric-suffix duplicates present',
+  'status_public':       'Needs parent component verification',
+  'status_published':    'Needs parent component verification',
+  'status_read':         'Needs parent component verification',
+  'status_rejected':     'Multiple parent components — numeric-suffix duplicates present',
+  'status_scheduled':    'Multiple parent components — numeric-suffix duplicates present',
+  'status_success':      'Needs parent component verification',
+  'status_to-be-approved': 'Multiple parent components — numeric-suffix duplicates present',
+  'status_unread-unresolved': 'Needs parent component verification',
+  'status_warning':      'Needs parent component verification',
+  // type_task_* — scattered from multiple task-list parent components
+  'type_task---default-_list_':   'Mixed parent components — needs re-export investigation',
+  'type_task---default-_table_':  'Mixed parent components — needs re-export investigation',
+  'type_task---upcoming-_list_':  'Mixed parent components — needs re-export investigation',
+  // color_* with variant/type — different component from Column Card
+  'color_amber':   'color_*.html renamed → column-card; _-variant_* files are a different component',
+  'color_azure':   'color_*.html renamed → column-card; _-variant_* files are a different component',
+  'color_beige':   'color_*.html renamed → column-card; _-variant_* files are a different component',
+  'color_coral':   'color_*.html renamed → column-card; _-variant_* files are a different component',
+  'color_dark-gray': 'Unknown parent component — no plain color_dark-gray.html to rename',
+  'color_emerald': 'color_*.html renamed → column-card; _-variant_* files are a different component',
+  'color_gray':    'color_*.html renamed → column-card; _-variant_* files are a different component',
+  'color_indigo':  'color_*.html renamed → column-card; _-variant_* files are a different component',
+  'color_light-gray': 'Unknown parent component — no plain color_light-gray.html to rename',
+  'color_mint':    'color_*.html renamed → column-card; _-variant_* files are a different component',
+  'color_petrol':  'color_*.html renamed → column-card; _-variant_* files are a different component',
+  'color_purple':  'color_*.html renamed → column-card; _-variant_* files are a different component',
+  'color_violet':  'color_*.html renamed → column-card; _-variant_* files are a different component',
+  'color_yellow':  'color_*.html renamed → column-card; _-variant_* files are a different component',
+  // type_text orientation variants — don't match Input Field structure
+  'type_text':     'Orientation variants don\'t match Input Field structure — unknown parent',
+};
+
 // ── Parse a filename into { family, variants, isAlt } ─────────────────────────
 function parse(filename) {
   const base = filename.replace(/\.html$/, '');
@@ -70,6 +129,8 @@ function buildHTML(libraries) {
     const familyCount = families.size;
 
     const familyBlocks = [...families.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([family, ffiles]) => {
+      const flagReason = FLAGGED[family] || null;
+
       const rows = ffiles.sort().map(f => {
         const { desc, isAlt } = parse(f);
         const relPath = `../${dir}/${f}`;
@@ -83,13 +144,21 @@ function buildHTML(libraries) {
 
       const altCount  = ffiles.filter(f => ALT_RE.test(f)).length;
       const mainCount = ffiles.length - altCount;
+      const flagBadge = flagReason
+        ? `<span class="badge flag" title="${esc(flagReason)}">⚑ needs review</span>`
+        : '';
+      const flagNote = flagReason
+        ? `<div class="flag-note">${esc(flagReason)}</div>`
+        : '';
 
       return `
-      <details class="family" data-family="${esc(family)}">
+      <details class="family${flagReason ? ' flagged' : ''}" data-family="${esc(family)}">
         <summary>
           <span class="fname-head">${esc(family)}</span>
+          ${flagBadge}
           <span class="fcounts">${mainCount} file${mainCount !== 1 ? 's' : ''}${altCount ? ` · <span class="alt-count">${altCount} alt</span>` : ''}</span>
         </summary>
+        ${flagNote}
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>${rows}
@@ -154,8 +223,21 @@ details[open]>summary::before{transform:rotate(90deg)}
 .fdesc{color:#5f6a82;font-size:.78rem}
 .badge{display:inline-block;font-size:.65rem;font-weight:700;padding:.1em .35em;border-radius:3px;margin-left:.35rem;vertical-align:middle}
 .badge.alt{background:#fff3e0;color:#e05a00;border:1px solid #e05a00}
+.badge.flag{background:#fef9c3;color:#854d0e;border:1px solid #ca8a04;cursor:help}
+
+details.family.flagged{border-color:#fde68a;background:#fffbeb}
+details.family.flagged>summary{background:#fffbeb}
+details.family.flagged .fname-head{color:#92400e}
+.flag-note{font-size:.75rem;color:#92400e;background:#fef3c7;border-bottom:1px solid #fde68a;padding:.4rem .9rem}
 
 .family.all-hidden{display:none}
+
+/* Filter toggle */
+.filter-bar{display:flex;align-items:center;gap:.75rem;margin-bottom:1rem;flex-wrap:wrap}
+.filter-btn{padding:.3rem .7rem;border-radius:20px;font-size:.78rem;font-weight:600;cursor:pointer;border:1.5px solid transparent;background:#fff;transition:all .15s}
+.filter-btn:hover{border-color:#d3d7de}
+.filter-btn.active{background:#fef9c3;color:#854d0e;border-color:#ca8a04}
+.filter-btn.all.active{background:#1339ec;color:#fff;border-color:#1339ec}
 </style>
 </head>
 <body>
