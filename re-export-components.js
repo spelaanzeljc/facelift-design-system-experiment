@@ -38,6 +38,9 @@ const COMPONENTS = [
   { nodeId: '14015:69086',   family: 'radio_-type_item' },
   { nodeId: '13338:38966',   family: 'segmented-control' },
   { nodeId: '13338:38945',   family: 'segmented-control-item' },
+  { nodeId: '11644:6897',    family: 'column-header_-type_my-tasks' },
+  { nodeId: '11689:41300',   family: 'checklist-item',  skipIfExists: true },
+  { nodeId: '14493:93299',   family: 'comment-item',    skipIfExists: true },
 ];
 
 // ── Parse a Figma variant name into a filename suffix ──────────────────────────

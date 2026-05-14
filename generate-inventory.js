@@ -26,7 +26,6 @@ const ALT_RE = /_\d{4,}-\d{4,}(\.html)?$/;
 const FLAGGED = {
   // state_* — scattered across many unknown parent components
   'state_add-new':       'Unknown parent component',
-  'state_brand-answer':  'Mixed parent components — needs re-export investigation',
   'state_completed':     'Unknown parent component',
   'state_danger':        'Unknown parent component',
   'state_default':       'Mixed parent components — needs re-export investigation',
@@ -43,10 +42,6 @@ const FLAGGED = {
   'state_positive':      'Unknown parent component',
   'state_pressed':       'Mixed parent components — needs re-export investigation',
   'state_selected':      'Unknown parent component',
-  // type_task_* — scattered from multiple task-list parent components
-  'type_task---default-_list_':   'Mixed parent components — needs re-export investigation',
-  'type_task---default-_table_':  'Mixed parent components — needs re-export investigation',
-  'type_task---upcoming-_list_':  'Mixed parent components — needs re-export investigation',
   // type_text orientation variants — don't match Input Field structure
   'type_text':     'Orientation variants don\'t match Input Field structure — unknown parent',
 };
