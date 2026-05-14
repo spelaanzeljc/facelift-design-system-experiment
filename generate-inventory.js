@@ -93,12 +93,30 @@ const FLAGGED_L2_MATCH = new Set([
   'tooltip','tooltip-v02---complex-content',
 ]);
 
+// ── Blank-file detection ──────────────────────────────────────────────────────
+function isBlankFile(absPath) {
+  try {
+    const html = fs.readFileSync(absPath, 'utf8');
+    const m = html.match(/<div class="checker">([\s\S]*?)<\/div>/);
+    return !m || !m[1].includes('<svg');
+  } catch { return false; }
+}
+
 // ── Resolve flag info for a family + library dir ──────────────────────────────
-function getFlagInfo(family, dir) {
+function getFlagInfo(family, dir, blankCount, totalCount) {
   if (FLAGGED[family]) return { type: 'review', reason: FLAGGED[family] };
   if (dir.includes('components2')) {
     if (FLAGGED_L2_ICON.has(family))  return { type: 'icon',  reason: 'Likely icon — same name exists in output/icons/' };
     if (FLAGGED_L2_MATCH.has(family)) return { type: 'lib1',  reason: 'Also present in Library 1 — potential duplicate' };
+  }
+  if (blankCount > 0) {
+    const all = blankCount === totalCount;
+    return {
+      type: 'blank',
+      reason: all
+        ? `All ${totalCount} file${totalCount !== 1 ? 's' : ''} blank — no SVG rendered`
+        : `${blankCount} of ${totalCount} files blank — SVG missing`,
+    };
   }
   return null;
 }
@@ -155,16 +173,20 @@ function buildHTML(libraries) {
     const families = groupByFamily(files);
     const familyCount = families.size;
 
+    const absDir = path.join(BASE, dir);
+
     const familyBlocks = [...families.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([family, ffiles]) => {
-      const flagInfo = getFlagInfo(family, dir);
+      const blankFiles = new Set(ffiles.filter(f => isBlankFile(path.join(absDir, f))));
+      const flagInfo = getFlagInfo(family, dir, blankFiles.size, ffiles.length);
 
       const rows = ffiles.sort().map(f => {
         const { desc, isAlt } = parse(f);
         const relPath = `../${dir}/${f}`;
         const altBadge = isAlt ? `<span class="badge alt">alt</span>` : '';
+        const blankBadge = blankFiles.has(f) ? `<span class="badge blank">blank</span>` : '';
         return `
-          <tr class="file-row" data-search="${esc(f.toLowerCase())} ${esc(desc.toLowerCase())}">
-            <td class="fname"><a href="${esc(relPath)}" target="_blank" rel="noopener">${esc(f)}</a>${altBadge}</td>
+          <tr class="file-row${blankFiles.has(f) ? ' file-blank' : ''}" data-search="${esc(f.toLowerCase())} ${esc(desc.toLowerCase())}">
+            <td class="fname"><a href="${esc(relPath)}" target="_blank" rel="noopener">${esc(f)}</a>${altBadge}${blankBadge}</td>
             <td class="fdesc">${esc(desc)}</td>
           </tr>`;
       }).join('');
@@ -176,7 +198,9 @@ function buildHTML(libraries) {
           ? `<span class="badge flag-icon" title="${esc(flagInfo.reason)}">⬡ icon</span>`
           : flagInfo.type === 'lib1'
             ? `<span class="badge flag-lib1" title="${esc(flagInfo.reason)}">≈ lib 1</span>`
-            : `<span class="badge flag" title="${esc(flagInfo.reason)}">⚑ needs review</span>`
+            : flagInfo.type === 'blank'
+              ? `<span class="badge flag-blank" title="${esc(flagInfo.reason)}">◻ blank</span>`
+              : `<span class="badge flag" title="${esc(flagInfo.reason)}">⚑ needs review</span>`
         : '';
       const flagNote = flagInfo
         ? `<div class="flag-note flag-note--${flagInfo.type}">${esc(flagInfo.reason)}</div>`
@@ -257,6 +281,8 @@ details[open]>summary::before{transform:rotate(90deg)}
 .badge.flag{background:#fef9c3;color:#854d0e;border:1px solid #ca8a04;cursor:help}
 .badge.flag-icon{background:#f0fdf4;color:#166534;border:1px solid #4ade80;cursor:help}
 .badge.flag-lib1{background:#eff6ff;color:#1e40af;border:1px solid #93c5fd;cursor:help}
+.badge.flag-blank{background:#fdf4ff;color:#7e22ce;border:1px solid #d8b4fe;cursor:help}
+.badge.blank{background:#fdf4ff;color:#7e22ce;border:1px solid #d8b4fe;font-size:.6rem}
 
 details.family.flagged--review{border-color:#fde68a;background:#fffbeb}
 details.family.flagged--review>summary{background:#fffbeb}
@@ -267,10 +293,15 @@ details.family.flagged--icon .fname-head{color:#166534}
 details.family.flagged--lib1{border-color:#93c5fd;background:#eff6ff}
 details.family.flagged--lib1>summary{background:#eff6ff}
 details.family.flagged--lib1 .fname-head{color:#1e40af}
+details.family.flagged--blank{border-color:#d8b4fe;background:#fdf4ff}
+details.family.flagged--blank>summary{background:#fdf4ff}
+details.family.flagged--blank .fname-head{color:#7e22ce}
 .flag-note{font-size:.75rem;padding:.4rem .9rem;border-bottom-width:1px;border-bottom-style:solid}
 .flag-note--review{color:#92400e;background:#fef3c7;border-bottom-color:#fde68a}
 .flag-note--icon{color:#166534;background:#dcfce7;border-bottom-color:#4ade80}
 .flag-note--lib1{color:#1e40af;background:#dbeafe;border-bottom-color:#93c5fd}
+.flag-note--blank{color:#7e22ce;background:#fae8ff;border-bottom-color:#d8b4fe}
+.file-blank td{opacity:.55}
 
 .family.all-hidden{display:none}
 
@@ -282,6 +313,7 @@ details.family.flagged--lib1 .fname-head{color:#1e40af}
 .filter-btn.all.active{background:#1339ec;color:#fff;border-color:#1339ec}
 .filter-btn.icon.active{background:#f0fdf4;color:#166534;border-color:#4ade80}
 .filter-btn.lib1.active{background:#eff6ff;color:#1e40af;border-color:#93c5fd}
+.filter-btn.blank.active{background:#fdf4ff;color:#7e22ce;border-color:#d8b4fe}
 </style>
 </head>
 <body>
@@ -300,6 +332,7 @@ details.family.flagged--lib1 .fname-head{color:#1e40af}
     <button class="filter-btn all active" data-filter="all">All</button>
     <button class="filter-btn icon" data-filter="icon">⬡ Likely icon</button>
     <button class="filter-btn lib1" data-filter="lib1">≈ Also in Lib 1</button>
+    <button class="filter-btn blank" data-filter="blank">◻ Blank</button>
   </div>
 
   ${libSections}
