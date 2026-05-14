@@ -92,8 +92,11 @@ function parse(filename) {
   const base = filename.replace(/\.html$/, '');
   const isAlt = ALT_RE.test(base);
 
+  // Strip numeric alt suffix before splitting so alt files group with their base family
+  const cleanBase = isAlt ? base.replace(ALT_RE, '') : base;
+
   // Split on `_-` to separate variant segments
-  const parts   = base.split('_-');
+  const parts   = cleanBase.split('_-');
   const family  = parts[0];
   const varParts = parts.slice(1);
 
