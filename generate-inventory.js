@@ -68,21 +68,6 @@ const FLAGGED = {
   'type_task---default-_list_':   'Mixed parent components — needs re-export investigation',
   'type_task---default-_table_':  'Mixed parent components — needs re-export investigation',
   'type_task---upcoming-_list_':  'Mixed parent components — needs re-export investigation',
-  // color_* with variant/type — different component from Column Card
-  'color_amber':   'color_*.html renamed → column-card; _-variant_* files are a different component',
-  'color_azure':   'color_*.html renamed → column-card; _-variant_* files are a different component',
-  'color_beige':   'color_*.html renamed → column-card; _-variant_* files are a different component',
-  'color_coral':   'color_*.html renamed → column-card; _-variant_* files are a different component',
-  'color_dark-gray': 'Unknown parent component — no plain color_dark-gray.html to rename',
-  'color_emerald': 'color_*.html renamed → column-card; _-variant_* files are a different component',
-  'color_gray':    'color_*.html renamed → column-card; _-variant_* files are a different component',
-  'color_indigo':  'color_*.html renamed → column-card; _-variant_* files are a different component',
-  'color_light-gray': 'Unknown parent component — no plain color_light-gray.html to rename',
-  'color_mint':    'color_*.html renamed → column-card; _-variant_* files are a different component',
-  'color_petrol':  'color_*.html renamed → column-card; _-variant_* files are a different component',
-  'color_purple':  'color_*.html renamed → column-card; _-variant_* files are a different component',
-  'color_violet':  'color_*.html renamed → column-card; _-variant_* files are a different component',
-  'color_yellow':  'color_*.html renamed → column-card; _-variant_* files are a different component',
   // type_text orientation variants — don't match Input Field structure
   'type_text':     'Orientation variants don\'t match Input Field structure — unknown parent',
 };
