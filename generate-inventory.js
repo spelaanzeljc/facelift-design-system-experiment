@@ -20,10 +20,88 @@ const OUT = path.join(BASE, 'sitemap', 'component-inventory.html');
 // ── Numeric-suffix pattern (export duplicates like _13953-12345) ───────────────
 const ALT_RE = /_\d{4,}-\d{4,}(\.html)?$/;
 
-// ── Flagged families (Lib 1) — come from multiple unknown parent components ───
-// Key = family prefix string (exact match on the parsed family name)
-// Value = short reason shown in tooltip
+// ── Flagged families (Lib 1) ──────────────────────────────────────────────────
 const FLAGGED = {};
+
+// ── Library 2 flags ───────────────────────────────────────────────────────────
+// Flag 1: families whose name matches an icon in output/icons/ — likely just SVG wrappers
+const FLAGGED_L2_ICON = new Set([
+  'admin-company-outline','alarm-bell','arrow-down','arrow-select','arrow-up',
+  'artifical-inteligence','attachment','badge-check-mark-filled','beta','beta-symbole',
+  'calendar','canva','check-box-checked-outline','check-mark',
+  'chevron-down','chevron-left','chevron-right',
+  'circle','circle-check-mark','circle-question-mark','clock',
+  'close','close-large','close-lg','comment','danger-outline','desktop',
+  'download','edit','ellipsis-horizontal','eye',
+  'facebook','facebook-network-logo','facebook-outline',
+  'facelift','facelift-ai','facelift-logo',
+  'fb-messenger','fb-messenger-outline',
+  'filter','flag','folder','follow',
+  'fontstyle-bold','fontstyle-italic','fontstyle-underline',
+  'format_landscape','format_month-','format_portrait','format_square',
+  'format_today-am','format_today-pm','format_yersterday-am','format_yersterday-pm',
+  'garbage-can','gearwheel-outline',
+  'general_arrow-down','general_arrow-up',
+  'general_collapsible-tree_tree-closed','general_sidebar_sidebar-close',
+  'general_success','general_warning',
+  'google','heart','heart-outline','help','hide','home','image','info',
+  'instagram','instagram-network-logo','instagram-outline',
+  'like','like-filled','line-chevron-left',
+  'linkedin','linkedin-outline','locked','love',
+  'm_discussion','m_discussion_filled','m_draft-save',
+  'm_flag','m_flag_filled','m_hide','m_minimize','m_note',
+  'm_promote','m_proofread','m_rewrite',
+  'm_send','m_send-resolve','m_template-add',
+  'magnifying-glass','megaphon','mention','minus-sign-small','mobile','more',
+  'notice','notice_new','owner',
+  'pinterest','pinterest-outline','planner-logo','plus-sign-small',
+  'rectangle-arrow-right','refresh','retry','rss','sad',
+  'search','send','settings','share','share-arrow','shorturl',
+  'size_16','size_20','size_24',
+  'smiley','smiley-positive','sort-down',
+  'speech-bubble-outline','speech-bubble-up-text',
+  'success','targeting','thankful','three-connected-squares','thumb-up-outline',
+  'thumbnail','tiktok','tiktok-outline','time',
+  'triangle-exclamation-mark-outline','two-squares-grid',
+  'verified','video','view-list','warning-filled','whatsapp','wow',
+  'x','x-network-logo','x-outline','x-sign-large','x-sign-small','x-sign-small-invert',
+  'xing','youtube',
+]);
+
+// Flag 2: families that also appear in Library 1 — potential duplicates
+const FLAGGED_L2_MATCH = new Set([
+  'appearance_floating','appearance_inline',
+  'badge',
+  'color_amber','color_azure','color_beige','color_blue','color_cobalt',
+  'color_coral','color_default','color_emerald','color_green','color_grey',
+  'color_indigo','color_mint','color_orange','color_peridot','color_petrol',
+  'color_purple','color_violet','color_yellow',
+  'modal-item-',
+  'navigation-bar',
+  'orientation_horizontal','orientation_vertical',
+  'pill_default_m_none_grey','pill_sm_default_default_brown','pill_sm_default_default_green',
+  'popover-alt','popover-item-',
+  'progress-indicator',
+  'segmented-control',
+  'status_approved','status_card','status_connected','status_disconneted',
+  'status_draft','status_empty-_placeholder_','status_error',
+  'status_partial-connected','status_pending','status_public','status_published',
+  'status_read','status_rejected','status_scheduled',
+  'status_to-be-approved','status_unread-unresolved','status_warning',
+  'tab-group',
+  'tags',
+  'tooltip','tooltip-v02---complex-content',
+]);
+
+// ── Resolve flag info for a family + library dir ──────────────────────────────
+function getFlagInfo(family, dir) {
+  if (FLAGGED[family]) return { type: 'review', reason: FLAGGED[family] };
+  if (dir.includes('components2')) {
+    if (FLAGGED_L2_ICON.has(family))  return { type: 'icon',  reason: 'Likely icon — same name exists in output/icons/' };
+    if (FLAGGED_L2_MATCH.has(family)) return { type: 'lib1',  reason: 'Also present in Library 1 — potential duplicate' };
+  }
+  return null;
+}
 
 // ── Parse a filename into { family, variants, isAlt } ─────────────────────────
 function parse(filename) {
@@ -78,7 +156,7 @@ function buildHTML(libraries) {
     const familyCount = families.size;
 
     const familyBlocks = [...families.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([family, ffiles]) => {
-      const flagReason = FLAGGED[family] || null;
+      const flagInfo = getFlagInfo(family, dir);
 
       const rows = ffiles.sort().map(f => {
         const { desc, isAlt } = parse(f);
@@ -93,15 +171,19 @@ function buildHTML(libraries) {
 
       const altCount  = ffiles.filter(f => ALT_RE.test(f)).length;
       const mainCount = ffiles.length - altCount;
-      const flagBadge = flagReason
-        ? `<span class="badge flag" title="${esc(flagReason)}">⚑ needs review</span>`
+      const flagBadge = flagInfo
+        ? flagInfo.type === 'icon'
+          ? `<span class="badge flag-icon" title="${esc(flagInfo.reason)}">⬡ icon</span>`
+          : flagInfo.type === 'lib1'
+            ? `<span class="badge flag-lib1" title="${esc(flagInfo.reason)}">≈ lib 1</span>`
+            : `<span class="badge flag" title="${esc(flagInfo.reason)}">⚑ needs review</span>`
         : '';
-      const flagNote = flagReason
-        ? `<div class="flag-note">${esc(flagReason)}</div>`
+      const flagNote = flagInfo
+        ? `<div class="flag-note flag-note--${flagInfo.type}">${esc(flagInfo.reason)}</div>`
         : '';
 
       return `
-      <details class="family${flagReason ? ' flagged' : ''}" data-family="${esc(family)}">
+      <details class="family${flagInfo ? ` flagged flagged--${flagInfo.type}` : ''}" data-family="${esc(family)}">
         <summary>
           <span class="fname-head">${esc(family)}</span>
           ${flagBadge}
@@ -173,11 +255,22 @@ details[open]>summary::before{transform:rotate(90deg)}
 .badge{display:inline-block;font-size:.65rem;font-weight:700;padding:.1em .35em;border-radius:3px;margin-left:.35rem;vertical-align:middle}
 .badge.alt{background:#fff3e0;color:#e05a00;border:1px solid #e05a00}
 .badge.flag{background:#fef9c3;color:#854d0e;border:1px solid #ca8a04;cursor:help}
+.badge.flag-icon{background:#f0fdf4;color:#166534;border:1px solid #4ade80;cursor:help}
+.badge.flag-lib1{background:#eff6ff;color:#1e40af;border:1px solid #93c5fd;cursor:help}
 
-details.family.flagged{border-color:#fde68a;background:#fffbeb}
-details.family.flagged>summary{background:#fffbeb}
-details.family.flagged .fname-head{color:#92400e}
-.flag-note{font-size:.75rem;color:#92400e;background:#fef3c7;border-bottom:1px solid #fde68a;padding:.4rem .9rem}
+details.family.flagged--review{border-color:#fde68a;background:#fffbeb}
+details.family.flagged--review>summary{background:#fffbeb}
+details.family.flagged--review .fname-head{color:#92400e}
+details.family.flagged--icon{border-color:#4ade80;background:#f0fdf4}
+details.family.flagged--icon>summary{background:#f0fdf4}
+details.family.flagged--icon .fname-head{color:#166534}
+details.family.flagged--lib1{border-color:#93c5fd;background:#eff6ff}
+details.family.flagged--lib1>summary{background:#eff6ff}
+details.family.flagged--lib1 .fname-head{color:#1e40af}
+.flag-note{font-size:.75rem;padding:.4rem .9rem;border-bottom-width:1px;border-bottom-style:solid}
+.flag-note--review{color:#92400e;background:#fef3c7;border-bottom-color:#fde68a}
+.flag-note--icon{color:#166534;background:#dcfce7;border-bottom-color:#4ade80}
+.flag-note--lib1{color:#1e40af;background:#dbeafe;border-bottom-color:#93c5fd}
 
 .family.all-hidden{display:none}
 
@@ -187,6 +280,8 @@ details.family.flagged .fname-head{color:#92400e}
 .filter-btn:hover{border-color:#d3d7de}
 .filter-btn.active{background:#fef9c3;color:#854d0e;border-color:#ca8a04}
 .filter-btn.all.active{background:#1339ec;color:#fff;border-color:#1339ec}
+.filter-btn.icon.active{background:#f0fdf4;color:#166534;border-color:#4ade80}
+.filter-btn.lib1.active{background:#eff6ff;color:#1e40af;border-color:#93c5fd}
 </style>
 </head>
 <body>
@@ -201,17 +296,26 @@ details.family.flagged .fname-head{color:#92400e}
     <div class="search-count" id="search-count"></div>
   </div>
 
+  <div class="filter-bar">
+    <button class="filter-btn all active" data-filter="all">All</button>
+    <button class="filter-btn icon" data-filter="icon">⬡ Likely icon</button>
+    <button class="filter-btn lib1" data-filter="lib1">≈ Also in Lib 1</button>
+  </div>
+
   ${libSections}
 </div>
 <script>
 const input   = document.getElementById('search');
 const countEl = document.getElementById('search-count');
+let activeFilter = 'all';
 
-input.addEventListener('input', () => {
+function applyFilters() {
   const q = input.value.trim().toLowerCase();
   let visible = 0;
 
   document.querySelectorAll('.family').forEach(fam => {
+    const matchesFilter = activeFilter === 'all' || fam.classList.contains('flagged--' + activeFilter);
+    if (!matchesFilter) { fam.classList.add('all-hidden'); return; }
     let famVisible = 0;
     fam.querySelectorAll('.file-row').forEach(row => {
       const match = !q || row.dataset.search.includes(q);
@@ -219,11 +323,24 @@ input.addEventListener('input', () => {
       if (match) famVisible++;
     });
     fam.classList.toggle('all-hidden', famVisible === 0);
-    if (famVisible > 0) fam.open = !!q;
+    if (famVisible > 0 && q) fam.open = true;
     visible += famVisible;
   });
 
-  countEl.textContent = q ? \`\${visible.toLocaleString()} file\${visible !== 1 ? 's' : ''} match\` : '';
+  countEl.textContent = (q || activeFilter !== 'all')
+    ? \`\${visible.toLocaleString()} file\${visible !== 1 ? 's' : ''} match\`
+    : '';
+}
+
+input.addEventListener('input', applyFilters);
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    activeFilter = btn.dataset.filter;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  });
 });
 </script>
 </body>

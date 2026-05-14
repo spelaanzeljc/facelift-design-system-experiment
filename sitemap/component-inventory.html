@@ -45,11 +45,22 @@ details[open]>summary::before{transform:rotate(90deg)}
 .badge{display:inline-block;font-size:.65rem;font-weight:700;padding:.1em .35em;border-radius:3px;margin-left:.35rem;vertical-align:middle}
 .badge.alt{background:#fff3e0;color:#e05a00;border:1px solid #e05a00}
 .badge.flag{background:#fef9c3;color:#854d0e;border:1px solid #ca8a04;cursor:help}
+.badge.flag-icon{background:#f0fdf4;color:#166534;border:1px solid #4ade80;cursor:help}
+.badge.flag-lib1{background:#eff6ff;color:#1e40af;border:1px solid #93c5fd;cursor:help}
 
-details.family.flagged{border-color:#fde68a;background:#fffbeb}
-details.family.flagged>summary{background:#fffbeb}
-details.family.flagged .fname-head{color:#92400e}
-.flag-note{font-size:.75rem;color:#92400e;background:#fef3c7;border-bottom:1px solid #fde68a;padding:.4rem .9rem}
+details.family.flagged--review{border-color:#fde68a;background:#fffbeb}
+details.family.flagged--review>summary{background:#fffbeb}
+details.family.flagged--review .fname-head{color:#92400e}
+details.family.flagged--icon{border-color:#4ade80;background:#f0fdf4}
+details.family.flagged--icon>summary{background:#f0fdf4}
+details.family.flagged--icon .fname-head{color:#166534}
+details.family.flagged--lib1{border-color:#93c5fd;background:#eff6ff}
+details.family.flagged--lib1>summary{background:#eff6ff}
+details.family.flagged--lib1 .fname-head{color:#1e40af}
+.flag-note{font-size:.75rem;padding:.4rem .9rem;border-bottom-width:1px;border-bottom-style:solid}
+.flag-note--review{color:#92400e;background:#fef3c7;border-bottom-color:#fde68a}
+.flag-note--icon{color:#166534;background:#dcfce7;border-bottom-color:#4ade80}
+.flag-note--lib1{color:#1e40af;background:#dbeafe;border-bottom-color:#93c5fd}
 
 .family.all-hidden{display:none}
 
@@ -59,6 +70,8 @@ details.family.flagged .fname-head{color:#92400e}
 .filter-btn:hover{border-color:#d3d7de}
 .filter-btn.active{background:#fef9c3;color:#854d0e;border-color:#ca8a04}
 .filter-btn.all.active{background:#1339ec;color:#fff;border-color:#1339ec}
+.filter-btn.icon.active{background:#f0fdf4;color:#166534;border-color:#4ade80}
+.filter-btn.lib1.active{background:#eff6ff;color:#1e40af;border-color:#93c5fd}
 </style>
 </head>
 <body>
@@ -71,6 +84,12 @@ details.family.flagged .fname-head{color:#92400e}
   <div class="search-wrap">
     <input type="search" id="search" placeholder="Search by filename or variant…" autocomplete="off">
     <div class="search-count" id="search-count"></div>
+  </div>
+
+  <div class="filter-bar">
+    <button class="filter-btn all active" data-filter="all">All</button>
+    <button class="filter-btn icon" data-filter="icon">⬡ Likely icon</button>
+    <button class="filter-btn lib1" data-filter="lib1">≈ Also in Lib 1</button>
   </div>
 
   
@@ -5595,13 +5614,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="admin-company-outline">
+      <details class="family flagged flagged--icon" data-family="admin-company-outline">
         <summary>
           <span class="fname-head">admin-company-outline</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -5629,13 +5648,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="alarm-bell">
+      <details class="family flagged flagged--icon" data-family="alarm-bell">
         <summary>
           <span class="fname-head">alarm-bell</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -5764,13 +5783,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="appearance_floating">
+      <details class="family flagged flagged--lib1" data-family="appearance_floating">
         <summary>
           <span class="fname-head">appearance_floating</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">4 files</span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -5793,13 +5812,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="appearance_inline">
+      <details class="family flagged flagged--lib1" data-family="appearance_inline">
         <summary>
           <span class="fname-head">appearance_inline</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">4 files</span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -5822,13 +5841,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="arrow-down">
+      <details class="family flagged flagged--icon" data-family="arrow-down">
         <summary>
           <span class="fname-head">arrow-down</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -5839,13 +5858,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="arrow-select">
+      <details class="family flagged flagged--icon" data-family="arrow-select">
         <summary>
           <span class="fname-head">arrow-select</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -5860,13 +5879,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="arrow-up">
+      <details class="family flagged flagged--icon" data-family="arrow-up">
         <summary>
           <span class="fname-head">arrow-up</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">2 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -5885,13 +5904,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="artifical-inteligence">
+      <details class="family flagged flagged--icon" data-family="artifical-inteligence">
         <summary>
           <span class="fname-head">artifical-inteligence</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -5902,13 +5921,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="attachment">
+      <details class="family flagged flagged--icon" data-family="attachment">
         <summary>
           <span class="fname-head">attachment</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -5923,13 +5942,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="badge">
+      <details class="family flagged flagged--lib1" data-family="badge">
         <summary>
           <span class="fname-head">badge</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -5940,13 +5959,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="badge-check-mark-filled">
+      <details class="family flagged flagged--icon" data-family="badge-check-mark-filled">
         <summary>
           <span class="fname-head">badge-check-mark-filled</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -5974,13 +5993,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="beta">
+      <details class="family flagged flagged--icon" data-family="beta">
         <summary>
           <span class="fname-head">beta</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -5991,13 +6010,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="beta-symbole">
+      <details class="family flagged flagged--icon" data-family="beta-symbole">
         <summary>
           <span class="fname-head">beta-symbole</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6245,13 +6264,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="calendar">
+      <details class="family flagged flagged--icon" data-family="calendar">
         <summary>
           <span class="fname-head">calendar</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6287,13 +6306,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="canva">
+      <details class="family flagged flagged--icon" data-family="canva">
         <summary>
           <span class="fname-head">canva</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6304,13 +6323,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="check-box-checked-outline">
+      <details class="family flagged flagged--icon" data-family="check-box-checked-outline">
         <summary>
           <span class="fname-head">check-box-checked-outline</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6321,13 +6340,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="check-mark">
+      <details class="family flagged flagged--icon" data-family="check-mark">
         <summary>
           <span class="fname-head">check-mark</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6359,13 +6378,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="chevron-down">
+      <details class="family flagged flagged--icon" data-family="chevron-down">
         <summary>
           <span class="fname-head">chevron-down</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6376,13 +6395,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="chevron-left">
+      <details class="family flagged flagged--icon" data-family="chevron-left">
         <summary>
           <span class="fname-head">chevron-left</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6414,13 +6433,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="chevron-right">
+      <details class="family flagged flagged--icon" data-family="chevron-right">
         <summary>
           <span class="fname-head">chevron-right</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6435,13 +6454,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="circle">
+      <details class="family flagged flagged--icon" data-family="circle">
         <summary>
           <span class="fname-head">circle</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6456,13 +6475,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="circle-check-mark">
+      <details class="family flagged flagged--icon" data-family="circle-check-mark">
         <summary>
           <span class="fname-head">circle-check-mark</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6473,13 +6492,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="circle-question-mark">
+      <details class="family flagged flagged--icon" data-family="circle-question-mark">
         <summary>
           <span class="fname-head">circle-question-mark</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6490,13 +6509,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="clock">
+      <details class="family flagged flagged--icon" data-family="clock">
         <summary>
           <span class="fname-head">clock</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6507,13 +6526,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="close">
+      <details class="family flagged flagged--icon" data-family="close">
         <summary>
           <span class="fname-head">close</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6545,13 +6564,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="close-large">
+      <details class="family flagged flagged--icon" data-family="close-large">
         <summary>
           <span class="fname-head">close-large</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6562,13 +6581,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="close-lg">
+      <details class="family flagged flagged--icon" data-family="close-lg">
         <summary>
           <span class="fname-head">close-lg</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6600,13 +6619,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="color_amber">
+      <details class="family flagged flagged--lib1" data-family="color_amber">
         <summary>
           <span class="fname-head">color_amber</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">2 files</span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6621,13 +6640,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="color_azure">
+      <details class="family flagged flagged--lib1" data-family="color_azure">
         <summary>
           <span class="fname-head">color_azure</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">2 files</span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6642,13 +6661,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="color_beige">
+      <details class="family flagged flagged--lib1" data-family="color_beige">
         <summary>
           <span class="fname-head">color_beige</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">3 files</span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6667,13 +6686,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="color_blue">
+      <details class="family flagged flagged--lib1" data-family="color_blue">
         <summary>
           <span class="fname-head">color_blue</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">3 files</span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6692,13 +6711,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="color_cobalt">
+      <details class="family flagged flagged--lib1" data-family="color_cobalt">
         <summary>
           <span class="fname-head">color_cobalt</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">2 files</span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6713,13 +6732,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="color_coral">
+      <details class="family flagged flagged--lib1" data-family="color_coral">
         <summary>
           <span class="fname-head">color_coral</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">2 files</span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6734,13 +6753,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="color_default">
+      <details class="family flagged flagged--lib1" data-family="color_default">
         <summary>
           <span class="fname-head">color_default</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6755,13 +6774,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="color_emerald">
+      <details class="family flagged flagged--lib1" data-family="color_emerald">
         <summary>
           <span class="fname-head">color_emerald</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">2 files</span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6776,13 +6795,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="color_green">
+      <details class="family flagged flagged--lib1" data-family="color_green">
         <summary>
           <span class="fname-head">color_green</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6793,13 +6812,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="color_grey">
+      <details class="family flagged flagged--lib1" data-family="color_grey">
         <summary>
           <span class="fname-head">color_grey</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">2 files</span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6814,13 +6833,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="color_indigo">
+      <details class="family flagged flagged--lib1" data-family="color_indigo">
         <summary>
           <span class="fname-head">color_indigo</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">2 files</span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6835,13 +6854,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="color_mint">
+      <details class="family flagged flagged--lib1" data-family="color_mint">
         <summary>
           <span class="fname-head">color_mint</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">2 files</span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6856,13 +6875,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="color_orange">
+      <details class="family flagged flagged--lib1" data-family="color_orange">
         <summary>
           <span class="fname-head">color_orange</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6877,13 +6896,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="color_peridot">
+      <details class="family flagged flagged--lib1" data-family="color_peridot">
         <summary>
           <span class="fname-head">color_peridot</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">2 files</span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6898,13 +6917,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="color_petrol">
+      <details class="family flagged flagged--lib1" data-family="color_petrol">
         <summary>
           <span class="fname-head">color_petrol</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">3 files</span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6923,13 +6942,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="color_purple">
+      <details class="family flagged flagged--lib1" data-family="color_purple">
         <summary>
           <span class="fname-head">color_purple</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">3 files</span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6948,13 +6967,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="color_violet">
+      <details class="family flagged flagged--lib1" data-family="color_violet">
         <summary>
           <span class="fname-head">color_violet</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">3 files</span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6973,13 +6992,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="color_yellow">
+      <details class="family flagged flagged--lib1" data-family="color_yellow">
         <summary>
           <span class="fname-head">color_yellow</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">3 files</span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6998,13 +7017,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="comment">
+      <details class="family flagged flagged--icon" data-family="comment">
         <summary>
           <span class="fname-head">comment</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7104,13 +7123,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="danger-outline">
+      <details class="family flagged flagged--icon" data-family="danger-outline">
         <summary>
           <span class="fname-head">danger-outline</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7163,13 +7182,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="desktop">
+      <details class="family flagged flagged--icon" data-family="desktop">
         <summary>
           <span class="fname-head">desktop</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7205,13 +7224,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="download">
+      <details class="family flagged flagged--icon" data-family="download">
         <summary>
           <span class="fname-head">download</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7256,13 +7275,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="edit">
+      <details class="family flagged flagged--icon" data-family="edit">
         <summary>
           <span class="fname-head">edit</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">2 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7281,13 +7300,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="ellipsis-horizontal">
+      <details class="family flagged flagged--icon" data-family="ellipsis-horizontal">
         <summary>
           <span class="fname-head">ellipsis-horizontal</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7332,13 +7351,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="eye">
+      <details class="family flagged flagged--icon" data-family="eye">
         <summary>
           <span class="fname-head">eye</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7349,13 +7368,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="facebook">
+      <details class="family flagged flagged--icon" data-family="facebook">
         <summary>
           <span class="fname-head">facebook</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7387,13 +7406,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="facebook-network-logo">
+      <details class="family flagged flagged--icon" data-family="facebook-network-logo">
         <summary>
           <span class="fname-head">facebook-network-logo</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7404,13 +7423,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="facebook-outline">
+      <details class="family flagged flagged--icon" data-family="facebook-outline">
         <summary>
           <span class="fname-head">facebook-outline</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7425,13 +7444,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="facelift">
+      <details class="family flagged flagged--icon" data-family="facelift">
         <summary>
           <span class="fname-head">facelift</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7442,13 +7461,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="facelift-ai">
+      <details class="family flagged flagged--icon" data-family="facelift-ai">
         <summary>
           <span class="fname-head">facelift-ai</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7463,13 +7482,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="facelift-logo">
+      <details class="family flagged flagged--icon" data-family="facelift-logo">
         <summary>
           <span class="fname-head">facelift-logo</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7484,13 +7503,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="fb-messenger">
+      <details class="family flagged flagged--icon" data-family="fb-messenger">
         <summary>
           <span class="fname-head">fb-messenger</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7501,13 +7520,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="fb-messenger-outline">
+      <details class="family flagged flagged--icon" data-family="fb-messenger-outline">
         <summary>
           <span class="fname-head">fb-messenger-outline</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7535,13 +7554,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="filter">
+      <details class="family flagged flagged--icon" data-family="filter">
         <summary>
           <span class="fname-head">filter</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">2 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7560,13 +7579,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="flag">
+      <details class="family flagged flagged--icon" data-family="flag">
         <summary>
           <span class="fname-head">flag</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7577,13 +7596,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="folder">
+      <details class="family flagged flagged--icon" data-family="folder">
         <summary>
           <span class="fname-head">folder</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7594,13 +7613,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="follow">
+      <details class="family flagged flagged--icon" data-family="follow">
         <summary>
           <span class="fname-head">follow</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7611,13 +7630,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="fontstyle-bold">
+      <details class="family flagged flagged--icon" data-family="fontstyle-bold">
         <summary>
           <span class="fname-head">fontstyle-bold</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7628,13 +7647,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="fontstyle-italic">
+      <details class="family flagged flagged--icon" data-family="fontstyle-italic">
         <summary>
           <span class="fname-head">fontstyle-italic</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7645,13 +7664,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="fontstyle-underline">
+      <details class="family flagged flagged--icon" data-family="fontstyle-underline">
         <summary>
           <span class="fname-head">fontstyle-underline</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7679,13 +7698,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="format_landscape">
+      <details class="family flagged flagged--icon" data-family="format_landscape">
         <summary>
           <span class="fname-head">format_landscape</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7700,13 +7719,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="format_month-">
+      <details class="family flagged flagged--icon" data-family="format_month-">
         <summary>
           <span class="fname-head">format_month-</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">3 files</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7725,13 +7744,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="format_portrait">
+      <details class="family flagged flagged--icon" data-family="format_portrait">
         <summary>
           <span class="fname-head">format_portrait</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7746,13 +7765,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="format_square">
+      <details class="family flagged flagged--icon" data-family="format_square">
         <summary>
           <span class="fname-head">format_square</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7767,13 +7786,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="format_today-am">
+      <details class="family flagged flagged--icon" data-family="format_today-am">
         <summary>
           <span class="fname-head">format_today-am</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">2 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7792,13 +7811,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="format_today-pm">
+      <details class="family flagged flagged--icon" data-family="format_today-pm">
         <summary>
           <span class="fname-head">format_today-pm</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7809,13 +7828,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="format_yersterday-am">
+      <details class="family flagged flagged--icon" data-family="format_yersterday-am">
         <summary>
           <span class="fname-head">format_yersterday-am</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7826,13 +7845,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="format_yersterday-pm">
+      <details class="family flagged flagged--icon" data-family="format_yersterday-pm">
         <summary>
           <span class="fname-head">format_yersterday-pm</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7860,13 +7879,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="garbage-can">
+      <details class="family flagged flagged--icon" data-family="garbage-can">
         <summary>
           <span class="fname-head">garbage-can</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7877,13 +7896,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="gearwheel-outline">
+      <details class="family flagged flagged--icon" data-family="gearwheel-outline">
         <summary>
           <span class="fname-head">gearwheel-outline</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7894,13 +7913,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="general_arrow-down">
+      <details class="family flagged flagged--icon" data-family="general_arrow-down">
         <summary>
           <span class="fname-head">general_arrow-down</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7911,13 +7930,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="general_arrow-up">
+      <details class="family flagged flagged--icon" data-family="general_arrow-up">
         <summary>
           <span class="fname-head">general_arrow-up</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7928,13 +7947,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="general_collapsible-tree_tree-closed">
+      <details class="family flagged flagged--icon" data-family="general_collapsible-tree_tree-closed">
         <summary>
           <span class="fname-head">general_collapsible-tree_tree-closed</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7945,13 +7964,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="general_sidebar_sidebar-close">
+      <details class="family flagged flagged--icon" data-family="general_sidebar_sidebar-close">
         <summary>
           <span class="fname-head">general_sidebar_sidebar-close</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7962,13 +7981,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="general_success">
+      <details class="family flagged flagged--icon" data-family="general_success">
         <summary>
           <span class="fname-head">general_success</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7979,13 +7998,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="general_warning">
+      <details class="family flagged flagged--icon" data-family="general_warning">
         <summary>
           <span class="fname-head">general_warning</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7996,13 +8015,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="google">
+      <details class="family flagged flagged--icon" data-family="google">
         <summary>
           <span class="fname-head">google</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -8013,13 +8032,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="heart">
+      <details class="family flagged flagged--icon" data-family="heart">
         <summary>
           <span class="fname-head">heart</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -8030,13 +8049,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="heart-outline">
+      <details class="family flagged flagged--icon" data-family="heart-outline">
         <summary>
           <span class="fname-head">heart-outline</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -8047,13 +8066,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="help">
+      <details class="family flagged flagged--icon" data-family="help">
         <summary>
           <span class="fname-head">help</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -8085,13 +8104,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="hide">
+      <details class="family flagged flagged--icon" data-family="hide">
         <summary>
           <span class="fname-head">hide</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -8106,13 +8125,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="home">
+      <details class="family flagged flagged--icon" data-family="home">
         <summary>
           <span class="fname-head">home</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -8257,13 +8276,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="image">
+      <details class="family flagged flagged--icon" data-family="image">
         <summary>
           <span class="fname-head">image</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -8376,13 +8395,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="info">
+      <details class="family flagged flagged--icon" data-family="info">
         <summary>
           <span class="fname-head">info</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -8431,13 +8450,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="instagram">
+      <details class="family flagged flagged--icon" data-family="instagram">
         <summary>
           <span class="fname-head">instagram</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -8452,13 +8471,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="instagram-network-logo">
+      <details class="family flagged flagged--icon" data-family="instagram-network-logo">
         <summary>
           <span class="fname-head">instagram-network-logo</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -8469,13 +8488,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="instagram-outline">
+      <details class="family flagged flagged--icon" data-family="instagram-outline">
         <summary>
           <span class="fname-head">instagram-outline</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -8619,13 +8638,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="like">
+      <details class="family flagged flagged--icon" data-family="like">
         <summary>
           <span class="fname-head">like</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">2 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -8644,13 +8663,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="like-filled">
+      <details class="family flagged flagged--icon" data-family="like-filled">
         <summary>
           <span class="fname-head">like-filled</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -8661,13 +8680,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="line-chevron-left">
+      <details class="family flagged flagged--icon" data-family="line-chevron-left">
         <summary>
           <span class="fname-head">line-chevron-left</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -8678,13 +8697,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="linkedin">
+      <details class="family flagged flagged--icon" data-family="linkedin">
         <summary>
           <span class="fname-head">linkedin</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -8699,13 +8718,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="linkedin-outline">
+      <details class="family flagged flagged--icon" data-family="linkedin-outline">
         <summary>
           <span class="fname-head">linkedin-outline</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -8716,13 +8735,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="locked">
+      <details class="family flagged flagged--icon" data-family="locked">
         <summary>
           <span class="fname-head">locked</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -8733,13 +8752,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="love">
+      <details class="family flagged flagged--icon" data-family="love">
         <summary>
           <span class="fname-head">love</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -8754,13 +8773,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="m_discussion">
+      <details class="family flagged flagged--icon" data-family="m_discussion">
         <summary>
           <span class="fname-head">m_discussion</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -8775,13 +8794,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="m_discussion_filled">
+      <details class="family flagged flagged--icon" data-family="m_discussion_filled">
         <summary>
           <span class="fname-head">m_discussion_filled</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -8792,13 +8811,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="m_draft-save">
+      <details class="family flagged flagged--icon" data-family="m_draft-save">
         <summary>
           <span class="fname-head">m_draft-save</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -8813,13 +8832,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="m_flag">
+      <details class="family flagged flagged--icon" data-family="m_flag">
         <summary>
           <span class="fname-head">m_flag</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -8834,13 +8853,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="m_flag_filled">
+      <details class="family flagged flagged--icon" data-family="m_flag_filled">
         <summary>
           <span class="fname-head">m_flag_filled</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -8851,13 +8870,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="m_hide">
+      <details class="family flagged flagged--icon" data-family="m_hide">
         <summary>
           <span class="fname-head">m_hide</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -8868,13 +8887,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="m_minimize">
+      <details class="family flagged flagged--icon" data-family="m_minimize">
         <summary>
           <span class="fname-head">m_minimize</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -8885,13 +8904,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="m_note">
+      <details class="family flagged flagged--icon" data-family="m_note">
         <summary>
           <span class="fname-head">m_note</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -8902,13 +8921,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="m_promote">
+      <details class="family flagged flagged--icon" data-family="m_promote">
         <summary>
           <span class="fname-head">m_promote</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -8919,13 +8938,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="m_proofread">
+      <details class="family flagged flagged--icon" data-family="m_proofread">
         <summary>
           <span class="fname-head">m_proofread</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -8936,13 +8955,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="m_rewrite">
+      <details class="family flagged flagged--icon" data-family="m_rewrite">
         <summary>
           <span class="fname-head">m_rewrite</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -8953,13 +8972,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="m_send">
+      <details class="family flagged flagged--icon" data-family="m_send">
         <summary>
           <span class="fname-head">m_send</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -8974,13 +8993,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="m_send-resolve">
+      <details class="family flagged flagged--icon" data-family="m_send-resolve">
         <summary>
           <span class="fname-head">m_send-resolve</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -8995,13 +9014,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="m_template-add">
+      <details class="family flagged flagged--icon" data-family="m_template-add">
         <summary>
           <span class="fname-head">m_template-add</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -9016,13 +9035,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="magnifying-glass">
+      <details class="family flagged flagged--icon" data-family="magnifying-glass">
         <summary>
           <span class="fname-head">magnifying-glass</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -9084,13 +9103,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="megaphon">
+      <details class="family flagged flagged--icon" data-family="megaphon">
         <summary>
           <span class="fname-head">megaphon</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -9101,13 +9120,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="mention">
+      <details class="family flagged flagged--icon" data-family="mention">
         <summary>
           <span class="fname-head">mention</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -9143,13 +9162,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="minus-sign-small">
+      <details class="family flagged flagged--icon" data-family="minus-sign-small">
         <summary>
           <span class="fname-head">minus-sign-small</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -9160,13 +9179,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="mobile">
+      <details class="family flagged flagged--icon" data-family="mobile">
         <summary>
           <span class="fname-head">mobile</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -9194,13 +9213,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="modal-item-">
+      <details class="family flagged flagged--lib1" data-family="modal-item-">
         <summary>
           <span class="fname-head">modal-item-</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">2 files</span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -9368,13 +9387,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="more">
+      <details class="family flagged flagged--icon" data-family="more">
         <summary>
           <span class="fname-head">more</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">2 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -9648,13 +9667,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="navigation-bar">
+      <details class="family flagged flagged--lib1" data-family="navigation-bar">
         <summary>
           <span class="fname-head">navigation-bar</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -9835,13 +9854,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="notice">
+      <details class="family flagged flagged--icon" data-family="notice">
         <summary>
           <span class="fname-head">notice</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -9852,13 +9871,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="notice_new">
+      <details class="family flagged flagged--icon" data-family="notice_new">
         <summary>
           <span class="fname-head">notice_new</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -9920,13 +9939,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="orientation_horizontal">
+      <details class="family flagged flagged--lib1" data-family="orientation_horizontal">
         <summary>
           <span class="fname-head">orientation_horizontal</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -9937,13 +9956,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="orientation_vertical">
+      <details class="family flagged flagged--lib1" data-family="orientation_vertical">
         <summary>
           <span class="fname-head">orientation_vertical</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -9954,13 +9973,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="owner">
+      <details class="family flagged flagged--icon" data-family="owner">
         <summary>
           <span class="fname-head">owner</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -10022,13 +10041,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="pill_default_m_none_grey">
+      <details class="family flagged flagged--lib1" data-family="pill_default_m_none_grey">
         <summary>
           <span class="fname-head">pill_default_m_none_grey</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -10039,13 +10058,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="pill_sm_default_default_brown">
+      <details class="family flagged flagged--lib1" data-family="pill_sm_default_default_brown">
         <summary>
           <span class="fname-head">pill_sm_default_default_brown</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -10056,13 +10075,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="pill_sm_default_default_green">
+      <details class="family flagged flagged--lib1" data-family="pill_sm_default_default_green">
         <summary>
           <span class="fname-head">pill_sm_default_default_green</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -10073,13 +10092,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="pinterest">
+      <details class="family flagged flagged--icon" data-family="pinterest">
         <summary>
           <span class="fname-head">pinterest</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -10094,13 +10113,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="pinterest-outline">
+      <details class="family flagged flagged--icon" data-family="pinterest-outline">
         <summary>
           <span class="fname-head">pinterest-outline</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -10111,13 +10130,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="planner-logo">
+      <details class="family flagged flagged--icon" data-family="planner-logo">
         <summary>
           <span class="fname-head">planner-logo</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -10128,13 +10147,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="plus-sign-small">
+      <details class="family flagged flagged--icon" data-family="plus-sign-small">
         <summary>
           <span class="fname-head">plus-sign-small</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -10145,13 +10164,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="popover-alt">
+      <details class="family flagged flagged--lib1" data-family="popover-alt">
         <summary>
           <span class="fname-head">popover-alt</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -10162,13 +10181,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="popover-item-">
+      <details class="family flagged flagged--lib1" data-family="popover-item-">
         <summary>
           <span class="fname-head">popover-item-</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -10285,13 +10304,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="progress-indicator">
+      <details class="family flagged flagged--lib1" data-family="progress-indicator">
         <summary>
           <span class="fname-head">progress-indicator</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -10408,13 +10427,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="rectangle-arrow-right">
+      <details class="family flagged flagged--icon" data-family="rectangle-arrow-right">
         <summary>
           <span class="fname-head">rectangle-arrow-right</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -10425,13 +10444,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="refresh">
+      <details class="family flagged flagged--icon" data-family="refresh">
         <summary>
           <span class="fname-head">refresh</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -10442,13 +10461,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="retry">
+      <details class="family flagged flagged--icon" data-family="retry">
         <summary>
           <span class="fname-head">retry</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -10564,13 +10583,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="rss">
+      <details class="family flagged flagged--icon" data-family="rss">
         <summary>
           <span class="fname-head">rss</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -10581,13 +10600,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="sad">
+      <details class="family flagged flagged--icon" data-family="sad">
         <summary>
           <span class="fname-head">sad</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -10598,13 +10617,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="search">
+      <details class="family flagged flagged--icon" data-family="search">
         <summary>
           <span class="fname-head">search</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">2 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -10640,13 +10659,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="segmented-control">
+      <details class="family flagged flagged--lib1" data-family="segmented-control">
         <summary>
           <span class="fname-head">segmented-control</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -10674,13 +10693,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="send">
+      <details class="family flagged flagged--icon" data-family="send">
         <summary>
           <span class="fname-head">send</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -10780,13 +10799,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="settings">
+      <details class="family flagged flagged--icon" data-family="settings">
         <summary>
           <span class="fname-head">settings</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -10972,13 +10991,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="share">
+      <details class="family flagged flagged--icon" data-family="share">
         <summary>
           <span class="fname-head">share</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -10993,13 +11012,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="share-arrow">
+      <details class="family flagged flagged--icon" data-family="share-arrow">
         <summary>
           <span class="fname-head">share-arrow</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -11010,13 +11029,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="shorturl">
+      <details class="family flagged flagged--icon" data-family="shorturl">
         <summary>
           <span class="fname-head">shorturl</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -11031,13 +11050,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="size_16">
+      <details class="family flagged flagged--icon" data-family="size_16">
         <summary>
           <span class="fname-head">size_16</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -11048,13 +11067,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="size_20">
+      <details class="family flagged flagged--icon" data-family="size_20">
         <summary>
           <span class="fname-head">size_20</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -11065,13 +11084,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="size_24">
+      <details class="family flagged flagged--icon" data-family="size_24">
         <summary>
           <span class="fname-head">size_24</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -13164,13 +13183,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="smiley">
+      <details class="family flagged flagged--icon" data-family="smiley">
         <summary>
           <span class="fname-head">smiley</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -13185,13 +13204,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="smiley-positive">
+      <details class="family flagged flagged--icon" data-family="smiley-positive">
         <summary>
           <span class="fname-head">smiley-positive</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -13202,13 +13221,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="sort-down">
+      <details class="family flagged flagged--icon" data-family="sort-down">
         <summary>
           <span class="fname-head">sort-down</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -13219,13 +13238,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="speech-bubble-outline">
+      <details class="family flagged flagged--icon" data-family="speech-bubble-outline">
         <summary>
           <span class="fname-head">speech-bubble-outline</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -13236,13 +13255,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="speech-bubble-up-text">
+      <details class="family flagged flagged--icon" data-family="speech-bubble-up-text">
         <summary>
           <span class="fname-head">speech-bubble-up-text</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -15893,13 +15912,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="status_approved">
+      <details class="family flagged flagged--lib1" data-family="status_approved">
         <summary>
           <span class="fname-head">status_approved</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -15914,13 +15933,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="status_card">
+      <details class="family flagged flagged--lib1" data-family="status_card">
         <summary>
           <span class="fname-head">status_card</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -15931,13 +15950,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="status_connected">
+      <details class="family flagged flagged--lib1" data-family="status_connected">
         <summary>
           <span class="fname-head">status_connected</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -15952,13 +15971,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="status_disconneted">
+      <details class="family flagged flagged--lib1" data-family="status_disconneted">
         <summary>
           <span class="fname-head">status_disconneted</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -15973,13 +15992,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="status_draft">
+      <details class="family flagged flagged--lib1" data-family="status_draft">
         <summary>
           <span class="fname-head">status_draft</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -15994,13 +16013,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="status_empty-_placeholder_">
+      <details class="family flagged flagged--lib1" data-family="status_empty-_placeholder_">
         <summary>
           <span class="fname-head">status_empty-_placeholder_</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -16015,13 +16034,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="status_error">
+      <details class="family flagged flagged--lib1" data-family="status_error">
         <summary>
           <span class="fname-head">status_error</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">1 file · <span class="alt-count">2 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -16040,13 +16059,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="status_partial-connected">
+      <details class="family flagged flagged--lib1" data-family="status_partial-connected">
         <summary>
           <span class="fname-head">status_partial-connected</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -16061,13 +16080,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="status_pending">
+      <details class="family flagged flagged--lib1" data-family="status_pending">
         <summary>
           <span class="fname-head">status_pending</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -16082,13 +16101,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="status_public">
+      <details class="family flagged flagged--lib1" data-family="status_public">
         <summary>
           <span class="fname-head">status_public</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -16103,13 +16122,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="status_published">
+      <details class="family flagged flagged--lib1" data-family="status_published">
         <summary>
           <span class="fname-head">status_published</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -16124,13 +16143,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="status_read">
+      <details class="family flagged flagged--lib1" data-family="status_read">
         <summary>
           <span class="fname-head">status_read</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -16145,13 +16164,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="status_rejected">
+      <details class="family flagged flagged--lib1" data-family="status_rejected">
         <summary>
           <span class="fname-head">status_rejected</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -16166,13 +16185,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="status_scheduled">
+      <details class="family flagged flagged--lib1" data-family="status_scheduled">
         <summary>
           <span class="fname-head">status_scheduled</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -16187,13 +16206,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="status_to-be-approved">
+      <details class="family flagged flagged--lib1" data-family="status_to-be-approved">
         <summary>
           <span class="fname-head">status_to-be-approved</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -16208,13 +16227,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="status_unread-unresolved">
+      <details class="family flagged flagged--lib1" data-family="status_unread-unresolved">
         <summary>
           <span class="fname-head">status_unread-unresolved</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">1 file · <span class="alt-count">2 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -16233,13 +16252,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="status_warning">
+      <details class="family flagged flagged--lib1" data-family="status_warning">
         <summary>
           <span class="fname-head">status_warning</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -16518,13 +16537,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="success">
+      <details class="family flagged flagged--icon" data-family="success">
         <summary>
           <span class="fname-head">success</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">2 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -16543,13 +16562,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="tab-group">
+      <details class="family flagged flagged--lib1" data-family="tab-group">
         <summary>
           <span class="fname-head">tab-group</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -16560,13 +16579,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="tags">
+      <details class="family flagged flagged--lib1" data-family="tags">
         <summary>
           <span class="fname-head">tags</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -16577,13 +16596,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="targeting">
+      <details class="family flagged flagged--icon" data-family="targeting">
         <summary>
           <span class="fname-head">targeting</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -16594,13 +16613,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="thankful">
+      <details class="family flagged flagged--icon" data-family="thankful">
         <summary>
           <span class="fname-head">thankful</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -16611,13 +16630,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="three-connected-squares">
+      <details class="family flagged flagged--icon" data-family="three-connected-squares">
         <summary>
           <span class="fname-head">three-connected-squares</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -16628,13 +16647,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="thumb-up-outline">
+      <details class="family flagged flagged--icon" data-family="thumb-up-outline">
         <summary>
           <span class="fname-head">thumb-up-outline</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -16645,13 +16664,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="thumbnail">
+      <details class="family flagged flagged--icon" data-family="thumbnail">
         <summary>
           <span class="fname-head">thumbnail</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -16662,13 +16681,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="tiktok">
+      <details class="family flagged flagged--icon" data-family="tiktok">
         <summary>
           <span class="fname-head">tiktok</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -16683,13 +16702,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="tiktok-outline">
+      <details class="family flagged flagged--icon" data-family="tiktok-outline">
         <summary>
           <span class="fname-head">tiktok-outline</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -16700,13 +16719,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="time">
+      <details class="family flagged flagged--icon" data-family="time">
         <summary>
           <span class="fname-head">time</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -16734,13 +16753,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="tooltip">
+      <details class="family flagged flagged--lib1" data-family="tooltip">
         <summary>
           <span class="fname-head">tooltip</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -16751,13 +16770,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="tooltip-v02---complex-content">
+      <details class="family flagged flagged--lib1" data-family="tooltip-v02---complex-content">
         <summary>
           <span class="fname-head">tooltip-v02---complex-content</span>
-          
+          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
           <span class="fcounts">4 files</span>
         </summary>
-        
+        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -16814,13 +16833,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="triangle-exclamation-mark-outline">
+      <details class="family flagged flagged--icon" data-family="triangle-exclamation-mark-outline">
         <summary>
           <span class="fname-head">triangle-exclamation-mark-outline</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -16831,13 +16850,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="two-squares-grid">
+      <details class="family flagged flagged--icon" data-family="two-squares-grid">
         <summary>
           <span class="fname-head">two-squares-grid</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -21936,13 +21955,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="verified">
+      <details class="family flagged flagged--icon" data-family="verified">
         <summary>
           <span class="fname-head">verified</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -21953,13 +21972,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="video">
+      <details class="family flagged flagged--icon" data-family="video">
         <summary>
           <span class="fname-head">video</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -21991,13 +22010,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="view-list">
+      <details class="family flagged flagged--icon" data-family="view-list">
         <summary>
           <span class="fname-head">view-list</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -22042,13 +22061,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="warning-filled">
+      <details class="family flagged flagged--icon" data-family="warning-filled">
         <summary>
           <span class="fname-head">warning-filled</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -22063,13 +22082,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="whatsapp">
+      <details class="family flagged flagged--icon" data-family="whatsapp">
         <summary>
           <span class="fname-head">whatsapp</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -22080,13 +22099,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="wow">
+      <details class="family flagged flagged--icon" data-family="wow">
         <summary>
           <span class="fname-head">wow</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -22097,13 +22116,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="x">
+      <details class="family flagged flagged--icon" data-family="x">
         <summary>
           <span class="fname-head">x</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -22118,13 +22137,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="x-network-logo">
+      <details class="family flagged flagged--icon" data-family="x-network-logo">
         <summary>
           <span class="fname-head">x-network-logo</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -22135,13 +22154,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="x-outline">
+      <details class="family flagged flagged--icon" data-family="x-outline">
         <summary>
           <span class="fname-head">x-outline</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -22152,13 +22171,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="x-sign-large">
+      <details class="family flagged flagged--icon" data-family="x-sign-large">
         <summary>
           <span class="fname-head">x-sign-large</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -22169,13 +22188,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="x-sign-small">
+      <details class="family flagged flagged--icon" data-family="x-sign-small">
         <summary>
           <span class="fname-head">x-sign-small</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -22186,13 +22205,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="x-sign-small-invert">
+      <details class="family flagged flagged--icon" data-family="x-sign-small-invert">
         <summary>
           <span class="fname-head">x-sign-small-invert</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -22203,13 +22222,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="xing">
+      <details class="family flagged flagged--icon" data-family="xing">
         <summary>
           <span class="fname-head">xing</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -22220,13 +22239,13 @@ details.family.flagged .fname-head{color:#92400e}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="youtube">
+      <details class="family flagged flagged--icon" data-family="youtube">
         <summary>
           <span class="fname-head">youtube</span>
-          
+          <span class="badge flag-icon" title="Likely icon — same name exists in output/icons/">⬡ icon</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--icon">Likely icon — same name exists in output/icons/</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -22242,12 +22261,15 @@ details.family.flagged .fname-head{color:#92400e}
 <script>
 const input   = document.getElementById('search');
 const countEl = document.getElementById('search-count');
+let activeFilter = 'all';
 
-input.addEventListener('input', () => {
+function applyFilters() {
   const q = input.value.trim().toLowerCase();
   let visible = 0;
 
   document.querySelectorAll('.family').forEach(fam => {
+    const matchesFilter = activeFilter === 'all' || fam.classList.contains('flagged--' + activeFilter);
+    if (!matchesFilter) { fam.classList.add('all-hidden'); return; }
     let famVisible = 0;
     fam.querySelectorAll('.file-row').forEach(row => {
       const match = !q || row.dataset.search.includes(q);
@@ -22255,11 +22277,24 @@ input.addEventListener('input', () => {
       if (match) famVisible++;
     });
     fam.classList.toggle('all-hidden', famVisible === 0);
-    if (famVisible > 0) fam.open = !!q;
+    if (famVisible > 0 && q) fam.open = true;
     visible += famVisible;
   });
 
-  countEl.textContent = q ? `${visible.toLocaleString()} file${visible !== 1 ? 's' : ''} match` : '';
+  countEl.textContent = (q || activeFilter !== 'all')
+    ? `${visible.toLocaleString()} file${visible !== 1 ? 's' : ''} match`
+    : '';
+}
+
+input.addEventListener('input', applyFilters);
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    activeFilter = btn.dataset.filter;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  });
 });
 </script>
 </body>
