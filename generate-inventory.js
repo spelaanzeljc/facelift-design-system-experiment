@@ -23,26 +23,7 @@ const ALT_RE = /_\d{4,}-\d{4,}(\.html)?$/;
 // ── Flagged families (Lib 1) — come from multiple unknown parent components ───
 // Key = family prefix string (exact match on the parsed family name)
 // Value = short reason shown in tooltip
-const FLAGGED = {
-  // state_* — scattered across many unknown parent components
-  'state_add-new':       'Unknown parent component',
-  'state_completed':     'Unknown parent component',
-  'state_danger':        'Unknown parent component',
-  'state_default':       'Mixed parent components — needs re-export investigation',
-  'state_disabled':      'Mixed parent components — needs re-export investigation',
-  'state_drag':          'Unknown parent component',
-  'state_edit':          'Unknown parent component — numeric-suffix duplicate present',
-  'state_focus':         'Mixed parent components — needs re-export investigation',
-  'state_focused':       'Mixed parent components — needs re-export investigation',
-  'state_hover':         'Mixed parent components — needs re-export investigation',
-  'state_in-progress':   'Unknown parent component',
-  'state_no-header':     'Unknown parent component',
-  'state_not-started':   'Unknown parent component',
-  'state_open':          'Unknown parent component',
-  'state_positive':      'Unknown parent component',
-  'state_pressed':       'Mixed parent components — needs re-export investigation',
-  'state_selected':      'Unknown parent component',
-};
+const FLAGGED = {};
 
 // ── Parse a filename into { family, variants, isAlt } ─────────────────────────
 function parse(filename) {
