@@ -17,8 +17,8 @@ const DIRS  = [
 ];
 const OUT = path.join(BASE, 'sitemap', 'component-inventory.html');
 
-// ── Numeric-suffix pattern (export duplicates like _13953-12345) ───────────────
-const ALT_RE = /_\d{4,}-\d{4,}(\.html)?$/;
+// ── Numeric-suffix pattern (legacy export duplicates) ─────────────────────────
+const ALT_RE = /[-_]\d{4,}-\d{4,}(\.html)?$/;
 
 // ── Flagged families (Lib 1) ──────────────────────────────────────────────────
 const FLAGGED = {};
@@ -123,32 +123,22 @@ function getFlagInfo(family, dir, blankCount, totalCount) {
   return null;
 }
 
-// ── Parse a filename into { family, variants, isAlt } ─────────────────────────
+// ── Parse a filename into { family, desc, isAlt } ────────────────────────────
+// New convention: family--prop-value--prop2-value2.html
+// Segments are split on `--`; first segment is the family.
 function parse(filename) {
   const base = filename.replace(/\.html$/, '');
   const isAlt = ALT_RE.test(base);
-
-  // Strip numeric alt suffix before splitting so alt files group with their base family
   const cleanBase = isAlt ? base.replace(ALT_RE, '') : base;
 
-  // Split on `_-` to separate variant segments
-  const parts   = cleanBase.split('_-');
+  const parts   = cleanBase.split('--');
   const family  = parts[0];
   const varParts = parts.slice(1);
 
-  // Each varPart is like "size_medium" or "icon-only_false"
-  const variants = varParts.map(p => {
-    const idx = p.indexOf('_');
-    if (idx === -1) return { key: p, val: '' };
-    return { key: p.slice(0, idx), val: p.slice(idx + 1) };
-  });
+  // Build a readable description from variant segments
+  const desc = varParts.length ? varParts.join(' · ') : '(no variants)';
 
-  // Build a readable description
-  const desc = variants.length
-    ? variants.map(v => v.val ? `${v.key}: ${v.val}` : v.key).join(' · ')
-    : '(no variants)';
-
-  return { family, variants, desc, isAlt };
+  return { family, desc, isAlt };
 }
 
 // ── Group files by family ──────────────────────────────────────────────────────

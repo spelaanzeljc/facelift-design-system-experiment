@@ -19,57 +19,67 @@ if (!FIGMA_TOKEN) {
 }
 
 const BASE_DIR = __dirname;
-const FILE_KEY = 'gfKQ2RqCwrHJLv1PyglC2l';
+const LIB1_KEY = 'gfKQ2RqCwrHJLv1PyglC2l';
+const LIB2_KEY = 'iskI6eokj50ZA7WunMjEVd';
 
-// Each entry: nodeId (COMPONENT_SET or single COMPONENT), family prefix for filenames,
-// optional skipIfExists to avoid overwriting already-renamed Group A files.
+// Each entry: nodeId, family prefix, optional fileKey (default LIB1_KEY),
+// optional outDir (default 'output/components'), optional skipIfExists.
 const COMPONENTS = [
-  { nodeId: '11683:15465',   family: 'badge' },
-  { nodeId: '11640:3625',    family: 'progress-indicator_-type_circular' },
-  { nodeId: '13946:104134',  family: 'progress-indicator_-type_line' },
-  { nodeId: '13953:70243',   family: 'approval-unit_-type_approver-row' },
-  { nodeId: '13953:70110',   family: 'approval-unit_-type_status-row' },
-  { nodeId: '13953:70220',   family: 'approval-unit_-type_deadline' },
-  { nodeId: '13309:43163',   family: 'card_-type_status' },
-  { nodeId: '11651:3777',    family: 'card_-type_task',      skipIfExists: true },
-  { nodeId: '13238:20040',   family: 'card_-type_task-link', skipIfExists: true },
-  { nodeId: '11640:1363',    family: 'checkbox_-type_default' },
-  { nodeId: '11676:205010',  family: 'link' },
-  { nodeId: '14015:69086',   family: 'radio_-type_item' },
-  { nodeId: '13338:38966',   family: 'segmented-control' },
-  { nodeId: '13338:38945',   family: 'segmented-control-item' },
-  { nodeId: '11644:6897',    family: 'column-header_-type_my-tasks' },
-  { nodeId: '11689:41300',   family: 'checklist-item',  skipIfExists: true },
-  { nodeId: '14493:93299',   family: 'comment-item',    skipIfExists: true },
-  { nodeId: '13305:49308',   family: 'header_-type_content' },
-  { nodeId: '11696:73275',   family: 'status' },
-  { nodeId: '14754:93295',   family: 'smaller-post-set-item' },
-  { nodeId: '14499:89777',   family: 'alert-banner' },
+  // ── Library 1 entries (skipIfExists — already exported with correct SVGs) ──
+  { nodeId: '11683:15465',  family: 'badge',                           skipIfExists: true },
+  { nodeId: '11640:3625',   family: 'progress-indicator--type-circular', skipIfExists: true },
+  { nodeId: '13946:104134', family: 'progress-indicator--type-line',     skipIfExists: true },
+  { nodeId: '13953:70243',  family: 'approval-unit--type-approver-row',  skipIfExists: true },
+  { nodeId: '13953:70110',  family: 'approval-unit--type-status-row',    skipIfExists: true },
+  { nodeId: '13953:70220',  family: 'approval-unit--type-deadline',      skipIfExists: true },
+  { nodeId: '13309:43163',  family: 'card--type-status',                 skipIfExists: true },
+  { nodeId: '11651:3777',   family: 'card--type-task',                   skipIfExists: true },
+  { nodeId: '13238:20040',  family: 'card--type-task-link',              skipIfExists: true },
+  { nodeId: '11640:1363',   family: 'checkbox--type-default',            skipIfExists: true },
+  { nodeId: '11676:205010', family: 'link',                              skipIfExists: true },
+  { nodeId: '14015:69086',  family: 'radio--type-item',                  skipIfExists: true },
+  { nodeId: '13338:38966',  family: 'segmented-control',                 skipIfExists: true },
+  { nodeId: '13338:38945',  family: 'segmented-control-item',            skipIfExists: true },
+  { nodeId: '11644:6897',   family: 'column-header--type-my-tasks',      skipIfExists: true },
+  { nodeId: '11689:41300',  family: 'checklist-item',                    skipIfExists: true },
+  { nodeId: '14493:93299',  family: 'comment-item',                      skipIfExists: true },
+  { nodeId: '13305:49308',  family: 'header--type-content',              skipIfExists: true },
+  { nodeId: '11696:73275',  family: 'status',                            skipIfExists: true },
+  { nodeId: '14754:93295',  family: 'smaller-post-set-item',             skipIfExists: true },
+  { nodeId: '14499:89777',  family: 'alert-banner',                      skipIfExists: true },
+
+  // ── Library 2 entries ──
+  { nodeId: '3761:127505', family: 'data-column',      fileKey: LIB2_KEY, outDir: 'output/components2' },
+  { nodeId: '3323:43961',  family: 'calendar-element', fileKey: LIB2_KEY, outDir: 'output/components2' },
+  { nodeId: '3607:119854', family: 'data-table',       fileKey: LIB2_KEY, outDir: 'output/components2' },
 ];
 
 // ── Parse a Figma variant name into a filename suffix ──────────────────────────
-// "State=Default, Type=Checked" → "_-state_default_-type_checked"
-// "OR=Single Default"           → "_-or_single-default"
+// "State=Default, Type=Checked" → "--state-default--type-checked"
+// "OR=Single Default"           → "--or-single-default"
 // ""                            → ""
 function parseVariantName(name) {
   if (!name || name.trim() === '') return '';
+  const clean = (s) => s.trim().toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[().]/g, '')
+    .replace(/-{3,}/g, '--')
+    .replace(/^-+|-+$/g, '');
   return name.split(', ').map(pair => {
     const eqIdx = pair.indexOf('=');
-    if (eqIdx === -1) {
-      return `_-${pair.trim().toLowerCase().replace(/\s+/g, '-')}`;
-    }
-    const key = pair.slice(0, eqIdx).trim().toLowerCase().replace(/\s+/g, '-');
-    const val = pair.slice(eqIdx + 1).trim().toLowerCase().replace(/\s+/g, '-');
-    return `_-${key}_${val}`;
+    if (eqIdx === -1) return `--${clean(pair)}`;
+    return `--${clean(pair.slice(0, eqIdx))}-${clean(pair.slice(eqIdx + 1))}`;
   }).join('');
 }
 
 // ── HTML template ──────────────────────────────────────────────────────────────
 function placeholderHtml(title) {
+  const escaped = title.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="figma-name" content="${escaped}">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${title}</title>
 <style>
@@ -114,10 +124,10 @@ async function figmaGet(endpoint) {
   return res.json();
 }
 
-async function fetchSvgBatch(nodeIds) {
+async function fetchSvgBatch(nodeIds, fileKey) {
   const ids = nodeIds.join(',');
   const data = await figmaGet(
-    `/v1/images/${FILE_KEY}?ids=${encodeURIComponent(ids)}&format=svg&svg_include_id=false`
+    `/v1/images/${fileKey}?ids=${encodeURIComponent(ids)}&format=svg&svg_include_id=false`
   );
   return data.images ?? {};
 }
@@ -135,13 +145,16 @@ async function main() {
   let totalSkipped = 0;
   let totalFailed  = 0;
 
-  for (const { nodeId, family, skipIfExists } of COMPONENTS) {
+  for (const entry of COMPONENTS) {
+    const { nodeId, family, skipIfExists } = entry;
+    const fileKey = entry.fileKey || LIB1_KEY;
+    const outDir  = path.join(BASE_DIR, entry.outDir || 'output/components');
     console.log(`\n── ${family} (node ${nodeId}) ──`);
 
     // 1. Fetch node to get children
     let children = [];
     try {
-      const data = await figmaGet(`/v1/files/${FILE_KEY}/nodes?ids=${encodeURIComponent(nodeId)}`);
+      const data = await figmaGet(`/v1/files/${fileKey}/nodes?ids=${encodeURIComponent(nodeId)}`);
       const node = data.nodes?.[nodeId]?.document;
       if (!node) { console.warn(`  ✗ Node not found`); totalFailed++; continue; }
 
@@ -174,7 +187,7 @@ async function main() {
     }));
 
     const toProcess = entries.filter(e => {
-      const exists = fs.existsSync(path.join(BASE_DIR, 'output', 'components', e.filename));
+      const exists = fs.existsSync(path.join(outDir, e.filename));
       if (exists && skipIfExists) {
         console.log(`  → skip (exists) ${e.filename}`);
         totalSkipped++;
@@ -188,7 +201,7 @@ async function main() {
     // 3. Batch-fetch SVG render URLs
     let urlMap = {};
     try {
-      urlMap = await fetchSvgBatch(toProcess.map(e => e.nodeId));
+      urlMap = await fetchSvgBatch(toProcess.map(e => e.nodeId), fileKey);
     } catch (err) {
       console.error(`  ✗ SVG batch failed: ${err.message}`);
       totalFailed += toProcess.length; continue;
@@ -196,7 +209,7 @@ async function main() {
 
     // 4. Create HTML files
     for (const { nodeId: childId, filename, variantName } of toProcess) {
-      const filePath = path.join(BASE_DIR, 'output', 'components', filename);
+      const filePath = path.join(outDir, filename);
       fs.writeFileSync(filePath, placeholderHtml(variantName || family), 'utf8');
 
       const url = urlMap[childId];
