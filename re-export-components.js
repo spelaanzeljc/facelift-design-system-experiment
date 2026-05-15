@@ -51,7 +51,7 @@ const COMPONENTS = [
   // ── Library 2 entries ──
   { nodeId: '3761:127505', family: 'data-column',      fileKey: LIB2_KEY, outDir: 'output/components2' },
   { nodeId: '3323:43961',  family: 'calendar-element', fileKey: LIB2_KEY, outDir: 'output/components2' },
-  { nodeId: '3607:119854', family: 'data-table',       fileKey: LIB2_KEY, outDir: 'output/components2' },
+  { nodeId: '3607:119854', family: 'data-table',       fileKey: LIB2_KEY, outDir: 'output/components2', skipIfExists: true },
 ];
 
 // ── Parse a Figma variant name into a filename suffix ──────────────────────────
