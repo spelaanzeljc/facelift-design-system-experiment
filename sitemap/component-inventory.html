@@ -49,7 +49,6 @@ details[open]>summary::before{transform:rotate(90deg)}
 .badge.alt{background:#fff3e0;color:#e05a00;border:1px solid #e05a00}
 .badge.flag{background:#fef9c3;color:#854d0e;border:1px solid #ca8a04;cursor:help}
 .badge.flag-icon{background:#f0fdf4;color:#166534;border:1px solid #4ade80;cursor:help}
-.badge.flag-lib1{background:#eff6ff;color:#1e40af;border:1px solid #93c5fd;cursor:help}
 .badge.flag-blank{background:#fdf4ff;color:#7e22ce;border:1px solid #d8b4fe;cursor:help}
 .badge.blank{background:#fdf4ff;color:#7e22ce;border:1px solid #d8b4fe;font-size:.6rem}
 .badge.flag-artifact{background:#f3f4f6;color:#4b5563;border:1px solid #9ca3af;cursor:help}
@@ -60,9 +59,6 @@ details.family.flagged--review .fname-head{color:#92400e}
 details.family.flagged--icon{border-color:#4ade80;background:#f0fdf4}
 details.family.flagged--icon>summary{background:#f0fdf4}
 details.family.flagged--icon .fname-head{color:#166534}
-details.family.flagged--lib1{border-color:#93c5fd;background:#eff6ff}
-details.family.flagged--lib1>summary{background:#eff6ff}
-details.family.flagged--lib1 .fname-head{color:#1e40af}
 details.family.flagged--blank{border-color:#d8b4fe;background:#fdf4ff}
 details.family.flagged--blank>summary{background:#fdf4ff}
 details.family.flagged--blank .fname-head{color:#7e22ce}
@@ -72,8 +68,6 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
 .flag-note{font-size:.75rem;padding:.4rem .9rem;border-bottom-width:1px;border-bottom-style:solid}
 .flag-note--review{color:#92400e;background:#fef3c7;border-bottom-color:#fde68a}
 .flag-note--icon{color:#166534;background:#dcfce7;border-bottom-color:#4ade80}
-.flag-note--lib1{color:#1e40af;background:#dbeafe;border-bottom-color:#93c5fd}
-.flag-note--lib1 a{color:#1e40af;font-weight:600;text-decoration:underline}
 .flag-note--blank{color:#7e22ce;background:#fae8ff;border-bottom-color:#d8b4fe}
 .flag-note--artifact{color:#4b5563;background:#f3f4f6;border-bottom-color:#d1d5db}
 .file-blank td{opacity:.55}
@@ -87,7 +81,6 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
 .filter-btn.active{background:#fef9c3;color:#854d0e;border-color:#ca8a04}
 .filter-btn.all.active{background:#1339ec;color:#fff;border-color:#1339ec}
 .filter-btn.icon.active{background:#f0fdf4;color:#166534;border-color:#4ade80}
-.filter-btn.lib1.active{background:#eff6ff;color:#1e40af;border-color:#93c5fd}
 .filter-btn.blank.active{background:#fdf4ff;color:#7e22ce;border-color:#d8b4fe}
 .filter-btn.artifact.active{background:#f3f4f6;color:#4b5563;border-color:#9ca3af}
 </style>
@@ -95,7 +88,7 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
 <body>
 <div class="page">
   <div class="page-header">
-    <h1>Component Inventory<span class="total-badge">3,170 files</span></h1>
+    <h1>Component Inventory<span class="total-badge">3,083 files</span></h1>
     <p>Every HTML file exported from both Figma component libraries, grouped by family. Click a family to expand. Click a filename to preview the component.</p>
   </div>
 
@@ -107,7 +100,6 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
   <div class="filter-bar">
     <button class="filter-btn all active" data-filter="all">All</button>
     <button class="filter-btn icon" data-filter="icon">⬡ Likely icon</button>
-    <button class="filter-btn lib1" data-filter="lib1">≈ Also in Lib 1</button>
     <button class="filter-btn blank" data-filter="blank">◻ Blank</button>
     <button class="filter-btn artifact" data-filter="artifact">⬡ Artifact</button>
   </div>
@@ -117,7 +109,7 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
     <div class="lib-header">
       <button class="lib-toggle" aria-expanded="true" title="Collapse library">▾</button>
       <span class="lib-name">Library 1 · BB Update</span>
-      <span class="lib-meta">40 families · 976 files</span>
+      <span class="lib-meta">41 families · 985 files</span>
     </div>
     <div class="lib-body">
       <details class="family" data-family="action_danger">
@@ -2222,6 +2214,51 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
           </tbody>
         </table>
       </details>
+      <details class="family" data-family="alert-banner">
+        <summary>
+          <span class="fname-head">alert-banner</span>
+          
+          <span class="fcounts">8 files</span>
+        </summary>
+        
+        <table class="file-table">
+          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
+          <tbody>
+          <tr class="file-row" data-search="alert-banner_-appearance_floating_-type_danger_-size_large.html appearance: floating · type: danger · size: large">
+            <td class="fname"><a href="../output/components/alert-banner_-appearance_floating_-type_danger_-size_large.html" target="_blank" rel="noopener">alert-banner_-appearance_floating_-type_danger_-size_large.html</a></td>
+            <td class="fdesc">appearance: floating · type: danger · size: large</td>
+          </tr>
+          <tr class="file-row" data-search="alert-banner_-appearance_floating_-type_info_-size_large.html appearance: floating · type: info · size: large">
+            <td class="fname"><a href="../output/components/alert-banner_-appearance_floating_-type_info_-size_large.html" target="_blank" rel="noopener">alert-banner_-appearance_floating_-type_info_-size_large.html</a></td>
+            <td class="fdesc">appearance: floating · type: info · size: large</td>
+          </tr>
+          <tr class="file-row" data-search="alert-banner_-appearance_floating_-type_success_-size_large.html appearance: floating · type: success · size: large">
+            <td class="fname"><a href="../output/components/alert-banner_-appearance_floating_-type_success_-size_large.html" target="_blank" rel="noopener">alert-banner_-appearance_floating_-type_success_-size_large.html</a></td>
+            <td class="fdesc">appearance: floating · type: success · size: large</td>
+          </tr>
+          <tr class="file-row" data-search="alert-banner_-appearance_floating_-type_warning_-size_large.html appearance: floating · type: warning · size: large">
+            <td class="fname"><a href="../output/components/alert-banner_-appearance_floating_-type_warning_-size_large.html" target="_blank" rel="noopener">alert-banner_-appearance_floating_-type_warning_-size_large.html</a></td>
+            <td class="fdesc">appearance: floating · type: warning · size: large</td>
+          </tr>
+          <tr class="file-row" data-search="alert-banner_-appearance_inline_-type_danger_-size_large.html appearance: inline · type: danger · size: large">
+            <td class="fname"><a href="../output/components/alert-banner_-appearance_inline_-type_danger_-size_large.html" target="_blank" rel="noopener">alert-banner_-appearance_inline_-type_danger_-size_large.html</a></td>
+            <td class="fdesc">appearance: inline · type: danger · size: large</td>
+          </tr>
+          <tr class="file-row" data-search="alert-banner_-appearance_inline_-type_info_-size_large.html appearance: inline · type: info · size: large">
+            <td class="fname"><a href="../output/components/alert-banner_-appearance_inline_-type_info_-size_large.html" target="_blank" rel="noopener">alert-banner_-appearance_inline_-type_info_-size_large.html</a></td>
+            <td class="fdesc">appearance: inline · type: info · size: large</td>
+          </tr>
+          <tr class="file-row" data-search="alert-banner_-appearance_inline_-type_success_-size_large.html appearance: inline · type: success · size: large">
+            <td class="fname"><a href="../output/components/alert-banner_-appearance_inline_-type_success_-size_large.html" target="_blank" rel="noopener">alert-banner_-appearance_inline_-type_success_-size_large.html</a></td>
+            <td class="fdesc">appearance: inline · type: success · size: large</td>
+          </tr>
+          <tr class="file-row" data-search="alert-banner_-appearance_inline_-type_warning_-size_large.html appearance: inline · type: warning · size: large">
+            <td class="fname"><a href="../output/components/alert-banner_-appearance_inline_-type_warning_-size_large.html" target="_blank" rel="noopener">alert-banner_-appearance_inline_-type_warning_-size_large.html</a></td>
+            <td class="fdesc">appearance: inline · type: warning · size: large</td>
+          </tr>
+          </tbody>
+        </table>
+      </details>
       <details class="family" data-family="app-sidebar">
         <summary>
           <span class="fname-head">app-sidebar</span>
@@ -3730,7 +3767,7 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
         <summary>
           <span class="fname-head">status</span>
           
-          <span class="fcounts">16 files</span>
+          <span class="fcounts">17 files</span>
         </summary>
         
         <table class="file-table">
@@ -3755,6 +3792,10 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
           <tr class="file-row" data-search="status_-status_draft-unscheduled.html status: draft-unscheduled">
             <td class="fname"><a href="../output/components/status_-status_draft-unscheduled.html" target="_blank" rel="noopener">status_-status_draft-unscheduled.html</a></td>
             <td class="fdesc">status: draft-unscheduled</td>
+          </tr>
+          <tr class="file-row file-blank" data-search="status_-status_empty-(placeholder).html status: empty-(placeholder)">
+            <td class="fname"><a href="../output/components/status_-status_empty-(placeholder).html" target="_blank" rel="noopener">status_-status_empty-(placeholder).html</a><span class="badge blank">blank</span></td>
+            <td class="fdesc">status: empty-(placeholder)</td>
           </tr>
           <tr class="file-row" data-search="status_-status_error.html status: error">
             <td class="fname"><a href="../output/components/status_-status_error.html" target="_blank" rel="noopener">status_-status_error.html</a></td>
@@ -4549,7 +4590,7 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
     <div class="lib-header">
       <button class="lib-toggle" aria-expanded="true" title="Collapse library">▾</button>
       <span class="lib-name">Library 2</span>
-      <span class="lib-meta">409 families · 2,194 files</span>
+      <span class="lib-meta">361 families · 2,098 files</span>
     </div>
     <div class="lib-body">
       <details class="family flagged flagged--blank" data-family=".actions">
@@ -4929,81 +4970,6 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--lib1" data-family="appearance_floating">
-        <summary>
-          <span class="fname-head">appearance_floating</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">4 files</span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=tag" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row" data-search="appearance_floating_-type_danger_-size_large.html type: danger · size: large">
-            <td class="fname"><a href="../output/components2/appearance_floating_-type_danger_-size_large.html" target="_blank" rel="noopener">appearance_floating_-type_danger_-size_large.html</a></td>
-            <td class="fdesc">type: danger · size: large</td>
-          </tr>
-          <tr class="file-row" data-search="appearance_floating_-type_info_-size_large.html type: info · size: large">
-            <td class="fname"><a href="../output/components2/appearance_floating_-type_info_-size_large.html" target="_blank" rel="noopener">appearance_floating_-type_info_-size_large.html</a></td>
-            <td class="fdesc">type: info · size: large</td>
-          </tr>
-          <tr class="file-row" data-search="appearance_floating_-type_success_-size_large.html type: success · size: large">
-            <td class="fname"><a href="../output/components2/appearance_floating_-type_success_-size_large.html" target="_blank" rel="noopener">appearance_floating_-type_success_-size_large.html</a></td>
-            <td class="fdesc">type: success · size: large</td>
-          </tr>
-          <tr class="file-row" data-search="appearance_floating_-type_warning_-size_large.html type: warning · size: large">
-            <td class="fname"><a href="../output/components2/appearance_floating_-type_warning_-size_large.html" target="_blank" rel="noopener">appearance_floating_-type_warning_-size_large.html</a></td>
-            <td class="fdesc">type: warning · size: large</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="appearance_inline">
-        <summary>
-          <span class="fname-head">appearance_inline</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">4 files</span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=tag" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row" data-search="appearance_inline_-type_danger_-size_large.html type: danger · size: large">
-            <td class="fname"><a href="../output/components2/appearance_inline_-type_danger_-size_large.html" target="_blank" rel="noopener">appearance_inline_-type_danger_-size_large.html</a></td>
-            <td class="fdesc">type: danger · size: large</td>
-          </tr>
-          <tr class="file-row" data-search="appearance_inline_-type_info_-size_large.html type: info · size: large">
-            <td class="fname"><a href="../output/components2/appearance_inline_-type_info_-size_large.html" target="_blank" rel="noopener">appearance_inline_-type_info_-size_large.html</a></td>
-            <td class="fdesc">type: info · size: large</td>
-          </tr>
-          <tr class="file-row" data-search="appearance_inline_-type_success_-size_large.html type: success · size: large">
-            <td class="fname"><a href="../output/components2/appearance_inline_-type_success_-size_large.html" target="_blank" rel="noopener">appearance_inline_-type_success_-size_large.html</a></td>
-            <td class="fdesc">type: success · size: large</td>
-          </tr>
-          <tr class="file-row" data-search="appearance_inline_-type_warning_-size_large.html type: warning · size: large">
-            <td class="fname"><a href="../output/components2/appearance_inline_-type_warning_-size_large.html" target="_blank" rel="noopener">appearance_inline_-type_warning_-size_large.html</a></td>
-            <td class="fdesc">type: warning · size: large</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="badge">
-        <summary>
-          <span class="fname-head">badge</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">1 file</span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=badge" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row file-blank" data-search="badge.html (no variants)">
-            <td class="fname"><a href="../output/components2/badge.html" target="_blank" rel="noopener">badge.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
       <details class="family" data-family="banner">
         <summary>
           <span class="fname-head">banner</span>
@@ -5347,404 +5313,6 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
           <tr class="file-row" data-search="collapsible-section.html (no variants)">
             <td class="fname"><a href="../output/components2/collapsible-section.html" target="_blank" rel="noopener">collapsible-section.html</a></td>
             <td class="fdesc">(no variants)</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="color_amber">
-        <summary>
-          <span class="fname-head">color_amber</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">2 files</span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=column-card" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row file-blank" data-search="color_amber_-size_large.html size: large">
-            <td class="fname"><a href="../output/components2/color_amber_-size_large.html" target="_blank" rel="noopener">color_amber_-size_large.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">size: large</td>
-          </tr>
-          <tr class="file-row file-blank" data-search="color_amber_-size_small.html size: small">
-            <td class="fname"><a href="../output/components2/color_amber_-size_small.html" target="_blank" rel="noopener">color_amber_-size_small.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">size: small</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="color_azure">
-        <summary>
-          <span class="fname-head">color_azure</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">2 files</span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=column-card" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row file-blank" data-search="color_azure_-size_large.html size: large">
-            <td class="fname"><a href="../output/components2/color_azure_-size_large.html" target="_blank" rel="noopener">color_azure_-size_large.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">size: large</td>
-          </tr>
-          <tr class="file-row file-blank" data-search="color_azure_-size_small.html size: small">
-            <td class="fname"><a href="../output/components2/color_azure_-size_small.html" target="_blank" rel="noopener">color_azure_-size_small.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">size: small</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="color_beige">
-        <summary>
-          <span class="fname-head">color_beige</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">3 files</span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=column-card" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row file-blank" data-search="color_beige.html (no variants)">
-            <td class="fname"><a href="../output/components2/color_beige.html" target="_blank" rel="noopener">color_beige.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          <tr class="file-row file-blank" data-search="color_beige_-size_large.html size: large">
-            <td class="fname"><a href="../output/components2/color_beige_-size_large.html" target="_blank" rel="noopener">color_beige_-size_large.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">size: large</td>
-          </tr>
-          <tr class="file-row file-blank" data-search="color_beige_-size_small.html size: small">
-            <td class="fname"><a href="../output/components2/color_beige_-size_small.html" target="_blank" rel="noopener">color_beige_-size_small.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">size: small</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="color_blue">
-        <summary>
-          <span class="fname-head">color_blue</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">3 files</span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=column-card" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row file-blank" data-search="color_blue.html (no variants)">
-            <td class="fname"><a href="../output/components2/color_blue.html" target="_blank" rel="noopener">color_blue.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          <tr class="file-row file-blank" data-search="color_blue_-size_large.html size: large">
-            <td class="fname"><a href="../output/components2/color_blue_-size_large.html" target="_blank" rel="noopener">color_blue_-size_large.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">size: large</td>
-          </tr>
-          <tr class="file-row file-blank" data-search="color_blue_-size_small.html size: small">
-            <td class="fname"><a href="../output/components2/color_blue_-size_small.html" target="_blank" rel="noopener">color_blue_-size_small.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">size: small</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="color_cobalt">
-        <summary>
-          <span class="fname-head">color_cobalt</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">2 files</span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=column-card" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row file-blank" data-search="color_cobalt_-size_large.html size: large">
-            <td class="fname"><a href="../output/components2/color_cobalt_-size_large.html" target="_blank" rel="noopener">color_cobalt_-size_large.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">size: large</td>
-          </tr>
-          <tr class="file-row file-blank" data-search="color_cobalt_-size_small.html size: small">
-            <td class="fname"><a href="../output/components2/color_cobalt_-size_small.html" target="_blank" rel="noopener">color_cobalt_-size_small.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">size: small</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="color_coral">
-        <summary>
-          <span class="fname-head">color_coral</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">2 files</span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=column-card" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row file-blank" data-search="color_coral_-size_large.html size: large">
-            <td class="fname"><a href="../output/components2/color_coral_-size_large.html" target="_blank" rel="noopener">color_coral_-size_large.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">size: large</td>
-          </tr>
-          <tr class="file-row file-blank" data-search="color_coral_-size_small.html size: small">
-            <td class="fname"><a href="../output/components2/color_coral_-size_small.html" target="_blank" rel="noopener">color_coral_-size_small.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">size: small</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="color_default">
-        <summary>
-          <span class="fname-head">color_default</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=column-card" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row file-blank" data-search="color_default.html (no variants)">
-            <td class="fname"><a href="../output/components2/color_default.html" target="_blank" rel="noopener">color_default.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          <tr class="file-row file-blank" data-search="color_default_9589-17906.html (no variants)">
-            <td class="fname"><a href="../output/components2/color_default_9589-17906.html" target="_blank" rel="noopener">color_default_9589-17906.html</a><span class="badge alt">alt</span><span class="badge blank">blank</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="color_emerald">
-        <summary>
-          <span class="fname-head">color_emerald</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">2 files</span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=column-card" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row file-blank" data-search="color_emerald_-size_large.html size: large">
-            <td class="fname"><a href="../output/components2/color_emerald_-size_large.html" target="_blank" rel="noopener">color_emerald_-size_large.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">size: large</td>
-          </tr>
-          <tr class="file-row file-blank" data-search="color_emerald_-size_small.html size: small">
-            <td class="fname"><a href="../output/components2/color_emerald_-size_small.html" target="_blank" rel="noopener">color_emerald_-size_small.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">size: small</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="color_green">
-        <summary>
-          <span class="fname-head">color_green</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">1 file</span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=column-card" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row file-blank" data-search="color_green.html (no variants)">
-            <td class="fname"><a href="../output/components2/color_green.html" target="_blank" rel="noopener">color_green.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="color_grey">
-        <summary>
-          <span class="fname-head">color_grey</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">2 files</span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=column-card" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row file-blank" data-search="color_grey_-size_large.html size: large">
-            <td class="fname"><a href="../output/components2/color_grey_-size_large.html" target="_blank" rel="noopener">color_grey_-size_large.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">size: large</td>
-          </tr>
-          <tr class="file-row file-blank" data-search="color_grey_-size_small.html size: small">
-            <td class="fname"><a href="../output/components2/color_grey_-size_small.html" target="_blank" rel="noopener">color_grey_-size_small.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">size: small</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="color_indigo">
-        <summary>
-          <span class="fname-head">color_indigo</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">2 files</span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=column-card" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row file-blank" data-search="color_indigo_-size_large.html size: large">
-            <td class="fname"><a href="../output/components2/color_indigo_-size_large.html" target="_blank" rel="noopener">color_indigo_-size_large.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">size: large</td>
-          </tr>
-          <tr class="file-row file-blank" data-search="color_indigo_-size_small.html size: small">
-            <td class="fname"><a href="../output/components2/color_indigo_-size_small.html" target="_blank" rel="noopener">color_indigo_-size_small.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">size: small</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="color_mint">
-        <summary>
-          <span class="fname-head">color_mint</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">2 files</span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=column-card" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row file-blank" data-search="color_mint_-size_large.html size: large">
-            <td class="fname"><a href="../output/components2/color_mint_-size_large.html" target="_blank" rel="noopener">color_mint_-size_large.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">size: large</td>
-          </tr>
-          <tr class="file-row file-blank" data-search="color_mint_-size_small.html size: small">
-            <td class="fname"><a href="../output/components2/color_mint_-size_small.html" target="_blank" rel="noopener">color_mint_-size_small.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">size: small</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="color_orange">
-        <summary>
-          <span class="fname-head">color_orange</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=column-card" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row file-blank" data-search="color_orange.html (no variants)">
-            <td class="fname"><a href="../output/components2/color_orange.html" target="_blank" rel="noopener">color_orange.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          <tr class="file-row file-blank" data-search="color_orange_9589-17914.html (no variants)">
-            <td class="fname"><a href="../output/components2/color_orange_9589-17914.html" target="_blank" rel="noopener">color_orange_9589-17914.html</a><span class="badge alt">alt</span><span class="badge blank">blank</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="color_peridot">
-        <summary>
-          <span class="fname-head">color_peridot</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">2 files</span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=column-card" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row file-blank" data-search="color_peridot_-size_large.html size: large">
-            <td class="fname"><a href="../output/components2/color_peridot_-size_large.html" target="_blank" rel="noopener">color_peridot_-size_large.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">size: large</td>
-          </tr>
-          <tr class="file-row file-blank" data-search="color_peridot_-size_small.html size: small">
-            <td class="fname"><a href="../output/components2/color_peridot_-size_small.html" target="_blank" rel="noopener">color_peridot_-size_small.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">size: small</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="color_petrol">
-        <summary>
-          <span class="fname-head">color_petrol</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">3 files</span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=column-card" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row file-blank" data-search="color_petrol.html (no variants)">
-            <td class="fname"><a href="../output/components2/color_petrol.html" target="_blank" rel="noopener">color_petrol.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          <tr class="file-row file-blank" data-search="color_petrol_-size_large.html size: large">
-            <td class="fname"><a href="../output/components2/color_petrol_-size_large.html" target="_blank" rel="noopener">color_petrol_-size_large.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">size: large</td>
-          </tr>
-          <tr class="file-row file-blank" data-search="color_petrol_-size_small.html size: small">
-            <td class="fname"><a href="../output/components2/color_petrol_-size_small.html" target="_blank" rel="noopener">color_petrol_-size_small.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">size: small</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="color_purple">
-        <summary>
-          <span class="fname-head">color_purple</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">3 files</span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=column-card" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row file-blank" data-search="color_purple.html (no variants)">
-            <td class="fname"><a href="../output/components2/color_purple.html" target="_blank" rel="noopener">color_purple.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          <tr class="file-row file-blank" data-search="color_purple_-size_large.html size: large">
-            <td class="fname"><a href="../output/components2/color_purple_-size_large.html" target="_blank" rel="noopener">color_purple_-size_large.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">size: large</td>
-          </tr>
-          <tr class="file-row file-blank" data-search="color_purple_-size_small.html size: small">
-            <td class="fname"><a href="../output/components2/color_purple_-size_small.html" target="_blank" rel="noopener">color_purple_-size_small.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">size: small</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="color_violet">
-        <summary>
-          <span class="fname-head">color_violet</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">3 files</span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=column-card" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row file-blank" data-search="color_violet.html (no variants)">
-            <td class="fname"><a href="../output/components2/color_violet.html" target="_blank" rel="noopener">color_violet.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          <tr class="file-row file-blank" data-search="color_violet_-size_large.html size: large">
-            <td class="fname"><a href="../output/components2/color_violet_-size_large.html" target="_blank" rel="noopener">color_violet_-size_large.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">size: large</td>
-          </tr>
-          <tr class="file-row file-blank" data-search="color_violet_-size_small.html size: small">
-            <td class="fname"><a href="../output/components2/color_violet_-size_small.html" target="_blank" rel="noopener">color_violet_-size_small.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">size: small</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="color_yellow">
-        <summary>
-          <span class="fname-head">color_yellow</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">3 files</span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=column-card" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row file-blank" data-search="color_yellow.html (no variants)">
-            <td class="fname"><a href="../output/components2/color_yellow.html" target="_blank" rel="noopener">color_yellow.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          <tr class="file-row file-blank" data-search="color_yellow_-size_large.html size: large">
-            <td class="fname"><a href="../output/components2/color_yellow_-size_large.html" target="_blank" rel="noopener">color_yellow_-size_large.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">size: large</td>
-          </tr>
-          <tr class="file-row file-blank" data-search="color_yellow_-size_small.html size: small">
-            <td class="fname"><a href="../output/components2/color_yellow_-size_small.html" target="_blank" rel="noopener">color_yellow_-size_small.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">size: small</td>
           </tr>
           </tbody>
         </table>
@@ -6542,27 +6110,6 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--lib1" data-family="modal-item-">
-        <summary>
-          <span class="fname-head">modal-item-</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">2 files</span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=modal-item-" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row file-blank" data-search="modal-item-_-footer.html footer">
-            <td class="fname"><a href="../output/components2/modal-item-_-footer.html" target="_blank" rel="noopener">modal-item-_-footer.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">footer</td>
-          </tr>
-          <tr class="file-row" data-search="modal-item-_-header.html header">
-            <td class="fname"><a href="../output/components2/modal-item-_-header.html" target="_blank" rel="noopener">modal-item-_-header.html</a></td>
-            <td class="fdesc">header</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
       <details class="family flagged flagged--artifact" data-family="module_administration">
         <summary>
           <span class="fname-head">module_administration</span>
@@ -6971,23 +6518,6 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--lib1" data-family="navigation-bar">
-        <summary>
-          <span class="fname-head">navigation-bar</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">1 file</span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="../output/components/navigation-bar.html" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row" data-search="navigation-bar.html (no variants)">
-            <td class="fname"><a href="../output/components2/navigation-bar.html" target="_blank" rel="noopener">navigation-bar.html</a></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
       <details class="family flagged flagged--blank" data-family="network_facebook">
         <summary>
           <span class="fname-head">network_facebook</span>
@@ -7209,40 +6739,6 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--lib1" data-family="orientation_horizontal">
-        <summary>
-          <span class="fname-head">orientation_horizontal</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">1 file</span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=scroll-bar" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row file-blank" data-search="orientation_horizontal.html (no variants)">
-            <td class="fname"><a href="../output/components2/orientation_horizontal.html" target="_blank" rel="noopener">orientation_horizontal.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="orientation_vertical">
-        <summary>
-          <span class="fname-head">orientation_vertical</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">1 file</span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=scroll-bar" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row file-blank" data-search="orientation_vertical.html (no variants)">
-            <td class="fname"><a href="../output/components2/orientation_vertical.html" target="_blank" rel="noopener">orientation_vertical.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
       <details class="family flagged flagged--artifact" data-family="pcp---content---headline">
         <summary>
           <span class="fname-head">pcp---content---headline</span>
@@ -7341,40 +6837,6 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
           <tr class="file-row file-blank" data-search="pill_sm_default_default_green.html (no variants)">
             <td class="fname"><a href="../output/components2/pill_sm_default_default_green.html" target="_blank" rel="noopener">pill_sm_default_default_green.html</a><span class="badge blank">blank</span></td>
             <td class="fdesc">(no variants)</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="popover-alt">
-        <summary>
-          <span class="fname-head">popover-alt</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">1 file</span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=popover" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row" data-search="popover-alt.html (no variants)">
-            <td class="fname"><a href="../output/components2/popover-alt.html" target="_blank" rel="noopener">popover-alt.html</a></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="popover-item-">
-        <summary>
-          <span class="fname-head">popover-item-</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">1 file</span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=popover" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row file-blank" data-search="popover-item-_-header.html header">
-            <td class="fname"><a href="../output/components2/popover-item-_-header.html" target="_blank" rel="noopener">popover-item-_-header.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">header</td>
           </tr>
           </tbody>
         </table>
@@ -7480,23 +6942,6 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
           <tbody>
           <tr class="file-row file-blank" data-search="profiles.html (no variants)">
             <td class="fname"><a href="../output/components2/profiles.html" target="_blank" rel="noopener">profiles.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="progress-indicator">
-        <summary>
-          <span class="fname-head">progress-indicator</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">1 file</span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=progress-indicator" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row file-blank" data-search="progress-indicator.html (no variants)">
-            <td class="fname"><a href="../output/components2/progress-indicator.html" target="_blank" rel="noopener">progress-indicator.html</a><span class="badge blank">blank</span></td>
             <td class="fdesc">(no variants)</td>
           </tr>
           </tbody>
@@ -7725,23 +7170,6 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
           <tbody>
           <tr class="file-row" data-search="section-header.html (no variants)">
             <td class="fname"><a href="../output/components2/section-header.html" target="_blank" rel="noopener">section-header.html</a></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="segmented-control">
-        <summary>
-          <span class="fname-head">segmented-control</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">1 file</span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=segmented-control" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row" data-search="segmented-control.html (no variants)">
-            <td class="fname"><a href="../output/components2/segmented-control.html" target="_blank" rel="noopener">segmented-control.html</a></td>
             <td class="fdesc">(no variants)</td>
           </tr>
           </tbody>
@@ -12750,367 +12178,6 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--lib1" data-family="status_approved">
-        <summary>
-          <span class="fname-head">status_approved</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=status" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row" data-search="status_approved.html (no variants)">
-            <td class="fname"><a href="../output/components2/status_approved.html" target="_blank" rel="noopener">status_approved.html</a></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          <tr class="file-row file-blank" data-search="status_approved_10079-34980.html (no variants)">
-            <td class="fname"><a href="../output/components2/status_approved_10079-34980.html" target="_blank" rel="noopener">status_approved_10079-34980.html</a><span class="badge alt">alt</span><span class="badge blank">blank</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="status_card">
-        <summary>
-          <span class="fname-head">status_card</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">1 file</span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=status" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row file-blank" data-search="status_card.html (no variants)">
-            <td class="fname"><a href="../output/components2/status_card.html" target="_blank" rel="noopener">status_card.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="status_connected">
-        <summary>
-          <span class="fname-head">status_connected</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=status" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row file-blank" data-search="status_connected.html (no variants)">
-            <td class="fname"><a href="../output/components2/status_connected.html" target="_blank" rel="noopener">status_connected.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          <tr class="file-row file-blank" data-search="status_connected_3595-34212.html (no variants)">
-            <td class="fname"><a href="../output/components2/status_connected_3595-34212.html" target="_blank" rel="noopener">status_connected_3595-34212.html</a><span class="badge alt">alt</span><span class="badge blank">blank</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="status_disconneted">
-        <summary>
-          <span class="fname-head">status_disconneted</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=status" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row file-blank" data-search="status_disconneted.html (no variants)">
-            <td class="fname"><a href="../output/components2/status_disconneted.html" target="_blank" rel="noopener">status_disconneted.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          <tr class="file-row file-blank" data-search="status_disconneted_3595-34216.html (no variants)">
-            <td class="fname"><a href="../output/components2/status_disconneted_3595-34216.html" target="_blank" rel="noopener">status_disconneted_3595-34216.html</a><span class="badge alt">alt</span><span class="badge blank">blank</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="status_draft">
-        <summary>
-          <span class="fname-head">status_draft</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=status" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row" data-search="status_draft.html (no variants)">
-            <td class="fname"><a href="../output/components2/status_draft.html" target="_blank" rel="noopener">status_draft.html</a></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          <tr class="file-row file-blank" data-search="status_draft_10063-38048.html (no variants)">
-            <td class="fname"><a href="../output/components2/status_draft_10063-38048.html" target="_blank" rel="noopener">status_draft_10063-38048.html</a><span class="badge alt">alt</span><span class="badge blank">blank</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="status_empty-_placeholder_">
-        <summary>
-          <span class="fname-head">status_empty-_placeholder_</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=status" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row file-blank" data-search="status_empty-_placeholder_.html (no variants)">
-            <td class="fname"><a href="../output/components2/status_empty-_placeholder_.html" target="_blank" rel="noopener">status_empty-_placeholder_.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          <tr class="file-row file-blank" data-search="status_empty-_placeholder__3603-116459.html (no variants)">
-            <td class="fname"><a href="../output/components2/status_empty-_placeholder__3603-116459.html" target="_blank" rel="noopener">status_empty-_placeholder__3603-116459.html</a><span class="badge alt">alt</span><span class="badge blank">blank</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="status_error">
-        <summary>
-          <span class="fname-head">status_error</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">1 file · <span class="alt-count">2 alt</span></span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=status" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row" data-search="status_error.html (no variants)">
-            <td class="fname"><a href="../output/components2/status_error.html" target="_blank" rel="noopener">status_error.html</a></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          <tr class="file-row" data-search="status_error_3595-34208.html (no variants)">
-            <td class="fname"><a href="../output/components2/status_error_3595-34208.html" target="_blank" rel="noopener">status_error_3595-34208.html</a><span class="badge alt">alt</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          <tr class="file-row file-blank" data-search="status_error_9235-294584.html (no variants)">
-            <td class="fname"><a href="../output/components2/status_error_9235-294584.html" target="_blank" rel="noopener">status_error_9235-294584.html</a><span class="badge alt">alt</span><span class="badge blank">blank</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="status_partial-connected">
-        <summary>
-          <span class="fname-head">status_partial-connected</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=status" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row" data-search="status_partial-connected.html (no variants)">
-            <td class="fname"><a href="../output/components2/status_partial-connected.html" target="_blank" rel="noopener">status_partial-connected.html</a></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          <tr class="file-row file-blank" data-search="status_partial-connected_3595-34214.html (no variants)">
-            <td class="fname"><a href="../output/components2/status_partial-connected_3595-34214.html" target="_blank" rel="noopener">status_partial-connected_3595-34214.html</a><span class="badge alt">alt</span><span class="badge blank">blank</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="status_pending">
-        <summary>
-          <span class="fname-head">status_pending</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=status" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row" data-search="status_pending.html (no variants)">
-            <td class="fname"><a href="../output/components2/status_pending.html" target="_blank" rel="noopener">status_pending.html</a></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          <tr class="file-row file-blank" data-search="status_pending_10769-92957.html (no variants)">
-            <td class="fname"><a href="../output/components2/status_pending_10769-92957.html" target="_blank" rel="noopener">status_pending_10769-92957.html</a><span class="badge alt">alt</span><span class="badge blank">blank</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="status_public">
-        <summary>
-          <span class="fname-head">status_public</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=status" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row" data-search="status_public.html (no variants)">
-            <td class="fname"><a href="../output/components2/status_public.html" target="_blank" rel="noopener">status_public.html</a></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          <tr class="file-row file-blank" data-search="status_public_10067-37911.html (no variants)">
-            <td class="fname"><a href="../output/components2/status_public_10067-37911.html" target="_blank" rel="noopener">status_public_10067-37911.html</a><span class="badge alt">alt</span><span class="badge blank">blank</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="status_published">
-        <summary>
-          <span class="fname-head">status_published</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=status" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row" data-search="status_published.html (no variants)">
-            <td class="fname"><a href="../output/components2/status_published.html" target="_blank" rel="noopener">status_published.html</a></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          <tr class="file-row file-blank" data-search="status_published_10076-52480.html (no variants)">
-            <td class="fname"><a href="../output/components2/status_published_10076-52480.html" target="_blank" rel="noopener">status_published_10076-52480.html</a><span class="badge alt">alt</span><span class="badge blank">blank</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="status_read">
-        <summary>
-          <span class="fname-head">status_read</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=status" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row file-blank" data-search="status_read.html (no variants)">
-            <td class="fname"><a href="../output/components2/status_read.html" target="_blank" rel="noopener">status_read.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          <tr class="file-row file-blank" data-search="status_read_5176-84394.html (no variants)">
-            <td class="fname"><a href="../output/components2/status_read_5176-84394.html" target="_blank" rel="noopener">status_read_5176-84394.html</a><span class="badge alt">alt</span><span class="badge blank">blank</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="status_rejected">
-        <summary>
-          <span class="fname-head">status_rejected</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=status" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row" data-search="status_rejected.html (no variants)">
-            <td class="fname"><a href="../output/components2/status_rejected.html" target="_blank" rel="noopener">status_rejected.html</a></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          <tr class="file-row file-blank" data-search="status_rejected_10067-52460.html (no variants)">
-            <td class="fname"><a href="../output/components2/status_rejected_10067-52460.html" target="_blank" rel="noopener">status_rejected_10067-52460.html</a><span class="badge alt">alt</span><span class="badge blank">blank</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="status_scheduled">
-        <summary>
-          <span class="fname-head">status_scheduled</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=status" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row" data-search="status_scheduled.html (no variants)">
-            <td class="fname"><a href="../output/components2/status_scheduled.html" target="_blank" rel="noopener">status_scheduled.html</a></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          <tr class="file-row file-blank" data-search="status_scheduled_10063-52863.html (no variants)">
-            <td class="fname"><a href="../output/components2/status_scheduled_10063-52863.html" target="_blank" rel="noopener">status_scheduled_10063-52863.html</a><span class="badge alt">alt</span><span class="badge blank">blank</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="status_to-be-approved">
-        <summary>
-          <span class="fname-head">status_to-be-approved</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=status" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row" data-search="status_to-be-approved.html (no variants)">
-            <td class="fname"><a href="../output/components2/status_to-be-approved.html" target="_blank" rel="noopener">status_to-be-approved.html</a></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          <tr class="file-row file-blank" data-search="status_to-be-approved_10076-52474.html (no variants)">
-            <td class="fname"><a href="../output/components2/status_to-be-approved_10076-52474.html" target="_blank" rel="noopener">status_to-be-approved_10076-52474.html</a><span class="badge alt">alt</span><span class="badge blank">blank</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="status_unread-unresolved">
-        <summary>
-          <span class="fname-head">status_unread-unresolved</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">1 file · <span class="alt-count">2 alt</span></span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=status" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row file-blank" data-search="status_unread-unresolved.html (no variants)">
-            <td class="fname"><a href="../output/components2/status_unread-unresolved.html" target="_blank" rel="noopener">status_unread-unresolved.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          <tr class="file-row file-blank" data-search="status_unread-unresolved_3595-34218.html (no variants)">
-            <td class="fname"><a href="../output/components2/status_unread-unresolved_3595-34218.html" target="_blank" rel="noopener">status_unread-unresolved_3595-34218.html</a><span class="badge alt">alt</span><span class="badge blank">blank</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          <tr class="file-row" data-search="status_unread-unresolved_9445-526872.html (no variants)">
-            <td class="fname"><a href="../output/components2/status_unread-unresolved_9445-526872.html" target="_blank" rel="noopener">status_unread-unresolved_9445-526872.html</a><span class="badge alt">alt</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="status_warning">
-        <summary>
-          <span class="fname-head">status_warning</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=status" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row" data-search="status_warning.html (no variants)">
-            <td class="fname"><a href="../output/components2/status_warning.html" target="_blank" rel="noopener">status_warning.html</a></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          <tr class="file-row file-blank" data-search="status_warning_3595-34210.html (no variants)">
-            <td class="fname"><a href="../output/components2/status_warning_3595-34210.html" target="_blank" rel="noopener">status_warning_3595-34210.html</a><span class="badge alt">alt</span><span class="badge blank">blank</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
       <details class="family flagged flagged--blank" data-family="style_danger">
         <summary>
           <span class="fname-head">style_danger</span>
@@ -13371,40 +12438,6 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
           <tr class="file-row" data-search="style_warning_-type_leading-icon_-size_sm.html type: leading-icon · size: sm">
             <td class="fname"><a href="../output/components2/style_warning_-type_leading-icon_-size_sm.html" target="_blank" rel="noopener">style_warning_-type_leading-icon_-size_sm.html</a></td>
             <td class="fdesc">type: leading-icon · size: sm</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="tab-group">
-        <summary>
-          <span class="fname-head">tab-group</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">1 file</span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="../output/components/tab-group.html" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row file-blank" data-search="tab-group.html (no variants)">
-            <td class="fname"><a href="../output/components2/tab-group.html" target="_blank" rel="noopener">tab-group.html</a><span class="badge blank">blank</span></td>
-            <td class="fdesc">(no variants)</td>
-          </tr>
-          </tbody>
-        </table>
-      </details>
-      <details class="family flagged flagged--lib1" data-family="tags">
-        <summary>
-          <span class="fname-head">tags</span>
-          <span class="badge flag-lib1" title="Also present in Library 1 — potential duplicate">≈ lib 1</span>
-          <span class="fcounts">1 file</span>
-        </summary>
-        <div class="flag-note flag-note--lib1">Also present in Library 1 — potential duplicate — <a href="component-inventory.html?q=tag" target="_blank" rel="noopener">view in Lib 1 →</a></div>
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>
-          <tr class="file-row" data-search="tags.html (no variants)">
-            <td class="fname"><a href="../output/components2/tags.html" target="_blank" rel="noopener">tags.html</a></td>
-            <td class="fdesc">(no variants)</td>
           </tr>
           </tbody>
         </table>

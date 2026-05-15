@@ -44,6 +44,7 @@ const COMPONENTS = [
   { nodeId: '13305:49308',   family: 'header_-type_content' },
   { nodeId: '11696:73275',   family: 'status' },
   { nodeId: '14754:93295',   family: 'smaller-post-set-item' },
+  { nodeId: '14499:89777',   family: 'alert-banner' },
 ];
 
 // ── Parse a Figma variant name into a filename suffix ──────────────────────────

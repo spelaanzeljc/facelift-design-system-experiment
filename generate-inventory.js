@@ -94,47 +94,6 @@ const FLAGGED_L2_ARTIFACT = new Set([
   'variant_userbadge','variant_warning',
 ]);
 
-// Flag 2: families that also appear in Library 1 — potential duplicates
-const FLAGGED_L2_MATCH = new Set([
-  'appearance_floating','appearance_inline',
-  'badge',
-  'color_amber','color_azure','color_beige','color_blue','color_cobalt',
-  'color_coral','color_default','color_emerald','color_green','color_grey',
-  'color_indigo','color_mint','color_orange','color_peridot','color_petrol',
-  'color_purple','color_violet','color_yellow',
-  'modal-item-',
-  'navigation-bar',
-  'orientation_horizontal','orientation_vertical',
-  'popover-alt','popover-item-',
-  'progress-indicator',
-  'segmented-control',
-  'status_approved','status_card','status_connected','status_disconneted',
-  'status_draft','status_empty-_placeholder_','status_error',
-  'status_partial-connected','status_pending','status_public','status_published',
-  'status_read','status_rejected','status_scheduled',
-  'status_to-be-approved','status_unread-unresolved','status_warning',
-  'tab-group',
-  'tags',
-]);
-
-// Explicit lib2→lib1 family mapping for semantic renames
-// (where the lib1 family was renamed and auto-prefix matching won't find it)
-const LIB2_TO_LIB1_FAMILY = {
-  'appearance_floating':  'tag',
-  'appearance_inline':    'tag',
-  'color_amber':   'column-card', 'color_azure':  'column-card',
-  'color_beige':   'column-card', 'color_blue':   'column-card',
-  'color_cobalt':  'column-card', 'color_coral':  'column-card',
-  'color_default': 'column-card', 'color_emerald':'column-card',
-  'color_green':   'column-card', 'color_grey':   'column-card',
-  'color_indigo':  'column-card', 'color_mint':   'column-card',
-  'color_orange':  'column-card', 'color_peridot':'column-card',
-  'color_petrol':  'column-card', 'color_purple': 'column-card',
-  'color_violet':  'column-card', 'color_yellow': 'column-card',
-  'orientation_horizontal': 'scroll-bar',
-  'orientation_vertical':   'scroll-bar',
-  'tags': 'tag',
-};
 
 // ── Blank-file detection ──────────────────────────────────────────────────────
 function isBlankFile(absPath) {
@@ -151,7 +110,6 @@ function getFlagInfo(family, dir, blankCount, totalCount) {
   if (dir.includes('components2')) {
     if (FLAGGED_L2_ICON.has(family))     return { type: 'icon',     reason: 'Likely icon — same name exists in output/icons/' };
     if (FLAGGED_L2_ARTIFACT.has(family)) return { type: 'artifact', reason: 'Figma artifact — not a real UI component' };
-    if (FLAGGED_L2_MATCH.has(family))    return { type: 'lib1',     reason: 'Also present in Library 1 — potential duplicate' };
   }
   if (dir.includes('components2') && blankCount > 0) {
     const all = blankCount === totalCount;
@@ -213,43 +171,6 @@ function esc(s) {
 function buildHTML(libraries) {
   const totalFiles = libraries.reduce((s, l) => s + l.files.length, 0);
 
-  // Build lib1 family map for duplicate-link generation
-  const lib1Entry = libraries.find(l => !l.dir.includes('components2'));
-  const lib1FamilyMap = lib1Entry ? groupByFamily(lib1Entry.files) : new Map();
-
-  function findLib1Link(family) {
-    // Explicit semantic rename mapping takes priority
-    const mappedFamily = LIB2_TO_LIB1_FAMILY[family];
-    if (mappedFamily) {
-      const files = lib1FamilyMap.get(mappedFamily);
-      if (files) {
-        return files.length === 1
-          ? `../output/components/${files[0]}`
-          : `component-inventory.html?q=${encodeURIComponent(mappedFamily)}`;
-      }
-    }
-    // Exact match
-    if (lib1FamilyMap.has(family)) {
-      const files = lib1FamilyMap.get(family);
-      return files.length === 1
-        ? `../output/components/${files[0]}`
-        : `component-inventory.html?q=${encodeURIComponent(family)}`;
-    }
-    // lib2 family starts with a lib1 family prefix (e.g. 'status_approved' → 'status')
-    for (const [f1] of lib1FamilyMap) {
-      if (family.startsWith(f1 + '_') || family.startsWith(f1 + '-')) {
-        return `component-inventory.html?q=${encodeURIComponent(f1)}`;
-      }
-    }
-    // lib1 family starts with lib2 family prefix
-    for (const [f1] of lib1FamilyMap) {
-      if (f1.startsWith(family + '_') || f1.startsWith(family + '-')) {
-        return `component-inventory.html?q=${encodeURIComponent(family)}`;
-      }
-    }
-    return null;
-  }
-
   const libSections = libraries.map(({ label, short, dir, files }) => {
     const families = groupByFamily(files);
     const familyCount = families.size;
@@ -277,17 +198,14 @@ function buildHTML(libraries) {
       const flagBadge = flagInfo
         ? flagInfo.type === 'icon'
           ? `<span class="badge flag-icon" title="${esc(flagInfo.reason)}">⬡ icon</span>`
-          : flagInfo.type === 'lib1'
-            ? `<span class="badge flag-lib1" title="${esc(flagInfo.reason)}">≈ lib 1</span>`
-            : flagInfo.type === 'blank'
+          : flagInfo.type === 'blank'
               ? `<span class="badge flag-blank" title="${esc(flagInfo.reason)}">◻ blank</span>`
               : flagInfo.type === 'artifact'
                 ? `<span class="badge flag-artifact" title="${esc(flagInfo.reason)}">⬡ artifact</span>`
                 : `<span class="badge flag" title="${esc(flagInfo.reason)}">⚑ needs review</span>`
         : '';
-      const lib1Link = (flagInfo && flagInfo.type === 'lib1') ? findLib1Link(family) : null;
       const flagNote = flagInfo
-        ? `<div class="flag-note flag-note--${flagInfo.type}">${esc(flagInfo.reason)}${lib1Link ? ` — <a href="${esc(lib1Link)}" target="_blank" rel="noopener">view in Lib 1 →</a>` : ''}</div>`
+        ? `<div class="flag-note flag-note--${flagInfo.type}">${esc(flagInfo.reason)}</div>`
         : '';
 
       return `
@@ -368,7 +286,6 @@ details[open]>summary::before{transform:rotate(90deg)}
 .badge.alt{background:#fff3e0;color:#e05a00;border:1px solid #e05a00}
 .badge.flag{background:#fef9c3;color:#854d0e;border:1px solid #ca8a04;cursor:help}
 .badge.flag-icon{background:#f0fdf4;color:#166534;border:1px solid #4ade80;cursor:help}
-.badge.flag-lib1{background:#eff6ff;color:#1e40af;border:1px solid #93c5fd;cursor:help}
 .badge.flag-blank{background:#fdf4ff;color:#7e22ce;border:1px solid #d8b4fe;cursor:help}
 .badge.blank{background:#fdf4ff;color:#7e22ce;border:1px solid #d8b4fe;font-size:.6rem}
 .badge.flag-artifact{background:#f3f4f6;color:#4b5563;border:1px solid #9ca3af;cursor:help}
@@ -379,9 +296,6 @@ details.family.flagged--review .fname-head{color:#92400e}
 details.family.flagged--icon{border-color:#4ade80;background:#f0fdf4}
 details.family.flagged--icon>summary{background:#f0fdf4}
 details.family.flagged--icon .fname-head{color:#166534}
-details.family.flagged--lib1{border-color:#93c5fd;background:#eff6ff}
-details.family.flagged--lib1>summary{background:#eff6ff}
-details.family.flagged--lib1 .fname-head{color:#1e40af}
 details.family.flagged--blank{border-color:#d8b4fe;background:#fdf4ff}
 details.family.flagged--blank>summary{background:#fdf4ff}
 details.family.flagged--blank .fname-head{color:#7e22ce}
@@ -391,8 +305,6 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
 .flag-note{font-size:.75rem;padding:.4rem .9rem;border-bottom-width:1px;border-bottom-style:solid}
 .flag-note--review{color:#92400e;background:#fef3c7;border-bottom-color:#fde68a}
 .flag-note--icon{color:#166534;background:#dcfce7;border-bottom-color:#4ade80}
-.flag-note--lib1{color:#1e40af;background:#dbeafe;border-bottom-color:#93c5fd}
-.flag-note--lib1 a{color:#1e40af;font-weight:600;text-decoration:underline}
 .flag-note--blank{color:#7e22ce;background:#fae8ff;border-bottom-color:#d8b4fe}
 .flag-note--artifact{color:#4b5563;background:#f3f4f6;border-bottom-color:#d1d5db}
 .file-blank td{opacity:.55}
@@ -406,7 +318,6 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
 .filter-btn.active{background:#fef9c3;color:#854d0e;border-color:#ca8a04}
 .filter-btn.all.active{background:#1339ec;color:#fff;border-color:#1339ec}
 .filter-btn.icon.active{background:#f0fdf4;color:#166534;border-color:#4ade80}
-.filter-btn.lib1.active{background:#eff6ff;color:#1e40af;border-color:#93c5fd}
 .filter-btn.blank.active{background:#fdf4ff;color:#7e22ce;border-color:#d8b4fe}
 .filter-btn.artifact.active{background:#f3f4f6;color:#4b5563;border-color:#9ca3af}
 </style>
@@ -426,7 +337,6 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
   <div class="filter-bar">
     <button class="filter-btn all active" data-filter="all">All</button>
     <button class="filter-btn icon" data-filter="icon">⬡ Likely icon</button>
-    <button class="filter-btn lib1" data-filter="lib1">≈ Also in Lib 1</button>
     <button class="filter-btn blank" data-filter="blank">◻ Blank</button>
     <button class="filter-btn artifact" data-filter="artifact">⬡ Artifact</button>
   </div>
