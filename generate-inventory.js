@@ -2,152 +2,28 @@
 'use strict';
 /**
  * generate-inventory.js
- * Reads all HTML files from output/components/ and output/components2/,
- * parses filenames into family + variant data, and writes
- * sitemap/component-inventory.html — a searchable reference page.
+ * Reads all HTML files from output/components/, parses filenames into
+ * family + variant data, and writes sitemap/component-inventory.html.
  */
 
 const fs   = require('fs');
 const path = require('path');
 
-const BASE  = __dirname;
-const DIRS  = [
-  { dir: 'output/components',  label: 'Library 1 · BB Update', short: 'Lib 1' },
-  { dir: 'output/components2', label: 'Library 2',              short: 'Lib 2' },
-];
-const OUT = path.join(BASE, 'sitemap', 'component-inventory.html');
+const BASE = __dirname;
+const DIR  = 'output/components';
+const OUT  = path.join(BASE, 'sitemap', 'component-inventory.html');
 
 // ── Numeric-suffix pattern (legacy export duplicates) ─────────────────────────
 const ALT_RE = /[-_]\d{4,}-\d{4,}(\.html)?$/;
 
-// ── Flagged families (Lib 1) ──────────────────────────────────────────────────
-const FLAGGED = {};
-
-// ── Library 2 flags ───────────────────────────────────────────────────────────
-// Flag 1: families whose name matches an icon in output/icons/ — likely just SVG wrappers
-const FLAGGED_L2_ICON = new Set([
-  'admin-company-outline','alarm-bell','arrow-down','arrow-select','arrow-up',
-  'artifical-inteligence','attachment','badge-check-mark-filled','beta','beta-symbole',
-  'calendar','canva','check-box-checked-outline','check-mark',
-  'chevron-down','chevron-left','chevron-right',
-  'circle','circle-check-mark','circle-question-mark','clock',
-  'close','close-large','close-lg','comment','danger-outline','desktop',
-  'download','edit','ellipsis-horizontal','eye',
-  'facebook','facebook-network-logo','facebook-outline',
-  'facelift','facelift-ai','facelift-logo',
-  'fb-messenger','fb-messenger-outline',
-  'filter','flag','folder','follow',
-  'fontstyle-bold','fontstyle-italic','fontstyle-underline',
-  'format_landscape','format_month-','format_portrait','format_square',
-  'format_today-am','format_today-pm','format_yersterday-am','format_yersterday-pm',
-  'garbage-can','gearwheel-outline',
-  'general_arrow-down','general_arrow-up',
-  'general_collapsible-tree_tree-closed','general_sidebar_sidebar-close',
-  'general_success','general_warning',
-  'google','heart','heart-outline','help','hide','home','image','info',
-  'instagram','instagram-network-logo','instagram-outline',
-  'like','like-filled','line-chevron-left',
-  'linkedin','linkedin-outline','locked','love',
-  'm_discussion','m_discussion_filled','m_draft-save',
-  'm_flag','m_flag_filled','m_hide','m_minimize','m_note',
-  'm_promote','m_proofread','m_rewrite',
-  'm_send','m_send-resolve','m_template-add',
-  'magnifying-glass','megaphon','mention','minus-sign-small','mobile','more',
-  'notice','notice_new','owner',
-  'pinterest','pinterest-outline','planner-logo','plus-sign-small',
-  'rectangle-arrow-right','refresh','retry','rss','sad',
-  'search','send','settings','share','share-arrow','shorturl',
-  'size_16','size_20','size_24',
-  'smiley','smiley-positive','sort-down',
-  'speech-bubble-outline','speech-bubble-up-text',
-  'success','targeting','thankful','three-connected-squares','thumb-up-outline',
-  'thumbnail','tiktok','tiktok-outline','time',
-  'triangle-exclamation-mark-outline','two-squares-grid',
-  'verified','video','view-list','warning-filled','whatsapp','wow',
-  'x','x-network-logo','x-outline','x-sign-large','x-sign-small','x-sign-small-invert',
-  'xing','youtube',
-  'browser-view-text','browser-window-template',
-  'icon-','icon-admin','icon-arrow-dropdown','icon-tour',
-  'illus_cat','illus_search',
-]);
-
-// Flag: families that were freshly re-exported in the latest batch (need visual review)
-const FLAGGED_L2_REEXPORT = new Set([
-  'alert-banner','card','contextual-sidebar','data-column',
-  'data-list','data-table','date-range-picker',
-  'media-element','modal','modal-header',
-  'section','section-item',
-  'table-cell-compact','table-cell-default','table-cell-general','table-cell-header',
-]);
-
-// Flag: obvious Figma artifacts — not real UI components
-const FLAGGED_L2_ARTIFACT = new Set([
-  'aiconcept','andreas-wissel',
-  'eventhandler','frame-1','inspector','lifty',
-  'module_administration','module_analytics','module_brand','module_core',
-  'module_engagement','module_placeholder','module_planner','module_publisher','module_uim',
-  'name_ann-catrin-wellh_fer','name_chris-day','name_eva-nesbach','name_florian-h_ft',
-  'name_inken','name_kristin','name_lukas-nordbeck','name_micah-dammann',
-  'name_placeholder','name_stefan-lipperheide','name_thorsten-mann','name_tufan-g_kyildirim',
-  'pcp---content---headline','pcp---content-header---draft---with-fb-content-','pcp---network-tab-navigation',
-  'preview','preview-header',
-  'property-1_active','property-1_collapsed','property-1_default','property-1_default-resolved',
-  'property-1_expanded','property-1_variant3',
-  'seperator','tour',
-  'variant_bulk','variant_button-group','variant_checkbox-group','variant_circle-button-group',
-  'variant_color','variant_custom','variant_danger','variant_date-range-picker',
-  'variant_default','variant_default-_fb-image_','variant_hierarchy',
-  'variant_icon','variant_illustration','variant_input','variant_multi-select',
-  'variant_nested','variant_radio-group','variant_singleselect','variant_skeleton',
-  'variant_success','variant_template','variant_thumbnail','variant_toggle-button-group',
-  'variant_userbadge','variant_warning',
-]);
-
-
-// ── Blank-file detection ──────────────────────────────────────────────────────
-function isBlankFile(absPath) {
-  try {
-    const html = fs.readFileSync(absPath, 'utf8');
-    const m = html.match(/<div class="checker">([\s\S]*?)<\/div>/);
-    return !m || m[1].trim() === '';
-  } catch { return false; }
-}
-
-// ── Resolve flag info for a family + library dir ──────────────────────────────
-function getFlagInfo(family, dir, blankCount, totalCount) {
-  if (FLAGGED[family]) return { type: 'review', reason: FLAGGED[family] };
-  if (dir.includes('components2')) {
-    if (FLAGGED_L2_ICON.has(family))     return { type: 'icon',     reason: 'Likely icon — same name exists in output/icons/' };
-    if (FLAGGED_L2_ARTIFACT.has(family)) return { type: 'artifact', reason: 'Figma artifact — not a real UI component' };
-    if (FLAGGED_L2_REEXPORT.has(family)) return { type: 'reexport', reason: 'Freshly re-exported from Figma — review variants and naming' };
-  }
-  if (dir.includes('components2') && blankCount > 0) {
-    const all = blankCount === totalCount;
-    return {
-      type: 'blank',
-      reason: all
-        ? `All ${totalCount} file${totalCount !== 1 ? 's' : ''} blank — no SVG rendered`
-        : `${blankCount} of ${totalCount} files blank — SVG missing`,
-    };
-  }
-  return null;
-}
-
 // ── Parse a filename into { family, desc, isAlt } ────────────────────────────
-// New convention: family--prop-value--prop2-value2.html
-// Segments are split on `--`; first segment is the family.
 function parse(filename) {
   const base = filename.replace(/\.html$/, '');
   const isAlt = ALT_RE.test(base);
   const cleanBase = isAlt ? base.replace(ALT_RE, '') : base;
-
-  const parts   = cleanBase.split('--');
-  const family  = parts[0];
-  const varParts = parts.slice(1);
-
-  // Build a readable description from variant segments
-  const desc = varParts.length ? varParts.join(' · ') : '(no variants)';
-
+  const parts = cleanBase.split('--');
+  const family = parts[0];
+  const desc = parts.slice(1).join(' · ') || '(no variants)';
   return { family, desc, isAlt };
 }
 
@@ -167,126 +43,37 @@ function esc(s) {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-// ── Build content-duplicate map ────────────────────────────────────────────────
-// Returns Map<"dir/file", [{dir, file, short}]> listing each file's content-identical peers.
-function buildDupMap(libraries) {
-  const crypto = require('crypto');
-  const checkerRe = /<div class="checker">([\s\S]*?)<\/div>/;
-  const byHash = new Map();
-
-  for (const { dir, short, files } of libraries) {
-    const absDir = path.join(BASE, dir);
-    for (const file of files) {
-      const html = fs.readFileSync(path.join(absDir, file), 'utf8');
-      const m = html.match(checkerRe);
-      const svg = m ? m[1].trim() : '';
-      if (!svg.includes('<svg')) continue;
-      const h = crypto.createHash('md5').update(svg).digest('hex');
-      if (!byHash.has(h)) byHash.set(h, []);
-      byHash.get(h).push({ dir, file, short });
-    }
-  }
-
-  const dupMap = new Map();
-  for (const group of byHash.values()) {
-    if (group.length < 2) continue;
-    for (const entry of group) {
-      const key = `${entry.dir}/${entry.file}`;
-      dupMap.set(key, group.filter(e => e.file !== entry.file || e.dir !== entry.dir));
-    }
-  }
-  return dupMap;
-}
-
 // ── Build HTML ─────────────────────────────────────────────────────────────────
-function buildHTML(libraries, dupMap) {
-  const totalFiles = libraries.reduce((s, l) => s + l.files.length, 0);
+function buildHTML(files) {
+  const families = groupByFamily(files);
 
-  const libSections = libraries.map(({ label, short, dir, files }) => {
-    const families = groupByFamily(files);
-    const familyCount = families.size;
-
-    const absDir = path.join(BASE, dir);
-
-    const familyBlocks = [...families.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([family, ffiles]) => {
-      const blankFiles = new Set(ffiles.filter(f => isBlankFile(path.join(absDir, f))));
-      const flagInfo = getFlagInfo(family, dir, blankFiles.size, ffiles.length);
-
-      // Check if any file in this family is a content duplicate
-      const familyHasDup = ffiles.some(f => dupMap.has(`${dir}/${f}`));
-
-      const rows = ffiles.sort().map(f => {
-        const { desc, isAlt } = parse(f);
-        const relPath = `../${dir}/${f}`;
-        const altBadge = isAlt ? `<span class="badge alt">alt</span>` : '';
-        const blankBadge = blankFiles.has(f) ? `<span class="badge blank">blank</span>` : '';
-
-        // Content-duplicate badge with links to each peer
-        const peers = dupMap.get(`${dir}/${f}`) || [];
-        const dupBadge = peers.length ? (() => {
-          const links = peers.map(p => {
-            const label = p.dir !== dir ? `→ ${p.short}: ${p.file}` : `→ ${p.file}`;
-            const href = `../${p.dir}/${p.file}`;
-            return `<a href="${esc(href)}" target="_blank" rel="noopener">${esc(label)}</a>`;
-          }).join(' ');
-          return `<span class="badge dup" title="Identical SVG content">≡ dup</span> ${links}`;
-        })() : '';
-
-        return `
-          <tr class="file-row${blankFiles.has(f) ? ' file-blank' : ''}${peers.length ? ' file-dup' : ''}" data-search="${esc(f.toLowerCase())} ${esc(desc.toLowerCase())}">
-            <td class="fname"><a href="${esc(relPath)}" target="_blank" rel="noopener">${esc(f)}</a>${altBadge}${blankBadge}${dupBadge}</td>
+  const familyBlocks = [...families.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([family, ffiles]) => {
+    const rows = ffiles.sort().map(f => {
+      const { desc, isAlt } = parse(f);
+      const relPath = `../output/components/${f}`;
+      const altBadge = isAlt ? `<span class="badge alt">alt</span>` : '';
+      return `
+          <tr class="file-row" data-search="${esc(f.toLowerCase())} ${esc(desc.toLowerCase())}">
+            <td class="fname"><a href="${esc(relPath)}" target="_blank" rel="noopener">${esc(f)}</a>${altBadge}</td>
             <td class="fdesc">${esc(desc)}</td>
           </tr>`;
-      }).join('');
-
-      const altCount  = ffiles.filter(f => ALT_RE.test(f)).length;
-      const mainCount = ffiles.length - altCount;
-
-      // Determine effective flag (dup takes precedence for display if no other flag)
-      const effectiveFlagInfo = flagInfo || (familyHasDup ? { type: 'dup', reason: 'Contains files with identical SVG content elsewhere' } : null);
-
-      const flagBadge = effectiveFlagInfo
-        ? effectiveFlagInfo.type === 'icon'
-          ? `<span class="badge flag-icon" title="${esc(effectiveFlagInfo.reason)}">⬡ icon</span>`
-          : effectiveFlagInfo.type === 'blank'
-              ? `<span class="badge flag-blank" title="${esc(effectiveFlagInfo.reason)}">◻ blank</span>`
-              : effectiveFlagInfo.type === 'artifact'
-                ? `<span class="badge flag-artifact" title="${esc(effectiveFlagInfo.reason)}">⬡ artifact</span>`
-                : effectiveFlagInfo.type === 'dup'
-                  ? `<span class="badge flag-dup" title="${esc(effectiveFlagInfo.reason)}">≡ dup</span>`
-                  : effectiveFlagInfo.type === 'reexport'
-                  ? `<span class="badge flag-reexport" title="${esc(effectiveFlagInfo.reason)}">↺ re-export</span>`
-                  : `<span class="badge flag" title="${esc(effectiveFlagInfo.reason)}">⚑ needs review</span>`
-        : '';
-      const flagNote = effectiveFlagInfo && effectiveFlagInfo.type !== 'dup'
-        ? `<div class="flag-note flag-note--${effectiveFlagInfo.type}">${esc(effectiveFlagInfo.reason)}</div>`
-        : '';
-
-      return `
-      <details class="family${effectiveFlagInfo ? ` flagged flagged--${effectiveFlagInfo.type}` : ''}" data-family="${esc(family)}">
-        <summary>
-          <span class="fname-head">${esc(family)}</span>
-          ${flagBadge}
-          <span class="fcounts">${mainCount} file${mainCount !== 1 ? 's' : ''}${altCount ? ` · <span class="alt-count">${altCount} alt</span>` : ''}</span>
-        </summary>
-        ${flagNote}
-        <table class="file-table">
-          <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
-          <tbody>${rows}
-          </tbody>
-        </table>
-      </details>`;
     }).join('');
 
+    const altCount  = ffiles.filter(f => ALT_RE.test(f)).length;
+    const mainCount = ffiles.length - altCount;
+
     return `
-  <section class="library">
-    <div class="lib-header">
-      <button class="lib-toggle" aria-expanded="true" title="Collapse library">▾</button>
-      <span class="lib-name">${esc(label)}</span>
-      <span class="lib-meta">${familyCount} families · ${files.length.toLocaleString()} files</span>
-    </div>
-    <div class="lib-body">${familyBlocks}</div>
-  </section>`;
+    <details class="family" data-family="${esc(family)}">
+      <summary>
+        <span class="fname-head">${esc(family)}</span>
+        <span class="fcounts">${mainCount} file${mainCount !== 1 ? 's' : ''}${altCount ? ` · <span class="alt-count">${altCount} alt</span>` : ''}</span>
+      </summary>
+      <table class="file-table">
+        <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
+        <tbody>${rows}
+        </tbody>
+      </table>
+    </details>`;
   }).join('');
 
   return `<!DOCTYPE html>
@@ -311,13 +98,9 @@ a{color:#1339ec;text-decoration:none}a:hover{text-decoration:underline}
 #search:focus{border-color:#1339ec}
 .search-count{font-size:.8rem;color:#848ea4;margin-top:.35rem}
 
-.library{margin-bottom:2.5rem}
 .lib-header{display:flex;align-items:center;gap:.75rem;padding:.75rem 0;border-top:2px solid #1339ec;margin-bottom:.5rem}
 .lib-name{font-size:1rem;font-weight:700;color:#1339ec;text-transform:uppercase;letter-spacing:.05em}
 .lib-meta{font-size:.8rem;color:#848ea4}
-.lib-toggle{background:none;border:none;cursor:pointer;font-size:.9rem;color:#848ea4;padding:0 .1rem;line-height:1;transition:transform .2s}
-.lib-toggle[aria-expanded="false"]{transform:rotate(-90deg)}
-.lib-body.collapsed{display:none}
 
 details.family{border:1px solid #e7eaee;border-radius:6px;background:#fff;margin-bottom:.35rem;overflow:hidden}
 details.family[open]{margin-bottom:.75rem}
@@ -338,62 +121,15 @@ details[open]>summary::before{transform:rotate(90deg)}
 .fdesc{color:#5f6a82;font-size:.78rem}
 .badge{display:inline-block;font-size:.65rem;font-weight:700;padding:.1em .35em;border-radius:3px;margin-left:.35rem;vertical-align:middle}
 .badge.alt{background:#fff3e0;color:#e05a00;border:1px solid #e05a00}
-.badge.flag{background:#fef9c3;color:#854d0e;border:1px solid #ca8a04;cursor:help}
-.badge.flag-icon{background:#f0fdf4;color:#166534;border:1px solid #4ade80;cursor:help}
-.badge.flag-blank{background:#fdf4ff;color:#7e22ce;border:1px solid #d8b4fe;cursor:help}
-.badge.blank{background:#fdf4ff;color:#7e22ce;border:1px solid #d8b4fe;font-size:.6rem}
-.badge.flag-artifact{background:#f3f4f6;color:#4b5563;border:1px solid #9ca3af;cursor:help}
-.badge.flag-dup{background:#fff7ed;color:#9a3412;border:1px solid #fdba74;cursor:help}
-.badge.dup{background:#fff7ed;color:#9a3412;border:1px solid #fdba74;font-size:.6rem}
-.badge.flag-reexport{background:#eff6ff;color:#1e40af;border:1px solid #93c5fd;cursor:help}
-.badge.dup + a{font-size:.7rem;color:#9a3412;margin-left:.2rem}
-.badge.dup + a + a{font-size:.7rem;color:#9a3412;margin-left:.35rem}
-.file-dup td{background:#fffbf7}
-
-details.family.flagged--review{border-color:#fde68a;background:#fffbeb}
-details.family.flagged--review>summary{background:#fffbeb}
-details.family.flagged--review .fname-head{color:#92400e}
-details.family.flagged--icon{border-color:#4ade80;background:#f0fdf4}
-details.family.flagged--icon>summary{background:#f0fdf4}
-details.family.flagged--icon .fname-head{color:#166534}
-details.family.flagged--blank{border-color:#d8b4fe;background:#fdf4ff}
-details.family.flagged--blank>summary{background:#fdf4ff}
-details.family.flagged--blank .fname-head{color:#7e22ce}
-details.family.flagged--artifact{border-color:#d1d5db;background:#f9fafb}
-details.family.flagged--artifact>summary{background:#f9fafb}
-details.family.flagged--artifact .fname-head{color:#6b7280}
-details.family.flagged--dup{border-color:#fdba74;background:#fff7ed}
-details.family.flagged--dup>summary{background:#fff7ed}
-details.family.flagged--dup .fname-head{color:#9a3412}
-details.family.flagged--reexport{border-color:#93c5fd;background:#eff6ff}
-details.family.flagged--reexport>summary{background:#eff6ff}
-details.family.flagged--reexport .fname-head{color:#1e40af}
-.flag-note--reexport{color:#1e40af;background:#dbeafe;border-bottom-color:#93c5fd}
-.flag-note{font-size:.75rem;padding:.4rem .9rem;border-bottom-width:1px;border-bottom-style:solid}
-.flag-note--review{color:#92400e;background:#fef3c7;border-bottom-color:#fde68a}
-.flag-note--icon{color:#166534;background:#dcfce7;border-bottom-color:#4ade80}
-.flag-note--blank{color:#7e22ce;background:#fae8ff;border-bottom-color:#d8b4fe}
-.flag-note--artifact{color:#4b5563;background:#f3f4f6;border-bottom-color:#d1d5db}
-.file-blank td{opacity:.55}
 
 .family.all-hidden{display:none}
-
-/* Filter toggle */
-.filter-bar{display:flex;align-items:center;gap:.75rem;margin-bottom:1rem;flex-wrap:wrap}
-.filter-btn{padding:.3rem .7rem;border-radius:20px;font-size:.78rem;font-weight:600;cursor:pointer;border:1.5px solid transparent;background:#fff;transition:all .15s}
-.filter-btn:hover{border-color:#d3d7de}
-.filter-btn.active{background:#fef9c3;color:#854d0e;border-color:#ca8a04}
-.filter-btn.all.active{background:#1339ec;color:#fff;border-color:#1339ec}
-.filter-btn.blank.active{background:#fdf4ff;color:#7e22ce;border-color:#d8b4fe}
-.filter-btn.dup.active{background:#fff7ed;color:#9a3412;border-color:#fdba74}
-.filter-btn.reexport.active{background:#eff6ff;color:#1e40af;border-color:#93c5fd}
 </style>
 </head>
 <body>
 <div class="page">
   <div class="page-header">
-    <h1>Component Inventory<span class="total-badge">${totalFiles.toLocaleString()} files</span></h1>
-    <p>Every HTML file exported from both Figma component libraries, grouped by family. Click a family to expand. Click a filename to preview the component.</p>
+    <h1>Component Inventory<span class="total-badge">${files.length.toLocaleString()} files</span></h1>
+    <p>Every HTML file exported from the Figma component library, grouped by family. Click a family to expand. Click a filename to preview.</p>
   </div>
 
   <div class="search-wrap">
@@ -401,27 +137,21 @@ details.family.flagged--reexport .fname-head{color:#1e40af}
     <div class="search-count" id="search-count"></div>
   </div>
 
-  <div class="filter-bar">
-    <button class="filter-btn all active" data-filter="all">All</button>
-    <button class="filter-btn blank" data-filter="blank">◻ Blank</button>
-    <button class="filter-btn dup" data-filter="dup">≡ Duplicates</button>
-    <button class="filter-btn reexport" data-filter="reexport">↺ Re-exported</button>
+  <div class="lib-header">
+    <span class="lib-name">Component Library</span>
+    <span class="lib-meta">${families.size} families · ${files.length.toLocaleString()} files</span>
   </div>
 
-  ${libSections}
+  ${familyBlocks}
 </div>
 <script>
 const input   = document.getElementById('search');
 const countEl = document.getElementById('search-count');
-let activeFilter = 'all';
 
-function applyFilters() {
+function applySearch() {
   const q = input.value.trim().toLowerCase();
   let visible = 0;
-
   document.querySelectorAll('.family').forEach(fam => {
-    const matchesFilter = activeFilter === 'all' || fam.classList.contains('flagged--' + activeFilter);
-    if (!matchesFilter) { fam.classList.add('all-hidden'); return; }
     let famVisible = 0;
     fam.querySelectorAll('.file-row').forEach(row => {
       const match = !q || row.dataset.search.includes(q);
@@ -432,34 +162,13 @@ function applyFilters() {
     if (famVisible > 0 && q) fam.open = true;
     visible += famVisible;
   });
-
-  countEl.textContent = (q || activeFilter !== 'all')
-    ? \`\${visible.toLocaleString()} file\${visible !== 1 ? 's' : ''} match\`
-    : '';
+  countEl.textContent = q ? \`\${visible.toLocaleString()} file\${visible !== 1 ? 's' : ''} match\` : '';
 }
 
-input.addEventListener('input', applyFilters);
+input.addEventListener('input', applySearch);
 
 const urlQ = new URLSearchParams(location.search).get('q');
-if (urlQ) { input.value = urlQ; applyFilters(); }
-
-document.querySelectorAll('.filter-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    activeFilter = btn.dataset.filter;
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  });
-});
-
-document.querySelectorAll('.lib-toggle').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const body = btn.closest('.library').querySelector('.lib-body');
-    const expanded = btn.getAttribute('aria-expanded') === 'true';
-    btn.setAttribute('aria-expanded', String(!expanded));
-    body.classList.toggle('collapsed', expanded);
-  });
-});
+if (urlQ) { input.value = urlQ; applySearch(); }
 </script>
 </body>
 </html>`;
@@ -467,20 +176,12 @@ document.querySelectorAll('.lib-toggle').forEach(btn => {
 
 // ── Main ───────────────────────────────────────────────────────────────────────
 function main() {
-  const libraries = DIRS.map(({ dir, label, short }) => {
-    const absDir = path.join(BASE, dir);
-    const files  = fs.readdirSync(absDir)
-      .filter(f => f.endsWith('.html'))
-      .sort();
-    console.log(`  ${label}: ${files.length} files`);
-    return { dir, label, short, files };
-  });
-
+  const absDir = path.join(BASE, DIR);
+  const files  = fs.readdirSync(absDir).filter(f => f.endsWith('.html')).sort();
+  console.log(`  Component Library: ${files.length} files`);
   fs.mkdirSync(path.join(BASE, 'sitemap'), { recursive: true });
-  const dupMap = buildDupMap(libraries);
-  const html = buildHTML(libraries, dupMap);
-  fs.writeFileSync(OUT, html, 'utf8');
-  console.log(`\n✓ Written to ${path.relative(BASE, OUT)}`);
+  fs.writeFileSync(OUT, buildHTML(files), 'utf8');
+  console.log(`✓ Written to ${path.relative(BASE, OUT)}`);
 }
 
 main();
