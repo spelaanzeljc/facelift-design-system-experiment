@@ -52,6 +52,11 @@ details[open]>summary::before{transform:rotate(90deg)}
 .badge.flag-blank{background:#fdf4ff;color:#7e22ce;border:1px solid #d8b4fe;cursor:help}
 .badge.blank{background:#fdf4ff;color:#7e22ce;border:1px solid #d8b4fe;font-size:.6rem}
 .badge.flag-artifact{background:#f3f4f6;color:#4b5563;border:1px solid #9ca3af;cursor:help}
+.badge.flag-dup{background:#fff7ed;color:#9a3412;border:1px solid #fdba74;cursor:help}
+.badge.dup{background:#fff7ed;color:#9a3412;border:1px solid #fdba74;font-size:.6rem}
+.badge.dup + a{font-size:.7rem;color:#9a3412;margin-left:.2rem}
+.badge.dup + a + a{font-size:.7rem;color:#9a3412;margin-left:.35rem}
+.file-dup td{background:#fffbf7}
 
 details.family.flagged--review{border-color:#fde68a;background:#fffbeb}
 details.family.flagged--review>summary{background:#fffbeb}
@@ -65,6 +70,9 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
 details.family.flagged--artifact{border-color:#d1d5db;background:#f9fafb}
 details.family.flagged--artifact>summary{background:#f9fafb}
 details.family.flagged--artifact .fname-head{color:#6b7280}
+details.family.flagged--dup{border-color:#fdba74;background:#fff7ed}
+details.family.flagged--dup>summary{background:#fff7ed}
+details.family.flagged--dup .fname-head{color:#9a3412}
 .flag-note{font-size:.75rem;padding:.4rem .9rem;border-bottom-width:1px;border-bottom-style:solid}
 .flag-note--review{color:#92400e;background:#fef3c7;border-bottom-color:#fde68a}
 .flag-note--icon{color:#166534;background:#dcfce7;border-bottom-color:#4ade80}
@@ -83,6 +91,7 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
 .filter-btn.icon.active{background:#f0fdf4;color:#166534;border-color:#4ade80}
 .filter-btn.blank.active{background:#fdf4ff;color:#7e22ce;border-color:#d8b4fe}
 .filter-btn.artifact.active{background:#f3f4f6;color:#4b5563;border-color:#9ca3af}
+.filter-btn.dup.active{background:#fff7ed;color:#9a3412;border-color:#fdba74}
 </style>
 </head>
 <body>
@@ -102,6 +111,7 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
     <button class="filter-btn icon" data-filter="icon">⬡ Likely icon</button>
     <button class="filter-btn blank" data-filter="blank">◻ Blank</button>
     <button class="filter-btn artifact" data-filter="artifact">⬡ Artifact</button>
+    <button class="filter-btn dup" data-filter="dup">≡ Duplicates</button>
   </div>
 
   
@@ -2472,10 +2482,10 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="card">
+      <details class="family flagged flagged--dup" data-family="card">
         <summary>
           <span class="fname-head">card</span>
-          
+          <span class="badge flag-dup" title="Contains files with identical SVG content elsewhere">≡ dup</span>
           <span class="fcounts">15 files</span>
         </summary>
         
@@ -2518,8 +2528,8 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
             <td class="fname"><a href="../output/components/card--type-story--state-hover.html" target="_blank" rel="noopener">card--type-story--state-hover.html</a></td>
             <td class="fdesc">type-story · state-hover</td>
           </tr>
-          <tr class="file-row" data-search="card--type-task--state-default.html type-task · state-default">
-            <td class="fname"><a href="../output/components/card--type-task--state-default.html" target="_blank" rel="noopener">card--type-task--state-default.html</a></td>
+          <tr class="file-row file-dup" data-search="card--type-task--state-default.html type-task · state-default">
+            <td class="fname"><a href="../output/components/card--type-task--state-default.html" target="_blank" rel="noopener">card--type-task--state-default.html</a><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components/card-item--type-info--state-default.html" target="_blank" rel="noopener">→ card-item--type-info--state-default.html</a></td>
             <td class="fdesc">type-task · state-default</td>
           </tr>
           <tr class="file-row" data-search="card--type-task--state-hover.html type-task · state-hover">
@@ -2545,10 +2555,10 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="card-item">
+      <details class="family flagged flagged--dup" data-family="card-item">
         <summary>
           <span class="fname-head">card-item</span>
-          
+          <span class="badge flag-dup" title="Contains files with identical SVG content elsewhere">≡ dup</span>
           <span class="fcounts">3 files</span>
         </summary>
         
@@ -2559,8 +2569,8 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
             <td class="fname"><a href="../output/components/card-item--type-info--state-danger.html" target="_blank" rel="noopener">card-item--type-info--state-danger.html</a></td>
             <td class="fdesc">type-info · state-danger</td>
           </tr>
-          <tr class="file-row" data-search="card-item--type-info--state-default.html type-info · state-default">
-            <td class="fname"><a href="../output/components/card-item--type-info--state-default.html" target="_blank" rel="noopener">card-item--type-info--state-default.html</a></td>
+          <tr class="file-row file-dup" data-search="card-item--type-info--state-default.html type-info · state-default">
+            <td class="fname"><a href="../output/components/card-item--type-info--state-default.html" target="_blank" rel="noopener">card-item--type-info--state-default.html</a><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components/card--type-task--state-default.html" target="_blank" rel="noopener">→ card--type-task--state-default.html</a></td>
             <td class="fdesc">type-info · state-default</td>
           </tr>
           <tr class="file-row" data-search="card-item--type-info--state-positive.html type-info · state-positive">
@@ -4898,54 +4908,54 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="data-column">
+      <details class="family flagged flagged--dup" data-family="data-column">
         <summary>
           <span class="fname-head">data-column</span>
-          
+          <span class="badge flag-dup" title="Contains files with identical SVG content elsewhere">≡ dup</span>
           <span class="fcounts">20 files</span>
         </summary>
         
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
-          <tr class="file-row" data-search="data-column--type-badge--size-compact.html type-badge · size-compact">
-            <td class="fname"><a href="../output/components2/data-column--type-badge--size-compact.html" target="_blank" rel="noopener">data-column--type-badge--size-compact.html</a></td>
+          <tr class="file-row file-dup" data-search="data-column--type-badge--size-compact.html type-badge · size-compact">
+            <td class="fname"><a href="../output/components2/data-column--type-badge--size-compact.html" target="_blank" rel="noopener">data-column--type-badge--size-compact.html</a><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components2/type-badge--size-compact.html" target="_blank" rel="noopener">→ type-badge--size-compact.html</a></td>
             <td class="fdesc">type-badge · size-compact</td>
           </tr>
-          <tr class="file-row" data-search="data-column--type-badge--size-default.html type-badge · size-default">
-            <td class="fname"><a href="../output/components2/data-column--type-badge--size-default.html" target="_blank" rel="noopener">data-column--type-badge--size-default.html</a></td>
+          <tr class="file-row file-dup" data-search="data-column--type-badge--size-default.html type-badge · size-default">
+            <td class="fname"><a href="../output/components2/data-column--type-badge--size-default.html" target="_blank" rel="noopener">data-column--type-badge--size-default.html</a><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components2/type-badge--size-default.html" target="_blank" rel="noopener">→ type-badge--size-default.html</a></td>
             <td class="fdesc">type-badge · size-default</td>
           </tr>
-          <tr class="file-row" data-search="data-column--type-bulk--size-compact.html type-bulk · size-compact">
-            <td class="fname"><a href="../output/components2/data-column--type-bulk--size-compact.html" target="_blank" rel="noopener">data-column--type-bulk--size-compact.html</a></td>
+          <tr class="file-row file-dup" data-search="data-column--type-bulk--size-compact.html type-bulk · size-compact">
+            <td class="fname"><a href="../output/components2/data-column--type-bulk--size-compact.html" target="_blank" rel="noopener">data-column--type-bulk--size-compact.html</a><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components2/type-bulk--size-compact.html" target="_blank" rel="noopener">→ type-bulk--size-compact.html</a></td>
             <td class="fdesc">type-bulk · size-compact</td>
           </tr>
-          <tr class="file-row" data-search="data-column--type-bulk--size-default.html type-bulk · size-default">
-            <td class="fname"><a href="../output/components2/data-column--type-bulk--size-default.html" target="_blank" rel="noopener">data-column--type-bulk--size-default.html</a></td>
+          <tr class="file-row file-dup" data-search="data-column--type-bulk--size-default.html type-bulk · size-default">
+            <td class="fname"><a href="../output/components2/data-column--type-bulk--size-default.html" target="_blank" rel="noopener">data-column--type-bulk--size-default.html</a><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components2/type-bulk--size-default.html" target="_blank" rel="noopener">→ type-bulk--size-default.html</a></td>
             <td class="fdesc">type-bulk · size-default</td>
           </tr>
-          <tr class="file-row" data-search="data-column--type-dropdown--size-compact.html type-dropdown · size-compact">
-            <td class="fname"><a href="../output/components2/data-column--type-dropdown--size-compact.html" target="_blank" rel="noopener">data-column--type-dropdown--size-compact.html</a></td>
+          <tr class="file-row file-dup" data-search="data-column--type-dropdown--size-compact.html type-dropdown · size-compact">
+            <td class="fname"><a href="../output/components2/data-column--type-dropdown--size-compact.html" target="_blank" rel="noopener">data-column--type-dropdown--size-compact.html</a><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components2/type-dropdown--size-compact.html" target="_blank" rel="noopener">→ type-dropdown--size-compact.html</a></td>
             <td class="fdesc">type-dropdown · size-compact</td>
           </tr>
-          <tr class="file-row" data-search="data-column--type-dropdown--size-default.html type-dropdown · size-default">
-            <td class="fname"><a href="../output/components2/data-column--type-dropdown--size-default.html" target="_blank" rel="noopener">data-column--type-dropdown--size-default.html</a></td>
+          <tr class="file-row file-dup" data-search="data-column--type-dropdown--size-default.html type-dropdown · size-default">
+            <td class="fname"><a href="../output/components2/data-column--type-dropdown--size-default.html" target="_blank" rel="noopener">data-column--type-dropdown--size-default.html</a><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components2/type-dropdown--size-default.html" target="_blank" rel="noopener">→ type-dropdown--size-default.html</a></td>
             <td class="fdesc">type-dropdown · size-default</td>
           </tr>
-          <tr class="file-row" data-search="data-column--type-icons--size-compact.html type-icons · size-compact">
-            <td class="fname"><a href="../output/components2/data-column--type-icons--size-compact.html" target="_blank" rel="noopener">data-column--type-icons--size-compact.html</a></td>
+          <tr class="file-row file-dup" data-search="data-column--type-icons--size-compact.html type-icons · size-compact">
+            <td class="fname"><a href="../output/components2/data-column--type-icons--size-compact.html" target="_blank" rel="noopener">data-column--type-icons--size-compact.html</a><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components2/type-icons--size-compact.html" target="_blank" rel="noopener">→ type-icons--size-compact.html</a></td>
             <td class="fdesc">type-icons · size-compact</td>
           </tr>
-          <tr class="file-row" data-search="data-column--type-icons--size-default.html type-icons · size-default">
-            <td class="fname"><a href="../output/components2/data-column--type-icons--size-default.html" target="_blank" rel="noopener">data-column--type-icons--size-default.html</a></td>
+          <tr class="file-row file-dup" data-search="data-column--type-icons--size-default.html type-icons · size-default">
+            <td class="fname"><a href="../output/components2/data-column--type-icons--size-default.html" target="_blank" rel="noopener">data-column--type-icons--size-default.html</a><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components2/type-icons--size-default.html" target="_blank" rel="noopener">→ type-icons--size-default.html</a></td>
             <td class="fdesc">type-icons · size-default</td>
           </tr>
-          <tr class="file-row" data-search="data-column--type-leading--size-compact.html type-leading · size-compact">
-            <td class="fname"><a href="../output/components2/data-column--type-leading--size-compact.html" target="_blank" rel="noopener">data-column--type-leading--size-compact.html</a></td>
+          <tr class="file-row file-dup" data-search="data-column--type-leading--size-compact.html type-leading · size-compact">
+            <td class="fname"><a href="../output/components2/data-column--type-leading--size-compact.html" target="_blank" rel="noopener">data-column--type-leading--size-compact.html</a><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components2/type-leading--size-compact.html" target="_blank" rel="noopener">→ type-leading--size-compact.html</a></td>
             <td class="fdesc">type-leading · size-compact</td>
           </tr>
-          <tr class="file-row" data-search="data-column--type-leading--size-default.html type-leading · size-default">
-            <td class="fname"><a href="../output/components2/data-column--type-leading--size-default.html" target="_blank" rel="noopener">data-column--type-leading--size-default.html</a></td>
+          <tr class="file-row file-dup" data-search="data-column--type-leading--size-default.html type-leading · size-default">
+            <td class="fname"><a href="../output/components2/data-column--type-leading--size-default.html" target="_blank" rel="noopener">data-column--type-leading--size-default.html</a><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components2/type-leading--size-default.html" target="_blank" rel="noopener">→ type-leading--size-default.html</a></td>
             <td class="fdesc">type-leading · size-default</td>
           </tr>
           <tr class="file-row" data-search="data-column--type-number--size-compact.html type-number · size-compact">
@@ -4964,12 +4974,12 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
             <td class="fname"><a href="../output/components2/data-column--type-skeleton--size-default.html" target="_blank" rel="noopener">data-column--type-skeleton--size-default.html</a></td>
             <td class="fdesc">type-skeleton · size-default</td>
           </tr>
-          <tr class="file-row" data-search="data-column--type-status--size-compact.html type-status · size-compact">
-            <td class="fname"><a href="../output/components2/data-column--type-status--size-compact.html" target="_blank" rel="noopener">data-column--type-status--size-compact.html</a></td>
+          <tr class="file-row file-dup" data-search="data-column--type-status--size-compact.html type-status · size-compact">
+            <td class="fname"><a href="../output/components2/data-column--type-status--size-compact.html" target="_blank" rel="noopener">data-column--type-status--size-compact.html</a><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components2/type-status--size-compact.html" target="_blank" rel="noopener">→ type-status--size-compact.html</a></td>
             <td class="fdesc">type-status · size-compact</td>
           </tr>
-          <tr class="file-row" data-search="data-column--type-status--size-default.html type-status · size-default">
-            <td class="fname"><a href="../output/components2/data-column--type-status--size-default.html" target="_blank" rel="noopener">data-column--type-status--size-default.html</a></td>
+          <tr class="file-row file-dup" data-search="data-column--type-status--size-default.html type-status · size-default">
+            <td class="fname"><a href="../output/components2/data-column--type-status--size-default.html" target="_blank" rel="noopener">data-column--type-status--size-default.html</a><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components2/type-status--size-default.html" target="_blank" rel="noopener">→ type-status--size-default.html</a></td>
             <td class="fdesc">type-status · size-default</td>
           </tr>
           <tr class="file-row" data-search="data-column--type-textleft--size-compact.html type-textleft · size-compact">
@@ -5196,35 +5206,35 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="media">
+      <details class="family flagged flagged--dup" data-family="media">
         <summary>
           <span class="fname-head">media</span>
-          
+          <span class="badge flag-dup" title="Contains files with identical SVG content elsewhere">≡ dup</span>
           <span class="fcounts">1 file</span>
         </summary>
         
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
-          <tr class="file-row" data-search="media.html (no variants)">
-            <td class="fname"><a href="../output/components2/media.html" target="_blank" rel="noopener">media.html</a></td>
+          <tr class="file-row file-dup" data-search="media.html (no variants)">
+            <td class="fname"><a href="../output/components2/media.html" target="_blank" rel="noopener">media.html</a><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components2/media-element-medialibrary-default.html" target="_blank" rel="noopener">→ media-element-medialibrary-default.html</a></td>
             <td class="fdesc">(no variants)</td>
           </tr>
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="media-element-medialibrary-default">
+      <details class="family flagged flagged--dup" data-family="media-element-medialibrary-default">
         <summary>
           <span class="fname-head">media-element-medialibrary-default</span>
-          
+          <span class="badge flag-dup" title="Contains files with identical SVG content elsewhere">≡ dup</span>
           <span class="fcounts">1 file</span>
         </summary>
         
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
-          <tr class="file-row" data-search="media-element-medialibrary-default.html (no variants)">
-            <td class="fname"><a href="../output/components2/media-element-medialibrary-default.html" target="_blank" rel="noopener">media-element-medialibrary-default.html</a></td>
+          <tr class="file-row file-dup" data-search="media-element-medialibrary-default.html (no variants)">
+            <td class="fname"><a href="../output/components2/media-element-medialibrary-default.html" target="_blank" rel="noopener">media-element-medialibrary-default.html</a><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components2/media.html" target="_blank" rel="noopener">→ media.html</a></td>
             <td class="fdesc">(no variants)</td>
           </tr>
           </tbody>
@@ -5548,18 +5558,18 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="size-large">
+      <details class="family flagged flagged--dup" data-family="size-large">
         <summary>
           <span class="fname-head">size-large</span>
-          
+          <span class="badge flag-dup" title="Contains files with identical SVG content elsewhere">≡ dup</span>
           <span class="fcounts">1 file</span>
         </summary>
         
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
-          <tr class="file-row" data-search="size-large--user-image-true.html user-image-true">
-            <td class="fname"><a href="../output/components2/size-large--user-image-true.html" target="_blank" rel="noopener">size-large--user-image-true.html</a></td>
+          <tr class="file-row file-dup" data-search="size-large--user-image-true.html user-image-true">
+            <td class="fname"><a href="../output/components2/size-large--user-image-true.html" target="_blank" rel="noopener">size-large--user-image-true.html</a><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components2/size-md--user-image-true--type-default.html" target="_blank" rel="noopener">→ size-md--user-image-true--type-default.html</a></td>
             <td class="fdesc">user-image-true</td>
           </tr>
           </tbody>
@@ -5611,10 +5621,10 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="size-md">
+      <details class="family flagged flagged--dup" data-family="size-md">
         <summary>
           <span class="fname-head">size-md</span>
-          
+          <span class="badge flag-dup" title="Contains files with identical SVG content elsewhere">≡ dup</span>
           <span class="fcounts">8 files</span>
         </summary>
         
@@ -5645,8 +5655,8 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
             <td class="fname"><a href="../output/components2/size-md--state-toggled.html" target="_blank" rel="noopener">size-md--state-toggled.html</a></td>
             <td class="fdesc">state-toggled</td>
           </tr>
-          <tr class="file-row" data-search="size-md--user-image-true--type-default.html user-image-true · type-default">
-            <td class="fname"><a href="../output/components2/size-md--user-image-true--type-default.html" target="_blank" rel="noopener">size-md--user-image-true--type-default.html</a></td>
+          <tr class="file-row file-dup" data-search="size-md--user-image-true--type-default.html user-image-true · type-default">
+            <td class="fname"><a href="../output/components2/size-md--user-image-true--type-default.html" target="_blank" rel="noopener">size-md--user-image-true--type-default.html</a><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components2/size-large--user-image-true.html" target="_blank" rel="noopener">→ size-large--user-image-true.html</a></td>
             <td class="fdesc">user-image-true · type-default</td>
           </tr>
           <tr class="file-row" data-search="size-md.html (no variants)">
@@ -5656,10 +5666,10 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="size-medium">
+      <details class="family flagged flagged--dup" data-family="size-medium">
         <summary>
           <span class="fname-head">size-medium</span>
-          
+          <span class="badge flag-dup" title="Contains files with identical SVG content elsewhere">≡ dup</span>
           <span class="fcounts">4 files · <span class="alt-count">4 alt</span></span>
         </summary>
         
@@ -5694,8 +5704,8 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
             <td class="fname"><a href="../output/components2/size-medium--split-true.html" target="_blank" rel="noopener">size-medium--split-true.html</a></td>
             <td class="fdesc">split-true</td>
           </tr>
-          <tr class="file-row" data-search="size-medium--user-image-false.html user-image-false">
-            <td class="fname"><a href="../output/components2/size-medium--user-image-false.html" target="_blank" rel="noopener">size-medium--user-image-false.html</a></td>
+          <tr class="file-row file-dup" data-search="size-medium--user-image-false.html user-image-false">
+            <td class="fname"><a href="../output/components2/size-medium--user-image-false.html" target="_blank" rel="noopener">size-medium--user-image-false.html</a><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components2/size-sm--user-image-false--type-default.html" target="_blank" rel="noopener">→ size-sm--user-image-false--type-default.html</a></td>
             <td class="fdesc">user-image-false</td>
           </tr>
           </tbody>
@@ -5764,10 +5774,10 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="size-sm">
+      <details class="family flagged flagged--dup" data-family="size-sm">
         <summary>
           <span class="fname-head">size-sm</span>
-          
+          <span class="badge flag-dup" title="Contains files with identical SVG content elsewhere">≡ dup</span>
           <span class="fcounts">44 files</span>
         </summary>
         
@@ -5942,8 +5952,8 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
             <td class="fname"><a href="../output/components2/size-sm--type-user-badge--close-function-true--color-yellow--state-default.html" target="_blank" rel="noopener">size-sm--type-user-badge--close-function-true--color-yellow--state-default.html</a></td>
             <td class="fdesc">type-user-badge · close-function-true · color-yellow · state-default</td>
           </tr>
-          <tr class="file-row" data-search="size-sm--user-image-false--type-default.html user-image-false · type-default">
-            <td class="fname"><a href="../output/components2/size-sm--user-image-false--type-default.html" target="_blank" rel="noopener">size-sm--user-image-false--type-default.html</a></td>
+          <tr class="file-row file-dup" data-search="size-sm--user-image-false--type-default.html user-image-false · type-default">
+            <td class="fname"><a href="../output/components2/size-sm--user-image-false--type-default.html" target="_blank" rel="noopener">size-sm--user-image-false--type-default.html</a><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components2/size-medium--user-image-false.html" target="_blank" rel="noopener">→ size-medium--user-image-false.html</a></td>
             <td class="fdesc">user-image-false · type-default</td>
           </tr>
           <tr class="file-row" data-search="size-sm--user-image-true--type-default.html user-image-true · type-default">
@@ -5953,10 +5963,10 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="size-small">
+      <details class="family flagged flagged--dup" data-family="size-small">
         <summary>
           <span class="fname-head">size-small</span>
-          
+          <span class="badge flag-dup" title="Contains files with identical SVG content elsewhere">≡ dup</span>
           <span class="fcounts">6 files · <span class="alt-count">6 alt</span></span>
         </summary>
         
@@ -5979,12 +5989,12 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
             <td class="fname"><a href="../output/components2/size-small--split-false-2819-14678.html" target="_blank" rel="noopener">size-small--split-false-2819-14678.html</a><span class="badge alt">alt</span></td>
             <td class="fdesc">split-false</td>
           </tr>
-          <tr class="file-row" data-search="size-small--split-false-5012-277776.html split-false">
-            <td class="fname"><a href="../output/components2/size-small--split-false-5012-277776.html" target="_blank" rel="noopener">size-small--split-false-5012-277776.html</a><span class="badge alt">alt</span></td>
+          <tr class="file-row file-dup" data-search="size-small--split-false-5012-277776.html split-false">
+            <td class="fname"><a href="../output/components2/size-small--split-false-5012-277776.html" target="_blank" rel="noopener">size-small--split-false-5012-277776.html</a><span class="badge alt">alt</span><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components2/size-small--split-false.html" target="_blank" rel="noopener">→ size-small--split-false.html</a></td>
             <td class="fdesc">split-false</td>
           </tr>
-          <tr class="file-row" data-search="size-small--split-false.html split-false">
-            <td class="fname"><a href="../output/components2/size-small--split-false.html" target="_blank" rel="noopener">size-small--split-false.html</a></td>
+          <tr class="file-row file-dup" data-search="size-small--split-false.html split-false">
+            <td class="fname"><a href="../output/components2/size-small--split-false.html" target="_blank" rel="noopener">size-small--split-false.html</a><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components2/size-small--split-false-5012-277776.html" target="_blank" rel="noopener">→ size-small--split-false-5012-277776.html</a></td>
             <td class="fdesc">split-false</td>
           </tr>
           <tr class="file-row" data-search="size-small--split-true-5012-273617.html split-true">
@@ -6039,10 +6049,10 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="state-active">
+      <details class="family flagged flagged--dup" data-family="state-active">
         <summary>
           <span class="fname-head">state-active</span>
-          
+          <span class="badge flag-dup" title="Contains files with identical SVG content elsewhere">≡ dup</span>
           <span class="fcounts">1 file · <span class="alt-count">5 alt</span></span>
         </summary>
         
@@ -6065,12 +6075,12 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
             <td class="fname"><a href="../output/components2/state-active-11692-72710.html" target="_blank" rel="noopener">state-active-11692-72710.html</a><span class="badge alt">alt</span></td>
             <td class="fdesc">(no variants)</td>
           </tr>
-          <tr class="file-row" data-search="state-active-3281-2670.html (no variants)">
-            <td class="fname"><a href="../output/components2/state-active-3281-2670.html" target="_blank" rel="noopener">state-active-3281-2670.html</a><span class="badge alt">alt</span></td>
+          <tr class="file-row file-dup" data-search="state-active-3281-2670.html (no variants)">
+            <td class="fname"><a href="../output/components2/state-active-3281-2670.html" target="_blank" rel="noopener">state-active-3281-2670.html</a><span class="badge alt">alt</span><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components2/state-active-9445-526796.html" target="_blank" rel="noopener">→ state-active-9445-526796.html</a></td>
             <td class="fdesc">(no variants)</td>
           </tr>
-          <tr class="file-row" data-search="state-active-9445-526796.html (no variants)">
-            <td class="fname"><a href="../output/components2/state-active-9445-526796.html" target="_blank" rel="noopener">state-active-9445-526796.html</a><span class="badge alt">alt</span></td>
+          <tr class="file-row file-dup" data-search="state-active-9445-526796.html (no variants)">
+            <td class="fname"><a href="../output/components2/state-active-9445-526796.html" target="_blank" rel="noopener">state-active-9445-526796.html</a><span class="badge alt">alt</span><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components2/state-active-3281-2670.html" target="_blank" rel="noopener">→ state-active-3281-2670.html</a></td>
             <td class="fdesc">(no variants)</td>
           </tr>
           </tbody>
@@ -6161,10 +6171,10 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="state-default">
+      <details class="family flagged flagged--dup" data-family="state-default">
         <summary>
           <span class="fname-head">state-default</span>
-          
+          <span class="badge flag-dup" title="Contains files with identical SVG content elsewhere">≡ dup</span>
           <span class="fcounts">22 files · <span class="alt-count">19 alt</span></span>
         </summary>
         
@@ -6311,8 +6321,8 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
             <td class="fname"><a href="../output/components2/state-default-11692-72709.html" target="_blank" rel="noopener">state-default-11692-72709.html</a><span class="badge alt">alt</span></td>
             <td class="fdesc">(no variants)</td>
           </tr>
-          <tr class="file-row" data-search="state-default-2378-32309.html (no variants)">
-            <td class="fname"><a href="../output/components2/state-default-2378-32309.html" target="_blank" rel="noopener">state-default-2378-32309.html</a><span class="badge alt">alt</span></td>
+          <tr class="file-row file-dup" data-search="state-default-2378-32309.html (no variants)">
+            <td class="fname"><a href="../output/components2/state-default-2378-32309.html" target="_blank" rel="noopener">state-default-2378-32309.html</a><span class="badge alt">alt</span><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components2/state-default-9445-531165.html" target="_blank" rel="noopener">→ state-default-9445-531165.html</a></td>
             <td class="fdesc">(no variants)</td>
           </tr>
           <tr class="file-row" data-search="state-default-3758-103293.html (no variants)">
@@ -6323,12 +6333,12 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
             <td class="fname"><a href="../output/components2/state-default-9235-295590.html" target="_blank" rel="noopener">state-default-9235-295590.html</a><span class="badge alt">alt</span></td>
             <td class="fdesc">(no variants)</td>
           </tr>
-          <tr class="file-row" data-search="state-default-9445-526685.html (no variants)">
-            <td class="fname"><a href="../output/components2/state-default-9445-526685.html" target="_blank" rel="noopener">state-default-9445-526685.html</a><span class="badge alt">alt</span></td>
+          <tr class="file-row file-dup" data-search="state-default-9445-526685.html (no variants)">
+            <td class="fname"><a href="../output/components2/state-default-9445-526685.html" target="_blank" rel="noopener">state-default-9445-526685.html</a><span class="badge alt">alt</span><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components2/state-default-3281-934.html" target="_blank" rel="noopener">→ state-default-3281-934.html</a></td>
             <td class="fdesc">(no variants)</td>
           </tr>
-          <tr class="file-row" data-search="state-default-9445-531165.html (no variants)">
-            <td class="fname"><a href="../output/components2/state-default-9445-531165.html" target="_blank" rel="noopener">state-default-9445-531165.html</a><span class="badge alt">alt</span></td>
+          <tr class="file-row file-dup" data-search="state-default-9445-531165.html (no variants)">
+            <td class="fname"><a href="../output/components2/state-default-9445-531165.html" target="_blank" rel="noopener">state-default-9445-531165.html</a><span class="badge alt">alt</span><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components2/state-default-2378-32309.html" target="_blank" rel="noopener">→ state-default-2378-32309.html</a></td>
             <td class="fdesc">(no variants)</td>
           </tr>
           <tr class="file-row" data-search="state-default-9589-17766.html (no variants)">
@@ -6338,18 +6348,18 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="state-default-3281-934">
+      <details class="family flagged flagged--dup" data-family="state-default-3281-934">
         <summary>
           <span class="fname-head">state-default-3281-934</span>
-          
+          <span class="badge flag-dup" title="Contains files with identical SVG content elsewhere">≡ dup</span>
           <span class="fcounts">1 file</span>
         </summary>
         
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
-          <tr class="file-row" data-search="state-default-3281-934.html (no variants)">
-            <td class="fname"><a href="../output/components2/state-default-3281-934.html" target="_blank" rel="noopener">state-default-3281-934.html</a></td>
+          <tr class="file-row file-dup" data-search="state-default-3281-934.html (no variants)">
+            <td class="fname"><a href="../output/components2/state-default-3281-934.html" target="_blank" rel="noopener">state-default-3281-934.html</a><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components2/state-default-9445-526685.html" target="_blank" rel="noopener">→ state-default-9445-526685.html</a></td>
             <td class="fdesc">(no variants)</td>
           </tr>
           </tbody>
@@ -7154,43 +7164,43 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="type-badge">
+      <details class="family flagged flagged--dup" data-family="type-badge">
         <summary>
           <span class="fname-head">type-badge</span>
-          
+          <span class="badge flag-dup" title="Contains files with identical SVG content elsewhere">≡ dup</span>
           <span class="fcounts">2 files</span>
         </summary>
         
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
-          <tr class="file-row" data-search="type-badge--size-compact.html size-compact">
-            <td class="fname"><a href="../output/components2/type-badge--size-compact.html" target="_blank" rel="noopener">type-badge--size-compact.html</a></td>
+          <tr class="file-row file-dup" data-search="type-badge--size-compact.html size-compact">
+            <td class="fname"><a href="../output/components2/type-badge--size-compact.html" target="_blank" rel="noopener">type-badge--size-compact.html</a><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components2/data-column--type-badge--size-compact.html" target="_blank" rel="noopener">→ data-column--type-badge--size-compact.html</a></td>
             <td class="fdesc">size-compact</td>
           </tr>
-          <tr class="file-row" data-search="type-badge--size-default.html size-default">
-            <td class="fname"><a href="../output/components2/type-badge--size-default.html" target="_blank" rel="noopener">type-badge--size-default.html</a></td>
+          <tr class="file-row file-dup" data-search="type-badge--size-default.html size-default">
+            <td class="fname"><a href="../output/components2/type-badge--size-default.html" target="_blank" rel="noopener">type-badge--size-default.html</a><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components2/data-column--type-badge--size-default.html" target="_blank" rel="noopener">→ data-column--type-badge--size-default.html</a></td>
             <td class="fdesc">size-default</td>
           </tr>
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="type-bulk">
+      <details class="family flagged flagged--dup" data-family="type-bulk">
         <summary>
           <span class="fname-head">type-bulk</span>
-          
+          <span class="badge flag-dup" title="Contains files with identical SVG content elsewhere">≡ dup</span>
           <span class="fcounts">2 files</span>
         </summary>
         
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
-          <tr class="file-row" data-search="type-bulk--size-compact.html size-compact">
-            <td class="fname"><a href="../output/components2/type-bulk--size-compact.html" target="_blank" rel="noopener">type-bulk--size-compact.html</a></td>
+          <tr class="file-row file-dup" data-search="type-bulk--size-compact.html size-compact">
+            <td class="fname"><a href="../output/components2/type-bulk--size-compact.html" target="_blank" rel="noopener">type-bulk--size-compact.html</a><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components2/data-column--type-bulk--size-compact.html" target="_blank" rel="noopener">→ data-column--type-bulk--size-compact.html</a></td>
             <td class="fdesc">size-compact</td>
           </tr>
-          <tr class="file-row" data-search="type-bulk--size-default.html size-default">
-            <td class="fname"><a href="../output/components2/type-bulk--size-default.html" target="_blank" rel="noopener">type-bulk--size-default.html</a></td>
+          <tr class="file-row file-dup" data-search="type-bulk--size-default.html size-default">
+            <td class="fname"><a href="../output/components2/type-bulk--size-default.html" target="_blank" rel="noopener">type-bulk--size-default.html</a><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components2/data-column--type-bulk--size-default.html" target="_blank" rel="noopener">→ data-column--type-bulk--size-default.html</a></td>
             <td class="fdesc">size-default</td>
           </tr>
           </tbody>
@@ -7853,22 +7863,22 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="type-dropdown">
+      <details class="family flagged flagged--dup" data-family="type-dropdown">
         <summary>
           <span class="fname-head">type-dropdown</span>
-          
+          <span class="badge flag-dup" title="Contains files with identical SVG content elsewhere">≡ dup</span>
           <span class="fcounts">2 files</span>
         </summary>
         
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
-          <tr class="file-row" data-search="type-dropdown--size-compact.html size-compact">
-            <td class="fname"><a href="../output/components2/type-dropdown--size-compact.html" target="_blank" rel="noopener">type-dropdown--size-compact.html</a></td>
+          <tr class="file-row file-dup" data-search="type-dropdown--size-compact.html size-compact">
+            <td class="fname"><a href="../output/components2/type-dropdown--size-compact.html" target="_blank" rel="noopener">type-dropdown--size-compact.html</a><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components2/data-column--type-dropdown--size-compact.html" target="_blank" rel="noopener">→ data-column--type-dropdown--size-compact.html</a></td>
             <td class="fdesc">size-compact</td>
           </tr>
-          <tr class="file-row" data-search="type-dropdown--size-default.html size-default">
-            <td class="fname"><a href="../output/components2/type-dropdown--size-default.html" target="_blank" rel="noopener">type-dropdown--size-default.html</a></td>
+          <tr class="file-row file-dup" data-search="type-dropdown--size-default.html size-default">
+            <td class="fname"><a href="../output/components2/type-dropdown--size-default.html" target="_blank" rel="noopener">type-dropdown--size-default.html</a><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components2/data-column--type-dropdown--size-default.html" target="_blank" rel="noopener">→ data-column--type-dropdown--size-default.html</a></td>
             <td class="fdesc">size-default</td>
           </tr>
           </tbody>
@@ -8552,22 +8562,22 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="type-icons">
+      <details class="family flagged flagged--dup" data-family="type-icons">
         <summary>
           <span class="fname-head">type-icons</span>
-          
+          <span class="badge flag-dup" title="Contains files with identical SVG content elsewhere">≡ dup</span>
           <span class="fcounts">2 files</span>
         </summary>
         
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
-          <tr class="file-row" data-search="type-icons--size-compact.html size-compact">
-            <td class="fname"><a href="../output/components2/type-icons--size-compact.html" target="_blank" rel="noopener">type-icons--size-compact.html</a></td>
+          <tr class="file-row file-dup" data-search="type-icons--size-compact.html size-compact">
+            <td class="fname"><a href="../output/components2/type-icons--size-compact.html" target="_blank" rel="noopener">type-icons--size-compact.html</a><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components2/data-column--type-icons--size-compact.html" target="_blank" rel="noopener">→ data-column--type-icons--size-compact.html</a></td>
             <td class="fdesc">size-compact</td>
           </tr>
-          <tr class="file-row" data-search="type-icons--size-default.html size-default">
-            <td class="fname"><a href="../output/components2/type-icons--size-default.html" target="_blank" rel="noopener">type-icons--size-default.html</a></td>
+          <tr class="file-row file-dup" data-search="type-icons--size-default.html size-default">
+            <td class="fname"><a href="../output/components2/type-icons--size-default.html" target="_blank" rel="noopener">type-icons--size-default.html</a><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components2/data-column--type-icons--size-default.html" target="_blank" rel="noopener">→ data-column--type-icons--size-default.html</a></td>
             <td class="fdesc">size-default</td>
           </tr>
           </tbody>
@@ -8632,22 +8642,22 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="type-leading">
+      <details class="family flagged flagged--dup" data-family="type-leading">
         <summary>
           <span class="fname-head">type-leading</span>
-          
+          <span class="badge flag-dup" title="Contains files with identical SVG content elsewhere">≡ dup</span>
           <span class="fcounts">2 files</span>
         </summary>
         
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
-          <tr class="file-row" data-search="type-leading--size-compact.html size-compact">
-            <td class="fname"><a href="../output/components2/type-leading--size-compact.html" target="_blank" rel="noopener">type-leading--size-compact.html</a></td>
+          <tr class="file-row file-dup" data-search="type-leading--size-compact.html size-compact">
+            <td class="fname"><a href="../output/components2/type-leading--size-compact.html" target="_blank" rel="noopener">type-leading--size-compact.html</a><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components2/data-column--type-leading--size-compact.html" target="_blank" rel="noopener">→ data-column--type-leading--size-compact.html</a></td>
             <td class="fdesc">size-compact</td>
           </tr>
-          <tr class="file-row" data-search="type-leading--size-default.html size-default">
-            <td class="fname"><a href="../output/components2/type-leading--size-default.html" target="_blank" rel="noopener">type-leading--size-default.html</a></td>
+          <tr class="file-row file-dup" data-search="type-leading--size-default.html size-default">
+            <td class="fname"><a href="../output/components2/type-leading--size-default.html" target="_blank" rel="noopener">type-leading--size-default.html</a><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components2/data-column--type-leading--size-default.html" target="_blank" rel="noopener">→ data-column--type-leading--size-default.html</a></td>
             <td class="fdesc">size-default</td>
           </tr>
           </tbody>
@@ -9374,10 +9384,10 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="type-status">
+      <details class="family flagged flagged--dup" data-family="type-status">
         <summary>
           <span class="fname-head">type-status</span>
-          
+          <span class="badge flag-dup" title="Contains files with identical SVG content elsewhere">≡ dup</span>
           <span class="fcounts">3 files</span>
         </summary>
         
@@ -9388,12 +9398,12 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
             <td class="fname"><a href="../output/components2/type-status--orientation-left.html" target="_blank" rel="noopener">type-status--orientation-left.html</a></td>
             <td class="fdesc">orientation-left</td>
           </tr>
-          <tr class="file-row" data-search="type-status--size-compact.html size-compact">
-            <td class="fname"><a href="../output/components2/type-status--size-compact.html" target="_blank" rel="noopener">type-status--size-compact.html</a></td>
+          <tr class="file-row file-dup" data-search="type-status--size-compact.html size-compact">
+            <td class="fname"><a href="../output/components2/type-status--size-compact.html" target="_blank" rel="noopener">type-status--size-compact.html</a><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components2/data-column--type-status--size-compact.html" target="_blank" rel="noopener">→ data-column--type-status--size-compact.html</a></td>
             <td class="fdesc">size-compact</td>
           </tr>
-          <tr class="file-row" data-search="type-status--size-default.html size-default">
-            <td class="fname"><a href="../output/components2/type-status--size-default.html" target="_blank" rel="noopener">type-status--size-default.html</a></td>
+          <tr class="file-row file-dup" data-search="type-status--size-default.html size-default">
+            <td class="fname"><a href="../output/components2/type-status--size-default.html" target="_blank" rel="noopener">type-status--size-default.html</a><span class="badge dup" title="Identical SVG content">≡ dup</span> <a href="../output/components2/data-column--type-status--size-default.html" target="_blank" rel="noopener">→ data-column--type-status--size-default.html</a></td>
             <td class="fdesc">size-default</td>
           </tr>
           </tbody>

@@ -157,8 +157,39 @@ function esc(s) {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
+// ── Build content-duplicate map ────────────────────────────────────────────────
+// Returns Map<"dir/file", [{dir, file, short}]> listing each file's content-identical peers.
+function buildDupMap(libraries) {
+  const crypto = require('crypto');
+  const checkerRe = /<div class="checker">([\s\S]*?)<\/div>/;
+  const byHash = new Map();
+
+  for (const { dir, short, files } of libraries) {
+    const absDir = path.join(BASE, dir);
+    for (const file of files) {
+      const html = fs.readFileSync(path.join(absDir, file), 'utf8');
+      const m = html.match(checkerRe);
+      const svg = m ? m[1].trim() : '';
+      if (!svg.includes('<svg')) continue;
+      const h = crypto.createHash('md5').update(svg).digest('hex');
+      if (!byHash.has(h)) byHash.set(h, []);
+      byHash.get(h).push({ dir, file, short });
+    }
+  }
+
+  const dupMap = new Map();
+  for (const group of byHash.values()) {
+    if (group.length < 2) continue;
+    for (const entry of group) {
+      const key = `${entry.dir}/${entry.file}`;
+      dupMap.set(key, group.filter(e => e.file !== entry.file || e.dir !== entry.dir));
+    }
+  }
+  return dupMap;
+}
+
 // ── Build HTML ─────────────────────────────────────────────────────────────────
-function buildHTML(libraries) {
+function buildHTML(libraries, dupMap) {
   const totalFiles = libraries.reduce((s, l) => s + l.files.length, 0);
 
   const libSections = libraries.map(({ label, short, dir, files }) => {
@@ -171,35 +202,56 @@ function buildHTML(libraries) {
       const blankFiles = new Set(ffiles.filter(f => isBlankFile(path.join(absDir, f))));
       const flagInfo = getFlagInfo(family, dir, blankFiles.size, ffiles.length);
 
+      // Check if any file in this family is a content duplicate
+      const familyHasDup = ffiles.some(f => dupMap.has(`${dir}/${f}`));
+
       const rows = ffiles.sort().map(f => {
         const { desc, isAlt } = parse(f);
         const relPath = `../${dir}/${f}`;
         const altBadge = isAlt ? `<span class="badge alt">alt</span>` : '';
         const blankBadge = blankFiles.has(f) ? `<span class="badge blank">blank</span>` : '';
+
+        // Content-duplicate badge with links to each peer
+        const peers = dupMap.get(`${dir}/${f}`) || [];
+        const dupBadge = peers.length ? (() => {
+          const links = peers.map(p => {
+            const label = p.dir !== dir ? `→ ${p.short}: ${p.file}` : `→ ${p.file}`;
+            const href = `../${p.dir}/${p.file}`;
+            return `<a href="${esc(href)}" target="_blank" rel="noopener">${esc(label)}</a>`;
+          }).join(' ');
+          return `<span class="badge dup" title="Identical SVG content">≡ dup</span> ${links}`;
+        })() : '';
+
         return `
-          <tr class="file-row${blankFiles.has(f) ? ' file-blank' : ''}" data-search="${esc(f.toLowerCase())} ${esc(desc.toLowerCase())}">
-            <td class="fname"><a href="${esc(relPath)}" target="_blank" rel="noopener">${esc(f)}</a>${altBadge}${blankBadge}</td>
+          <tr class="file-row${blankFiles.has(f) ? ' file-blank' : ''}${peers.length ? ' file-dup' : ''}" data-search="${esc(f.toLowerCase())} ${esc(desc.toLowerCase())}">
+            <td class="fname"><a href="${esc(relPath)}" target="_blank" rel="noopener">${esc(f)}</a>${altBadge}${blankBadge}${dupBadge}</td>
             <td class="fdesc">${esc(desc)}</td>
           </tr>`;
       }).join('');
 
       const altCount  = ffiles.filter(f => ALT_RE.test(f)).length;
       const mainCount = ffiles.length - altCount;
-      const flagBadge = flagInfo
-        ? flagInfo.type === 'icon'
-          ? `<span class="badge flag-icon" title="${esc(flagInfo.reason)}">⬡ icon</span>`
-          : flagInfo.type === 'blank'
-              ? `<span class="badge flag-blank" title="${esc(flagInfo.reason)}">◻ blank</span>`
-              : flagInfo.type === 'artifact'
-                ? `<span class="badge flag-artifact" title="${esc(flagInfo.reason)}">⬡ artifact</span>`
-                : `<span class="badge flag" title="${esc(flagInfo.reason)}">⚑ needs review</span>`
+
+      // Determine effective flag (dup takes precedence for display if no other flag)
+      const effectiveFlagInfo = flagInfo || (familyHasDup ? { type: 'dup', reason: 'Contains files with identical SVG content elsewhere' } : null);
+
+      const flagBadge = effectiveFlagInfo
+        ? effectiveFlagInfo.type === 'icon'
+          ? `<span class="badge flag-icon" title="${esc(effectiveFlagInfo.reason)}">⬡ icon</span>`
+          : effectiveFlagInfo.type === 'blank'
+              ? `<span class="badge flag-blank" title="${esc(effectiveFlagInfo.reason)}">◻ blank</span>`
+              : effectiveFlagInfo.type === 'artifact'
+                ? `<span class="badge flag-artifact" title="${esc(effectiveFlagInfo.reason)}">⬡ artifact</span>`
+                : effectiveFlagInfo.type === 'dup'
+                  ? `<span class="badge flag-dup" title="${esc(effectiveFlagInfo.reason)}">≡ dup</span>`
+                  : `<span class="badge flag" title="${esc(effectiveFlagInfo.reason)}">⚑ needs review</span>`
         : '';
-      const flagNote = flagInfo
-        ? `<div class="flag-note flag-note--${flagInfo.type}">${esc(flagInfo.reason)}</div>`
+      const flagNote = effectiveFlagInfo && effectiveFlagInfo.type !== 'dup'
+        ? `<div class="flag-note flag-note--${effectiveFlagInfo.type}">${esc(effectiveFlagInfo.reason)}</div>`
         : '';
 
       return `
-      <details class="family${flagInfo ? ` flagged flagged--${flagInfo.type}` : ''}" data-family="${esc(family)}">
+      <details class="family${effectiveFlagInfo ? ` flagged flagged--${effectiveFlagInfo.type}` : ''}" data-family="${esc(family)}">
         <summary>
           <span class="fname-head">${esc(family)}</span>
           ${flagBadge}
@@ -279,6 +331,11 @@ details[open]>summary::before{transform:rotate(90deg)}
 .badge.flag-blank{background:#fdf4ff;color:#7e22ce;border:1px solid #d8b4fe;cursor:help}
 .badge.blank{background:#fdf4ff;color:#7e22ce;border:1px solid #d8b4fe;font-size:.6rem}
 .badge.flag-artifact{background:#f3f4f6;color:#4b5563;border:1px solid #9ca3af;cursor:help}
+.badge.flag-dup{background:#fff7ed;color:#9a3412;border:1px solid #fdba74;cursor:help}
+.badge.dup{background:#fff7ed;color:#9a3412;border:1px solid #fdba74;font-size:.6rem}
+.badge.dup + a{font-size:.7rem;color:#9a3412;margin-left:.2rem}
+.badge.dup + a + a{font-size:.7rem;color:#9a3412;margin-left:.35rem}
+.file-dup td{background:#fffbf7}
 
 details.family.flagged--review{border-color:#fde68a;background:#fffbeb}
 details.family.flagged--review>summary{background:#fffbeb}
@@ -292,6 +349,9 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
 details.family.flagged--artifact{border-color:#d1d5db;background:#f9fafb}
 details.family.flagged--artifact>summary{background:#f9fafb}
 details.family.flagged--artifact .fname-head{color:#6b7280}
+details.family.flagged--dup{border-color:#fdba74;background:#fff7ed}
+details.family.flagged--dup>summary{background:#fff7ed}
+details.family.flagged--dup .fname-head{color:#9a3412}
 .flag-note{font-size:.75rem;padding:.4rem .9rem;border-bottom-width:1px;border-bottom-style:solid}
 .flag-note--review{color:#92400e;background:#fef3c7;border-bottom-color:#fde68a}
 .flag-note--icon{color:#166534;background:#dcfce7;border-bottom-color:#4ade80}
@@ -310,6 +370,7 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
 .filter-btn.icon.active{background:#f0fdf4;color:#166534;border-color:#4ade80}
 .filter-btn.blank.active{background:#fdf4ff;color:#7e22ce;border-color:#d8b4fe}
 .filter-btn.artifact.active{background:#f3f4f6;color:#4b5563;border-color:#9ca3af}
+.filter-btn.dup.active{background:#fff7ed;color:#9a3412;border-color:#fdba74}
 </style>
 </head>
 <body>
@@ -329,6 +390,7 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
     <button class="filter-btn icon" data-filter="icon">⬡ Likely icon</button>
     <button class="filter-btn blank" data-filter="blank">◻ Blank</button>
     <button class="filter-btn artifact" data-filter="artifact">⬡ Artifact</button>
+    <button class="filter-btn dup" data-filter="dup">≡ Duplicates</button>
   </div>
 
   ${libSections}
@@ -400,7 +462,8 @@ function main() {
   });
 
   fs.mkdirSync(path.join(BASE, 'sitemap'), { recursive: true });
-  const html = buildHTML(libraries);
+  const dupMap = buildDupMap(libraries);
+  const html = buildHTML(libraries, dupMap);
   fs.writeFileSync(OUT, html, 'utf8');
   console.log(`\n✓ Written to ${path.relative(BASE, OUT)}`);
 }
