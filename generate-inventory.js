@@ -105,7 +105,6 @@ const FLAGGED_L2_MATCH = new Set([
   'modal-item-',
   'navigation-bar',
   'orientation_horizontal','orientation_vertical',
-  'pill_default_m_none_grey','pill_sm_default_default_brown','pill_sm_default_default_green',
   'popover-alt','popover-item-',
   'progress-indicator',
   'segmented-control',
@@ -116,8 +115,26 @@ const FLAGGED_L2_MATCH = new Set([
   'status_to-be-approved','status_unread-unresolved','status_warning',
   'tab-group',
   'tags',
-  'tooltip','tooltip-v02---complex-content',
 ]);
+
+// Explicit lib2→lib1 family mapping for semantic renames
+// (where the lib1 family was renamed and auto-prefix matching won't find it)
+const LIB2_TO_LIB1_FAMILY = {
+  'appearance_floating':  'tag',
+  'appearance_inline':    'tag',
+  'color_amber':   'column-card', 'color_azure':  'column-card',
+  'color_beige':   'column-card', 'color_blue':   'column-card',
+  'color_cobalt':  'column-card', 'color_coral':  'column-card',
+  'color_default': 'column-card', 'color_emerald':'column-card',
+  'color_green':   'column-card', 'color_grey':   'column-card',
+  'color_indigo':  'column-card', 'color_mint':   'column-card',
+  'color_orange':  'column-card', 'color_peridot':'column-card',
+  'color_petrol':  'column-card', 'color_purple': 'column-card',
+  'color_violet':  'column-card', 'color_yellow': 'column-card',
+  'orientation_horizontal': 'scroll-bar',
+  'orientation_vertical':   'scroll-bar',
+  'tags': 'tag',
+};
 
 // ── Blank-file detection ──────────────────────────────────────────────────────
 function isBlankFile(absPath) {
@@ -201,6 +218,16 @@ function buildHTML(libraries) {
   const lib1FamilyMap = lib1Entry ? groupByFamily(lib1Entry.files) : new Map();
 
   function findLib1Link(family) {
+    // Explicit semantic rename mapping takes priority
+    const mappedFamily = LIB2_TO_LIB1_FAMILY[family];
+    if (mappedFamily) {
+      const files = lib1FamilyMap.get(mappedFamily);
+      if (files) {
+        return files.length === 1
+          ? `../output/components/${files[0]}`
+          : `component-inventory.html?q=${encodeURIComponent(mappedFamily)}`;
+      }
+    }
     // Exact match
     if (lib1FamilyMap.has(family)) {
       const files = lib1FamilyMap.get(family);
@@ -208,14 +235,14 @@ function buildHTML(libraries) {
         ? `../output/components/${files[0]}`
         : `component-inventory.html?q=${encodeURIComponent(family)}`;
     }
-    // lib2 family is more specific: starts with a lib1 family prefix (e.g. 'status_approved' → 'status')
-    for (const [f1, files] of lib1FamilyMap) {
+    // lib2 family starts with a lib1 family prefix (e.g. 'status_approved' → 'status')
+    for (const [f1] of lib1FamilyMap) {
       if (family.startsWith(f1 + '_') || family.startsWith(f1 + '-')) {
         return `component-inventory.html?q=${encodeURIComponent(f1)}`;
       }
     }
-    // lib1 family is more specific: starts with lib2 family prefix
-    for (const [f1, files] of lib1FamilyMap) {
+    // lib1 family starts with lib2 family prefix
+    for (const [f1] of lib1FamilyMap) {
       if (f1.startsWith(family + '_') || f1.startsWith(family + '-')) {
         return `component-inventory.html?q=${encodeURIComponent(family)}`;
       }
