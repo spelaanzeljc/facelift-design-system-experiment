@@ -100,7 +100,7 @@ function isBlankFile(absPath) {
   try {
     const html = fs.readFileSync(absPath, 'utf8');
     const m = html.match(/<div class="checker">([\s\S]*?)<\/div>/);
-    return !m || !m[1].includes('<svg');
+    return !m || m[1].trim() === '';
   } catch { return false; }
 }
 
