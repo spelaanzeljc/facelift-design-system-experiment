@@ -18736,6 +18736,9 @@ function applyFilters() {
 
 input.addEventListener('input', applyFilters);
 
+const urlQ = new URLSearchParams(location.search).get('q');
+if (urlQ) { input.value = urlQ; applyFilters(); }
+
 document.querySelectorAll('.filter-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     activeFilter = btn.dataset.filter;
