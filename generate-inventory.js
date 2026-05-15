@@ -109,7 +109,7 @@ function getFlagInfo(family, dir, blankCount, totalCount) {
     if (FLAGGED_L2_ICON.has(family))  return { type: 'icon',  reason: 'Likely icon — same name exists in output/icons/' };
     if (FLAGGED_L2_MATCH.has(family)) return { type: 'lib1',  reason: 'Also present in Library 1 — potential duplicate' };
   }
-  if (blankCount > 0) {
+  if (dir.includes('components2') && blankCount > 0) {
     const all = blankCount === totalCount;
     return {
       type: 'blank',

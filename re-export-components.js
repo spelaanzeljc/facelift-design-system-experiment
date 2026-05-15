@@ -41,6 +41,9 @@ const COMPONENTS = [
   { nodeId: '11644:6897',    family: 'column-header_-type_my-tasks' },
   { nodeId: '11689:41300',   family: 'checklist-item',  skipIfExists: true },
   { nodeId: '14493:93299',   family: 'comment-item',    skipIfExists: true },
+  { nodeId: '13305:49308',   family: 'header_-type_content' },
+  { nodeId: '11696:73275',   family: 'status' },
+  { nodeId: '14754:93295',   family: 'smaller-post-set-item' },
 ];
 
 // ── Parse a Figma variant name into a filename suffix ──────────────────────────
