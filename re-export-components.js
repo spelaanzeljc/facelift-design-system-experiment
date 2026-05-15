@@ -49,9 +49,23 @@ const COMPONENTS = [
   { nodeId: '14499:89777',  family: 'alert-banner',                      skipIfExists: true },
 
   // ── Library 2 entries ──
-  { nodeId: '3761:127505', family: 'data-column',      fileKey: LIB2_KEY, outDir: 'output/components2' },
-  { nodeId: '3323:43961',  family: 'calendar-element', fileKey: LIB2_KEY, outDir: 'output/components2' },
-  { nodeId: '3607:119854', family: 'data-table',       fileKey: LIB2_KEY, outDir: 'output/components2', skipIfExists: true },
+  { nodeId: '3761:127505', family: 'data-column',       fileKey: LIB2_KEY, outDir: 'output/components2' },
+  { nodeId: '3323:43961',  family: 'calendar-element',  fileKey: LIB2_KEY, outDir: 'output/components2' },
+
+  // ── Library 2 — batch 2 re-exports ──
+  { nodeId: '11077:13980', family: 'card',              fileKey: LIB2_KEY, outDir: 'output/components2' },
+  { nodeId: '2937:32144',  family: 'section-item',      fileKey: LIB2_KEY, outDir: 'output/components2' },
+  { nodeId: '3558:101307', family: 'contextual-sidebar', fileKey: LIB2_KEY, outDir: 'output/components2' },
+  { nodeId: '3607:118582', family: 'data-table',        fileKey: LIB2_KEY, outDir: 'output/components2' },
+  { nodeId: '94:594',      family: 'table-cell-default', fileKey: LIB2_KEY, outDir: 'output/components2' },
+  { nodeId: '9210:23499',  family: 'table-cell-compact', fileKey: LIB2_KEY, outDir: 'output/components2' },
+  { nodeId: '94:280',      family: 'table-cell-header',  fileKey: LIB2_KEY, outDir: 'output/components2' },
+  { nodeId: '2375:14613',  family: 'table-cell-general', fileKey: LIB2_KEY, outDir: 'output/components2' },
+  { nodeId: '2375:14612',  family: 'data-list',          fileKey: LIB2_KEY, outDir: 'output/components2' },
+  { nodeId: '3375:109574', family: 'date-range-picker',  fileKey: LIB2_KEY, outDir: 'output/components2' },
+  { nodeId: '3801:115364', family: 'media-element',      fileKey: LIB2_KEY, outDir: 'output/components2' },
+  { nodeId: '585:14917',   family: 'modal',              fileKey: LIB2_KEY, outDir: 'output/components2' },
+  { nodeId: '4959:34095',  family: 'modal-header',       fileKey: LIB2_KEY, outDir: 'output/components2' },
 ];
 
 // ── Parse a Figma variant name into a filename suffix ──────────────────────────

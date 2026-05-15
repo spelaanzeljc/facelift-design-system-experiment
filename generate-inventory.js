@@ -71,6 +71,15 @@ const FLAGGED_L2_ICON = new Set([
   'illus_cat','illus_search',
 ]);
 
+// Flag: families that were freshly re-exported in the latest batch (need visual review)
+const FLAGGED_L2_REEXPORT = new Set([
+  'alert-banner','card','contextual-sidebar','data-column',
+  'data-list','data-table','date-range-picker',
+  'media-element','modal','modal-header',
+  'section','section-item',
+  'table-cell-compact','table-cell-default','table-cell-general','table-cell-header',
+]);
+
 // Flag: obvious Figma artifacts — not real UI components
 const FLAGGED_L2_ARTIFACT = new Set([
   'aiconcept','andreas-wissel',
@@ -110,6 +119,7 @@ function getFlagInfo(family, dir, blankCount, totalCount) {
   if (dir.includes('components2')) {
     if (FLAGGED_L2_ICON.has(family))     return { type: 'icon',     reason: 'Likely icon — same name exists in output/icons/' };
     if (FLAGGED_L2_ARTIFACT.has(family)) return { type: 'artifact', reason: 'Figma artifact — not a real UI component' };
+    if (FLAGGED_L2_REEXPORT.has(family)) return { type: 'reexport', reason: 'Freshly re-exported from Figma — review variants and naming' };
   }
   if (dir.includes('components2') && blankCount > 0) {
     const all = blankCount === totalCount;
@@ -244,6 +254,8 @@ function buildHTML(libraries, dupMap) {
                 ? `<span class="badge flag-artifact" title="${esc(effectiveFlagInfo.reason)}">⬡ artifact</span>`
                 : effectiveFlagInfo.type === 'dup'
                   ? `<span class="badge flag-dup" title="${esc(effectiveFlagInfo.reason)}">≡ dup</span>`
+                  : effectiveFlagInfo.type === 'reexport'
+                  ? `<span class="badge flag-reexport" title="${esc(effectiveFlagInfo.reason)}">↺ re-export</span>`
                   : `<span class="badge flag" title="${esc(effectiveFlagInfo.reason)}">⚑ needs review</span>`
         : '';
       const flagNote = effectiveFlagInfo && effectiveFlagInfo.type !== 'dup'
@@ -333,6 +345,7 @@ details[open]>summary::before{transform:rotate(90deg)}
 .badge.flag-artifact{background:#f3f4f6;color:#4b5563;border:1px solid #9ca3af;cursor:help}
 .badge.flag-dup{background:#fff7ed;color:#9a3412;border:1px solid #fdba74;cursor:help}
 .badge.dup{background:#fff7ed;color:#9a3412;border:1px solid #fdba74;font-size:.6rem}
+.badge.flag-reexport{background:#eff6ff;color:#1e40af;border:1px solid #93c5fd;cursor:help}
 .badge.dup + a{font-size:.7rem;color:#9a3412;margin-left:.2rem}
 .badge.dup + a + a{font-size:.7rem;color:#9a3412;margin-left:.35rem}
 .file-dup td{background:#fffbf7}
@@ -352,6 +365,10 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
 details.family.flagged--dup{border-color:#fdba74;background:#fff7ed}
 details.family.flagged--dup>summary{background:#fff7ed}
 details.family.flagged--dup .fname-head{color:#9a3412}
+details.family.flagged--reexport{border-color:#93c5fd;background:#eff6ff}
+details.family.flagged--reexport>summary{background:#eff6ff}
+details.family.flagged--reexport .fname-head{color:#1e40af}
+.flag-note--reexport{color:#1e40af;background:#dbeafe;border-bottom-color:#93c5fd}
 .flag-note{font-size:.75rem;padding:.4rem .9rem;border-bottom-width:1px;border-bottom-style:solid}
 .flag-note--review{color:#92400e;background:#fef3c7;border-bottom-color:#fde68a}
 .flag-note--icon{color:#166534;background:#dcfce7;border-bottom-color:#4ade80}
@@ -371,6 +388,7 @@ details.family.flagged--dup .fname-head{color:#9a3412}
 .filter-btn.blank.active{background:#fdf4ff;color:#7e22ce;border-color:#d8b4fe}
 .filter-btn.artifact.active{background:#f3f4f6;color:#4b5563;border-color:#9ca3af}
 .filter-btn.dup.active{background:#fff7ed;color:#9a3412;border-color:#fdba74}
+.filter-btn.reexport.active{background:#eff6ff;color:#1e40af;border-color:#93c5fd}
 </style>
 </head>
 <body>
@@ -391,6 +409,7 @@ details.family.flagged--dup .fname-head{color:#9a3412}
     <button class="filter-btn blank" data-filter="blank">◻ Blank</button>
     <button class="filter-btn artifact" data-filter="artifact">⬡ Artifact</button>
     <button class="filter-btn dup" data-filter="dup">≡ Duplicates</button>
+    <button class="filter-btn reexport" data-filter="reexport">↺ Re-exported</button>
   </div>
 
   ${libSections}
