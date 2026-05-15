@@ -384,9 +384,7 @@ details.family.flagged--reexport .fname-head{color:#1e40af}
 .filter-btn:hover{border-color:#d3d7de}
 .filter-btn.active{background:#fef9c3;color:#854d0e;border-color:#ca8a04}
 .filter-btn.all.active{background:#1339ec;color:#fff;border-color:#1339ec}
-.filter-btn.icon.active{background:#f0fdf4;color:#166534;border-color:#4ade80}
 .filter-btn.blank.active{background:#fdf4ff;color:#7e22ce;border-color:#d8b4fe}
-.filter-btn.artifact.active{background:#f3f4f6;color:#4b5563;border-color:#9ca3af}
 .filter-btn.dup.active{background:#fff7ed;color:#9a3412;border-color:#fdba74}
 .filter-btn.reexport.active{background:#eff6ff;color:#1e40af;border-color:#93c5fd}
 </style>
@@ -405,9 +403,7 @@ details.family.flagged--reexport .fname-head{color:#1e40af}
 
   <div class="filter-bar">
     <button class="filter-btn all active" data-filter="all">All</button>
-    <button class="filter-btn icon" data-filter="icon">⬡ Likely icon</button>
     <button class="filter-btn blank" data-filter="blank">◻ Blank</button>
-    <button class="filter-btn artifact" data-filter="artifact">⬡ Artifact</button>
     <button class="filter-btn dup" data-filter="dup">≡ Duplicates</button>
     <button class="filter-btn reexport" data-filter="reexport">↺ Re-exported</button>
   </div>
