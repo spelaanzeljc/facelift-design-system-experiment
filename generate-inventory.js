@@ -71,6 +71,29 @@ const FLAGGED_L2_ICON = new Set([
   'illus_cat','illus_search',
 ]);
 
+// Flag: obvious Figma artifacts — not real UI components
+const FLAGGED_L2_ARTIFACT = new Set([
+  'aiconcept','andreas-wissel',
+  'eventhandler','frame-1','inspector','lifty',
+  'module_administration','module_analytics','module_brand','module_core',
+  'module_engagement','module_placeholder','module_planner','module_publisher','module_uim',
+  'name_ann-catrin-wellh_fer','name_chris-day','name_eva-nesbach','name_florian-h_ft',
+  'name_inken','name_kristin','name_lukas-nordbeck','name_micah-dammann',
+  'name_placeholder','name_stefan-lipperheide','name_thorsten-mann','name_tufan-g_kyildirim',
+  'pcp---content---headline','pcp---content-header---draft---with-fb-content-','pcp---network-tab-navigation',
+  'preview','preview-header',
+  'property-1_active','property-1_collapsed','property-1_default','property-1_default-resolved',
+  'property-1_expanded','property-1_variant3',
+  'seperator','tour',
+  'variant_bulk','variant_button-group','variant_checkbox-group','variant_circle-button-group',
+  'variant_color','variant_custom','variant_danger','variant_date-range-picker',
+  'variant_default','variant_default-_fb-image_','variant_hierarchy',
+  'variant_icon','variant_illustration','variant_input','variant_multi-select',
+  'variant_nested','variant_radio-group','variant_singleselect','variant_skeleton',
+  'variant_success','variant_template','variant_thumbnail','variant_toggle-button-group',
+  'variant_userbadge','variant_warning',
+]);
+
 // Flag 2: families that also appear in Library 1 — potential duplicates
 const FLAGGED_L2_MATCH = new Set([
   'appearance_floating','appearance_inline',
@@ -109,8 +132,9 @@ function isBlankFile(absPath) {
 function getFlagInfo(family, dir, blankCount, totalCount) {
   if (FLAGGED[family]) return { type: 'review', reason: FLAGGED[family] };
   if (dir.includes('components2')) {
-    if (FLAGGED_L2_ICON.has(family))  return { type: 'icon',  reason: 'Likely icon — same name exists in output/icons/' };
-    if (FLAGGED_L2_MATCH.has(family)) return { type: 'lib1',  reason: 'Also present in Library 1 — potential duplicate' };
+    if (FLAGGED_L2_ICON.has(family))     return { type: 'icon',     reason: 'Likely icon — same name exists in output/icons/' };
+    if (FLAGGED_L2_ARTIFACT.has(family)) return { type: 'artifact', reason: 'Figma artifact — not a real UI component' };
+    if (FLAGGED_L2_MATCH.has(family))    return { type: 'lib1',     reason: 'Also present in Library 1 — potential duplicate' };
   }
   if (dir.includes('components2') && blankCount > 0) {
     const all = blankCount === totalCount;
@@ -203,7 +227,9 @@ function buildHTML(libraries) {
             ? `<span class="badge flag-lib1" title="${esc(flagInfo.reason)}">≈ lib 1</span>`
             : flagInfo.type === 'blank'
               ? `<span class="badge flag-blank" title="${esc(flagInfo.reason)}">◻ blank</span>`
-              : `<span class="badge flag" title="${esc(flagInfo.reason)}">⚑ needs review</span>`
+              : flagInfo.type === 'artifact'
+                ? `<span class="badge flag-artifact" title="${esc(flagInfo.reason)}">⬡ artifact</span>`
+                : `<span class="badge flag" title="${esc(flagInfo.reason)}">⚑ needs review</span>`
         : '';
       const flagNote = flagInfo
         ? `<div class="flag-note flag-note--${flagInfo.type}">${esc(flagInfo.reason)}</div>`
@@ -228,10 +254,11 @@ function buildHTML(libraries) {
     return `
   <section class="library">
     <div class="lib-header">
+      <button class="lib-toggle" aria-expanded="true" title="Collapse library">▾</button>
       <span class="lib-name">${esc(label)}</span>
       <span class="lib-meta">${familyCount} families · ${files.length.toLocaleString()} files</span>
     </div>
-    ${familyBlocks}
+    <div class="lib-body">${familyBlocks}</div>
   </section>`;
   }).join('');
 
@@ -258,9 +285,12 @@ a{color:#1339ec;text-decoration:none}a:hover{text-decoration:underline}
 .search-count{font-size:.8rem;color:#848ea4;margin-top:.35rem}
 
 .library{margin-bottom:2.5rem}
-.lib-header{display:flex;align-items:baseline;gap:.75rem;padding:.75rem 0;border-top:2px solid #1339ec;margin-bottom:.5rem}
+.lib-header{display:flex;align-items:center;gap:.75rem;padding:.75rem 0;border-top:2px solid #1339ec;margin-bottom:.5rem}
 .lib-name{font-size:1rem;font-weight:700;color:#1339ec;text-transform:uppercase;letter-spacing:.05em}
 .lib-meta{font-size:.8rem;color:#848ea4}
+.lib-toggle{background:none;border:none;cursor:pointer;font-size:.9rem;color:#848ea4;padding:0 .1rem;line-height:1;transition:transform .2s}
+.lib-toggle[aria-expanded="false"]{transform:rotate(-90deg)}
+.lib-body.collapsed{display:none}
 
 details.family{border:1px solid #e7eaee;border-radius:6px;background:#fff;margin-bottom:.35rem;overflow:hidden}
 details.family[open]{margin-bottom:.75rem}
@@ -286,6 +316,7 @@ details[open]>summary::before{transform:rotate(90deg)}
 .badge.flag-lib1{background:#eff6ff;color:#1e40af;border:1px solid #93c5fd;cursor:help}
 .badge.flag-blank{background:#fdf4ff;color:#7e22ce;border:1px solid #d8b4fe;cursor:help}
 .badge.blank{background:#fdf4ff;color:#7e22ce;border:1px solid #d8b4fe;font-size:.6rem}
+.badge.flag-artifact{background:#f3f4f6;color:#4b5563;border:1px solid #9ca3af;cursor:help}
 
 details.family.flagged--review{border-color:#fde68a;background:#fffbeb}
 details.family.flagged--review>summary{background:#fffbeb}
@@ -299,11 +330,15 @@ details.family.flagged--lib1 .fname-head{color:#1e40af}
 details.family.flagged--blank{border-color:#d8b4fe;background:#fdf4ff}
 details.family.flagged--blank>summary{background:#fdf4ff}
 details.family.flagged--blank .fname-head{color:#7e22ce}
+details.family.flagged--artifact{border-color:#d1d5db;background:#f9fafb}
+details.family.flagged--artifact>summary{background:#f9fafb}
+details.family.flagged--artifact .fname-head{color:#6b7280}
 .flag-note{font-size:.75rem;padding:.4rem .9rem;border-bottom-width:1px;border-bottom-style:solid}
 .flag-note--review{color:#92400e;background:#fef3c7;border-bottom-color:#fde68a}
 .flag-note--icon{color:#166534;background:#dcfce7;border-bottom-color:#4ade80}
 .flag-note--lib1{color:#1e40af;background:#dbeafe;border-bottom-color:#93c5fd}
 .flag-note--blank{color:#7e22ce;background:#fae8ff;border-bottom-color:#d8b4fe}
+.flag-note--artifact{color:#4b5563;background:#f3f4f6;border-bottom-color:#d1d5db}
 .file-blank td{opacity:.55}
 
 .family.all-hidden{display:none}
@@ -317,6 +352,7 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
 .filter-btn.icon.active{background:#f0fdf4;color:#166534;border-color:#4ade80}
 .filter-btn.lib1.active{background:#eff6ff;color:#1e40af;border-color:#93c5fd}
 .filter-btn.blank.active{background:#fdf4ff;color:#7e22ce;border-color:#d8b4fe}
+.filter-btn.artifact.active{background:#f3f4f6;color:#4b5563;border-color:#9ca3af}
 </style>
 </head>
 <body>
@@ -336,6 +372,7 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
     <button class="filter-btn icon" data-filter="icon">⬡ Likely icon</button>
     <button class="filter-btn lib1" data-filter="lib1">≈ Also in Lib 1</button>
     <button class="filter-btn blank" data-filter="blank">◻ Blank</button>
+    <button class="filter-btn artifact" data-filter="artifact">⬡ Artifact</button>
   </div>
 
   ${libSections}
@@ -379,6 +416,15 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     applyFilters();
+  });
+});
+
+document.querySelectorAll('.lib-toggle').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const body = btn.closest('.library').querySelector('.lib-body');
+    const expanded = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!expanded));
+    body.classList.toggle('collapsed', expanded);
   });
 });
 </script>

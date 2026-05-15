@@ -21,9 +21,12 @@ a{color:#1339ec;text-decoration:none}a:hover{text-decoration:underline}
 .search-count{font-size:.8rem;color:#848ea4;margin-top:.35rem}
 
 .library{margin-bottom:2.5rem}
-.lib-header{display:flex;align-items:baseline;gap:.75rem;padding:.75rem 0;border-top:2px solid #1339ec;margin-bottom:.5rem}
+.lib-header{display:flex;align-items:center;gap:.75rem;padding:.75rem 0;border-top:2px solid #1339ec;margin-bottom:.5rem}
 .lib-name{font-size:1rem;font-weight:700;color:#1339ec;text-transform:uppercase;letter-spacing:.05em}
 .lib-meta{font-size:.8rem;color:#848ea4}
+.lib-toggle{background:none;border:none;cursor:pointer;font-size:.9rem;color:#848ea4;padding:0 .1rem;line-height:1;transition:transform .2s}
+.lib-toggle[aria-expanded="false"]{transform:rotate(-90deg)}
+.lib-body.collapsed{display:none}
 
 details.family{border:1px solid #e7eaee;border-radius:6px;background:#fff;margin-bottom:.35rem;overflow:hidden}
 details.family[open]{margin-bottom:.75rem}
@@ -49,6 +52,7 @@ details[open]>summary::before{transform:rotate(90deg)}
 .badge.flag-lib1{background:#eff6ff;color:#1e40af;border:1px solid #93c5fd;cursor:help}
 .badge.flag-blank{background:#fdf4ff;color:#7e22ce;border:1px solid #d8b4fe;cursor:help}
 .badge.blank{background:#fdf4ff;color:#7e22ce;border:1px solid #d8b4fe;font-size:.6rem}
+.badge.flag-artifact{background:#f3f4f6;color:#4b5563;border:1px solid #9ca3af;cursor:help}
 
 details.family.flagged--review{border-color:#fde68a;background:#fffbeb}
 details.family.flagged--review>summary{background:#fffbeb}
@@ -62,11 +66,15 @@ details.family.flagged--lib1 .fname-head{color:#1e40af}
 details.family.flagged--blank{border-color:#d8b4fe;background:#fdf4ff}
 details.family.flagged--blank>summary{background:#fdf4ff}
 details.family.flagged--blank .fname-head{color:#7e22ce}
+details.family.flagged--artifact{border-color:#d1d5db;background:#f9fafb}
+details.family.flagged--artifact>summary{background:#f9fafb}
+details.family.flagged--artifact .fname-head{color:#6b7280}
 .flag-note{font-size:.75rem;padding:.4rem .9rem;border-bottom-width:1px;border-bottom-style:solid}
 .flag-note--review{color:#92400e;background:#fef3c7;border-bottom-color:#fde68a}
 .flag-note--icon{color:#166534;background:#dcfce7;border-bottom-color:#4ade80}
 .flag-note--lib1{color:#1e40af;background:#dbeafe;border-bottom-color:#93c5fd}
 .flag-note--blank{color:#7e22ce;background:#fae8ff;border-bottom-color:#d8b4fe}
+.flag-note--artifact{color:#4b5563;background:#f3f4f6;border-bottom-color:#d1d5db}
 .file-blank td{opacity:.55}
 
 .family.all-hidden{display:none}
@@ -80,6 +88,7 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
 .filter-btn.icon.active{background:#f0fdf4;color:#166534;border-color:#4ade80}
 .filter-btn.lib1.active{background:#eff6ff;color:#1e40af;border-color:#93c5fd}
 .filter-btn.blank.active{background:#fdf4ff;color:#7e22ce;border-color:#d8b4fe}
+.filter-btn.artifact.active{background:#f3f4f6;color:#4b5563;border-color:#9ca3af}
 </style>
 </head>
 <body>
@@ -99,15 +108,17 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
     <button class="filter-btn icon" data-filter="icon">⬡ Likely icon</button>
     <button class="filter-btn lib1" data-filter="lib1">≈ Also in Lib 1</button>
     <button class="filter-btn blank" data-filter="blank">◻ Blank</button>
+    <button class="filter-btn artifact" data-filter="artifact">⬡ Artifact</button>
   </div>
 
   
   <section class="library">
     <div class="lib-header">
+      <button class="lib-toggle" aria-expanded="true" title="Collapse library">▾</button>
       <span class="lib-name">Library 1 · BB Update</span>
       <span class="lib-meta">40 families · 976 files</span>
     </div>
-    
+    <div class="lib-body">
       <details class="family" data-family="action_danger">
         <summary>
           <span class="fname-head">action_danger</span>
@@ -4531,14 +4542,15 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tr>
           </tbody>
         </table>
-      </details>
+      </details></div>
   </section>
   <section class="library">
     <div class="lib-header">
+      <button class="lib-toggle" aria-expanded="true" title="Collapse library">▾</button>
       <span class="lib-name">Library 2</span>
       <span class="lib-meta">409 families · 2,194 files</span>
     </div>
-    
+    <div class="lib-body">
       <details class="family flagged flagged--blank" data-family=".actions">
         <summary>
           <span class="fname-head">.actions</span>
@@ -4781,13 +4793,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="aiconcept">
+      <details class="family flagged flagged--artifact" data-family="aiconcept">
         <summary>
           <span class="fname-head">aiconcept</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -4882,13 +4894,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="andreas-wissel">
+      <details class="family flagged flagged--artifact" data-family="andreas-wissel">
         <summary>
           <span class="fname-head">andreas-wissel</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -5935,13 +5947,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="eventhandler">
+      <details class="family flagged flagged--artifact" data-family="eventhandler">
         <summary>
           <span class="fname-head">eventhandler</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6003,13 +6015,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="frame-1">
+      <details class="family flagged flagged--artifact" data-family="frame-1">
         <summary>
           <span class="fname-head">frame-1</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6290,13 +6302,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="inspector">
+      <details class="family flagged flagged--artifact" data-family="inspector">
         <summary>
           <span class="fname-head">inspector</span>
-          
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6423,13 +6435,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="lifty">
+      <details class="family flagged flagged--artifact" data-family="lifty">
         <summary>
           <span class="fname-head">lifty</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6550,13 +6562,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="module_administration">
+      <details class="family flagged flagged--artifact" data-family="module_administration">
         <summary>
           <span class="fname-head">module_administration</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6567,13 +6579,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="module_analytics">
+      <details class="family flagged flagged--artifact" data-family="module_analytics">
         <summary>
           <span class="fname-head">module_analytics</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6584,13 +6596,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="module_brand">
+      <details class="family flagged flagged--artifact" data-family="module_brand">
         <summary>
           <span class="fname-head">module_brand</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6601,13 +6613,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="module_core">
+      <details class="family flagged flagged--artifact" data-family="module_core">
         <summary>
           <span class="fname-head">module_core</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6618,13 +6630,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="module_engagement">
+      <details class="family flagged flagged--artifact" data-family="module_engagement">
         <summary>
           <span class="fname-head">module_engagement</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6635,13 +6647,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="module_placeholder">
+      <details class="family flagged flagged--artifact" data-family="module_placeholder">
         <summary>
           <span class="fname-head">module_placeholder</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6652,13 +6664,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="module_planner">
+      <details class="family flagged flagged--artifact" data-family="module_planner">
         <summary>
           <span class="fname-head">module_planner</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6669,13 +6681,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="module_publisher">
+      <details class="family flagged flagged--artifact" data-family="module_publisher">
         <summary>
           <span class="fname-head">module_publisher</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6686,13 +6698,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="module_uim">
+      <details class="family flagged flagged--artifact" data-family="module_uim">
         <summary>
           <span class="fname-head">module_uim</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6720,13 +6732,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="name_ann-catrin-wellh_fer">
+      <details class="family flagged flagged--artifact" data-family="name_ann-catrin-wellh_fer">
         <summary>
           <span class="fname-head">name_ann-catrin-wellh_fer</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6754,13 +6766,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="name_chris-day">
+      <details class="family flagged flagged--artifact" data-family="name_chris-day">
         <summary>
           <span class="fname-head">name_chris-day</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6771,13 +6783,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="name_eva-nesbach">
+      <details class="family flagged flagged--artifact" data-family="name_eva-nesbach">
         <summary>
           <span class="fname-head">name_eva-nesbach</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6788,13 +6800,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="name_florian-h_ft">
+      <details class="family flagged flagged--artifact" data-family="name_florian-h_ft">
         <summary>
           <span class="fname-head">name_florian-h_ft</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6805,13 +6817,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="name_inken">
+      <details class="family flagged flagged--artifact" data-family="name_inken">
         <summary>
           <span class="fname-head">name_inken</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6822,13 +6834,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="name_kristin">
+      <details class="family flagged flagged--artifact" data-family="name_kristin">
         <summary>
           <span class="fname-head">name_kristin</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6839,13 +6851,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="name_lukas-nordbeck">
+      <details class="family flagged flagged--artifact" data-family="name_lukas-nordbeck">
         <summary>
           <span class="fname-head">name_lukas-nordbeck</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6856,13 +6868,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="name_micah-dammann">
+      <details class="family flagged flagged--artifact" data-family="name_micah-dammann">
         <summary>
           <span class="fname-head">name_micah-dammann</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6873,13 +6885,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="name_placeholder">
+      <details class="family flagged flagged--artifact" data-family="name_placeholder">
         <summary>
           <span class="fname-head">name_placeholder</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6907,13 +6919,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="name_stefan-lipperheide">
+      <details class="family flagged flagged--artifact" data-family="name_stefan-lipperheide">
         <summary>
           <span class="fname-head">name_stefan-lipperheide</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6924,13 +6936,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="name_thorsten-mann">
+      <details class="family flagged flagged--artifact" data-family="name_thorsten-mann">
         <summary>
           <span class="fname-head">name_thorsten-mann</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -6941,13 +6953,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="name_tufan-g_kyildirim">
+      <details class="family flagged flagged--artifact" data-family="name_tufan-g_kyildirim">
         <summary>
           <span class="fname-head">name_tufan-g_kyildirim</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7230,13 +7242,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="pcp---content---headline">
+      <details class="family flagged flagged--artifact" data-family="pcp---content---headline">
         <summary>
           <span class="fname-head">pcp---content---headline</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7247,13 +7259,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="pcp---content-header---draft---with-fb-content-">
+      <details class="family flagged flagged--artifact" data-family="pcp---content-header---draft---with-fb-content-">
         <summary>
           <span class="fname-head">pcp---content-header---draft---with-fb-content-</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7264,13 +7276,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="pcp---network-tab-navigation">
+      <details class="family flagged flagged--artifact" data-family="pcp---network-tab-navigation">
         <summary>
           <span class="fname-head">pcp---network-tab-navigation</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7400,13 +7412,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="preview">
+      <details class="family flagged flagged--artifact" data-family="preview">
         <summary>
           <span class="fname-head">preview</span>
-          <span class="badge flag-blank" title="All 2 files blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        <div class="flag-note flag-note--blank">All 2 files blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7421,13 +7433,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="preview-header">
+      <details class="family flagged flagged--artifact" data-family="preview-header">
         <summary>
           <span class="fname-head">preview-header</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7489,13 +7501,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="property-1_active">
+      <details class="family flagged flagged--artifact" data-family="property-1_active">
         <summary>
           <span class="fname-head">property-1_active</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7506,13 +7518,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="property-1_collapsed">
+      <details class="family flagged flagged--artifact" data-family="property-1_collapsed">
         <summary>
           <span class="fname-head">property-1_collapsed</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7523,13 +7535,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="property-1_default">
+      <details class="family flagged flagged--artifact" data-family="property-1_default">
         <summary>
           <span class="fname-head">property-1_default</span>
-          <span class="badge flag-blank" title="All 2 files blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        <div class="flag-note flag-note--blank">All 2 files blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7544,13 +7556,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="property-1_default-resolved">
+      <details class="family flagged flagged--artifact" data-family="property-1_default-resolved">
         <summary>
           <span class="fname-head">property-1_default-resolved</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7561,13 +7573,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="property-1_expanded">
+      <details class="family flagged flagged--artifact" data-family="property-1_expanded">
         <summary>
           <span class="fname-head">property-1_expanded</span>
-          
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7578,13 +7590,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="property-1_variant3">
+      <details class="family flagged flagged--artifact" data-family="property-1_variant3">
         <summary>
           <span class="fname-head">property-1_variant3</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -7819,13 +7831,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="seperator">
+      <details class="family flagged flagged--artifact" data-family="seperator">
         <summary>
           <span class="fname-head">seperator</span>
-          <span class="badge flag-blank" title="All 2 files blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        <div class="flag-note flag-note--blank">All 2 files blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -13459,13 +13471,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="tour">
+      <details class="family flagged flagged--artifact" data-family="tour">
         <summary>
           <span class="fname-head">tour</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -18148,13 +18160,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="variant_bulk">
+      <details class="family flagged flagged--artifact" data-family="variant_bulk">
         <summary>
           <span class="fname-head">variant_bulk</span>
-          
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -18165,13 +18177,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="variant_button-group">
+      <details class="family flagged flagged--artifact" data-family="variant_button-group">
         <summary>
           <span class="fname-head">variant_button-group</span>
-          
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -18182,13 +18194,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="variant_checkbox-group">
+      <details class="family flagged flagged--artifact" data-family="variant_checkbox-group">
         <summary>
           <span class="fname-head">variant_checkbox-group</span>
-          
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -18199,13 +18211,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="variant_circle-button-group">
+      <details class="family flagged flagged--artifact" data-family="variant_circle-button-group">
         <summary>
           <span class="fname-head">variant_circle-button-group</span>
-          
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -18216,13 +18228,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="variant_color">
+      <details class="family flagged flagged--artifact" data-family="variant_color">
         <summary>
           <span class="fname-head">variant_color</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -18233,13 +18245,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="variant_custom">
+      <details class="family flagged flagged--artifact" data-family="variant_custom">
         <summary>
           <span class="fname-head">variant_custom</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -18250,13 +18262,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="variant_danger">
+      <details class="family flagged flagged--artifact" data-family="variant_danger">
         <summary>
           <span class="fname-head">variant_danger</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -18267,13 +18279,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="variant_date-range-picker">
+      <details class="family flagged flagged--artifact" data-family="variant_date-range-picker">
         <summary>
           <span class="fname-head">variant_date-range-picker</span>
-          
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -18284,13 +18296,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="variant_default">
+      <details class="family flagged flagged--artifact" data-family="variant_default">
         <summary>
           <span class="fname-head">variant_default</span>
-          
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -18305,13 +18317,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="variant_default-_fb-image_">
+      <details class="family flagged flagged--artifact" data-family="variant_default-_fb-image_">
         <summary>
           <span class="fname-head">variant_default-_fb-image_</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -18322,13 +18334,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="variant_hierarchy">
+      <details class="family flagged flagged--artifact" data-family="variant_hierarchy">
         <summary>
           <span class="fname-head">variant_hierarchy</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -18339,13 +18351,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="variant_icon">
+      <details class="family flagged flagged--artifact" data-family="variant_icon">
         <summary>
           <span class="fname-head">variant_icon</span>
-          <span class="badge flag-blank" title="1 of 2 files blank — SVG missing">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file · <span class="alt-count">1 alt</span></span>
         </summary>
-        <div class="flag-note flag-note--blank">1 of 2 files blank — SVG missing</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -18360,13 +18372,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="variant_illustration">
+      <details class="family flagged flagged--artifact" data-family="variant_illustration">
         <summary>
           <span class="fname-head">variant_illustration</span>
-          
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -18377,13 +18389,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="variant_input">
+      <details class="family flagged flagged--artifact" data-family="variant_input">
         <summary>
           <span class="fname-head">variant_input</span>
-          
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -18394,13 +18406,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="variant_multi-select">
+      <details class="family flagged flagged--artifact" data-family="variant_multi-select">
         <summary>
           <span class="fname-head">variant_multi-select</span>
-          
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -18411,13 +18423,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="variant_nested">
+      <details class="family flagged flagged--artifact" data-family="variant_nested">
         <summary>
           <span class="fname-head">variant_nested</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -18428,13 +18440,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="variant_radio-group">
+      <details class="family flagged flagged--artifact" data-family="variant_radio-group">
         <summary>
           <span class="fname-head">variant_radio-group</span>
-          
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -18445,13 +18457,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="variant_singleselect">
+      <details class="family flagged flagged--artifact" data-family="variant_singleselect">
         <summary>
           <span class="fname-head">variant_singleselect</span>
-          
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -18462,13 +18474,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="variant_skeleton">
+      <details class="family flagged flagged--artifact" data-family="variant_skeleton">
         <summary>
           <span class="fname-head">variant_skeleton</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -18479,13 +18491,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="variant_success">
+      <details class="family flagged flagged--artifact" data-family="variant_success">
         <summary>
           <span class="fname-head">variant_success</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -18496,13 +18508,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="variant_template">
+      <details class="family flagged flagged--artifact" data-family="variant_template">
         <summary>
           <span class="fname-head">variant_template</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -18513,13 +18525,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="variant_thumbnail">
+      <details class="family flagged flagged--artifact" data-family="variant_thumbnail">
         <summary>
           <span class="fname-head">variant_thumbnail</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -18530,13 +18542,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family" data-family="variant_toggle-button-group">
+      <details class="family flagged flagged--artifact" data-family="variant_toggle-button-group">
         <summary>
           <span class="fname-head">variant_toggle-button-group</span>
-          
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -18547,13 +18559,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="variant_userbadge">
+      <details class="family flagged flagged--artifact" data-family="variant_userbadge">
         <summary>
           <span class="fname-head">variant_userbadge</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -18564,13 +18576,13 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tbody>
         </table>
       </details>
-      <details class="family flagged flagged--blank" data-family="variant_warning">
+      <details class="family flagged flagged--artifact" data-family="variant_warning">
         <summary>
           <span class="fname-head">variant_warning</span>
-          <span class="badge flag-blank" title="All 1 file blank — no SVG rendered">◻ blank</span>
+          <span class="badge flag-artifact" title="Figma artifact — not a real UI component">⬡ artifact</span>
           <span class="fcounts">1 file</span>
         </summary>
-        <div class="flag-note flag-note--blank">All 1 file blank — no SVG rendered</div>
+        <div class="flag-note flag-note--artifact">Figma artifact — not a real UI component</div>
         <table class="file-table">
           <thead><tr><th>Filename</th><th>Variants</th></tr></thead>
           <tbody>
@@ -18631,7 +18643,7 @@ details.family.flagged--blank .fname-head{color:#7e22ce}
           </tr>
           </tbody>
         </table>
-      </details>
+      </details></div>
   </section>
 </div>
 <script>
@@ -18673,6 +18685,15 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     applyFilters();
+  });
+});
+
+document.querySelectorAll('.lib-toggle').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const body = btn.closest('.library').querySelector('.lib-body');
+    const expanded = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!expanded));
+    body.classList.toggle('collapsed', expanded);
   });
 });
 </script>
