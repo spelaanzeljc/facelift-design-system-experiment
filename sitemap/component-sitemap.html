@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Component Sitemap — Design System</title>
+<title>Component Sitemap — Library 1</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:system-ui,-apple-system,sans-serif;background:#f3f5f7;color:#111317;line-height:1.5}
@@ -14,12 +14,10 @@ a{color:#1339ec;text-decoration:none}a:hover{text-decoration:underline}
 .page-header h1{font-size:1.5rem;font-weight:700;margin-bottom:.35rem}
 .page-header p{color:#5f6a82;font-size:.9rem;max-width:680px}
 
-/* Nav pills */
 .page-nav{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:2rem}
 .page-nav a{display:inline-flex;align-items:center;gap:.4rem;padding:.4rem .85rem;border-radius:20px;font-size:.8rem;font-weight:600;text-decoration:none;border:1.5px solid transparent;transition:all .15s}
 .page-nav a:hover{opacity:.85}
 
-/* Page cards */
 .pages-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.25rem;margin-bottom:3rem}
 .page-card{background:#fff;border-radius:10px;border:1.5px solid #e7eaee;overflow:hidden}
 .page-card-header{padding:1rem 1.25rem .75rem;border-bottom:1px solid #f3f5f7}
@@ -27,20 +25,15 @@ a{color:#1339ec;text-decoration:none}a:hover{text-decoration:underline}
 .page-card-header h2{font-size:1rem;font-weight:700;margin-bottom:.2rem}
 .page-card-header p{font-size:.8rem;color:#5f6a82}
 
-.family-list{padding:.75rem 1.25rem 1rem;display:flex;flex-direction:column;gap:.0rem}
+.family-list{padding:.75rem 1.25rem 1rem;display:flex;flex-direction:column;gap:0}
 .section-divider{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#848ea4;padding:.6rem 0 .2rem;border-top:1px solid #f3f5f7;margin-top:.4rem}
 .section-divider:first-child{border-top:none;margin-top:0;padding-top:.1rem}
 
 .family-row{display:flex;align-items:baseline;gap:.5rem;padding:.2rem 0;font-size:.82rem}
 .family-name{font-weight:600;min-width:0;flex:1}
-.lib-tag{font-size:.65rem;font-weight:700;padding:.1em .4em;border-radius:3px;flex-shrink:0;white-space:nowrap}
-.lib1{background:#eef3fd;color:#1339ec;border:1px solid #dfe7fd}
-.lib2{background:#f0faf0;color:#2e881b;border:1px solid #d1f0c8}
-.both{background:#fff3e0;color:#e05a00;border:1px solid #ffe0b2}
 .family-desc{color:#848ea4;font-size:.78rem;flex-shrink:0}
 .file-count{font-size:.72rem;color:#a7aebe;flex-shrink:0;font-variant-numeric:tabular-nums}
 
-/* Color accents per page */
 .micro    .page-card-header .page-slug{color:#1339ec}
 .micro    .page-card-header{border-left:4px solid #1339ec}
 .forms    .page-card-header .page-slug{color:#7c3aed}
@@ -52,14 +45,12 @@ a{color:#1339ec;text-decoration:none}a:hover{text-decoration:underline}
 .macro    .page-card-header .page-slug{color:#cc0000}
 .macro    .page-card-header{border-left:4px solid #cc0000}
 
-/* Pill colors for nav */
 .pill-micro{background:#eef3fd;color:#1339ec;border-color:#dfe7fd}
 .pill-forms{background:#f5f3ff;color:#7c3aed;border-color:#ede9fe}
 .pill-feedback{background:#fff3e0;color:#e05a00;border-color:#ffe0b2}
 .pill-nav{background:#f0faf0;color:#2e881b;border-color:#d1f0c8}
 .pill-macro{background:#ffebeb;color:#cc0000;border-color:#ffd0d0}
 
-/* Excluded table */
 .excluded-section{margin-top:1rem}
 .excluded-section h2{font-size:.95rem;font-weight:700;color:#848ea4;margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1.5px solid #e7eaee}
 .excluded-table{width:100%;border-collapse:collapse;font-size:.82rem;background:#fff;border-radius:8px;overflow:hidden;border:1px solid #e7eaee}
@@ -68,7 +59,6 @@ a{color:#1339ec;text-decoration:none}a:hover{text-decoration:underline}
 .excluded-table tr:last-child td{border-bottom:none}
 .excluded-table .pattern{font-family:monospace;font-size:.78rem}
 
-/* Links area */
 .links-bar{display:flex;gap:1rem;align-items:center;margin-bottom:2rem;font-size:.85rem}
 .links-bar a{padding:.35rem .75rem;background:#fff;border:1.5px solid #e7eaee;border-radius:6px;color:#1339ec;font-weight:500}
 .links-bar a:hover{border-color:#1339ec}
@@ -78,8 +68,8 @@ a{color:#1339ec;text-decoration:none}a:hover{text-decoration:underline}
 <div class="page">
 
   <div class="page-header">
-    <h1>Component Sitemap</h1>
-    <p>Proposed 5-page structure for the living styleguide. Every component family from both Figma libraries is assigned to one page based on its semantic role. Use this as the specification for building the new styleguide pages.</p>
+    <h1>Component Sitemap — Library 1</h1>
+    <p>Proposed 5-page structure for the living styleguide. All component families from Figma Library 1 (BB Update) assigned to pages by semantic role.</p>
   </div>
 
   <div class="links-bar">
@@ -103,15 +93,14 @@ a{color:#1339ec;text-decoration:none}a:hover{text-decoration:underline}
       <div class="page-card-header">
         <div class="page-slug">Buttons</div>
         <h2>Action Buttons</h2>
-        <p>All 5 semantic types × 3 emphasis levels × key states (default, hover, disabled)</p>
+        <p>5 semantic types × 3 emphasis levels × all states</p>
       </div>
       <div class="family-list">
-        <div class="section-divider">Library 1</div>
-        <div class="family-row"><span class="family-name">action_primary</span><span class="lib-tag lib1">Lib 1</span><span class="family-desc">Primary CTA</span><span class="file-count">102 files</span></div>
-        <div class="family-row"><span class="family-name">action_secondary</span><span class="lib-tag lib1">Lib 1</span><span class="family-desc">Secondary</span><span class="file-count">132 files</span></div>
-        <div class="family-row"><span class="family-name">action_danger</span><span class="lib-tag lib1">Lib 1</span><span class="family-desc">Destructive</span><span class="file-count">90 files</span></div>
-        <div class="family-row"><span class="family-name">action_success</span><span class="lib-tag lib1">Lib 1</span><span class="family-desc">Confirmation</span><span class="file-count">90 files</span></div>
-        <div class="family-row"><span class="family-name">action_warning</span><span class="lib-tag lib1">Lib 1</span><span class="family-desc">Warning action</span><span class="file-count">90 files</span></div>
+        <div class="family-row"><span class="family-name">action_primary</span><span class="family-desc">Primary CTA</span></div>
+        <div class="family-row"><span class="family-name">action_secondary</span><span class="family-desc">Secondary</span></div>
+        <div class="family-row"><span class="family-name">action_danger</span><span class="family-desc">Destructive</span></div>
+        <div class="family-row"><span class="family-name">action_success</span><span class="family-desc">Confirmation</span></div>
+        <div class="family-row"><span class="family-name">action_warning</span><span class="family-desc">Warning action</span></div>
       </div>
     </div>
 
@@ -122,8 +111,7 @@ a{color:#1339ec;text-decoration:none}a:hover{text-decoration:underline}
         <p>User avatar in three sizes, two types</p>
       </div>
       <div class="family-list">
-        <div class="section-divider">Library 1</div>
-        <div class="family-row"><span class="family-name">avatar</span><span class="lib-tag lib1">Lib 1</span><span class="family-desc">SM/MD/LG × initials/photo</span><span class="file-count">6 files</span></div>
+        <div class="family-row"><span class="family-name">avatar</span><span class="family-desc">SM/MD/LG × initials/photo</span><span class="file-count">6 files</span></div>
       </div>
     </div>
 
@@ -131,102 +119,65 @@ a{color:#1339ec;text-decoration:none}a:hover{text-decoration:underline}
       <div class="page-card-header">
         <div class="page-slug">Status Badges</div>
         <h2>Status Badges</h2>
-        <p>Content lifecycle and connectivity states</p>
+        <p>Content lifecycle and connectivity states — 16 variants</p>
       </div>
       <div class="family-list">
-        <div class="section-divider">Library 1</div>
-        <div class="family-row"><span class="family-name">status_approved</span><span class="lib-tag lib1">Lib 1</span></div>
-        <div class="family-row"><span class="family-name">status_draft / draft-scheduled / draft-unscheduled</span><span class="lib-tag lib1">Lib 1</span></div>
-        <div class="family-row"><span class="family-name">status_scheduled / published / rejected</span><span class="lib-tag lib1">Lib 1</span></div>
-        <div class="family-row"><span class="family-name">status_error / failed / warning / success / pending</span><span class="lib-tag lib1">Lib 1</span></div>
-        <div class="family-row"><span class="family-name">status_connected / disconneted / partial-connected</span><span class="lib-tag lib1">Lib 1</span></div>
-        <div class="family-row"><span class="family-name">status_public / to-be-approved / read / unread-unresolved</span><span class="lib-tag lib1">Lib 1</span></div>
-        <div class="section-divider">Library 2 (same families, some extended)</div>
-        <div class="family-row"><span class="family-name">status_*</span><span class="lib-tag lib2">Lib 2</span><span class="family-desc">Extended variants</span></div>
+        <div class="family-row"><span class="family-name">status_-status_approved / pending / rejected</span></div>
+        <div class="family-row"><span class="family-name">status_-status_draft / draft-scheduled / draft-unscheduled</span></div>
+        <div class="family-row"><span class="family-name">status_-status_scheduled / published / public</span></div>
+        <div class="family-row"><span class="family-name">status_-status_error / warning / to-be-approved</span></div>
+        <div class="family-row"><span class="family-name">status_-status_connected / disconnected / partial-connected</span></div>
+        <div class="family-row"><span class="family-name">status_-status_read / unread-unresolved</span></div>
+      </div>
+    </div>
+
+    <div class="page-card micro">
+      <div class="page-card-header">
+        <div class="page-slug">Badge</div>
+        <h2>Notification Badge</h2>
+        <p>Dot and number badge variants across 6 colours</p>
+      </div>
+      <div class="family-list">
+        <div class="family-row"><span class="family-name">badge_-type_dot</span><span class="family-desc">info / pending / warning / success / danger / neutral</span></div>
+        <div class="family-row"><span class="family-name">badge_-type_number</span><span class="family-desc">same 6 colours + neutral-bold</span></div>
       </div>
     </div>
 
     <div class="page-card micro">
       <div class="page-card-header">
         <div class="page-slug">Appearance Chips</div>
-        <h2>Appearance Chips</h2>
-        <p>Colour-coded label chips — 13 colours × colored/subtle style</p>
+        <h2>Appearance &amp; Tag Chips</h2>
+        <p>Colour-coded label chips — 14 colours × sizes × colored/subtle; floating/inline alerts</p>
       </div>
       <div class="family-list">
-        <div class="section-divider">Library 1</div>
-        <div class="family-row"><span class="family-name">appearance_colored</span><span class="lib-tag lib1">Lib 1</span><span class="family-desc">13 colours, medium</span><span class="file-count">150 files</span></div>
-        <div class="family-row"><span class="family-name">appearance_subtle</span><span class="lib-tag lib1">Lib 1</span><span class="family-desc">13 colours, medium</span><span class="file-count">120 files</span></div>
+        <div class="family-row"><span class="family-name">tag_-appearance_colored</span><span class="family-desc">14 colours × XS–LG × slim</span></div>
+        <div class="family-row"><span class="family-name">tag_-appearance_subtle</span><span class="family-desc">14 colours × XS–LG</span></div>
+        <div class="family-row"><span class="family-name">tag_-appearance_floating</span><span class="family-desc">danger / info / success / warning</span></div>
+        <div class="family-row"><span class="family-name">tag_-appearance_inline</span><span class="family-desc">danger / info / success / warning</span></div>
+        <div class="family-row"><span class="family-name">tag</span><span class="family-desc">Generic tag/pill</span></div>
       </div>
     </div>
 
     <div class="page-card micro">
       <div class="page-card-header">
-        <div class="page-slug">Alerts</div>
-        <h2>Floating &amp; Inline Alerts</h2>
-        <p>Banner-style alerts — 4 types × floating/inline</p>
+        <div class="page-slug">Link</div>
+        <h2>Link</h2>
+        <p>Primary and secondary link types × 3 states</p>
       </div>
       <div class="family-list">
-        <div class="section-divider">Library 1 + Library 2</div>
-        <div class="family-row"><span class="family-name">appearance_floating</span><span class="lib-tag both">Both</span><span class="family-desc">danger / info / success / warning · large</span><span class="file-count">4 files ea.</span></div>
-        <div class="family-row"><span class="family-name">appearance_inline</span><span class="lib-tag both">Both</span><span class="family-desc">danger / info / success / warning · large</span><span class="file-count">4 files ea.</span></div>
+        <div class="family-row"><span class="family-name">link_-type_primary</span><span class="family-desc">default / hover / pressed</span></div>
+        <div class="family-row"><span class="family-name">link_-type_secondary</span><span class="family-desc">default / hover / pressed</span></div>
       </div>
     </div>
 
     <div class="page-card micro">
       <div class="page-card-header">
-        <div class="page-slug">Sentiment</div>
-        <h2>Sentiment Indicators</h2>
-        <p>Positive, neutral, negative — used in engagement analytics</p>
+        <div class="page-slug">Column Card</div>
+        <h2>Column Card</h2>
+        <p>Colour-coded kanban column header chips — 12 colours</p>
       </div>
       <div class="family-list">
-        <div class="section-divider">Library 2</div>
-        <div class="family-row"><span class="family-name">sentiment</span><span class="lib-tag lib2">Lib 2</span></div>
-        <div class="family-row"><span class="family-name">sentiment-negative</span><span class="lib-tag lib2">Lib 2</span></div>
-        <div class="family-row"><span class="family-name">sentiment-neutral</span><span class="lib-tag lib2">Lib 2</span></div>
-        <div class="family-row"><span class="family-name">sentiment-positive</span><span class="lib-tag lib2">Lib 2</span></div>
-      </div>
-    </div>
-
-    <div class="page-card micro">
-      <div class="page-card-header">
-        <div class="page-slug">Tags &amp; Colour Swatches</div>
-        <h2>Tags &amp; Colour Swatches</h2>
-        <p>Generic tag pills and colour-coded swatches</p>
-      </div>
-      <div class="family-list">
-        <div class="section-divider">Library 1</div>
-        <div class="family-row"><span class="family-name">tag</span><span class="lib-tag lib1">Lib 1</span><span class="family-desc">Generic tag/pill</span></div>
-        <div class="section-divider">Library 2</div>
-        <div class="family-row"><span class="family-name">tags</span><span class="lib-tag lib2">Lib 2</span><span class="family-desc">Tag pills</span></div>
-        <div class="family-row"><span class="family-name">color_*</span><span class="lib-tag lib2">Lib 2</span><span class="family-desc">15 colours × large/small</span></div>
-      </div>
-    </div>
-
-    <div class="page-card micro">
-      <div class="page-card-header">
-        <div class="page-slug">Network Chips</div>
-        <h2>Network Chips</h2>
-        <p>Social network identifier chips — one per platform</p>
-      </div>
-      <div class="family-list">
-        <div class="section-divider">Library 2</div>
-        <div class="family-row"><span class="family-name">network_facebook / instagram / linkedin / x</span><span class="lib-tag lib2">Lib 2</span></div>
-        <div class="family-row"><span class="family-name">network_tiktok / pinterest / xing / youtube</span><span class="lib-tag lib2">Lib 2</span></div>
-        <div class="family-row"><span class="family-name">network_google / quickfill</span><span class="lib-tag lib2">Lib 2</span></div>
-      </div>
-    </div>
-
-    <div class="page-card micro">
-      <div class="page-card-header">
-        <div class="page-slug">Notification Badge &amp; Rich Text</div>
-        <h2>Badge &amp; Rich Text Toolbar</h2>
-        <p>Notification badge dot; rich text editor action buttons</p>
-      </div>
-      <div class="family-list">
-        <div class="section-divider">Library 2</div>
-        <div class="family-row"><span class="family-name">badge</span><span class="lib-tag lib2">Lib 2</span><span class="family-desc">Notification badge</span></div>
-        <div class="family-row"><span class="family-name">richtext_bold / italic / underline</span><span class="lib-tag lib2">Lib 2</span></div>
-        <div class="family-row"><span class="family-name">richtext_smiley / view-list</span><span class="lib-tag lib2">Lib 2</span></div>
+        <div class="family-row"><span class="family-name">column-card</span><span class="family-desc">gray / azure / yellow / amber / beige / coral / mint / emerald / petrol / indigo / violet / purple</span></div>
       </div>
     </div>
 
@@ -238,47 +189,75 @@ a{color:#1339ec;text-decoration:none}a:hover{text-decoration:underline}
 
     <div class="page-card forms">
       <div class="page-card-header">
-        <div class="page-slug">Inputs</div>
-        <h2>Basic Form Inputs</h2>
-        <p>Checkbox, numeric stepper, range slider</p>
+        <div class="page-slug">Checkboxes</div>
+        <h2>Checkboxes</h2>
+        <p>Default and task checkbox variants; checkbox item and task checkbox item rows</p>
       </div>
       <div class="family-list">
-        <div class="section-divider">Library 1</div>
-        <div class="family-row"><span class="family-name">check-box-checked-outline</span><span class="lib-tag lib1">Lib 1</span><span class="family-desc">Checkbox</span></div>
-        <div class="family-row"><span class="family-name">counter-input</span><span class="lib-tag lib1">Lib 1</span><span class="family-desc">Numeric stepper</span></div>
-        <div class="family-row"><span class="family-name">range_no / range_yes</span><span class="lib-tag lib1">Lib 1</span><span class="family-desc">Slider with/without labels</span></div>
-        <div class="section-divider">Library 2</div>
-        <div class="family-row"><span class="family-name">check-box-checked-outline</span><span class="lib-tag lib2">Lib 2</span><span class="family-desc">Checkbox variant</span></div>
-        <div class="family-row"><span class="family-name">dropdown_default_pressed_medium / small</span><span class="lib-tag lib2">Lib 2</span><span class="family-desc">Dropdown</span></div>
+        <div class="family-row"><span class="family-name">checkbox_-type_default</span><span class="family-desc">state × type (checked/indeterminate/unchecked)</span></div>
+        <div class="family-row"><span class="family-name">checkbox_-type_task</span><span class="family-desc">state × type</span></div>
+        <div class="family-row"><span class="family-name">checkbox-item</span><span class="family-desc">state × type (checked/indeterminate/unchecked)</span></div>
+        <div class="family-row"><span class="family-name">task-checkbox-item</span><span class="family-desc">state × type (checked/unchecked)</span></div>
       </div>
     </div>
 
     <div class="page-card forms">
       <div class="page-card-header">
-        <div class="page-slug">Navigation Inputs</div>
-        <h2>Tab &amp; Segmented Controls</h2>
-        <p>Tab group navigation; segmented toggle control</p>
+        <div class="page-slug">Radio</div>
+        <h2>Radio</h2>
+        <p>Radio item — 4 states × selected/unselected</p>
       </div>
       <div class="family-list">
-        <div class="section-divider">Library 1</div>
-        <div class="family-row"><span class="family-name">tab-group</span><span class="lib-tag lib1">Lib 1</span><span class="family-desc">Tab navigation</span></div>
-        <div class="section-divider">Library 2</div>
-        <div class="family-row"><span class="family-name">tab-group</span><span class="lib-tag lib2">Lib 2</span><span class="family-desc">Tab navigation</span></div>
-        <div class="family-row"><span class="family-name">segmented-control</span><span class="lib-tag lib2">Lib 2</span><span class="family-desc">Segmented toggle</span></div>
+        <div class="family-row"><span class="family-name">radio_-type_item</span><span class="family-desc">default / hover / focused / disabled × is-selected true/false</span></div>
       </div>
     </div>
 
     <div class="page-card forms">
       <div class="page-card-header">
-        <div class="page-slug">Form Layouts</div>
-        <h2>Form Sections</h2>
-        <p>Composed form layout containers — collapsible, standard, and toggle-gated</p>
+        <div class="page-slug">Input Field</div>
+        <h2>Input Field</h2>
+        <p>Text, search, and select inputs — 2 sizes × 5 states × filled/empty</p>
       </div>
       <div class="family-list">
-        <div class="section-divider">Library 2</div>
-        <div class="family-row"><span class="family-name">collapsible-section</span><span class="lib-tag lib2">Lib 2</span><span class="family-desc">Expandable section (600×210)</span></div>
-        <div class="family-row"><span class="family-name">form-section</span><span class="lib-tag lib2">Lib 2</span><span class="family-desc">Form layout section (829×280)</span></div>
-        <div class="family-row"><span class="family-name">toggle-form-section</span><span class="lib-tag lib2">Lib 2</span><span class="family-desc">Toggle-gated form section — node 4242:169056</span></div>
+        <div class="family-row"><span class="family-name">input-field_-type_text</span><span class="family-desc">large/medium × default/hover/focus/error/disabled × filled</span></div>
+        <div class="family-row"><span class="family-name">input-field_-type_search</span><span class="family-desc">large/medium × same states</span></div>
+        <div class="family-row"><span class="family-name">input-field_-type_select</span><span class="family-desc">large/medium × same states</span></div>
+      </div>
+    </div>
+
+    <div class="page-card forms">
+      <div class="page-card-header">
+        <div class="page-slug">Segmented Control</div>
+        <h2>Segmented Control</h2>
+        <p>Toggle control in two sizes with individual item states</p>
+      </div>
+      <div class="family-list">
+        <div class="family-row"><span class="family-name">segmented-control</span><span class="family-desc">large / small</span></div>
+        <div class="family-row"><span class="family-name">segmented-control-item</span><span class="family-desc">large/small × default/hover/focus/active</span></div>
+      </div>
+    </div>
+
+    <div class="page-card forms">
+      <div class="page-card-header">
+        <div class="page-slug">Tab &amp; Scroll</div>
+        <h2>Tab Group &amp; Scroll Bar</h2>
+        <p>Tab navigation; horizontal and vertical scroll bars</p>
+      </div>
+      <div class="family-list">
+        <div class="family-row"><span class="family-name">tab-group</span><span class="family-desc">Tab navigation</span></div>
+        <div class="family-row"><span class="family-name">scroll-bar</span><span class="family-desc">horizontal / vertical</span></div>
+      </div>
+    </div>
+
+    <div class="page-card forms">
+      <div class="page-card-header">
+        <div class="page-slug">Row</div>
+        <h2>Row</h2>
+        <p>Table row with range toggle</p>
+      </div>
+      <div class="family-list">
+        <div class="family-row"><span class="family-name">row_-range_no</span></div>
+        <div class="family-row"><span class="family-name">row_-range_yes</span></div>
       </div>
     </div>
 
@@ -290,83 +269,24 @@ a{color:#1339ec;text-decoration:none}a:hover{text-decoration:underline}
 
     <div class="page-card feedback">
       <div class="page-card-header">
-        <div class="page-slug">Toast &amp; Alert Styles</div>
-        <h2>Toast / Alert Styles</h2>
-        <p>8 semantic styles × type variants (Lib 2 toast system)</p>
+        <div class="page-slug">Popover</div>
+        <h2>Popover</h2>
+        <p>Popover container shell</p>
       </div>
       <div class="family-list">
-        <div class="section-divider">Library 2 — style_* family</div>
-        <div class="family-row"><span class="family-name">style_default / style_danger</span><span class="lib-tag lib2">Lib 2</span></div>
-        <div class="family-row"><span class="family-name">style_success / style_warning</span><span class="lib-tag lib2">Lib 2</span></div>
-        <div class="family-row"><span class="family-name">style_information / style_highlight</span><span class="lib-tag lib2">Lib 2</span></div>
-        <div class="family-row"><span class="family-name">style_oncolor / style_default-dark</span><span class="lib-tag lib2">Lib 2</span></div>
-        <div class="section-divider">Library 2 — severity_* family</div>
-        <div class="family-row"><span class="family-name">severity_default / danger / success / warning</span><span class="lib-tag lib2">Lib 2</span></div>
-        <div class="family-row"><span class="family-name">severity_information / highlight / default-dark</span><span class="lib-tag lib2">Lib 2</span></div>
+        <div class="family-row"><span class="family-name">popover</span><span class="family-desc">Popover container</span></div>
       </div>
     </div>
 
     <div class="page-card feedback">
       <div class="page-card-header">
-        <div class="page-slug">Notifications</div>
-        <h2>Notifications</h2>
-        <p>Notification item, content block, and popover shell</p>
+        <div class="page-slug">Modal</div>
+        <h2>Modal Items</h2>
+        <p>Modal header and footer row items</p>
       </div>
       <div class="family-list">
-        <div class="section-divider">Library 2</div>
-        <div class="family-row"><span class="family-name">notification</span><span class="lib-tag lib2">Lib 2</span><span class="family-desc">Single notification item</span></div>
-        <div class="family-row"><span class="family-name">notification-content</span><span class="lib-tag lib2">Lib 2</span><span class="family-desc">Notification body content</span></div>
-        <div class="family-row"><span class="family-name">notification---popover</span><span class="lib-tag lib2">Lib 2</span><span class="family-desc">Notification popover shell (wide)</span></div>
-        <div class="family-row"><span class="family-name">banner</span><span class="lib-tag lib2">Lib 2</span><span class="family-desc">Banner / announcement bar (wide)</span></div>
-      </div>
-    </div>
-
-    <div class="page-card feedback">
-      <div class="page-card-header">
-        <div class="page-slug">Tooltips</div>
-        <h2>Tooltips</h2>
-        <p>Simple tooltip and rich-content tooltip with 4 alignment variants</p>
-      </div>
-      <div class="family-list">
-        <div class="section-divider">Library 1</div>
-        <div class="family-row"><span class="family-name">tooltip</span><span class="lib-tag lib1">Lib 1</span><span class="family-desc">Simple tooltip</span></div>
-        <div class="section-divider">Library 2</div>
-        <div class="family-row"><span class="family-name">tooltip</span><span class="lib-tag lib2">Lib 2</span><span class="family-desc">Simple tooltip</span></div>
-        <div class="family-row"><span class="family-name">tooltip-v02---complex-content_-alignment_bottom</span><span class="lib-tag lib2">Lib 2</span></div>
-        <div class="family-row"><span class="family-name">tooltip-v02---complex-content_-alignment_top</span><span class="lib-tag lib2">Lib 2</span></div>
-        <div class="family-row"><span class="family-name">tooltip-v02---complex-content_-alignment_left</span><span class="lib-tag lib2">Lib 2</span></div>
-        <div class="family-row"><span class="family-name">tooltip-v02---complex-content_-alignment_right</span><span class="lib-tag lib2">Lib 2</span></div>
-      </div>
-    </div>
-
-    <div class="page-card feedback">
-      <div class="page-card-header">
-        <div class="page-slug">Popovers</div>
-        <h2>Popovers</h2>
-        <p>Popover containers and row items from both libraries</p>
-      </div>
-      <div class="family-list">
-        <div class="section-divider">Library 1</div>
-        <div class="family-row"><span class="family-name">popover</span><span class="lib-tag lib1">Lib 1</span><span class="family-desc">Popover container</span></div>
-        <div class="family-row"><span class="family-name">popover-item-_-header / _-footer</span><span class="lib-tag lib1">Lib 1</span></div>
-        <div class="section-divider">Library 2</div>
-        <div class="family-row"><span class="family-name">popover-alt</span><span class="lib-tag lib2">Lib 2</span><span class="family-desc">Popover alt container</span></div>
-        <div class="family-row"><span class="family-name">popover-item-_-header</span><span class="lib-tag lib2">Lib 2</span></div>
-      </div>
-    </div>
-
-    <div class="page-card feedback">
-      <div class="page-card-header">
-        <div class="page-slug">Modals</div>
-        <h2>Modals</h2>
-        <p>Full modal dialog shell and row-level modal items</p>
-      </div>
-      <div class="family-list">
-        <div class="section-divider">Library 1</div>
-        <div class="family-row"><span class="family-name">modal-item-_-header / _-footer</span><span class="lib-tag lib1">Lib 1</span></div>
-        <div class="section-divider">Library 2</div>
-        <div class="family-row"><span class="family-name">modal</span><span class="lib-tag lib2">Lib 2</span><span class="family-desc">Full modal dialog</span></div>
-        <div class="family-row"><span class="family-name">modal-item-_-header / _-footer</span><span class="lib-tag lib2">Lib 2</span></div>
+        <div class="family-row"><span class="family-name">modal-item-_-header</span></div>
+        <div class="family-row"><span class="family-name">modal-item-_-footer</span></div>
       </div>
     </div>
 
@@ -380,41 +300,65 @@ a{color:#1339ec;text-decoration:none}a:hover{text-decoration:underline}
       <div class="page-card-header">
         <div class="page-slug">Shell</div>
         <h2>Navigation Shell</h2>
-        <p>Top-level app navigation and header bar</p>
+        <p>Top navigation bar; sidebar navigation items</p>
       </div>
       <div class="family-list">
-        <div class="section-divider">Library 1 + Library 2</div>
-        <div class="family-row"><span class="family-name">navigation-bar</span><span class="lib-tag both">Both</span><span class="family-desc">Top navigation bar</span></div>
-        <div class="family-row"><span class="family-name">app-header</span><span class="lib-tag lib2">Lib 2</span><span class="family-desc">Full app header shell</span></div>
+        <div class="family-row"><span class="family-name">navigation-bar</span><span class="family-desc">Top navigation bar</span></div>
+        <div class="family-row"><span class="family-name">sidebar-item</span><span class="family-desc">parent/child × default/hover/pressed/active × collapsed</span></div>
       </div>
     </div>
 
     <div class="page-card nav-page">
       <div class="page-card-header">
-        <div class="page-slug">Tables</div>
-        <h2>Tables &amp; Compact Lists</h2>
-        <p>Column headers, table rows, compact list rows — calendar and post-sets contexts</p>
+        <div class="page-slug">Header</div>
+        <h2>Page Headers</h2>
+        <p>Page, section, kanban-column, drawer, and content header variants</p>
       </div>
       <div class="family-list">
-        <div class="section-divider">Library 1</div>
-        <div class="family-row"><span class="family-name">column-header-_-calendar / _-post-sets</span><span class="lib-tag lib1">Lib 1</span></div>
-        <div class="family-row"><span class="family-name">table-row-_-calendar / _-post-sets</span><span class="lib-tag lib1">Lib 1</span></div>
-        <div class="family-row"><span class="family-name">compact_true / compact_false</span><span class="lib-tag lib1">Lib 1</span></div>
+        <div class="family-row"><span class="family-name">header_-type_page</span></div>
+        <div class="family-row"><span class="family-name">header_-type_section</span></div>
+        <div class="family-row"><span class="family-name">header_-type_kanban-column</span></div>
+        <div class="family-row"><span class="family-name">header_-type_drawer</span></div>
+        <div class="family-row"><span class="family-name">header_-type_content</span><span class="family-desc">tasks / calendar</span></div>
       </div>
     </div>
 
     <div class="page-card nav-page">
       <div class="page-card-header">
-        <div class="page-slug">Data Display</div>
-        <h2>Data Lists &amp; View Controls</h2>
-        <p>Key-value data lists, section headers, and view toggle controls</p>
+        <div class="page-slug">Column Headers</div>
+        <h2>Column Headers</h2>
+        <p>Table column headers for calendar, post-sets, and my-tasks views</p>
       </div>
       <div class="family-list">
-        <div class="section-divider">Library 2</div>
-        <div class="family-row"><span class="family-name">section-header</span><span class="lib-tag lib2">Lib 2</span><span class="family-desc">Section heading row</span></div>
-        <div class="family-row"><span class="family-name">data-list</span><span class="lib-tag lib2">Lib 2</span><span class="family-desc">Key-value data list</span></div>
-        <div class="family-row"><span class="family-name">view-switcher</span><span class="lib-tag lib2">Lib 2</span><span class="family-desc">List/grid toggle</span></div>
-        <div class="family-row"><span class="family-name">view-analytics</span><span class="lib-tag lib2">Lib 2</span><span class="family-desc">Analytics view toggle</span></div>
+        <div class="family-row"><span class="family-name">column-header_-type_calendar</span></div>
+        <div class="family-row"><span class="family-name">column-header_-type_post-sets</span></div>
+        <div class="family-row"><span class="family-name">column-header_-type_my-tasks</span><span class="family-desc">default list / upcoming list / default table</span></div>
+      </div>
+    </div>
+
+    <div class="page-card nav-page">
+      <div class="page-card-header">
+        <div class="page-slug">Table Rows</div>
+        <h2>Table Rows</h2>
+        <p>Table rows for calendar, post-sets, and my-tasks contexts</p>
+      </div>
+      <div class="family-list">
+        <div class="family-row"><span class="family-name">table-row_-type_calendar</span></div>
+        <div class="family-row"><span class="family-name">table-row_-type_post-sets</span></div>
+        <div class="family-row"><span class="family-name">table-row_-type_my-tasks</span></div>
+      </div>
+    </div>
+
+    <div class="page-card nav-page">
+      <div class="page-card-header">
+        <div class="page-slug">List Items</div>
+        <h2>Checklist &amp; Comment Items</h2>
+        <p>Checklist task rows; comment thread items</p>
+      </div>
+      <div class="family-list">
+        <div class="family-row"><span class="family-name">checklist-item</span><span class="family-desc">default/hover × ticked-off true/false</span></div>
+        <div class="family-row"><span class="family-name">comment-item</span><span class="family-desc">default/hover/pressed/brand-answer × show-tags</span></div>
+        <div class="family-row"><span class="family-name">activity-item</span><span class="family-desc">Activity feed item</span></div>
       </div>
     </div>
 
@@ -427,77 +371,55 @@ a{color:#1339ec;text-decoration:none}a:hover{text-decoration:underline}
     <div class="page-card macro">
       <div class="page-card-header">
         <div class="page-slug">Cards</div>
-        <h2>Post &amp; Approval Cards</h2>
-        <p>Post set card (5 statuses × default/compact), approval card layout, app sidebar</p>
+        <h2>Task &amp; Content Cards</h2>
+        <p>Task, task-link, column, story, and status card variants</p>
       </div>
       <div class="family-list">
-        <div class="section-divider">Library 1</div>
-        <div class="family-row"><span class="family-name">approval-card</span><span class="lib-tag lib1">Lib 1</span><span class="family-desc">Approval card layout</span></div>
-        <div class="family-row"><span class="family-name">post-set</span><span class="lib-tag lib1">Lib 1</span><span class="family-desc">Post set card (16 files)</span></div>
-        <div class="family-row"><span class="family-name">app-sidebar (collapsed_false / true)</span><span class="lib-tag lib1">Lib 1</span></div>
-        <div class="section-divider">Library 2</div>
-        <div class="family-row"><span class="family-name">post-pool</span><span class="lib-tag lib2">Lib 2</span><span class="family-desc">Post pool card</span></div>
-        <div class="family-row"><span class="family-name">posttemplate</span><span class="lib-tag lib2">Lib 2</span><span class="family-desc">Post template card</span></div>
-        <div class="family-row"><span class="family-name">campaign</span><span class="lib-tag lib2">Lib 2</span><span class="family-desc">Campaign card</span></div>
+        <div class="family-row"><span class="family-name">card_-type_task</span><span class="family-desc">default / hover</span></div>
+        <div class="family-row"><span class="family-name">card_-type_task-link</span><span class="family-desc">default / hover / edit / add-new</span></div>
+        <div class="family-row"><span class="family-name">card_-type_column</span><span class="family-desc">default / hover</span></div>
+        <div class="family-row"><span class="family-name">card_-type_story</span><span class="family-desc">default / hover</span></div>
+        <div class="family-row"><span class="family-name">card_-type_status</span><span class="family-desc">default/hover/drag × edit-mode</span></div>
+        <div class="family-row"><span class="family-name">card-item</span><span class="family-desc">Card item row</span></div>
       </div>
     </div>
 
     <div class="page-card macro">
       <div class="page-card-header">
-        <div class="page-slug">Media</div>
-        <h2>Media Components</h2>
-        <p>Media list card, media library items (default + selected), image card</p>
+        <div class="page-slug">Approval</div>
+        <h2>Approval Unit &amp; Card</h2>
+        <p>Approval workflow components — approver rows, status rows, deadline, card</p>
       </div>
       <div class="family-list">
-        <div class="section-divider">Library 2</div>
-        <div class="family-row"><span class="family-name">media</span><span class="lib-tag lib2">Lib 2</span><span class="family-desc">Media list card (388×2654)</span></div>
-        <div class="family-row"><span class="family-name">media-element_medialibrary_default</span><span class="lib-tag lib2">Lib 2</span><span class="family-desc">Media library item default</span></div>
-        <div class="family-row"><span class="family-name">media-element_medialibrary_selected</span><span class="lib-tag lib2">Lib 2</span><span class="family-desc">Media library item selected (140×140)</span></div>
-        <div class="family-row"><span class="family-name">image-card</span><span class="lib-tag lib2">Lib 2</span><span class="family-desc">Image card (340×377)</span></div>
+        <div class="family-row"><span class="family-name">approval-unit_-type_approver-row</span><span class="family-desc">default / to-be-approved / approved / rejected</span></div>
+        <div class="family-row"><span class="family-name">approval-unit_-type_status-row</span><span class="family-desc">default / approved / rejected</span></div>
+        <div class="family-row"><span class="family-name">approval-unit_-type_deadline</span></div>
+        <div class="family-row"><span class="family-name">approval-card</span><span class="family-desc">Full approval card layout</span></div>
       </div>
     </div>
 
     <div class="page-card macro">
       <div class="page-card-header">
-        <div class="page-slug">User &amp; Profile</div>
-        <h2>User &amp; Profile</h2>
-        <p>Avatar (Lib 1), profile card, user badge chips</p>
+        <div class="page-slug">Post Sets</div>
+        <h2>Post Set Cards</h2>
+        <p>Post set card (default/compact × 5 statuses); smaller post set item</p>
       </div>
       <div class="family-list">
-        <div class="section-divider">Library 1</div>
-        <div class="family-row"><span class="family-name">avatar</span><span class="lib-tag lib1">Lib 1</span><span class="family-desc">SM/MD/LG × initials/photo (6 files)</span></div>
-        <div class="section-divider">Library 2</div>
-        <div class="family-row"><span class="family-name">profile</span><span class="lib-tag lib2">Lib 2</span><span class="family-desc">Profile card</span></div>
-        <div class="family-row"><span class="family-name">user-badge_xxs_false / xxs_true / sm_true</span><span class="lib-tag lib2">Lib 2</span></div>
+        <div class="family-row"><span class="family-name">post-set</span><span class="family-desc">default/compact × draft/scheduled/failed/successful/success</span></div>
+        <div class="family-row"><span class="family-name">smaller-post-set-item</span><span class="family-desc">success / scheduled / draft / failed</span></div>
       </div>
     </div>
 
     <div class="page-card macro">
       <div class="page-card-header">
-        <div class="page-slug">Feed &amp; Sidebar</div>
-        <h2>Feed &amp; Engagement</h2>
-        <p>Content feed layout, engagement sidebar panel, progress indicator</p>
+        <div class="page-slug">Progress &amp; App Shell</div>
+        <h2>Progress Indicators &amp; App Sidebar</h2>
+        <p>Circular and line progress indicators; collapsible app sidebar</p>
       </div>
       <div class="family-list">
-        <div class="section-divider">Library 2</div>
-        <div class="family-row"><span class="family-name">feed_auto-heigt</span><span class="lib-tag lib2">Lib 2</span><span class="family-desc">Social feed layout</span></div>
-        <div class="family-row"><span class="family-name">engagement-sidebar</span><span class="lib-tag lib2">Lib 2</span><span class="family-desc">Engagement sidebar panel</span></div>
-        <div class="family-row"><span class="family-name">progress-indicator</span><span class="lib-tag lib2">Lib 2</span><span class="family-desc">Progress/loading indicator</span></div>
-      </div>
-    </div>
-
-    <div class="page-card macro">
-      <div class="page-card-header">
-        <div class="page-slug">Inbox &amp; Context</div>
-        <h2>Inbox, Context &amp; Discussion</h2>
-        <p>Inbox list items, contextual action rows, discussion threads, tree navigation</p>
-      </div>
-      <div class="family-list">
-        <div class="section-divider">Library 2</div>
-        <div class="family-row"><span class="family-name">inbox / inbox-custom</span><span class="lib-tag lib2">Lib 2</span><span class="family-desc">Inbox list items</span></div>
-        <div class="family-row"><span class="family-name">context-item---comment / tags-and-owner / top</span><span class="lib-tag lib2">Lib 2</span></div>
-        <div class="family-row"><span class="family-name">discussion</span><span class="lib-tag lib2">Lib 2</span><span class="family-desc">Discussion thread item</span></div>
-        <div class="family-row"><span class="family-name">tree-node</span><span class="lib-tag lib2">Lib 2</span><span class="family-desc">Tree/hierarchy node</span></div>
+        <div class="family-row"><span class="family-name">progress-indicator_-type_circular</span><span class="family-desc">not-started / in-progress / completed</span></div>
+        <div class="family-row"><span class="family-name">progress-indicator_-type_line</span><span class="family-desc">card / header</span></div>
+        <div class="family-row"><span class="family-name">app-sidebar</span><span class="family-desc">collapsed false/true</span></div>
       </div>
     </div>
 
@@ -505,19 +427,14 @@ a{color:#1339ec;text-decoration:none}a:hover{text-decoration:underline}
 
   <!-- ── EXCLUDED ───────────────────────────────────────────── -->
   <div class="excluded-section">
-    <h2>Excluded — Figma Artifacts (not real UI components)</h2>
+    <h2>Excluded — Artifacts &amp; Unclassified</h2>
     <table class="excluded-table">
-      <thead><tr><th>Pattern</th><th>Reason</th></tr></thead>
+      <thead><tr><th>File / Pattern</th><th>Reason</th></tr></thead>
       <tbody>
-        <tr><td class="pattern">breakpoint_desktop / mobile / tablet</td><td>Figma breakpoint documentation frames</td></tr>
-        <tr><td class="pattern">aiconcept, browser-view-text, browser-window-template</td><td>Concept / prototype frames</td></tr>
-        <tr><td class="pattern">andreas-wissel, name_ann-catrin-*, name_chris-day, …</td><td>Named user avatars — test / demo data</td></tr>
-        <tr><td class="pattern">pcp---*, eventhandler, inspector, tour, lifty</td><td>Internal Figma plugin / prototype nodes</td></tr>
-        <tr><td class="pattern">ffs_project-thumbnail-*</td><td>Project thumbnail placeholder frames</td></tr>
-        <tr><td class="pattern">*_13953-12345 (numeric-suffix duplicates)</td><td>Export duplicates of another file — use the base version</td></tr>
-        <tr><td class="pattern">property-1_* (stray, no clear family)</td><td>Orphaned Figma component variants without a named family</td></tr>
-        <tr><td class="pattern">dropdown_default_pressed_medium / small</td><td>Present but need Figma link to verify correct node — currently empty</td></tr>
-        <tr><td class="pattern">notification.html</td><td>Currently patched with a Lib 1 alert banner — not a Lib 2 notification item; should be re-evaluated or removed from page</td></tr>
+        <tr><td class="pattern">facelift-logo.html</td><td>Brand logo asset — not a UI component</td></tr>
+        <tr><td class="pattern">location_card.html / location_header.html</td><td>Context-specific frames — origin unclear, not part of the component system</td></tr>
+        <tr><td class="pattern">format_today-am.html</td><td>Date format display frame — not a reusable component</td></tr>
+        <tr><td class="pattern">status.html (bare)</td><td>Single-export artifact without variant context</td></tr>
       </tbody>
     </table>
   </div>
