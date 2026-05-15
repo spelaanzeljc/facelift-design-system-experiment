@@ -66,6 +66,9 @@ const FLAGGED_L2_ICON = new Set([
   'verified','video','view-list','warning-filled','whatsapp','wow',
   'x','x-network-logo','x-outline','x-sign-large','x-sign-small','x-sign-small-invert',
   'xing','youtube',
+  'browser-view-text','browser-window-template',
+  'icon-','icon-admin','icon-arrow-dropdown','icon-tour',
+  'illus_cat','illus_search',
 ]);
 
 // Flag 2: families that also appear in Library 1 — potential duplicates
