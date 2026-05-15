@@ -196,6 +196,33 @@ function esc(s) {
 function buildHTML(libraries) {
   const totalFiles = libraries.reduce((s, l) => s + l.files.length, 0);
 
+  // Build lib1 family map for duplicate-link generation
+  const lib1Entry = libraries.find(l => !l.dir.includes('components2'));
+  const lib1FamilyMap = lib1Entry ? groupByFamily(lib1Entry.files) : new Map();
+
+  function findLib1Link(family) {
+    // Exact match
+    if (lib1FamilyMap.has(family)) {
+      const files = lib1FamilyMap.get(family);
+      return files.length === 1
+        ? `../output/components/${files[0]}`
+        : `component-inventory.html?q=${encodeURIComponent(family)}`;
+    }
+    // lib2 family is more specific: starts with a lib1 family prefix (e.g. 'status_approved' → 'status')
+    for (const [f1, files] of lib1FamilyMap) {
+      if (family.startsWith(f1 + '_') || family.startsWith(f1 + '-')) {
+        return `component-inventory.html?q=${encodeURIComponent(f1)}`;
+      }
+    }
+    // lib1 family is more specific: starts with lib2 family prefix
+    for (const [f1, files] of lib1FamilyMap) {
+      if (f1.startsWith(family + '_') || f1.startsWith(family + '-')) {
+        return `component-inventory.html?q=${encodeURIComponent(family)}`;
+      }
+    }
+    return null;
+  }
+
   const libSections = libraries.map(({ label, short, dir, files }) => {
     const families = groupByFamily(files);
     const familyCount = families.size;
@@ -231,8 +258,9 @@ function buildHTML(libraries) {
                 ? `<span class="badge flag-artifact" title="${esc(flagInfo.reason)}">⬡ artifact</span>`
                 : `<span class="badge flag" title="${esc(flagInfo.reason)}">⚑ needs review</span>`
         : '';
+      const lib1Link = (flagInfo && flagInfo.type === 'lib1') ? findLib1Link(family) : null;
       const flagNote = flagInfo
-        ? `<div class="flag-note flag-note--${flagInfo.type}">${esc(flagInfo.reason)}</div>`
+        ? `<div class="flag-note flag-note--${flagInfo.type}">${esc(flagInfo.reason)}${lib1Link ? ` — <a href="${esc(lib1Link)}" target="_blank" rel="noopener">view in Lib 1 →</a>` : ''}</div>`
         : '';
 
       return `
@@ -337,6 +365,7 @@ details.family.flagged--artifact .fname-head{color:#6b7280}
 .flag-note--review{color:#92400e;background:#fef3c7;border-bottom-color:#fde68a}
 .flag-note--icon{color:#166534;background:#dcfce7;border-bottom-color:#4ade80}
 .flag-note--lib1{color:#1e40af;background:#dbeafe;border-bottom-color:#93c5fd}
+.flag-note--lib1 a{color:#1e40af;font-weight:600;text-decoration:underline}
 .flag-note--blank{color:#7e22ce;background:#fae8ff;border-bottom-color:#d8b4fe}
 .flag-note--artifact{color:#4b5563;background:#f3f4f6;border-bottom-color:#d1d5db}
 .file-blank td{opacity:.55}
