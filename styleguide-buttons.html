@@ -451,35 +451,35 @@
         <div class="type-card active" data-val="primary">
           <span class="type-card-label">Primary</span>
           <span class="type-mini-btn mini-primary">
-            <span class="type-mini-icon" style="background:rgba(255,255,255,.5)"></span>Action
+            <span class="type-mini-icon" style="background:rgba(255,255,255,.5)"></span>
           </span>
         </div>
 
         <div class="type-card" data-val="secondary">
           <span class="type-card-label">Secondary</span>
           <span class="type-mini-btn mini-secondary">
-            <span class="type-mini-icon" style="background:#d3d7de"></span>Action
+            <span class="type-mini-icon" style="background:#d3d7de"></span>
           </span>
         </div>
 
         <div class="type-card" data-val="danger">
           <span class="type-card-label">Danger</span>
           <span class="type-mini-btn mini-danger">
-            <span class="type-mini-icon" style="background:rgba(255,255,255,.5)"></span>Action
+            <span class="type-mini-icon" style="background:rgba(255,255,255,.5)"></span>
           </span>
         </div>
 
         <div class="type-card" data-val="success">
           <span class="type-card-label">Success</span>
           <span class="type-mini-btn mini-success">
-            <span class="type-mini-icon" style="background:rgba(255,255,255,.5)"></span>Action
+            <span class="type-mini-icon" style="background:rgba(255,255,255,.5)"></span>
           </span>
         </div>
 
         <div class="type-card" data-val="warning">
           <span class="type-card-label">Warning</span>
           <span class="type-mini-btn mini-warning">
-            <span class="type-mini-icon" style="background:rgba(255,255,255,.5)"></span>Action
+            <span class="type-mini-icon" style="background:rgba(255,255,255,.5)"></span>
           </span>
         </div>
 
@@ -498,7 +498,6 @@
     <div class="config-row">
       <span class="config-label">Size</span>
       <div class="seg-group" data-dim="size">
-        <button class="seg-btn"        data-val="xsmall">XS — 24px</button>
         <button class="seg-btn"        data-val="small">S — 32px</button>
         <button class="seg-btn active" data-val="medium">M — 36px</button>
         <button class="seg-btn"        data-val="large">L — 40px</button>
@@ -644,10 +643,6 @@
   // Returns true if the combination of (size, emphasis, iconOnly, shape) exists as a file.
   // family and state have no constraints between each other or other dims.
   function isValid(size, emphasis, iconOnly, shape) {
-    if (size === 'xsmall') {
-      // xsmall: only minimal emphasis, icon-only=true, rectangle
-      return emphasis === 'minimal' && iconOnly === 'true' && shape === 'rectangle';
-    }
     if (size === 'large') {
       // large: no icon-only=true, no rounded
       if (iconOnly === 'true') return false;
@@ -667,14 +662,6 @@
     if (isValid(sel.size, sel.emphasis, sel.iconOnly, sel.shape)) return false;
 
     var corrected = [];
-
-    // xsmall forces all other dims — no negotiation
-    if (sel.size === 'xsmall') {
-      if (sel.emphasis !== 'minimal') { sel.emphasis = 'minimal'; corrected.push('emphasis → minimal'); }
-      if (sel.iconOnly !== 'true')    { sel.iconOnly = 'true';    corrected.push('icon-only → true');   }
-      if (sel.shape    !== 'rectangle') { sel.shape = 'rectangle'; corrected.push('shape → rectangle'); }
-      return corrected.length > 0;
-    }
 
     // large + icon-only=true conflict
     if (sel.size === 'large' && sel.iconOnly === 'true') {
@@ -767,8 +754,7 @@
                         + '-button-' + sel.family + '-' + sel.state;
 
     // Border radius token
-    var radMap = { xsmall: '--radius-xs-4', small: '--radius-sm-6',
-                   medium: '--radius-md-8',  large: '--radius-lg-12' };
+    var radMap = { small: '--radius-sm-6', medium: '--radius-md-8', large: '--radius-lg-12' };
     devRadEl.textContent = sel.shape === 'rounded'
       ? '--radius-full'
       : (radMap[sel.size] || '--radius-md-8');
@@ -860,8 +846,8 @@
     // Toggles: reflect state + disable when size forces a value
     cbIconOnly.checked  = sel.iconOnly === 'true';
     cbShape.checked     = sel.shape    === 'rounded';
-    cbIconOnly.disabled = sel.size === 'xsmall' || sel.size === 'large';
-    cbShape.disabled    = sel.size === 'xsmall' || sel.size === 'large';
+    cbIconOnly.disabled = sel.size === 'large';
+    cbShape.disabled    = sel.size === 'large';
   }
 
   // ── Event listeners ────────────────────────────────────────────
