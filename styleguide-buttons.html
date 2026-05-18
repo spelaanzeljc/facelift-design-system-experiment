@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buttons — Design System</title>
+<link rel="stylesheet" href="output/tokens/tokens.css">
+<link rel="stylesheet" href="styleguide.css">
+<style>
+
+/* ── Configurator ──────────────────────────────────────────────── */
+.configurator {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0 24px 12px;
+  margin-bottom: 40px;
+  box-shadow: var(--shadow-lift);
+}
+
+.config-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border);
+}
+.config-row:first-child { padding-top: 16px; }
+.config-row:last-child  { border-bottom: none; padding-bottom: 0; }
+
+.config-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  width: 76px;
+  flex-shrink: 0;
+}
+
+.seg-group { display: flex; gap: 4px; flex-wrap: wrap; }
+
+.seg-btn {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 6px;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: border-color .1s, background .1s, color .1s;
+  white-space: nowrap;
+  line-height: 1.45;
+  user-select: none;
+}
+.seg-btn:hover:not([disabled]) {
+  border-color: var(--clay);
+  color: var(--clay);
+  background: #fef9f6;
+}
+.seg-btn.active {
+  background: var(--clay);
+  border-color: var(--clay);
+  color: #fff;
+  font-weight: 600;
+}
+.seg-btn[disabled] {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
+/* ── Preview ───────────────────────────────────────────────────── */
+.preview-section { margin-bottom: 32px; }
+
+.preview-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.preview-viewport {
+  background-color: #f0f0f0;
+  background-image:
+    linear-gradient(45deg, #e3e3e3 25%, transparent 25%),
+    linear-gradient(-45deg, #e3e3e3 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #e3e3e3 75%),
+    linear-gradient(-45deg, transparent 75%, #e3e3e3 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  border-bottom: 1.5px solid var(--border);
+  transition: opacity .12s ease;
+}
+.preview-viewport.loading { opacity: 0.3; }
+
+.preview-footer {
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.preview-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+.preview-open {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--text-faint);
+  text-decoration: none;
+  transition: color .12s;
+  flex-shrink: 0;
+}
+.preview-open:hover { color: var(--clay); }
+
+/* ── Code panel ────────────────────────────────────────────────── */
+.code-panel {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  margin-bottom: 72px;
+}
+
+.code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 11px 18px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.code-filename {
+  font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+  font-size: 11px;
+  color: var(--clay);
+  word-break: break-all;
+  min-width: 0;
+}
+
+.copy-btn {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 13px;
+  border-radius: 5px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: border-color .12s, color .12s, background .12s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.copy-btn:hover { border-color: var(--clay); color: var(--clay); }
+.copy-btn.copied { background: var(--clay); border-color: var(--clay); color: #fff; }
+
+.code-body {
+  overflow: auto;
+  max-height: 360px;
+  background: #1a1b26;
+}
+
+.code-body pre {
+  margin: 0;
+  padding: 20px 24px;
+  font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+  font-size: 11.5px;
+  line-height: 1.75;
+  color: #a9b1d6;
+  white-space: pre;
+  tab-size: 2;
+}
+
+/* ── Constraint notice ─────────────────────────────────────────── */
+.notice {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-faint);
+  padding: 8px 14px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+.notice-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--clay);
+  flex-shrink: 0;
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<!-- ─── Sidebar ─────────────────────────────────────────────────── -->
+<aside class="sidebar">
+  <a href="styleguide.html" class="sidebar-brand">
+    <div class="sidebar-logo">Design System</div>
+    <div class="sidebar-sub">Living Style Guide</div>
+  </a>
+  <div class="sidebar-section">Overview</div>
+  <a href="styleguide.html">Summary</a>
+  <div class="sidebar-section">Foundation</div>
+  <a href="styleguide-colors.html">Colors</a>
+  <a href="styleguide-typography.html">Typography</a>
+  <a href="styleguide-shadows.html">Shadows</a>
+  <div class="sidebar-section">Components</div>
+  <a href="styleguide-components-main.html">Components</a>
+  <a href="styleguide-buttons.html" class="active" style="padding-left:10px;font-size:12px;color:var(--text);">↳ Buttons</a>
+  <div class="sidebar-section">Assets</div>
+  <a href="styleguide-icons.html">Icons</a>
+  <div class="sidebar-stat">
+    <p><strong>1,140</strong> components</p>
+    <p><strong>429</strong> icons</p>
+    <p><strong>74</strong> design tokens</p>
+  </div>
+</aside>
+
+<!-- ─── Main ────────────────────────────────────────────────────── -->
+<main class="main">
+
+  <div class="page-header">
+    <div class="page-decoration"></div>
+    <div class="page-header-eyebrow">Components → Micro · Atoms</div>
+    <h1>Buttons</h1>
+    <p class="page-header-desc">5 families × 3 emphases × 4 sizes × 6 states × 2 shapes. Configure every property below to preview the exact variant.</p>
+  </div>
+
+  <!-- ─── Configurator ──────────────────────────────────────────── -->
+  <div class="configurator" id="configurator">
+
+    <div class="config-row">
+      <span class="config-label">Family</span>
+      <div class="seg-group" data-dim="family">
+        <button class="seg-btn active" data-val="primary">Primary</button>
+        <button class="seg-btn"        data-val="secondary">Secondary</button>
+        <button class="seg-btn"        data-val="danger">Danger</button>
+        <button class="seg-btn"        data-val="success">Success</button>
+        <button class="seg-btn"        data-val="warning">Warning</button>
+      </div>
+    </div>
+
+    <div class="config-row">
+      <span class="config-label">Emphasis</span>
+      <div class="seg-group" data-dim="emphasis">
+        <button class="seg-btn active" data-val="bold">Bold</button>
+        <button class="seg-btn"        data-val="subtle">Subtle</button>
+        <button class="seg-btn"        data-val="minimal">Minimal</button>
+      </div>
+    </div>
+
+    <div class="config-row">
+      <span class="config-label">Size</span>
+      <div class="seg-group" data-dim="size">
+        <button class="seg-btn"        data-val="xsmall">XSmall</button>
+        <button class="seg-btn"        data-val="small">Small</button>
+        <button class="seg-btn active" data-val="medium">Medium</button>
+        <button class="seg-btn"        data-val="large">Large</button>
+      </div>
+    </div>
+
+    <div class="config-row">
+      <span class="config-label">State</span>
+      <div class="seg-group" data-dim="state">
+        <button class="seg-btn active" data-val="default">Default</button>
+        <button class="seg-btn"        data-val="hover">Hover</button>
+        <button class="seg-btn"        data-val="active">Active</button>
+        <button class="seg-btn"        data-val="pressed">Pressed</button>
+        <button class="seg-btn"        data-val="focused">Focused</button>
+        <button class="seg-btn"        data-val="disabled">Disabled</button>
+      </div>
+    </div>
+
+    <div class="config-row">
+      <span class="config-label">Icon only</span>
+      <div class="seg-group" data-dim="iconOnly">
+        <button class="seg-btn active" data-val="false">Label + icon</button>
+        <button class="seg-btn"        data-val="true">Icon only</button>
+      </div>
+    </div>
+
+    <div class="config-row">
+      <span class="config-label">Shape</span>
+      <div class="seg-group" data-dim="shape">
+        <button class="seg-btn active" data-val="rectangle">Rectangle</button>
+        <button class="seg-btn"        data-val="rounded">Rounded</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ─── Constraint notice (shown when auto-correction happened) ─── -->
+  <div class="notice" id="constraint-notice" style="display:none">
+    <span class="notice-dot"></span>
+    <span id="constraint-msg">Some properties were adjusted to match valid combinations.</span>
+  </div>
+
+  <!-- ─── Preview ───────────────────────────────────────────────── -->
+  <div class="preview-section">
+    <div class="preview-card">
+      <div class="preview-viewport" id="preview-viewport">
+        <!-- SVG injected here by JS -->
+      </div>
+      <div class="preview-footer">
+        <span class="preview-name" id="preview-name">Primary · Bold · Medium · Default · Label + icon · Rectangle</span>
+        <a class="preview-open" id="preview-link" href="#" target="_blank">
+          Open file
+          <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H4M9 2v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Code panel ────────────────────────────────────────────── -->
+  <div class="code-panel">
+    <div class="code-header">
+      <span class="code-filename" id="code-filename">output/components/action-primary--size-medium--emphasis-bold--state-default--icon-only-false--shape-rectangle.html</span>
+      <button class="copy-btn" id="copy-btn">Copy SVG</button>
+    </div>
+    <div class="code-body">
+      <pre id="code-pre">Loading…</pre>
+    </div>
+  </div>
+
+</main>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  // ── Current selection ──────────────────────────────────────────
+  var sel = {
+    family:   'primary',
+    emphasis: 'bold',
+    size:     'medium',
+    state:    'default',
+    iconOnly: 'false',
+    shape:    'rectangle'
+  };
+
+  // ── Constraint check ───────────────────────────────────────────
+  // Returns true if the combination of (size, emphasis, iconOnly, shape) exists as a file.
+  // family and state have no constraints between each other or other dims.
+  function isValid(size, emphasis, iconOnly, shape) {
+    if (size === 'xsmall') {
+      // xsmall: only minimal emphasis, icon-only=true, rectangle
+      return emphasis === 'minimal' && iconOnly === 'true' && shape === 'rectangle';
+    }
+    if (size === 'large') {
+      // large: no icon-only=true, no rounded
+      if (iconOnly === 'true') return false;
+      if (shape === 'rounded') return false;
+    }
+    if (shape === 'rounded') {
+      // rounded: only small or medium, only icon-only=true
+      if (size !== 'small' && size !== 'medium') return false;
+      if (iconOnly === 'false') return false;
+    }
+    return true;
+  }
+
+  // ── Auto-correct after a dimension change ──────────────────────
+  // Respects the user's intent for changedDim; cascades to other dims.
+  function correct(changedDim) {
+    if (isValid(sel.size, sel.emphasis, sel.iconOnly, sel.shape)) return false;
+
+    var corrected = [];
+
+    // xsmall forces all other dims — no negotiation
+    if (sel.size === 'xsmall') {
+      if (sel.emphasis !== 'minimal') { sel.emphasis = 'minimal'; corrected.push('emphasis → minimal'); }
+      if (sel.iconOnly !== 'true')    { sel.iconOnly = 'true';    corrected.push('icon-only → true');   }
+      if (sel.shape    !== 'rectangle') { sel.shape = 'rectangle'; corrected.push('shape → rectangle'); }
+      return corrected.length > 0;
+    }
+
+    // large + icon-only=true conflict
+    if (sel.size === 'large' && sel.iconOnly === 'true') {
+      if (changedDim === 'size') { sel.iconOnly = 'false'; corrected.push('icon-only → false'); }
+      else                       { sel.size = 'medium';   corrected.push('size → medium'); }
+    }
+
+    // large + rounded conflict
+    if (sel.size === 'large' && sel.shape === 'rounded') {
+      if (changedDim === 'size') { sel.shape = 'rectangle'; corrected.push('shape → rectangle'); }
+      else                       { sel.size = 'medium';     corrected.push('size → medium'); }
+    }
+
+    // rounded + icon-only=false conflict
+    if (sel.shape === 'rounded' && sel.iconOnly === 'false') {
+      if (changedDim === 'shape') { sel.iconOnly = 'true';       corrected.push('icon-only → true'); }
+      else                        { sel.shape = 'rectangle';     corrected.push('shape → rectangle'); }
+    }
+
+    // rounded + non-small/medium size (shouldn't reach here after above, but safety)
+    if (sel.shape === 'rounded' && sel.size !== 'small' && sel.size !== 'medium') {
+      sel.size = 'medium';
+      corrected.push('size → medium');
+    }
+
+    return corrected.length > 0;
+  }
+
+  // ── Build file path ────────────────────────────────────────────
+  function buildPath() {
+    return 'output/components/action-' + sel.family +
+      '--size-'      + sel.size      +
+      '--emphasis-'  + sel.emphasis  +
+      '--state-'     + sel.state     +
+      '--icon-only-' + sel.iconOnly  +
+      '--shape-'     + sel.shape     + '.html';
+  }
+
+  // ── Human-readable label ───────────────────────────────────────
+  function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+  function buildLabel() {
+    var io = sel.iconOnly === 'true' ? 'Icon only' : 'Label + icon';
+    return [cap(sel.family), cap(sel.emphasis), cap(sel.size), cap(sel.state), io, cap(sel.shape)].join(' · ');
+  }
+
+  // ── DOM refs ───────────────────────────────────────────────────
+  var viewport    = document.getElementById('preview-viewport');
+  var nameEl      = document.getElementById('preview-name');
+  var linkEl      = document.getElementById('preview-link');
+  var filenameEl  = document.getElementById('code-filename');
+  var preEl       = document.getElementById('code-pre');
+  var copyBtn     = document.getElementById('copy-btn');
+  var noticeEl    = document.getElementById('constraint-notice');
+  var noticeMsgEl = document.getElementById('constraint-msg');
+  var rawSvgStr   = '';
+
+  // ── SVG pretty-printer ─────────────────────────────────────────
+  function prettySvg(src) {
+    // Collapse internal whitespace between tags
+    var s = src.replace(/>\s+</g, '><').trim();
+    var tokens = s.split(/(<[^>]+>)/);
+    var indent = 0;
+    var out    = '';
+
+    for (var i = 0; i < tokens.length; i++) {
+      var tok = tokens[i];
+      if (!tok) continue;
+
+      if (tok.charAt(0) === '<') {
+        var isClose = tok.charAt(1) === '/';
+        var isSelf  = /\/>$/.test(tok);
+        var isOpen  = !isClose && !isSelf;
+        var pad     = new Array(indent + 1).join('  ');
+
+        if (isClose) {
+          indent = Math.max(0, indent - 1);
+          pad = new Array(indent + 1).join('  ');
+        }
+
+        out += pad + tok + '\n';
+
+        if (isOpen) indent++;
+      } else {
+        var t = tok.trim();
+        if (t) out += new Array(indent + 1).join('  ') + t + '\n';
+      }
+    }
+
+    return out.trim();
+  }
+
+  // ── Refresh preview + code panel ──────────────────────────────
+  var currentPath = '';
+
+  function refresh() {
+    var path = buildPath();
+    if (path === currentPath) return;  // no change
+    currentPath = path;
+
+    viewport.classList.add('loading');
+    linkEl.href            = path;
+    filenameEl.textContent = path;
+    nameEl.textContent     = buildLabel();
+    preEl.textContent      = 'Loading…';
+    rawSvgStr = '';
+
+    fetch(path)
+      .then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.text();
+      })
+      .then(function (html) {
+        var parser = new DOMParser();
+        var doc    = parser.parseFromString(html, 'text/html');
+        var svgEl  = doc.querySelector('.checker > svg') || doc.querySelector('svg');
+
+        if (!svgEl) {
+          viewport.innerHTML = '<p style="color:#999;font-size:13px;font-family:system-ui">Preview unavailable</p>';
+          preEl.textContent  = '<!-- No SVG found in component file -->';
+          viewport.classList.remove('loading');
+          return;
+        }
+
+        // Scale SVG up for comfortable viewing
+        var natW  = parseFloat(svgEl.getAttribute('width'))  || 200;
+        var natH  = parseFloat(svgEl.getAttribute('height')) || 40;
+        var scale = Math.min(4.5, Math.max(1, 440 / natW));
+        var dispW = Math.round(natW * scale);
+        var dispH = Math.round(natH * scale);
+
+        // Clone to avoid mutating parsed doc
+        var clone = svgEl.cloneNode(true);
+        clone.setAttribute('width',  dispW);
+        clone.setAttribute('height', dispH);
+        clone.style.display = 'block';
+
+        viewport.innerHTML = '';
+        viewport.appendChild(clone);
+        viewport.classList.remove('loading');
+
+        // Code panel — use original (unscaled) SVG
+        rawSvgStr = new XMLSerializer().serializeToString(svgEl);
+        preEl.textContent = prettySvg(rawSvgStr);
+      })
+      .catch(function (err) {
+        viewport.innerHTML = '<p style="color:#999;font-size:13px;font-family:system-ui">Component not found<br><small style="opacity:.6">' + buildPath() + '</small></p>';
+        preEl.textContent  = '<!-- Could not load: ' + err.message + ' -->';
+        viewport.classList.remove('loading');
+      });
+  }
+
+  // ── Update button active/disabled states ───────────────────────
+  function renderControls() {
+    document.querySelectorAll('.seg-group').forEach(function (group) {
+      var dim = group.getAttribute('data-dim');
+      group.querySelectorAll('.seg-btn').forEach(function (btn) {
+        var val = btn.getAttribute('data-val');
+
+        // Active state
+        btn.classList.toggle('active', sel[dim] === val);
+
+        // Availability check: substitute this val into current selection
+        // family and state never cause invalid combos, so always available
+        if (dim === 'family' || dim === 'state') {
+          btn.removeAttribute('disabled');
+          return;
+        }
+
+        var testSize     = dim === 'size'     ? val : sel.size;
+        var testEmphasis = dim === 'emphasis' ? val : sel.emphasis;
+        var testIconOnly = dim === 'iconOnly' ? val : sel.iconOnly;
+        var testShape    = dim === 'shape'    ? val : sel.shape;
+
+        if (isValid(testSize, testEmphasis, testIconOnly, testShape)) {
+          btn.removeAttribute('disabled');
+        } else {
+          btn.setAttribute('disabled', '');
+        }
+      });
+    });
+  }
+
+  // ── Event listeners ────────────────────────────────────────────
+  document.querySelectorAll('.seg-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      if (btn.hasAttribute('disabled')) return;
+
+      var dim = btn.closest('.seg-group').getAttribute('data-dim');
+      var before = Object.assign({}, sel);
+      sel[dim] = btn.getAttribute('data-val');
+
+      var corrected = correct(dim);
+
+      // Show/hide constraint notice
+      if (corrected) {
+        var changes = [];
+        if (sel.emphasis !== before.emphasis) changes.push('Emphasis → ' + cap(sel.emphasis));
+        if (sel.iconOnly !== before.iconOnly) changes.push('Icon only → ' + (sel.iconOnly === 'true' ? 'Icon only' : 'Label + icon'));
+        if (sel.shape    !== before.shape)    changes.push('Shape → ' + cap(sel.shape));
+        if (sel.size     !== before.size)     changes.push('Size → ' + cap(sel.size));
+        noticeMsgEl.textContent = 'Auto-adjusted: ' + changes.join(' · ');
+        noticeEl.style.display = 'inline-flex';
+      } else {
+        noticeEl.style.display = 'none';
+      }
+
+      renderControls();
+      refresh();
+    });
+  });
+
+  // ── Copy button ────────────────────────────────────────────────
+  copyBtn.addEventListener('click', function () {
+    if (!rawSvgStr) return;
+    navigator.clipboard.writeText(rawSvgStr).then(function () {
+      copyBtn.textContent = 'Copied!';
+      copyBtn.classList.add('copied');
+      setTimeout(function () {
+        copyBtn.textContent = 'Copy SVG';
+        copyBtn.classList.remove('copied');
+      }, 1500);
+    });
+  });
+
+  // ── Init ───────────────────────────────────────────────────────
+  renderControls();
+  refresh();
+
+}());
+</script>
+</body>
+</html>
