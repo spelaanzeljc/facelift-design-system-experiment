@@ -3,43 +3,79 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Design System — Patterns</title>
+<title>Patterns — Design System</title>
 <link rel="stylesheet" href="output/tokens/tokens.css">
 <link rel="stylesheet" href="styleguide.css">
 <style>
-  .comp-quick-nav { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; }
-  .comp-quick-nav a {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 6px 14px; border-radius: 20px;
-    background: var(--surface); border: 1.5px solid var(--border);
-    font-size: 12px; font-weight: 500; color: var(--text);
-    text-decoration: none; transition: border-color .15s, background .15s;
-  }
-  .comp-quick-nav a:hover { border-color: var(--sys-primary-default); color: var(--sys-primary-default); background: var(--sys-primary-subtle-hover); }
-  .comp-category { margin-bottom: 56px; }
-  .comp-category-header { display: flex; align-items: baseline; gap: 10px; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1.5px solid var(--border); }
-  .comp-category-header h2 { font-size: 16px; font-weight: 700; margin: 0; }
-  .comp-subcategory { margin-bottom: 32px; }
-  .comp-subcategory h3 { font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--text-faint); margin: 0 0 12px; }
-  .components-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
-  .components-grid.wide { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
-  .component-card {
-    background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius);
-    overflow: hidden; transition: box-shadow .15s, border-color .15s;
-  }
-  .component-card:hover { box-shadow: var(--shadow-card); border-color: var(--sys-primary-default); }
-  .component-card iframe {
-    width: 100%; height: 80px; border: none; display: block;
-    pointer-events: none; overflow: hidden;
-  }
-  .component-card iframe.tall { height: 140px; }
-  .component-card iframe.xtall { height: 220px; }
-  .component-card iframe.xxtall { height: 320px; }
-  .component-label {
-    padding: 6px 10px; font-size: 10px; color: var(--text-faint);
-    border-top: 1px solid var(--border); background: var(--bg);
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  }
+.config-layout { display:flex; gap:24px; align-items:flex-start; margin-bottom:64px; }
+.config-col { width:340px; flex-shrink:0; position:sticky; top:24px; }
+.preview-col { flex:1; min-width:0; }
+.configurator { background:var(--surface); border:1.5px solid var(--border); border-radius:var(--radius); padding:0 24px 12px; box-shadow:var(--shadow-lift); }
+.config-row { display:flex; align-items:center; gap:16px; padding:9px 0; border-bottom:1px solid var(--border); }
+.config-row:first-child { padding-top:16px; }
+.config-row:last-child  { border-bottom:none; padding-bottom:0; }
+.config-label { font-size:10.5px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; color:var(--text-faint); width:76px; flex-shrink:0; }
+.seg-group { display:flex; gap:4px; flex-wrap:wrap; }
+.seg-btn { font-size:12px; font-weight:500; padding:4px 12px; border-radius:6px; border:1.5px solid var(--border); background:transparent; color:var(--text-muted); cursor:pointer; transition:border-color .1s,background .1s,color .1s; white-space:nowrap; line-height:1.45; user-select:none; }
+.seg-btn:hover:not([disabled]) { border-color:var(--clay); color:var(--clay); background:#fef9f6; }
+.seg-btn.active { background:var(--clay); border-color:var(--clay); color:#fff; font-weight:600; }
+.seg-btn[disabled] { opacity:.25; cursor:not-allowed; }
+.type-grid { display:grid; grid-template-columns:1fr 1fr; gap:7px; padding:10px 0 4px; flex:1; }
+.type-card { border:1.5px solid var(--border); border-radius:7px; padding:9px 11px 10px; cursor:pointer; transition:border-color .12s,box-shadow .12s; background:var(--surface); user-select:none; }
+.type-card:hover:not([disabled]) { border-color:var(--clay); }
+.type-card.active { border-color:var(--clay); box-shadow:0 0 0 3px rgba(217,119,87,.12); }
+.type-card[disabled] { opacity:.25; cursor:not-allowed; }
+.type-card-label { display:block; font-size:9px; font-weight:700; letter-spacing:.09em; text-transform:uppercase; color:var(--text-faint); margin-bottom:7px; }
+.type-card-desc { font-size:11px; color:var(--text-muted); line-height:1.4; }
+.options-list { display:flex; flex-direction:column; flex:1; }
+.toggle-row { display:flex; align-items:center; justify-content:space-between; padding:5px 0; cursor:pointer; gap:12px; }
+.toggle-row-label { font-size:12px; font-weight:500; color:var(--text-muted); flex:1; }
+.toggle-switch { position:relative; flex-shrink:0; }
+.toggle-switch input { position:absolute; opacity:0; width:0; height:0; pointer-events:none; }
+.toggle-track { display:block; width:34px; height:19px; border-radius:10px; background:var(--border); position:relative; transition:background .15s; }
+.toggle-track::after { content:''; position:absolute; top:2px; left:2px; width:15px; height:15px; border-radius:50%; background:#fff; box-shadow:0 1px 3px rgba(0,0,0,.25); transition:transform .15s; }
+.toggle-switch input:checked ~ .toggle-track { background:var(--clay); }
+.toggle-switch input:checked ~ .toggle-track::after { transform:translateX(15px); }
+.toggle-switch input:disabled ~ .toggle-track { opacity:.3; cursor:not-allowed; }
+.preview-section { margin-bottom:32px; }
+.preview-card { background:var(--surface); border:1.5px solid var(--border); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow-card); }
+.preview-viewport { background-color:#f0f0f0; background-image:linear-gradient(45deg,#e3e3e3 25%,transparent 25%),linear-gradient(-45deg,#e3e3e3 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#e3e3e3 75%),linear-gradient(-45deg,transparent 75%,#e3e3e3 75%); background-size:20px 20px; background-position:0 0,0 10px,10px -10px,-10px 0; min-height:160px; display:flex; align-items:center; justify-content:center; padding:48px; border-bottom:1.5px solid var(--border); transition:opacity .12s ease; }
+.preview-viewport.loading { opacity:.3; }
+.preview-footer { padding:14px 20px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+.preview-name { font-size:13px; font-weight:500; color:var(--text-muted); }
+.preview-open { display:inline-flex; align-items:center; gap:5px; font-size:12px; color:var(--text-faint); text-decoration:none; transition:color .12s; flex-shrink:0; }
+.preview-open:hover { color:var(--clay); }
+.dev-panel { background:var(--surface); border:1.5px solid var(--border); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow-card); margin-bottom:72px; }
+.dev-row { display:flex; align-items:stretch; border-bottom:1px solid var(--border); }
+.dev-row:last-child { border-bottom:none; }
+.dev-row-label { font-family:'SF Mono',ui-monospace,Menlo,monospace; font-size:9.5px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; color:var(--text-faint); width:110px; flex-shrink:0; padding:16px; border-right:1px solid var(--border); display:flex; align-items:flex-start; }
+.dev-row-body { padding:13px 18px; flex:1; min-width:0; }
+.dev-props { display:flex; flex-wrap:wrap; gap:5px 20px; }
+.dev-prop  { display:flex; align-items:baseline; gap:5px; }
+.dev-prop-key { font-size:11px; color:var(--text-faint); }
+.dev-prop-val { font-size:11.5px; font-weight:600; color:var(--text); }
+.dev-dims { font-size:13px; font-weight:500; color:var(--text); line-height:1.6; }
+.dev-embed-row { display:flex; align-items:center; gap:12px; }
+.dev-embed-snippet { font-family:'SF Mono',ui-monospace,Menlo,monospace; font-size:11px; color:var(--text-muted); flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.dev-copy-btn { font-size:11px; font-weight:600; padding:5px 12px; border-radius:5px; border:1.5px solid var(--border); background:var(--surface); color:var(--text-muted); cursor:pointer; transition:border-color .12s,color .12s,background .12s; white-space:nowrap; flex-shrink:0; }
+.dev-copy-btn:hover  { border-color:var(--clay); color:var(--clay); }
+.dev-copy-btn.copied { background:var(--clay); border-color:var(--clay); color:#fff; }
+.dev-toggle { display:flex; align-items:center; justify-content:space-between; padding:11px 18px; cursor:pointer; user-select:none; border-bottom:1px solid var(--border); transition:background .1s; }
+.dev-toggle:hover { background:var(--bg); }
+.dev-toggle-label { font-size:11px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; color:var(--text-faint); }
+.dev-toggle-chevron { transition:transform .2s ease; color:var(--text-faint); flex-shrink:0; }
+.dev-panel.collapsed .dev-toggle-chevron { transform:rotate(-90deg); }
+.dev-panel.collapsed .dev-body { display:none; }
+.dev-panel.collapsed .dev-toggle { border-bottom:none; }
+.notice { display:inline-flex; align-items:center; gap:8px; font-size:12px; color:var(--text-faint); padding:8px 14px; background:var(--bg); border:1px solid var(--border); border-radius:6px; margin-bottom:20px; }
+.notice-dot { width:6px; height:6px; border-radius:50%; background:var(--clay); flex-shrink:0; }
+.static-preview { margin-bottom:64px; }
+.quicknav { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:40px; }
+.quicknav a { font-size:12px; font-weight:600; padding:6px 14px; border-radius:20px; border:1.5px solid var(--border); color:var(--text-muted); text-decoration:none; transition:border-color .12s,color .12s,background .12s; }
+.quicknav a:hover { border-color:var(--clay); color:var(--clay); background:#fef9f6; }
+.comp-section-title { font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--text-faint); margin:0 0 4px; padding:32px 0 12px; border-bottom:1px solid var(--border); }
+.comp-h2 { font-size:18px; font-weight:700; margin:0 0 4px; color:var(--text); padding-top:28px; }
+.comp-desc { font-size:13px; color:var(--text-muted); margin:0 0 24px; line-height:1.5; }
 </style>
 </head>
 <body>
@@ -78,343 +114,758 @@
     <div class="page-decoration"></div>
     <div class="page-header-eyebrow">Components</div>
     <h1>Patterns</h1>
-    <p class="page-header-desc">Higher-order patterns assembled from primitives — navigation shells, data tables, cards, and workflow components. All files in <code>output/components/</code>.</p>
+    <p class="page-header-desc">Composite patterns assembled from components — navigation shells, data tables, cards, and workflow units.</p>
   </div>
 
-  <nav class="comp-quick-nav" aria-label="Pattern sections">
+  <nav class="quicknav">
     <a href="#navigation">Navigation</a>
     <a href="#data-tables">Data Tables</a>
     <a href="#content-cards">Content &amp; Cards</a>
     <a href="#workflow">Workflow</a>
   </nav>
 
-  <!-- Navigation -->
-  <section class="comp-category" id="navigation">
-    <div class="comp-category-header">
-      <h2>Navigation</h2>
+  <!-- ═══════════════════════ NAVIGATION ════════════════════════ -->
+  <div id="navigation">
+    <p class="comp-section-title">Navigation</p>
+
+    <!-- Navigation Bar (static) -->
+    <h2 class="comp-h2">Navigation Bar</h2>
+    <p class="comp-desc">Top-level application navigation bar with primary and secondary actions.</p>
+    <div class="static-preview" id="cl-nav-bar">
+      <div class="preview-card"><div class="preview-viewport"></div><div class="preview-footer"><span class="preview-name">navigation-bar</span><a class="preview-open" href="#" target="_blank">Open file <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H4M9 2v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div>
     </div>
 
-    <div class="comp-subcategory">
-      <h3>Navigation Bar</h3>
-      <div class="components-grid wide">
-        <div class="component-card">
-          <iframe src="output/components/navigation-bar.html" title="Navigation Bar" class="tall"></iframe>
-          <div class="component-label">navigation-bar</div>
+    <!-- Contextual Sidebar -->
+    <h2 class="comp-h2">Contextual Sidebar</h2>
+    <p class="comp-desc">Content-aware sidebar that adapts to filter, chat, and custom panel modes.</p>
+    <div class="config-layout" id="cl-ctx-sidebar">
+      <div class="config-col"><div class="configurator">
+        <div class="config-row" style="align-items:flex-start">
+          <span class="config-label" style="padding-top:13px">Type</span>
+          <div class="type-grid" data-dim="type" style="flex:1">
+            <div class="type-card active" data-val="filter"><span class="type-card-label">Filter</span><span class="type-card-desc">Filter options panel</span></div>
+            <div class="type-card" data-val="chat"><span class="type-card-label">Chat</span><span class="type-card-desc">Internal messages</span></div>
+            <div class="type-card" data-val="chat-external-user"><span class="type-card-label">Chat External</span><span class="type-card-desc">External user thread</span></div>
+            <div class="type-card" data-val="custom"><span class="type-card-label">Custom</span><span class="type-card-desc">Individual content</span></div>
+          </div>
         </div>
+      </div></div>
+      <div class="preview-col">
+        <div class="notice" style="display:none"><span class="notice-dot"></span><span>Auto-adjusted</span></div>
+        <div class="preview-section"><div class="preview-card"><div class="preview-viewport"></div><div class="preview-footer"><span class="preview-name"></span><a class="preview-open" href="#" target="_blank">Open file <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H4M9 2v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div></div>
+        <div class="dev-panel collapsed"><div class="dev-toggle"><span class="dev-toggle-label">Component info</span><svg class="dev-toggle-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5L7 9L11 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="dev-body"><div class="dev-row"><span class="dev-row-label">Properties</span><div class="dev-row-body"><div class="dev-props"></div></div></div><div class="dev-row"><span class="dev-row-label">Dimensions</span><div class="dev-row-body"><span class="dev-dims">—</span></div></div><div class="dev-row"><span class="dev-row-label">Embed</span><div class="dev-row-body"><div class="dev-embed-row"><span class="dev-embed-snippet">—</span><button class="dev-copy-btn">Copy</button></div></div></div></div></div>
       </div>
     </div>
 
-    <div class="comp-subcategory">
-      <h3>Contextual Sidebar</h3>
-      <div class="components-grid wide">
-        <div class="component-card">
-          <iframe src="output/components/contextual-sidebar--type-filter--content-filter-options.html" title="Contextual Sidebar Filter" class="xxtall"></iframe>
-          <div class="component-label">contextual-sidebar · filter</div>
+    <!-- Section Item -->
+    <h2 class="comp-h2">Section Item</h2>
+    <p class="comp-desc">Collapsible section navigation items in general and toggle types across hierarchy levels.</p>
+    <div class="config-layout" id="cl-section-item">
+      <div class="config-col"><div class="configurator">
+        <div class="config-row"><span class="config-label">Type</span>
+          <div class="seg-group" data-dim="type">
+            <button class="seg-btn active" data-val="general">General</button>
+            <button class="seg-btn" data-val="toggle">Toggle</button>
+          </div>
         </div>
-        <div class="component-card">
-          <iframe src="output/components/contextual-sidebar--type-chat--content-messages.html" title="Contextual Sidebar Chat Messages" class="xxtall"></iframe>
-          <div class="component-label">contextual-sidebar · chat · messages</div>
+        <div class="config-row" data-row="si-level">
+          <span class="config-label">Level</span>
+          <div class="seg-group" data-dim="level">
+            <button class="seg-btn active" data-val="first-level">First</button>
+            <button class="seg-btn" data-val="second-level">Second</button>
+          </div>
         </div>
-        <div class="component-card">
-          <iframe src="output/components/contextual-sidebar--type-chat--content-empty.html" title="Contextual Sidebar Chat Empty" class="xxtall"></iframe>
-          <div class="component-label">contextual-sidebar · chat · empty</div>
+        <div class="config-row" data-row="si-variant">
+          <span class="config-label">Variant</span>
+          <div class="seg-group" data-dim="variant">
+            <button class="seg-btn active" data-val="text-w-icon">Text + icon</button>
+            <button class="seg-btn" data-val="thumnbail-w-link">Thumbnail + link</button>
+          </div>
         </div>
-        <div class="component-card">
-          <iframe src="output/components/contextual-sidebar--type-custom--content-individual.html" title="Contextual Sidebar Custom" class="xxtall"></iframe>
-          <div class="component-label">contextual-sidebar · custom</div>
+        <div class="config-row" data-row="si-state">
+          <span class="config-label">State</span>
+          <div class="seg-group" data-dim="state">
+            <button class="seg-btn active" data-val="closed">Closed</button>
+            <button class="seg-btn" data-val="opened">Opened</button>
+            <button class="seg-btn" data-val="closed-hover">Hover</button>
+          </div>
         </div>
+      </div></div>
+      <div class="preview-col">
+        <div class="notice" style="display:none"><span class="notice-dot"></span><span>Auto-adjusted</span></div>
+        <div class="preview-section"><div class="preview-card"><div class="preview-viewport"></div><div class="preview-footer"><span class="preview-name"></span><a class="preview-open" href="#" target="_blank">Open file <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H4M9 2v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div></div>
+        <div class="dev-panel collapsed"><div class="dev-toggle"><span class="dev-toggle-label">Component info</span><svg class="dev-toggle-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5L7 9L11 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="dev-body"><div class="dev-row"><span class="dev-row-label">Properties</span><div class="dev-row-body"><div class="dev-props"></div></div></div><div class="dev-row"><span class="dev-row-label">Dimensions</span><div class="dev-row-body"><span class="dev-dims">—</span></div></div><div class="dev-row"><span class="dev-row-label">Embed</span><div class="dev-row-body"><div class="dev-embed-row"><span class="dev-embed-snippet">—</span><button class="dev-copy-btn">Copy</button></div></div></div></div></div>
       </div>
     </div>
 
-    <div class="comp-subcategory">
-      <h3>Section Navigation</h3>
-      <div class="components-grid">
-        <div class="component-card">
-          <iframe src="output/components/section-header.html" title="Section Header"></iframe>
-          <div class="component-label">section-header</div>
+    <!-- Section Container -->
+    <h2 class="comp-h2">Section Container</h2>
+    <p class="comp-desc">Collapsible content container in three structural types.</p>
+    <div class="config-layout" id="cl-section-container">
+      <div class="config-col"><div class="configurator">
+        <div class="config-row"><span class="config-label">Type</span>
+          <div class="seg-group" data-dim="type">
+            <button class="seg-btn active" data-val="collapsible">Collapsible</button>
+            <button class="seg-btn" data-val="form">Form</button>
+            <button class="seg-btn" data-val="toggle-form">Toggle form</button>
+          </div>
         </div>
-        <div class="component-card">
-          <iframe src="output/components/section-item--type-general--level-first-level--variant-text-w-icon--state-closed.html" title="Section Item First Level Closed"></iframe>
-          <div class="component-label">section-item · first-level · closed</div>
+      </div></div>
+      <div class="preview-col">
+        <div class="notice" style="display:none"><span class="notice-dot"></span><span>Auto-adjusted</span></div>
+        <div class="preview-section"><div class="preview-card"><div class="preview-viewport"></div><div class="preview-footer"><span class="preview-name"></span><a class="preview-open" href="#" target="_blank">Open file <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H4M9 2v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div></div>
+        <div class="dev-panel collapsed"><div class="dev-toggle"><span class="dev-toggle-label">Component info</span><svg class="dev-toggle-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5L7 9L11 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="dev-body"><div class="dev-row"><span class="dev-row-label">Properties</span><div class="dev-row-body"><div class="dev-props"></div></div></div><div class="dev-row"><span class="dev-row-label">Dimensions</span><div class="dev-row-body"><span class="dev-dims">—</span></div></div><div class="dev-row"><span class="dev-row-label">Embed</span><div class="dev-row-body"><div class="dev-embed-row"><span class="dev-embed-snippet">—</span><button class="dev-copy-btn">Copy</button></div></div></div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════ DATA TABLES ════════════════════════ -->
+  <div id="data-tables">
+    <p class="comp-section-title">Data Tables</p>
+
+    <!-- Data Table -->
+    <h2 class="comp-h2">Data Table</h2>
+    <p class="comp-desc">Full data table in default, bulk-selection, and skeleton loading states.</p>
+    <div class="config-layout" id="cl-data-table">
+      <div class="config-col"><div class="configurator">
+        <div class="config-row"><span class="config-label">Variant</span>
+          <div class="seg-group" data-dim="variant">
+            <button class="seg-btn active" data-val="default">Default</button>
+            <button class="seg-btn" data-val="bulk">Bulk</button>
+            <button class="seg-btn" data-val="skeleton">Skeleton</button>
+          </div>
         </div>
-        <div class="component-card">
-          <iframe src="output/components/section-item--type-general--level-first-level--variant-text-w-icon--state-opened.html" title="Section Item First Level Opened"></iframe>
-          <div class="component-label">section-item · first-level · opened</div>
-        </div>
-        <div class="component-card">
-          <iframe src="output/components/section-item--type-general--level-second-level--variant-text-w-icon--state-closed.html" title="Section Item Second Level Closed"></iframe>
-          <div class="component-label">section-item · second-level · closed</div>
-        </div>
-        <div class="component-card">
-          <iframe src="output/components/section-item--type-general--level-second-level--variant-thumnbail-w-link--state-opened.html" title="Section Item Thumbnail Opened"></iframe>
-          <div class="component-label">section-item · thumbnail · opened</div>
-        </div>
+      </div></div>
+      <div class="preview-col">
+        <div class="notice" style="display:none"><span class="notice-dot"></span><span>Auto-adjusted</span></div>
+        <div class="preview-section"><div class="preview-card"><div class="preview-viewport"></div><div class="preview-footer"><span class="preview-name"></span><a class="preview-open" href="#" target="_blank">Open file <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H4M9 2v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div></div>
+        <div class="dev-panel collapsed"><div class="dev-toggle"><span class="dev-toggle-label">Component info</span><svg class="dev-toggle-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5L7 9L11 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="dev-body"><div class="dev-row"><span class="dev-row-label">Properties</span><div class="dev-row-body"><div class="dev-props"></div></div></div><div class="dev-row"><span class="dev-row-label">Dimensions</span><div class="dev-row-body"><span class="dev-dims">—</span></div></div><div class="dev-row"><span class="dev-row-label">Embed</span><div class="dev-row-body"><div class="dev-embed-row"><span class="dev-embed-snippet">—</span><button class="dev-copy-btn">Copy</button></div></div></div></div></div>
       </div>
     </div>
 
-    <div class="comp-subcategory">
-      <h3>Section Containers</h3>
-      <div class="components-grid wide">
-        <div class="component-card">
-          <iframe src="output/components/section--type-collapsible.html" title="Section Collapsible" class="tall"></iframe>
-          <div class="component-label">section · collapsible</div>
+    <!-- Table Cell Default -->
+    <h2 class="comp-h2">Table Cell — Default</h2>
+    <p class="comp-desc">Standard-density table cell in six content types and three interaction states.</p>
+    <div class="config-layout" id="cl-table-cell-default">
+      <div class="config-col"><div class="configurator">
+        <div class="config-row"><span class="config-label">State</span>
+          <div class="seg-group" data-dim="state">
+            <button class="seg-btn active" data-val="default">Default</button>
+            <button class="seg-btn" data-val="hover">Hover</button>
+            <button class="seg-btn" data-val="skeleton">Skeleton</button>
+          </div>
         </div>
-        <div class="component-card">
-          <iframe src="output/components/section--type-form.html" title="Section Form" class="tall"></iframe>
-          <div class="component-label">section · form</div>
+        <div class="config-row"><span class="config-label">Type</span>
+          <div class="seg-group" data-dim="type">
+            <button class="seg-btn active" data-val="leading">Leading</button>
+            <button class="seg-btn" data-val="default">Default</button>
+            <button class="seg-btn" data-val="tags">Tags</button>
+            <button class="seg-btn" data-val="icon">Icon</button>
+            <button class="seg-btn" data-val="dropdown">Dropdown</button>
+            <button class="seg-btn" data-val="leading-multiline">Multiline</button>
+          </div>
         </div>
-        <div class="component-card">
-          <iframe src="output/components/section--type-toggle-form.html" title="Section Toggle Form" class="tall"></iframe>
-          <div class="component-label">section · toggle-form</div>
+        <div class="config-row"><span class="config-label">Alignment</span>
+          <div class="seg-group" data-dim="alignment">
+            <button class="seg-btn active" data-val="left">Left</button>
+            <button class="seg-btn" data-val="center">Center</button>
+            <button class="seg-btn" data-val="right">Right</button>
+          </div>
         </div>
-        <div class="component-card">
-          <iframe src="output/components/sidebar-info.html" title="Sidebar Info" class="tall"></iframe>
-          <div class="component-label">sidebar-info</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Data Tables -->
-  <section class="comp-category" id="data-tables">
-    <div class="comp-category-header">
-      <h2>Data Tables</h2>
-    </div>
-
-    <div class="comp-subcategory">
-      <h3>Data Table</h3>
-      <div class="components-grid wide">
-        <div class="component-card">
-          <iframe src="output/components/data-table--variant-default.html" title="Data Table Default" class="xtall"></iframe>
-          <div class="component-label">data-table · default</div>
-        </div>
-        <div class="component-card">
-          <iframe src="output/components/data-table--variant-bulk.html" title="Data Table Bulk" class="xtall"></iframe>
-          <div class="component-label">data-table · bulk</div>
-        </div>
-        <div class="component-card">
-          <iframe src="output/components/data-table--variant-skeleton.html" title="Data Table Skeleton" class="xtall"></iframe>
-          <div class="component-label">data-table · skeleton</div>
-        </div>
-        <div class="component-card">
-          <iframe src="output/components/data-list.html" title="Data List" class="xtall"></iframe>
-          <div class="component-label">data-list</div>
-        </div>
+      </div></div>
+      <div class="preview-col">
+        <div class="notice" style="display:none"><span class="notice-dot"></span><span>Auto-adjusted</span></div>
+        <div class="preview-section"><div class="preview-card"><div class="preview-viewport"></div><div class="preview-footer"><span class="preview-name"></span><a class="preview-open" href="#" target="_blank">Open file <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H4M9 2v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div></div>
+        <div class="dev-panel collapsed"><div class="dev-toggle"><span class="dev-toggle-label">Component info</span><svg class="dev-toggle-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5L7 9L11 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="dev-body"><div class="dev-row"><span class="dev-row-label">Properties</span><div class="dev-row-body"><div class="dev-props"></div></div></div><div class="dev-row"><span class="dev-row-label">Dimensions</span><div class="dev-row-body"><span class="dev-dims">—</span></div></div><div class="dev-row"><span class="dev-row-label">Embed</span><div class="dev-row-body"><div class="dev-embed-row"><span class="dev-embed-snippet">—</span><button class="dev-copy-btn">Copy</button></div></div></div></div></div>
       </div>
     </div>
 
-    <div class="comp-subcategory">
-      <h3>Table Cell — Default Size</h3>
-      <div class="components-grid">
-        <div class="component-card">
-          <iframe src="output/components/table-cell-default--state-default--type-leading--alignment-left.html" title="Table Cell Default Leading Left"></iframe>
-          <div class="component-label">table-cell-default · leading · left</div>
+    <!-- Table Cell Compact -->
+    <h2 class="comp-h2">Table Cell — Compact</h2>
+    <p class="comp-desc">Compact-density table cell with the same type and state options as Default.</p>
+    <div class="config-layout" id="cl-table-cell-compact">
+      <div class="config-col"><div class="configurator">
+        <div class="config-row"><span class="config-label">State</span>
+          <div class="seg-group" data-dim="state">
+            <button class="seg-btn active" data-val="default">Default</button>
+            <button class="seg-btn" data-val="hover">Hover</button>
+            <button class="seg-btn" data-val="skeleton">Skeleton</button>
+          </div>
         </div>
-        <div class="component-card">
-          <iframe src="output/components/table-cell-default--state-default--type-default--alignment-left.html" title="Table Cell Default Left"></iframe>
-          <div class="component-label">table-cell-default · default · left</div>
+        <div class="config-row"><span class="config-label">Type</span>
+          <div class="seg-group" data-dim="type">
+            <button class="seg-btn active" data-val="leading">Leading</button>
+            <button class="seg-btn" data-val="default">Default</button>
+            <button class="seg-btn" data-val="tags">Tags</button>
+            <button class="seg-btn" data-val="icon">Icon</button>
+            <button class="seg-btn" data-val="dropdown">Dropdown</button>
+            <button class="seg-btn" data-val="leading-multiline">Multiline</button>
+          </div>
         </div>
-        <div class="component-card">
-          <iframe src="output/components/table-cell-default--state-default--type-tags--alignment-left.html" title="Table Cell Default Tags"></iframe>
-          <div class="component-label">table-cell-default · tags · left</div>
+        <div class="config-row"><span class="config-label">Alignment</span>
+          <div class="seg-group" data-dim="alignment">
+            <button class="seg-btn active" data-val="left">Left</button>
+            <button class="seg-btn" data-val="center">Center</button>
+            <button class="seg-btn" data-val="right">Right</button>
+          </div>
         </div>
-        <div class="component-card">
-          <iframe src="output/components/table-cell-default--state-default--type-icon--alignment-left.html" title="Table Cell Default Icon"></iframe>
-          <div class="component-label">table-cell-default · icon · left</div>
-        </div>
-        <div class="component-card">
-          <iframe src="output/components/table-cell-default--state-hover--type-leading--alignment-left.html" title="Table Cell Default Hover Leading"></iframe>
-          <div class="component-label">table-cell-default · hover · leading</div>
-        </div>
-        <div class="component-card">
-          <iframe src="output/components/table-cell-default--state-default--type-dropdown--alignment-left.html" title="Table Cell Default Dropdown"></iframe>
-          <div class="component-label">table-cell-default · dropdown · left</div>
-        </div>
+      </div></div>
+      <div class="preview-col">
+        <div class="notice" style="display:none"><span class="notice-dot"></span><span>Auto-adjusted</span></div>
+        <div class="preview-section"><div class="preview-card"><div class="preview-viewport"></div><div class="preview-footer"><span class="preview-name"></span><a class="preview-open" href="#" target="_blank">Open file <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H4M9 2v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div></div>
+        <div class="dev-panel collapsed"><div class="dev-toggle"><span class="dev-toggle-label">Component info</span><svg class="dev-toggle-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5L7 9L11 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="dev-body"><div class="dev-row"><span class="dev-row-label">Properties</span><div class="dev-row-body"><div class="dev-props"></div></div></div><div class="dev-row"><span class="dev-row-label">Dimensions</span><div class="dev-row-body"><span class="dev-dims">—</span></div></div><div class="dev-row"><span class="dev-row-label">Embed</span><div class="dev-row-body"><div class="dev-embed-row"><span class="dev-embed-snippet">—</span><button class="dev-copy-btn">Copy</button></div></div></div></div></div>
       </div>
     </div>
 
-    <div class="comp-subcategory">
-      <h3>Table Cell — Compact Size</h3>
-      <div class="components-grid">
-        <div class="component-card">
-          <iframe src="output/components/table-cell-compact--state-default--type-leading--alignment-left.html" title="Table Cell Compact Leading"></iframe>
-          <div class="component-label">table-cell-compact · leading · left</div>
+    <!-- Table Cell Header -->
+    <h2 class="comp-h2">Table Cell — Header</h2>
+    <p class="comp-desc">Column header cell with sort state and alignment options.</p>
+    <div class="config-layout" id="cl-table-cell-header">
+      <div class="config-col"><div class="configurator">
+        <div class="config-row"><span class="config-label">State</span>
+          <div class="seg-group" data-dim="state">
+            <button class="seg-btn active" data-val="unspecified">Unspecified</button>
+            <button class="seg-btn" data-val="ascending">Ascending</button>
+            <button class="seg-btn" data-val="descending">Descending</button>
+            <button class="seg-btn" data-val="skeleton">Skeleton</button>
+          </div>
         </div>
-        <div class="component-card">
-          <iframe src="output/components/table-cell-compact--state-default--type-default--alignment-left.html" title="Table Cell Compact Default"></iframe>
-          <div class="component-label">table-cell-compact · default · left</div>
+        <div class="config-row"><span class="config-label">Alignment</span>
+          <div class="seg-group" data-dim="alignment">
+            <button class="seg-btn active" data-val="left">Left</button>
+            <button class="seg-btn" data-val="center">Center</button>
+            <button class="seg-btn" data-val="right">Right</button>
+          </div>
         </div>
-        <div class="component-card">
-          <iframe src="output/components/table-cell-compact--state-default--type-tags--alignment-left.html" title="Table Cell Compact Tags"></iframe>
-          <div class="component-label">table-cell-compact · tags · left</div>
+      </div></div>
+      <div class="preview-col">
+        <div class="notice" style="display:none"><span class="notice-dot"></span><span>Auto-adjusted</span></div>
+        <div class="preview-section"><div class="preview-card"><div class="preview-viewport"></div><div class="preview-footer"><span class="preview-name"></span><a class="preview-open" href="#" target="_blank">Open file <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H4M9 2v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div></div>
+        <div class="dev-panel collapsed"><div class="dev-toggle"><span class="dev-toggle-label">Component info</span><svg class="dev-toggle-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5L7 9L11 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="dev-body"><div class="dev-row"><span class="dev-row-label">Properties</span><div class="dev-row-body"><div class="dev-props"></div></div></div><div class="dev-row"><span class="dev-row-label">Dimensions</span><div class="dev-row-body"><span class="dev-dims">—</span></div></div><div class="dev-row"><span class="dev-row-label">Embed</span><div class="dev-row-body"><div class="dev-embed-row"><span class="dev-embed-snippet">—</span><button class="dev-copy-btn">Copy</button></div></div></div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════ CONTENT & CARDS ══════════════════════ -->
+  <div id="content-cards">
+    <p class="comp-section-title">Content &amp; Cards</p>
+
+    <!-- Card -->
+    <h2 class="comp-h2">Card</h2>
+    <p class="comp-desc">Content cards in six type variants — default, column, story, task, status, and task-link.</p>
+    <div class="config-layout" id="cl-card">
+      <div class="config-col"><div class="configurator">
+        <div class="config-row" style="align-items:flex-start">
+          <span class="config-label" style="padding-top:13px">Type</span>
+          <div class="type-grid" data-dim="type" style="flex:1">
+            <div class="type-card active" data-val="default"><span class="type-card-label">Default</span><span class="type-card-desc">Generic content card</span></div>
+            <div class="type-card" data-val="column"><span class="type-card-label">Column</span><span class="type-card-desc">Kanban column card</span></div>
+            <div class="type-card" data-val="story"><span class="type-card-label">Story</span><span class="type-card-desc">Story/post card</span></div>
+            <div class="type-card" data-val="task"><span class="type-card-label">Task</span><span class="type-card-desc">Task item card</span></div>
+            <div class="type-card" data-val="status"><span class="type-card-label">Status</span><span class="type-card-desc">Status workflow card</span></div>
+            <div class="type-card" data-val="task-link"><span class="type-card-label">Task link</span><span class="type-card-desc">Linked task card</span></div>
+          </div>
         </div>
-        <div class="component-card">
-          <iframe src="output/components/table-cell-compact--state-default--type-icon--alignment-left.html" title="Table Cell Compact Icon"></iframe>
-          <div class="component-label">table-cell-compact · icon · left</div>
+        <div class="config-row"><span class="config-label">State</span>
+          <div class="seg-group" data-dim="state">
+            <button class="seg-btn active" data-val="default">Default</button>
+            <button class="seg-btn" data-val="hover">Hover</button>
+          </div>
         </div>
+        <div class="config-row" data-row="card-edit-mode">
+          <span class="config-label">Options</span>
+          <div class="options-list">
+            <label class="toggle-row"><span class="toggle-row-label">Edit mode</span><div class="toggle-switch"><input type="checkbox" data-dim="editMode"><span class="toggle-track"></span></div></label>
+          </div>
+        </div>
+      </div></div>
+      <div class="preview-col">
+        <div class="notice" style="display:none"><span class="notice-dot"></span><span>Auto-adjusted</span></div>
+        <div class="preview-section"><div class="preview-card"><div class="preview-viewport"></div><div class="preview-footer"><span class="preview-name"></span><a class="preview-open" href="#" target="_blank">Open file <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H4M9 2v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div></div>
+        <div class="dev-panel collapsed"><div class="dev-toggle"><span class="dev-toggle-label">Component info</span><svg class="dev-toggle-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5L7 9L11 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="dev-body"><div class="dev-row"><span class="dev-row-label">Properties</span><div class="dev-row-body"><div class="dev-props"></div></div></div><div class="dev-row"><span class="dev-row-label">Dimensions</span><div class="dev-row-body"><span class="dev-dims">—</span></div></div><div class="dev-row"><span class="dev-row-label">Embed</span><div class="dev-row-body"><div class="dev-embed-row"><span class="dev-embed-snippet">—</span><button class="dev-copy-btn">Copy</button></div></div></div></div></div>
       </div>
     </div>
 
-    <div class="comp-subcategory">
-      <h3>Table Cell Header</h3>
-      <div class="components-grid">
-        <div class="component-card">
-          <iframe src="output/components/table-cell-header--type-default--state-unspecified--alignment-left--editable-false.html" title="Table Cell Header Left"></iframe>
-          <div class="component-label">table-cell-header · left · unspecified</div>
+    <!-- Media Element -->
+    <h2 class="comp-h2">Media Element</h2>
+    <p class="comp-desc">Media library thumbnail item in medium and small sizes across interaction states.</p>
+    <div class="config-layout" id="cl-media-element">
+      <div class="config-col"><div class="configurator">
+        <div class="config-row"><span class="config-label">Type</span>
+          <div class="seg-group" data-dim="type">
+            <button class="seg-btn active" data-val="medium">Medium</button>
+            <button class="seg-btn" data-val="small">Small</button>
+          </div>
         </div>
-        <div class="component-card">
-          <iframe src="output/components/table-cell-header--type-default--state-ascending--alignment-left--editable-false.html" title="Table Cell Header Ascending"></iframe>
-          <div class="component-label">table-cell-header · ascending</div>
+        <div class="config-row"><span class="config-label">State</span>
+          <div class="seg-group" data-dim="state">
+            <button class="seg-btn active" data-val="default">Default</button>
+            <button class="seg-btn" data-val="hover">Hover</button>
+            <button class="seg-btn" data-val="selected">Selected</button>
+            <button class="seg-btn" data-val="loading">Loading</button>
+            <button class="seg-btn" data-val="error">Error</button>
+            <button class="seg-btn" data-val="focus">Focus</button>
+          </div>
         </div>
-        <div class="component-card">
-          <iframe src="output/components/table-cell-header--type-default--state-descending--alignment-left--editable-false.html" title="Table Cell Header Descending"></iframe>
-          <div class="component-label">table-cell-header · descending</div>
-        </div>
+      </div></div>
+      <div class="preview-col">
+        <div class="notice" style="display:none"><span class="notice-dot"></span><span>Auto-adjusted</span></div>
+        <div class="preview-section"><div class="preview-card"><div class="preview-viewport"></div><div class="preview-footer"><span class="preview-name"></span><a class="preview-open" href="#" target="_blank">Open file <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H4M9 2v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div></div>
+        <div class="dev-panel collapsed"><div class="dev-toggle"><span class="dev-toggle-label">Component info</span><svg class="dev-toggle-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5L7 9L11 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="dev-body"><div class="dev-row"><span class="dev-row-label">Properties</span><div class="dev-row-body"><div class="dev-props"></div></div></div><div class="dev-row"><span class="dev-row-label">Dimensions</span><div class="dev-row-body"><span class="dev-dims">—</span></div></div><div class="dev-row"><span class="dev-row-label">Embed</span><div class="dev-row-body"><div class="dev-embed-row"><span class="dev-embed-snippet">—</span><button class="dev-copy-btn">Copy</button></div></div></div></div></div>
       </div>
     </div>
+  </div>
 
-    <div class="comp-subcategory">
-      <h3>Column Headers</h3>
-      <div class="components-grid">
-        <div class="component-card">
-          <iframe src="output/components/column-header--type-my-tasks--type-task--default-table.html" title="Column Header Table"></iframe>
-          <div class="component-label">column-header · table</div>
+  <!-- ═══════════════════════ WORKFLOW ══════════════════════════ -->
+  <div id="workflow">
+    <p class="comp-section-title">Workflow</p>
+
+    <!-- Approval Card (static) -->
+    <h2 class="comp-h2">Approval Card</h2>
+    <p class="comp-desc">Full approval workflow card combining approver units and status indicators.</p>
+    <div class="static-preview" id="cl-approval-card">
+      <div class="preview-card"><div class="preview-viewport"></div><div class="preview-footer"><span class="preview-name">approval-card</span><a class="preview-open" href="#" target="_blank">Open file <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H4M9 2v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div>
+    </div>
+
+    <!-- Approval Unit -->
+    <h2 class="comp-h2">Approval Unit</h2>
+    <p class="comp-desc">Individual approval unit atoms — status badge, approver chips, row items, and deadline.</p>
+    <div class="config-layout" id="cl-approval-unit">
+      <div class="config-col"><div class="configurator">
+        <div class="config-row" style="align-items:flex-start">
+          <span class="config-label" style="padding-top:13px">Type</span>
+          <div class="type-grid" data-dim="type" style="flex:1">
+            <div class="type-card active" data-val="status"><span class="type-card-label">Status</span><span class="type-card-desc">Workflow status badge</span></div>
+            <div class="type-card" data-val="approver"><span class="type-card-label">Approver</span><span class="type-card-desc">Approver chip(s)</span></div>
+            <div class="type-card" data-val="approver-row"><span class="type-card-label">Approver row</span><span class="type-card-desc">Full approver row</span></div>
+            <div class="type-card" data-val="status-row"><span class="type-card-label">Status row</span><span class="type-card-desc">Status summary row</span></div>
+            <div class="type-card" data-val="deadline"><span class="type-card-label">Deadline</span><span class="type-card-desc">Deadline display</span></div>
+          </div>
         </div>
-        <div class="component-card">
-          <iframe src="output/components/column-header--type-my-tasks--type-task--default-list.html" title="Column Header List"></iframe>
-          <div class="component-label">column-header · list</div>
+        <div class="config-row" data-row="au-subval">
+          <span class="config-label">Value</span>
+          <div class="seg-group" data-dim="subval">
+            <button class="seg-btn active" data-val="approved">Approved</button>
+            <button class="seg-btn" data-val="pending">Pending</button>
+            <button class="seg-btn" data-val="rejected">Rejected</button>
+            <button class="seg-btn" data-val="to-be-approved">To be approved</button>
+          </div>
         </div>
+      </div></div>
+      <div class="preview-col">
+        <div class="notice" style="display:none"><span class="notice-dot"></span><span>Auto-adjusted</span></div>
+        <div class="preview-section"><div class="preview-card"><div class="preview-viewport"></div><div class="preview-footer"><span class="preview-name"></span><a class="preview-open" href="#" target="_blank">Open file <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H4M9 2v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div></div>
+        <div class="dev-panel collapsed"><div class="dev-toggle"><span class="dev-toggle-label">Component info</span><svg class="dev-toggle-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5L7 9L11 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="dev-body"><div class="dev-row"><span class="dev-row-label">Properties</span><div class="dev-row-body"><div class="dev-props"></div></div></div><div class="dev-row"><span class="dev-row-label">Dimensions</span><div class="dev-row-body"><span class="dev-dims">—</span></div></div><div class="dev-row"><span class="dev-row-label">Embed</span><div class="dev-row-body"><div class="dev-embed-row"><span class="dev-embed-snippet">—</span><button class="dev-copy-btn">Copy</button></div></div></div></div></div>
       </div>
     </div>
-  </section>
-
-  <!-- Content & Cards -->
-  <section class="comp-category" id="content-cards">
-    <div class="comp-category-header">
-      <h2>Content &amp; Cards</h2>
-    </div>
-
-    <div class="comp-subcategory">
-      <h3>Cards</h3>
-      <div class="components-grid">
-        <div class="component-card">
-          <iframe src="output/components/card--state-default.html" title="Card Default" class="xtall"></iframe>
-          <div class="component-label">card · default</div>
-        </div>
-        <div class="component-card">
-          <iframe src="output/components/card--state-hover.html" title="Card Hover" class="xtall"></iframe>
-          <div class="component-label">card · hover</div>
-        </div>
-        <div class="component-card">
-          <iframe src="output/components/card--type-column--state-default.html" title="Card Column Default" class="xtall"></iframe>
-          <div class="component-label">card · column · default</div>
-        </div>
-        <div class="component-card">
-          <iframe src="output/components/card--type-story--state-default.html" title="Card Story Default" class="xtall"></iframe>
-          <div class="component-label">card · story · default</div>
-        </div>
-        <div class="component-card">
-          <iframe src="output/components/card--type-task--state-default.html" title="Card Task Default" class="xtall"></iframe>
-          <div class="component-label">card · task · default</div>
-        </div>
-        <div class="component-card">
-          <iframe src="output/components/card--type-status--state-default--edit-mode-false.html" title="Card Status Default" class="xtall"></iframe>
-          <div class="component-label">card · status · default</div>
-        </div>
-        <div class="component-card">
-          <iframe src="output/components/card-item--type-info--state-positive.html" title="Card Item Positive"></iframe>
-          <div class="component-label">card-item · info · positive</div>
-        </div>
-        <div class="component-card">
-          <iframe src="output/components/card-item--type-info--state-danger.html" title="Card Item Danger"></iframe>
-          <div class="component-label">card-item · info · danger</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="comp-subcategory">
-      <h3>Media Element</h3>
-      <div class="components-grid">
-        <div class="component-card">
-          <iframe src="output/components/media-element--type-medium--state-default.html" title="Media Element Medium Default" class="xtall"></iframe>
-          <div class="component-label">media-element · medium · default</div>
-        </div>
-        <div class="component-card">
-          <iframe src="output/components/media-element--type-medium--state-hover.html" title="Media Element Medium Hover" class="xtall"></iframe>
-          <div class="component-label">media-element · medium · hover</div>
-        </div>
-        <div class="component-card">
-          <iframe src="output/components/media-element--type-medium--state-selected.html" title="Media Element Medium Selected" class="xtall"></iframe>
-          <div class="component-label">media-element · medium · selected</div>
-        </div>
-        <div class="component-card">
-          <iframe src="output/components/media-element--type-medium--state-loading.html" title="Media Element Medium Loading" class="xtall"></iframe>
-          <div class="component-label">media-element · medium · loading</div>
-        </div>
-        <div class="component-card">
-          <iframe src="output/components/media-element--type-small--state-default.html" title="Media Element Small Default" class="tall"></iframe>
-          <div class="component-label">media-element · small · default</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Workflow -->
-  <section class="comp-category" id="workflow">
-    <div class="comp-category-header">
-      <h2>Workflow</h2>
-    </div>
-
-    <div class="comp-subcategory">
-      <h3>Approval Card</h3>
-      <div class="components-grid wide">
-        <div class="component-card">
-          <iframe src="output/components/approval-card.html" title="Approval Card" class="xxtall"></iframe>
-          <div class="component-label">approval-card</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="comp-subcategory">
-      <h3>Approval Unit</h3>
-      <div class="components-grid">
-        <div class="component-card">
-          <iframe src="output/components/approval-unit--type-status--value-approved.html" title="Approval Unit Status Approved"></iframe>
-          <div class="component-label">approval-unit · status · approved</div>
-        </div>
-        <div class="component-card">
-          <iframe src="output/components/approval-unit--type-status--value-pending.html" title="Approval Unit Status Pending"></iframe>
-          <div class="component-label">approval-unit · status · pending</div>
-        </div>
-        <div class="component-card">
-          <iframe src="output/components/approval-unit--type-status--value-rejected.html" title="Approval Unit Status Rejected"></iframe>
-          <div class="component-label">approval-unit · status · rejected</div>
-        </div>
-        <div class="component-card">
-          <iframe src="output/components/approval-unit--type-status--value-to-be-approved.html" title="Approval Unit Status TBA"></iframe>
-          <div class="component-label">approval-unit · status · to-be-approved</div>
-        </div>
-        <div class="component-card">
-          <iframe src="output/components/approval-unit--type-approver--or-single-default.html" title="Approval Unit Approver Single"></iframe>
-          <div class="component-label">approval-unit · approver · single</div>
-        </div>
-        <div class="component-card">
-          <iframe src="output/components/approval-unit--type-approver--or-many.html" title="Approval Unit Approver Many"></iframe>
-          <div class="component-label">approval-unit · approver · many</div>
-        </div>
-        <div class="component-card">
-          <iframe src="output/components/approval-unit--type-deadline.html" title="Approval Unit Deadline"></iframe>
-          <div class="component-label">approval-unit · deadline</div>
-        </div>
-        <div class="component-card">
-          <iframe src="output/components/approval-unit--type-approver-row--type-approved.html" title="Approval Unit Row Approved"></iframe>
-          <div class="component-label">approval-unit · approver-row · approved</div>
-        </div>
-      </div>
-    </div>
-  </section>
+  </div>
 
 </main>
 </div>
+
+<script>
+/* ── Shared DS engine ─────────────────────────────────────────────── */
+window.DS = (function () {
+  'use strict';
+
+  function makePreviewer(opts) {
+    var root       = opts.root;
+    var sel        = opts.sel;
+    var viewport   = root.querySelector('.preview-viewport');
+    var nameEl     = root.querySelector('.preview-name');
+    var linkEl     = root.querySelector('.preview-open');
+    var noticeEl   = root.querySelector('.notice');
+    var devPropsEl = root.querySelector('.dev-props');
+    var devDimsEl  = root.querySelector('.dev-dims');
+    var devEmbedEl = root.querySelector('.dev-embed-snippet');
+    var devCopyBtn = root.querySelector('.dev-copy-btn');
+    var embedStr   = '';
+
+    function refresh() {
+      var path = opts.buildPath(sel);
+      viewport.classList.add('loading');
+      if (linkEl) linkEl.href = path;
+      if (nameEl && opts.buildLabel) nameEl.textContent = opts.buildLabel(sel);
+
+      fetch(path)
+        .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
+        .then(function (html) {
+          var doc   = new DOMParser().parseFromString(html, 'text/html');
+          var svgEl = doc.querySelector('.checker > svg') || doc.querySelector('svg');
+          if (!svgEl) {
+            viewport.innerHTML = '<p style="color:#999;font-size:13px;font-family:system-ui;text-align:center">Preview unavailable</p>';
+            viewport.classList.remove('loading'); return;
+          }
+          var natW  = parseFloat(svgEl.getAttribute('width'))  || 200;
+          var natH  = parseFloat(svgEl.getAttribute('height')) || 40;
+          var scale = Math.min(4.5, Math.max(1, 440 / natW));
+          var clone = svgEl.cloneNode(true);
+          clone.setAttribute('width',  Math.round(natW * scale));
+          clone.setAttribute('height', Math.round(natH * scale));
+          clone.style.display = 'block';
+          viewport.innerHTML  = ''; viewport.appendChild(clone);
+          viewport.classList.remove('loading');
+          if (devPropsEl) {
+            devPropsEl.innerHTML = '';
+            var meta = doc.querySelector('meta[name="figma-name"]');
+            if (meta) meta.getAttribute('content').split(', ').forEach(function (pair) {
+              var i = pair.indexOf('='); if (i < 0) return;
+              var el = document.createElement('span');
+              el.className = 'dev-prop';
+              el.innerHTML = '<span class="dev-prop-key">' + pair.slice(0,i).trim() + '</span>'
+                           + '<span class="dev-prop-val">' + pair.slice(i+1).trim() + '</span>';
+              devPropsEl.appendChild(el);
+            });
+          }
+          if (devDimsEl)  devDimsEl.textContent  = natW + ' × ' + natH + ' px';
+          embedStr = '<iframe src="' + path + '" width="' + natW + '" height="' + natH + '" scrolling="no"></iframe>';
+          if (devEmbedEl) devEmbedEl.textContent = embedStr;
+        })
+        .catch(function () {
+          viewport.innerHTML = '<p style="color:#999;font-size:13px;font-family:system-ui;text-align:center">Component not found</p>';
+          viewport.classList.remove('loading');
+        });
+    }
+
+    function showNotice(msgs) {
+      if (!noticeEl) return;
+      if (msgs && msgs.length) {
+        var sp = noticeEl.querySelector('span:last-child');
+        if (sp) sp.textContent = 'Auto-adjusted: ' + msgs.join(' · ');
+        noticeEl.style.display = 'inline-flex';
+      } else { noticeEl.style.display = 'none'; }
+    }
+
+    function renderControls() {
+      root.querySelectorAll('.seg-group[data-dim]').forEach(function (g) {
+        var dim = g.getAttribute('data-dim');
+        g.querySelectorAll('.seg-btn').forEach(function (b) {
+          b.classList.toggle('active', sel[dim] === b.getAttribute('data-val'));
+        });
+      });
+      root.querySelectorAll('.type-grid[data-dim]').forEach(function (g) {
+        var dim = g.getAttribute('data-dim');
+        g.querySelectorAll('.type-card').forEach(function (c) {
+          c.classList.toggle('active', sel[dim] === c.getAttribute('data-val'));
+        });
+      });
+      root.querySelectorAll('input[data-dim]').forEach(function (cb) {
+        cb.checked = sel[cb.getAttribute('data-dim')] === 'true';
+      });
+      if (opts.onRenderControls) opts.onRenderControls(sel, root);
+    }
+
+    root.addEventListener('click', function (e) {
+      var btn = e.target.closest('.seg-btn');
+      if (btn && !btn.hasAttribute('disabled')) {
+        var g = btn.closest('.seg-group[data-dim]');
+        if (g) { sel[g.getAttribute('data-dim')] = btn.getAttribute('data-val'); showNotice(opts.correct ? opts.correct(g.getAttribute('data-dim'), sel) : []); renderControls(); refresh(); return; }
+      }
+      var card = e.target.closest('.type-card');
+      if (card && !card.hasAttribute('disabled')) {
+        var g2 = card.closest('.type-grid[data-dim]');
+        if (g2) { sel[g2.getAttribute('data-dim')] = card.getAttribute('data-val'); showNotice(opts.correct ? opts.correct(g2.getAttribute('data-dim'), sel) : []); renderControls(); refresh(); return; }
+      }
+      var toggle = e.target.closest('.dev-toggle');
+      if (toggle) { var panel = toggle.closest('.dev-panel'); if (panel) panel.classList.toggle('collapsed'); }
+    });
+
+    root.addEventListener('change', function (e) {
+      var cb = e.target;
+      if (cb.tagName === 'INPUT' && cb.type === 'checkbox' && cb.hasAttribute('data-dim')) {
+        var dim = cb.getAttribute('data-dim');
+        sel[dim] = cb.checked ? 'true' : 'false';
+        showNotice(opts.correct ? opts.correct(dim, sel) : []);
+        renderControls(); refresh();
+      }
+    });
+
+    if (devCopyBtn) devCopyBtn.addEventListener('click', function () {
+      if (!embedStr) return;
+      navigator.clipboard.writeText(embedStr).then(function () {
+        devCopyBtn.textContent = 'Copied!'; devCopyBtn.classList.add('copied');
+        setTimeout(function () { devCopyBtn.textContent = 'Copy'; devCopyBtn.classList.remove('copied'); }, 1500);
+      });
+    });
+
+    renderControls(); refresh();
+  }
+
+  function staticPreview(root, path) {
+    var viewport = root.querySelector('.preview-viewport');
+    var linkEl   = root.querySelector('.preview-open');
+    if (linkEl) linkEl.href = path;
+    fetch(path)
+      .then(function (r) { if (!r.ok) throw new Error(); return r.text(); })
+      .then(function (html) {
+        var doc   = new DOMParser().parseFromString(html, 'text/html');
+        var svgEl = doc.querySelector('.checker > svg') || doc.querySelector('svg');
+        if (!svgEl) { if (viewport) viewport.innerHTML = '<p style="color:#999;font-size:13px;font-family:system-ui;text-align:center">Preview unavailable</p>'; return; }
+        var natW  = parseFloat(svgEl.getAttribute('width'))  || 200;
+        var natH  = parseFloat(svgEl.getAttribute('height')) || 40;
+        var scale = Math.min(4.5, Math.max(1, 440 / natW));
+        var clone = svgEl.cloneNode(true);
+        clone.setAttribute('width',  Math.round(natW * scale));
+        clone.setAttribute('height', Math.round(natH * scale));
+        clone.style.display = 'block';
+        if (viewport) { viewport.innerHTML = ''; viewport.appendChild(clone); }
+      })
+      .catch(function () { if (viewport) viewport.innerHTML = '<p style="color:#999;font-size:13px;font-family:system-ui;text-align:center">Component not found</p>'; });
+  }
+
+  return { makePreviewer: makePreviewer, staticPreview: staticPreview };
+}());
+
+/* ── Navigation Bar ───────────────────────────────────────────────── */
+DS.staticPreview(document.getElementById('cl-nav-bar'), 'output/components/navigation-bar.html');
+
+/* ── Contextual Sidebar ───────────────────────────────────────────── */
+DS.makePreviewer({
+  root: document.getElementById('cl-ctx-sidebar'),
+  sel:  { type:'filter' },
+  buildPath: function (s) {
+    var contentMap = { filter:'filter-options', chat:'messages', 'chat-external-user':'messages', custom:'individual' };
+    return 'output/components/contextual-sidebar--type-' + s.type + '--content-' + contentMap[s.type] + '.html';
+  },
+  buildLabel: function (s) { return 'Contextual sidebar · ' + s.type; }
+});
+
+/* ── Section Item ─────────────────────────────────────────────────── */
+DS.makePreviewer({
+  root: document.getElementById('cl-section-item'),
+  sel:  { type:'general', level:'first-level', variant:'text-w-icon', state:'closed' },
+  buildPath: function (s) {
+    return 'output/components/section-item--type-' + s.type
+      + '--level-' + s.level
+      + '--variant-' + s.variant
+      + '--state-' + s.state + '.html';
+  },
+  buildLabel: function (s) {
+    return 'Section item · ' + s.type + ' · ' + s.level + ' · ' + s.variant + ' · ' + s.state;
+  },
+  correct: function (dim, s) {
+    var msgs = [];
+    if (s.type === 'toggle') {
+      if (s.level !== 'second-level') { s.level = 'second-level'; msgs.push('Level → second'); }
+      if (s.variant !== 'thumnbail-w-link') { s.variant = 'thumnbail-w-link'; msgs.push('Variant → thumbnail'); }
+      if (s.state !== 'closed') { s.state = 'closed'; msgs.push('State → closed'); }
+    }
+    if (s.level === 'first-level' && s.variant !== 'text-w-icon') { s.variant = 'text-w-icon'; msgs.push('Variant → text + icon'); }
+    return msgs;
+  },
+  onRenderControls: function (s, root) {
+    var isToggle = s.type === 'toggle';
+    var lvlRow = root.querySelector('[data-row="si-level"]');
+    var varRow = root.querySelector('[data-row="si-variant"]');
+    var stRow  = root.querySelector('[data-row="si-state"]');
+    if (isToggle) {
+      if (lvlRow) lvlRow.style.display = 'none';
+      if (varRow) varRow.style.display = 'none';
+      if (stRow)  stRow.style.display  = 'none';
+    } else {
+      if (lvlRow) lvlRow.style.display = 'flex';
+      if (varRow) varRow.style.display = 'flex';
+      if (stRow)  stRow.style.display  = 'flex';
+      var thumbBtn = root.querySelector('.seg-btn[data-val="thumnbail-w-link"]');
+      if (thumbBtn) {
+        if (s.level === 'first-level') thumbBtn.setAttribute('disabled','');
+        else thumbBtn.removeAttribute('disabled');
+      }
+    }
+  }
+});
+
+/* ── Section Container ────────────────────────────────────────────── */
+DS.makePreviewer({
+  root: document.getElementById('cl-section-container'),
+  sel:  { type:'collapsible' },
+  buildPath:  function (s) { return 'output/components/section--type-' + s.type + '.html'; },
+  buildLabel: function (s) { return 'Section · ' + s.type; }
+});
+
+/* ── Data Table ───────────────────────────────────────────────────── */
+DS.makePreviewer({
+  root: document.getElementById('cl-data-table'),
+  sel:  { variant:'default' },
+  buildPath:  function (s) { return 'output/components/data-table--variant-' + s.variant + '.html'; },
+  buildLabel: function (s) { return 'Data table · ' + s.variant; }
+});
+
+/* ── Table Cell — Default ─────────────────────────────────────────── */
+(function () {
+  function correctAlignment(dim, s) {
+    var msgs = [];
+    if (s.type !== 'default' && s.alignment !== 'left') { s.alignment = 'left'; msgs.push('Alignment → left'); }
+    return msgs;
+  }
+  DS.makePreviewer({
+    root: document.getElementById('cl-table-cell-default'),
+    sel:  { state:'default', type:'leading', alignment:'left' },
+    buildPath:  function (s) { return 'output/components/table-cell-default--state-' + s.state + '--type-' + s.type + '--alignment-' + s.alignment + '.html'; },
+    buildLabel: function (s) { return 'Cell default · ' + s.type + ' · ' + s.state + ' · ' + s.alignment; },
+    correct: correctAlignment,
+    onRenderControls: function (s, root) {
+      root.querySelectorAll('.seg-btn[data-val="center"],.seg-btn[data-val="right"]').forEach(function (b) {
+        if (s.type !== 'default') b.setAttribute('disabled',''); else b.removeAttribute('disabled');
+      });
+    }
+  });
+}());
+
+/* ── Table Cell — Compact ─────────────────────────────────────────── */
+(function () {
+  function correctAlignment(dim, s) {
+    var msgs = [];
+    if (s.type !== 'default' && s.alignment !== 'left') { s.alignment = 'left'; msgs.push('Alignment → left'); }
+    return msgs;
+  }
+  DS.makePreviewer({
+    root: document.getElementById('cl-table-cell-compact'),
+    sel:  { state:'default', type:'leading', alignment:'left' },
+    buildPath:  function (s) { return 'output/components/table-cell-compact--state-' + s.state + '--type-' + s.type + '--alignment-' + s.alignment + '.html'; },
+    buildLabel: function (s) { return 'Cell compact · ' + s.type + ' · ' + s.state + ' · ' + s.alignment; },
+    correct: correctAlignment,
+    onRenderControls: function (s, root) {
+      root.querySelectorAll('.seg-btn[data-val="center"],.seg-btn[data-val="right"]').forEach(function (b) {
+        if (s.type !== 'default') b.setAttribute('disabled',''); else b.removeAttribute('disabled');
+      });
+    }
+  });
+}());
+
+/* ── Table Cell — Header ──────────────────────────────────────────── */
+DS.makePreviewer({
+  root: document.getElementById('cl-table-cell-header'),
+  sel:  { state:'unspecified', alignment:'left' },
+  buildPath:  function (s) { return 'output/components/table-cell-header--type-default--state-' + s.state + '--alignment-' + s.alignment + '--editable-false.html'; },
+  buildLabel: function (s) { return 'Cell header · ' + s.state + ' · ' + s.alignment; }
+});
+
+/* ── Card ─────────────────────────────────────────────────────────── */
+DS.makePreviewer({
+  root: document.getElementById('cl-card'),
+  sel:  { type:'default', state:'default', editMode:'false' },
+  buildPath: function (s) {
+    var stateMap = {
+      default:   ['default','hover','state3'],
+      column:    ['default','hover'],
+      story:     ['default','hover','edit'],
+      task:      ['default','hover'],
+      status:    ['default','hover','drag'],
+      'task-link': ['default','hover','add-new','edit']
+    };
+    if (s.type === 'default') {
+      return 'output/components/card--state-' + s.state + '.html';
+    }
+    var path = 'output/components/card--type-' + s.type + '--state-' + s.state;
+    if (s.type === 'status') path += '--edit-mode-' + s.editMode;
+    return path + '.html';
+  },
+  buildLabel: function (s) {
+    return 'Card · ' + s.type + ' · ' + s.state;
+  },
+  correct: function (dim, s) {
+    var msgs = [];
+    var validStates = {
+      default:   ['default','hover','state3'],
+      column:    ['default','hover'],
+      story:     ['default','hover','edit'],
+      task:      ['default','hover'],
+      status:    ['default','hover','drag'],
+      'task-link': ['default','hover','add-new','edit']
+    };
+    var valid = validStates[s.type] || ['default'];
+    if (valid.indexOf(s.state) === -1) { s.state = 'default'; msgs.push('State → default'); }
+    if (s.type === 'status' && s.state === 'drag' && s.editMode === 'true') { s.editMode = 'false'; msgs.push('Edit mode → off'); }
+    return msgs;
+  },
+  onRenderControls: function (s, root) {
+    var stateMap = {
+      default:     ['default','hover','state3'],
+      column:      ['default','hover'],
+      story:       ['default','hover','edit'],
+      task:        ['default','hover'],
+      status:      ['default','hover','drag'],
+      'task-link': ['default','hover','add-new','edit']
+    };
+    var validStates = stateMap[s.type] || ['default'];
+    root.querySelector('.seg-group[data-dim="state"]').querySelectorAll('.seg-btn').forEach(function (b) {
+      var v = b.getAttribute('data-val');
+      if (validStates.indexOf(v) === -1) b.setAttribute('disabled',''); else b.removeAttribute('disabled');
+    });
+    var editRow = root.querySelector('[data-row="card-edit-mode"]');
+    if (editRow) editRow.style.display = (s.type === 'status' && s.state !== 'drag') ? 'flex' : 'none';
+  }
+});
+
+/* ── Media Element ────────────────────────────────────────────────── */
+DS.makePreviewer({
+  root: document.getElementById('cl-media-element'),
+  sel:  { type:'medium', state:'default' },
+  buildPath:  function (s) { return 'output/components/media-element--type-' + s.type + '--state-' + s.state + '.html'; },
+  buildLabel: function (s) { return 'Media element · ' + s.type + ' · ' + s.state; },
+  correct: function (dim, s) {
+    var msgs = [];
+    if (s.type === 'small' && s.state !== 'default') { s.state = 'default'; msgs.push('State → default'); }
+    return msgs;
+  },
+  onRenderControls: function (s, root) {
+    root.querySelectorAll('.seg-group[data-dim="state"] .seg-btn').forEach(function (b) {
+      if (s.type === 'small' && b.getAttribute('data-val') !== 'default') b.setAttribute('disabled','');
+      else b.removeAttribute('disabled');
+    });
+  }
+});
+
+/* ── Approval Card ────────────────────────────────────────────────── */
+DS.staticPreview(document.getElementById('cl-approval-card'), 'output/components/approval-card.html');
+
+/* ── Approval Unit ────────────────────────────────────────────────── */
+DS.makePreviewer({
+  root: document.getElementById('cl-approval-unit'),
+  sel:  { type:'status', subval:'approved' },
+  buildPath: function (s) {
+    if (s.type === 'status')       return 'output/components/approval-unit--type-status--value-' + s.subval + '.html';
+    if (s.type === 'approver')     return 'output/components/approval-unit--type-approver--or-' + s.subval + '.html';
+    if (s.type === 'approver-row') return 'output/components/approval-unit--type-approver-row--type-' + s.subval + '.html';
+    if (s.type === 'status-row')   return 'output/components/approval-unit--type-status-row--type-' + s.subval + '.html';
+    return 'output/components/approval-unit--type-deadline.html';
+  },
+  buildLabel: function (s) {
+    return 'Approval unit · ' + s.type + (s.type !== 'deadline' ? ' · ' + s.subval : '');
+  },
+  correct: function (dim, s) {
+    if (dim === 'type') {
+      var defaults = { status:'approved', approver:'single-default', 'approver-row':'approved', 'status-row':'approved', deadline:'' };
+      s.subval = defaults[s.type] || '';
+    }
+    return [];
+  },
+  onRenderControls: function (s, root) {
+    var subvalOptions = {
+      status:       [['approved','Approved'],['pending','Pending'],['rejected','Rejected'],['to-be-approved','To be approved']],
+      approver:     [['single-default','Single default'],['single-tba','Single TBA'],['many','Many']],
+      'approver-row':[['approved','Approved'],['default','Default'],['rejected','Rejected'],['to-be-approved','To be approved']],
+      'status-row': [['approved','Approved'],['default','Default'],['rejected','Rejected']],
+      deadline:     []
+    };
+    var row = root.querySelector('[data-row="au-subval"]');
+    if (!row) return;
+    var opts = subvalOptions[s.type] || [];
+    if (opts.length === 0) { row.style.display = 'none'; return; }
+    row.style.display = 'flex';
+    var group = row.querySelector('.seg-group[data-dim="subval"]');
+    if (!group) return;
+    group.innerHTML = '';
+    opts.forEach(function (opt) {
+      var btn = document.createElement('button');
+      btn.className = 'seg-btn' + (s.subval === opt[0] ? ' active' : '');
+      btn.setAttribute('data-val', opt[0]);
+      btn.textContent = opt[1];
+      group.appendChild(btn);
+    });
+  }
+});
+</script>
 </body>
 </html>
