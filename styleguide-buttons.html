@@ -116,32 +116,7 @@
   letter-spacing: .09em;
   text-transform: uppercase;
   color: var(--text-faint);
-  margin-bottom: 7px;
 }
-.type-mini-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  height: 20px;
-  padding: 0 7px;
-  border-radius: 4px;
-  font-size: 10px;
-  font-weight: 600;
-  white-space: nowrap;
-  pointer-events: none;
-  letter-spacing: .01em;
-}
-.type-mini-icon {
-  width: 8px; height: 8px;
-  border-radius: 2px;
-  flex-shrink: 0;
-  opacity: .55;
-}
-.mini-primary   { background: #1339ec; color: #fff; }
-.mini-secondary { background: transparent; border: 1.5px solid #d3d7de; color: #111317; }
-.mini-danger    { background: #cc0000; color: #fff; }
-.mini-success   { background: #2e881b; color: #fff; }
-.mini-warning   { background: #e05a00; color: #fff; }
 
 /* ── Options toggles ───────────────────────────────────────────── */
 .options-list { display: flex; flex-direction: column; flex: 1; }
@@ -448,40 +423,11 @@
       <span class="config-label" style="padding-top:13px">Family</span>
       <div class="type-grid" data-dim="family">
 
-        <div class="type-card active" data-val="primary">
-          <span class="type-card-label">Primary</span>
-          <span class="type-mini-btn mini-primary">
-            <span class="type-mini-icon" style="background:rgba(255,255,255,.5)"></span>
-          </span>
-        </div>
-
-        <div class="type-card" data-val="secondary">
-          <span class="type-card-label">Secondary</span>
-          <span class="type-mini-btn mini-secondary">
-            <span class="type-mini-icon" style="background:#d3d7de"></span>
-          </span>
-        </div>
-
-        <div class="type-card" data-val="danger">
-          <span class="type-card-label">Danger</span>
-          <span class="type-mini-btn mini-danger">
-            <span class="type-mini-icon" style="background:rgba(255,255,255,.5)"></span>
-          </span>
-        </div>
-
-        <div class="type-card" data-val="success">
-          <span class="type-card-label">Success</span>
-          <span class="type-mini-btn mini-success">
-            <span class="type-mini-icon" style="background:rgba(255,255,255,.5)"></span>
-          </span>
-        </div>
-
-        <div class="type-card" data-val="warning">
-          <span class="type-card-label">Warning</span>
-          <span class="type-mini-btn mini-warning">
-            <span class="type-mini-icon" style="background:rgba(255,255,255,.5)"></span>
-          </span>
-        </div>
+        <div class="type-card active" data-val="primary"><span class="type-card-label">Primary</span></div>
+        <div class="type-card" data-val="secondary"><span class="type-card-label">Secondary</span></div>
+        <div class="type-card" data-val="danger"><span class="type-card-label">Danger</span></div>
+        <div class="type-card" data-val="success"><span class="type-card-label">Success</span></div>
+        <div class="type-card" data-val="warning"><span class="type-card-label">Warning</span></div>
 
       </div>
     </div>
