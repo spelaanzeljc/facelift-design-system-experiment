@@ -253,6 +253,34 @@
 .dev-copy-btn:hover  { border-color: var(--clay); color: var(--clay); }
 .dev-copy-btn.copied { background: var(--clay); border-color: var(--clay); color: #fff; }
 
+/* Collapsible toggle */
+.dev-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 18px;
+  cursor: pointer;
+  user-select: none;
+  border-bottom: 1px solid var(--border);
+  transition: background .1s;
+}
+.dev-toggle:hover { background: var(--bg); }
+.dev-toggle-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+.dev-toggle-chevron {
+  transition: transform .2s ease;
+  color: var(--text-faint);
+  flex-shrink: 0;
+}
+.dev-panel.collapsed .dev-toggle-chevron { transform: rotate(-90deg); }
+.dev-panel.collapsed .dev-body { display: none; }
+.dev-panel.collapsed .dev-toggle { border-bottom: none; }
+
 /* ── Constraint notice ─────────────────────────────────────────── */
 .notice {
   display: inline-flex;
@@ -404,7 +432,16 @@
   </div>
 
   <!-- ─── Dev info panel ──────────────────────────────────────────── -->
-  <div class="dev-panel">
+  <div class="dev-panel" id="dev-panel">
+
+    <div class="dev-toggle" id="dev-toggle">
+      <span class="dev-toggle-label">Component info</span>
+      <svg class="dev-toggle-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M3 5L7 9L11 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <div class="dev-body">
 
     <div class="dev-row">
       <span class="dev-row-label">Properties</span>
@@ -446,6 +483,7 @@
       </div>
     </div>
 
+    </div><!-- end dev-body -->
   </div>
 
   </div><!-- end preview-col -->
@@ -714,6 +752,11 @@
       renderControls();
       refresh();
     });
+  });
+
+  // ── Dev panel collapse toggle ──────────────────────────────────
+  document.getElementById('dev-toggle').addEventListener('click', function () {
+    document.getElementById('dev-panel').classList.toggle('collapsed');
   });
 
   // ── Copy embed snippet ─────────────────────────────────────────
