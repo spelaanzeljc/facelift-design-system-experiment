@@ -6,6 +6,134 @@
 <title>Design System — Components</title>
 <link rel="stylesheet" href="output/tokens/tokens.css">
 <link rel="stylesheet" href="styleguide.css">
+<style>
+/* ── Inline Button Configurator ─────────────────────────────────── */
+.btn-configurator {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0 20px 10px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-card);
+}
+.btn-config-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+.btn-config-row:first-child { padding-top: 14px; }
+.btn-config-row:last-child  { border-bottom: none; padding-bottom: 0; }
+.btn-config-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  width: 68px;
+  flex-shrink: 0;
+}
+.btn-seg-group { display: flex; gap: 3px; flex-wrap: wrap; }
+.btn-seg-btn {
+  font-size: 11.5px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 5px;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: border-color .1s, background .1s, color .1s;
+  white-space: nowrap;
+  line-height: 1.45;
+  user-select: none;
+}
+.btn-seg-btn:hover:not([disabled]) {
+  border-color: var(--clay);
+  color: var(--clay);
+  background: #fef9f6;
+}
+.btn-seg-btn.active {
+  background: var(--clay);
+  border-color: var(--clay);
+  color: #fff;
+  font-weight: 600;
+}
+.btn-seg-btn[disabled] {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
+/* ── Inline Preview ──────────────────────────────────────────────── */
+.btn-notice {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11.5px;
+  color: var(--text-faint);
+  padding: 7px 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin-bottom: 16px;
+}
+.btn-notice-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--clay);
+  flex-shrink: 0;
+}
+.btn-preview-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  margin-bottom: 8px;
+}
+.btn-preview-viewport {
+  background-color: #f0f0f0;
+  background-image:
+    linear-gradient(45deg, #e3e3e3 25%, transparent 25%),
+    linear-gradient(-45deg, #e3e3e3 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #e3e3e3 75%),
+    linear-gradient(-45deg, transparent 75%, #e3e3e3 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+  min-height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  border-bottom: 1.5px solid var(--border);
+  transition: opacity .12s ease;
+}
+.btn-preview-viewport.btn-loading { opacity: 0.3; }
+.btn-preview-footer {
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.btn-preview-name {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+.btn-preview-open {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  color: var(--text-faint);
+  text-decoration: none;
+  transition: color .12s;
+  flex-shrink: 0;
+}
+.btn-preview-open:hover { color: var(--clay); }
+</style>
 </head>
 <body>
 <div class="layout">
@@ -61,32 +189,85 @@
       <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="opacity:.45"><path d="M2 9L9 2M9 2H4M9 2v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
 
-    <div class="divider-label">Primary</div>
-    <div class="components-grid">
-      <a href="output/components/action-primary--size-medium--emphasis-bold--state-default--icon-only-false--shape-rectangle.html" class="comp-link" target="_blank"><div class="component-card"><div class="comp-frame"><iframe src="output/components/action-primary--size-medium--emphasis-bold--state-default--icon-only-false--shape-rectangle.html" loading="lazy" scrolling="no" title="Primary Bold Default"></iframe></div><div class="component-info"><div class="name">Bold · Default</div></div></div></a>
-      <a href="output/components/action-primary--size-medium--emphasis-bold--state-hover--icon-only-false--shape-rectangle.html" class="comp-link" target="_blank"><div class="component-card"><div class="comp-frame"><iframe src="output/components/action-primary--size-medium--emphasis-bold--state-hover--icon-only-false--shape-rectangle.html" loading="lazy" scrolling="no" title="Primary Bold Hover"></iframe></div><div class="component-info"><div class="name">Bold · Hover</div></div></div></a>
-      <a href="output/components/action-primary--size-medium--emphasis-bold--state-disabled--icon-only-false--shape-rectangle.html" class="comp-link" target="_blank"><div class="component-card"><div class="comp-frame"><iframe src="output/components/action-primary--size-medium--emphasis-bold--state-disabled--icon-only-false--shape-rectangle.html" loading="lazy" scrolling="no" title="Primary Bold Disabled"></iframe></div><div class="component-info"><div class="name">Bold · Disabled</div></div></div></a>
-      <a href="output/components/action-primary--size-medium--emphasis-subtle--state-default--icon-only-false--shape-rectangle.html" class="comp-link" target="_blank"><div class="component-card"><div class="comp-frame"><iframe src="output/components/action-primary--size-medium--emphasis-subtle--state-default--icon-only-false--shape-rectangle.html" loading="lazy" scrolling="no" title="Primary Subtle Default"></iframe></div><div class="component-info"><div class="name">Subtle · Default</div></div></div></a>
-      <a href="output/components/action-primary--size-medium--emphasis-subtle--state-hover--icon-only-false--shape-rectangle.html" class="comp-link" target="_blank"><div class="component-card"><div class="comp-frame"><iframe src="output/components/action-primary--size-medium--emphasis-subtle--state-hover--icon-only-false--shape-rectangle.html" loading="lazy" scrolling="no" title="Primary Subtle Hover"></iframe></div><div class="component-info"><div class="name">Subtle · Hover</div></div></div></a>
-      <a href="output/components/action-primary--size-medium--emphasis-minimal--state-default--icon-only-false--shape-rectangle.html" class="comp-link" target="_blank"><div class="component-card"><div class="comp-frame"><iframe src="output/components/action-primary--size-medium--emphasis-minimal--state-default--icon-only-false--shape-rectangle.html" loading="lazy" scrolling="no" title="Primary Minimal Default"></iframe></div><div class="component-info"><div class="name">Minimal · Default</div></div></div></a>
-      <a href="output/components/action-primary--size-medium--emphasis-bold--state-default--icon-only-true--shape-rectangle.html" class="comp-link" target="_blank"><div class="component-card"><div class="comp-frame"><iframe src="output/components/action-primary--size-medium--emphasis-bold--state-default--icon-only-true--shape-rectangle.html" loading="lazy" scrolling="no" title="Primary Icon-only"></iframe></div><div class="component-info"><div class="name">Bold · Icon-only</div></div></div></a>
+    <!-- ─── Inline Button Configurator ──────────────────────────── -->
+    <div class="btn-configurator">
+
+      <div class="btn-config-row">
+        <span class="btn-config-label">Family</span>
+        <div class="btn-seg-group" data-btndim="family">
+          <button class="btn-seg-btn active" data-btnval="primary">Primary</button>
+          <button class="btn-seg-btn"        data-btnval="secondary">Secondary</button>
+          <button class="btn-seg-btn"        data-btnval="danger">Danger</button>
+          <button class="btn-seg-btn"        data-btnval="success">Success</button>
+          <button class="btn-seg-btn"        data-btnval="warning">Warning</button>
+        </div>
+      </div>
+
+      <div class="btn-config-row">
+        <span class="btn-config-label">Emphasis</span>
+        <div class="btn-seg-group" data-btndim="emphasis">
+          <button class="btn-seg-btn active" data-btnval="bold">Bold</button>
+          <button class="btn-seg-btn"        data-btnval="subtle">Subtle</button>
+          <button class="btn-seg-btn"        data-btnval="minimal">Minimal</button>
+        </div>
+      </div>
+
+      <div class="btn-config-row">
+        <span class="btn-config-label">Size</span>
+        <div class="btn-seg-group" data-btndim="size">
+          <button class="btn-seg-btn"        data-btnval="xsmall">XSmall</button>
+          <button class="btn-seg-btn"        data-btnval="small">Small</button>
+          <button class="btn-seg-btn active" data-btnval="medium">Medium</button>
+          <button class="btn-seg-btn"        data-btnval="large">Large</button>
+        </div>
+      </div>
+
+      <div class="btn-config-row">
+        <span class="btn-config-label">State</span>
+        <div class="btn-seg-group" data-btndim="state">
+          <button class="btn-seg-btn active" data-btnval="default">Default</button>
+          <button class="btn-seg-btn"        data-btnval="hover">Hover</button>
+          <button class="btn-seg-btn"        data-btnval="active">Active</button>
+          <button class="btn-seg-btn"        data-btnval="pressed">Pressed</button>
+          <button class="btn-seg-btn"        data-btnval="focused">Focused</button>
+          <button class="btn-seg-btn"        data-btnval="disabled">Disabled</button>
+        </div>
+      </div>
+
+      <div class="btn-config-row">
+        <span class="btn-config-label">Icon only</span>
+        <div class="btn-seg-group" data-btndim="iconOnly">
+          <button class="btn-seg-btn active" data-btnval="false">Label + icon</button>
+          <button class="btn-seg-btn"        data-btnval="true">Icon only</button>
+        </div>
+      </div>
+
+      <div class="btn-config-row">
+        <span class="btn-config-label">Shape</span>
+        <div class="btn-seg-group" data-btndim="shape">
+          <button class="btn-seg-btn active" data-btnval="rectangle">Rectangle</button>
+          <button class="btn-seg-btn"        data-btnval="rounded">Rounded</button>
+        </div>
+      </div>
+
     </div>
 
-    <div class="divider-label">Secondary</div>
-    <div class="components-grid">
-      <a href="output/components/action-secondary--size-medium--emphasis-bold--state-default--icon-only-false--shape-rectangle.html" class="comp-link" target="_blank"><div class="component-card"><div class="comp-frame"><iframe src="output/components/action-secondary--size-medium--emphasis-bold--state-default--icon-only-false--shape-rectangle.html" loading="lazy" scrolling="no" title="Secondary Default"></iframe></div><div class="component-info"><div class="name">Secondary · Default</div></div></div></a>
-      <a href="output/components/action-secondary--size-medium--emphasis-bold--state-hover--icon-only-false--shape-rectangle.html" class="comp-link" target="_blank"><div class="component-card"><div class="comp-frame"><iframe src="output/components/action-secondary--size-medium--emphasis-bold--state-hover--icon-only-false--shape-rectangle.html" loading="lazy" scrolling="no" title="Secondary Hover"></iframe></div><div class="component-info"><div class="name">Secondary · Hover</div></div></div></a>
-      <a href="output/components/action-secondary--size-medium--emphasis-bold--state-disabled--icon-only-false--shape-rectangle.html" class="comp-link" target="_blank"><div class="component-card"><div class="comp-frame"><iframe src="output/components/action-secondary--size-medium--emphasis-bold--state-disabled--icon-only-false--shape-rectangle.html" loading="lazy" scrolling="no" title="Secondary Disabled"></iframe></div><div class="component-info"><div class="name">Secondary · Disabled</div></div></div></a>
+    <div class="btn-notice" id="btn-notice" style="display:none">
+      <span class="btn-notice-dot"></span>
+      <span id="btn-notice-msg">Some properties were adjusted to match valid combinations.</span>
     </div>
 
-    <div class="divider-label">Danger · Success · Warning</div>
-    <div class="components-grid">
-      <a href="output/components/action-danger--size-medium--emphasis-bold--state-default--icon-only-false--shape-rectangle.html" class="comp-link" target="_blank"><div class="component-card"><div class="comp-frame"><iframe src="output/components/action-danger--size-medium--emphasis-bold--state-default--icon-only-false--shape-rectangle.html" loading="lazy" scrolling="no" title="Danger Default"></iframe></div><div class="component-info"><div class="name">Danger · Default</div></div></div></a>
-      <a href="output/components/action-danger--size-medium--emphasis-bold--state-hover--icon-only-false--shape-rectangle.html" class="comp-link" target="_blank"><div class="component-card"><div class="comp-frame"><iframe src="output/components/action-danger--size-medium--emphasis-bold--state-hover--icon-only-false--shape-rectangle.html" loading="lazy" scrolling="no" title="Danger Hover"></iframe></div><div class="component-info"><div class="name">Danger · Hover</div></div></div></a>
-      <a href="output/components/action-success--size-medium--emphasis-bold--state-default--icon-only-false--shape-rectangle.html" class="comp-link" target="_blank"><div class="component-card"><div class="comp-frame"><iframe src="output/components/action-success--size-medium--emphasis-bold--state-default--icon-only-false--shape-rectangle.html" loading="lazy" scrolling="no" title="Success Default"></iframe></div><div class="component-info"><div class="name">Success · Default</div></div></div></a>
-      <a href="output/components/action-success--size-medium--emphasis-bold--state-hover--icon-only-false--shape-rectangle.html" class="comp-link" target="_blank"><div class="component-card"><div class="comp-frame"><iframe src="output/components/action-success--size-medium--emphasis-bold--state-hover--icon-only-false--shape-rectangle.html" loading="lazy" scrolling="no" title="Success Hover"></iframe></div><div class="component-info"><div class="name">Success · Hover</div></div></div></a>
-      <a href="output/components/action-warning--size-medium--emphasis-bold--state-default--icon-only-false--shape-rectangle.html" class="comp-link" target="_blank"><div class="component-card"><div class="comp-frame"><iframe src="output/components/action-warning--size-medium--emphasis-bold--state-default--icon-only-false--shape-rectangle.html" loading="lazy" scrolling="no" title="Warning Default"></iframe></div><div class="component-info"><div class="name">Warning · Default</div></div></div></a>
-      <a href="output/components/action-warning--size-medium--emphasis-bold--state-hover--icon-only-false--shape-rectangle.html" class="comp-link" target="_blank"><div class="component-card"><div class="comp-frame"><iframe src="output/components/action-warning--size-medium--emphasis-bold--state-hover--icon-only-false--shape-rectangle.html" loading="lazy" scrolling="no" title="Warning Hover"></iframe></div><div class="component-info"><div class="name">Warning · Hover</div></div></div></a>
+    <div class="btn-preview-card">
+      <div class="btn-preview-viewport" id="btn-viewport">
+        <!-- SVG injected by JS -->
+      </div>
+      <div class="btn-preview-footer">
+        <span class="btn-preview-name" id="btn-name">Primary · Bold · Medium · Default · Label + icon · Rectangle</span>
+        <a class="btn-preview-open" id="btn-link" href="#" target="_blank">
+          Open file
+          <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H4M9 2v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
     </div>
   </section>
 
@@ -754,6 +935,186 @@
       } catch (e) {}
     });
   });
+}());
+</script>
+
+<script>
+/* ── Inline Button Configurator ──────────────────────────────────── */
+(function () {
+  'use strict';
+
+  var sel = {
+    family:   'primary',
+    emphasis: 'bold',
+    size:     'medium',
+    state:    'default',
+    iconOnly: 'false',
+    shape:    'rectangle'
+  };
+
+  function isValid(size, emphasis, iconOnly, shape) {
+    if (size === 'xsmall') {
+      return emphasis === 'minimal' && iconOnly === 'true' && shape === 'rectangle';
+    }
+    if (size === 'large') {
+      if (iconOnly === 'true') return false;
+      if (shape === 'rounded') return false;
+    }
+    if (shape === 'rounded') {
+      if (size !== 'small' && size !== 'medium') return false;
+      if (iconOnly === 'false') return false;
+    }
+    return true;
+  }
+
+  function correct(changedDim) {
+    if (isValid(sel.size, sel.emphasis, sel.iconOnly, sel.shape)) return false;
+    var corrected = [];
+
+    if (sel.size === 'xsmall') {
+      if (sel.emphasis !== 'minimal')    { sel.emphasis = 'minimal';    corrected.push('emphasis → minimal'); }
+      if (sel.iconOnly !== 'true')       { sel.iconOnly = 'true';       corrected.push('icon-only → true'); }
+      if (sel.shape    !== 'rectangle')  { sel.shape    = 'rectangle';  corrected.push('shape → rectangle'); }
+      return corrected.length > 0;
+    }
+    if (sel.size === 'large' && sel.iconOnly === 'true') {
+      if (changedDim === 'size') { sel.iconOnly = 'false';  corrected.push('icon-only → false'); }
+      else                       { sel.size     = 'medium'; corrected.push('size → medium'); }
+    }
+    if (sel.size === 'large' && sel.shape === 'rounded') {
+      if (changedDim === 'size') { sel.shape = 'rectangle'; corrected.push('shape → rectangle'); }
+      else                       { sel.size  = 'medium';    corrected.push('size → medium'); }
+    }
+    if (sel.shape === 'rounded' && sel.iconOnly === 'false') {
+      if (changedDim === 'shape') { sel.iconOnly = 'true';       corrected.push('icon-only → true'); }
+      else                        { sel.shape    = 'rectangle';  corrected.push('shape → rectangle'); }
+    }
+    if (sel.shape === 'rounded' && sel.size !== 'small' && sel.size !== 'medium') {
+      sel.size = 'medium';
+      corrected.push('size → medium');
+    }
+    return corrected.length > 0;
+  }
+
+  function buildPath() {
+    return 'output/components/action-' + sel.family +
+      '--size-'      + sel.size      +
+      '--emphasis-'  + sel.emphasis  +
+      '--state-'     + sel.state     +
+      '--icon-only-' + sel.iconOnly  +
+      '--shape-'     + sel.shape     + '.html';
+  }
+
+  function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+  function buildLabel() {
+    var io = sel.iconOnly === 'true' ? 'Icon only' : 'Label + icon';
+    return [cap(sel.family), cap(sel.emphasis), cap(sel.size), cap(sel.state), io, cap(sel.shape)].join(' · ');
+  }
+
+  var viewport    = document.getElementById('btn-viewport');
+  var nameEl      = document.getElementById('btn-name');
+  var linkEl      = document.getElementById('btn-link');
+  var noticeEl    = document.getElementById('btn-notice');
+  var noticeMsgEl = document.getElementById('btn-notice-msg');
+  var currentPath = '';
+
+  function refresh() {
+    var path = buildPath();
+    if (path === currentPath) return;
+    currentPath = path;
+
+    viewport.classList.add('btn-loading');
+    linkEl.href        = path;
+    nameEl.textContent = buildLabel();
+
+    fetch(path)
+      .then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.text();
+      })
+      .then(function (html) {
+        var parser = new DOMParser();
+        var doc    = parser.parseFromString(html, 'text/html');
+        var svgEl  = doc.querySelector('.checker > svg') || doc.querySelector('svg');
+
+        if (!svgEl) {
+          viewport.innerHTML = '<p style="color:#999;font-size:13px;font-family:system-ui">Preview unavailable</p>';
+          viewport.classList.remove('btn-loading');
+          return;
+        }
+
+        var natW  = parseFloat(svgEl.getAttribute('width'))  || 200;
+        var natH  = parseFloat(svgEl.getAttribute('height')) || 40;
+        var scale = Math.min(4.5, Math.max(1, 440 / natW));
+        var clone = svgEl.cloneNode(true);
+        clone.setAttribute('width',  Math.round(natW * scale));
+        clone.setAttribute('height', Math.round(natH * scale));
+        clone.style.display = 'block';
+
+        viewport.innerHTML = '';
+        viewport.appendChild(clone);
+        viewport.classList.remove('btn-loading');
+      })
+      .catch(function () {
+        viewport.innerHTML = '<p style="color:#999;font-size:13px;font-family:system-ui">Component not found</p>';
+        viewport.classList.remove('btn-loading');
+      });
+  }
+
+  function renderControls() {
+    document.querySelectorAll('.btn-seg-group').forEach(function (group) {
+      var dim = group.getAttribute('data-btndim');
+      group.querySelectorAll('.btn-seg-btn').forEach(function (btn) {
+        var val = btn.getAttribute('data-btnval');
+        btn.classList.toggle('active', sel[dim] === val);
+
+        if (dim === 'family' || dim === 'state') {
+          btn.removeAttribute('disabled');
+          return;
+        }
+
+        var tSize     = dim === 'size'     ? val : sel.size;
+        var tEmphasis = dim === 'emphasis' ? val : sel.emphasis;
+        var tIconOnly = dim === 'iconOnly' ? val : sel.iconOnly;
+        var tShape    = dim === 'shape'    ? val : sel.shape;
+
+        if (isValid(tSize, tEmphasis, tIconOnly, tShape)) {
+          btn.removeAttribute('disabled');
+        } else {
+          btn.setAttribute('disabled', '');
+        }
+      });
+    });
+  }
+
+  document.querySelectorAll('.btn-seg-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      if (btn.hasAttribute('disabled')) return;
+      var dim    = btn.closest('.btn-seg-group').getAttribute('data-btndim');
+      var before = Object.assign({}, sel);
+      sel[dim]   = btn.getAttribute('data-btnval');
+
+      var corrected = correct(dim);
+
+      if (corrected) {
+        var changes = [];
+        if (sel.emphasis !== before.emphasis) changes.push('Emphasis → ' + cap(sel.emphasis));
+        if (sel.iconOnly !== before.iconOnly) changes.push('Icon only → ' + (sel.iconOnly === 'true' ? 'Icon only' : 'Label + icon'));
+        if (sel.shape    !== before.shape)    changes.push('Shape → ' + cap(sel.shape));
+        if (sel.size     !== before.size)     changes.push('Size → ' + cap(sel.size));
+        noticeMsgEl.textContent = 'Auto-adjusted: ' + changes.join(' · ');
+        noticeEl.style.display  = 'inline-flex';
+      } else {
+        noticeEl.style.display = 'none';
+      }
+
+      renderControls();
+      refresh();
+    });
+  });
+
+  renderControls();
+  refresh();
 }());
 </script>
 </body>
