@@ -6,6 +6,62 @@
 <title>Design System — Summary</title>
 <link rel="stylesheet" href="output/tokens/tokens.css">
 <link rel="stylesheet" href="styleguide.css">
+<style>
+/* ── Quick-nav cards ───────────────────────────────────────── */
+.nav-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 14px;
+}
+.nav-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px 16px;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: var(--shadow-card);
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+  display: flex;
+  flex-direction: column;
+}
+.nav-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lift); border-color: var(--border-mid); }
+.nav-card-tag { font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 6px; }
+.nav-card-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 5px; }
+.nav-card-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; flex: 1; }
+.nav-card-arrow { font-size: 12px; color: var(--clay); font-weight: 500; margin-top: 10px; }
+
+/* ── Component fetch strip ─────────────────────────────────── */
+.elem-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 14px;
+}
+.elem-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+.elem-viewport {
+  height: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  background:
+    linear-gradient(45deg, rgba(0,0,0,.03) 25%, transparent 25%) -8px 0,
+    linear-gradient(135deg, rgba(0,0,0,.03) 25%, transparent 25%) -8px 0,
+    linear-gradient(225deg, rgba(0,0,0,.03) 25%, transparent 25%),
+    linear-gradient(315deg, rgba(0,0,0,.03) 25%, transparent 25%);
+  background-color: #f8f7f3;
+  background-size: 16px 16px;
+  overflow: hidden;
+}
+.elem-viewport svg { max-width: 100%; max-height: 100%; display: block; flex-shrink: 0; }
+.elem-label { padding: 8px 12px 10px; font-size: 11px; font-weight: 500; color: var(--text-muted); }
+</style>
 </head>
 <body>
 <div class="layout">
@@ -41,10 +97,84 @@
 
   <div class="page-header">
     <div class="page-decoration"></div>
-    <div class="page-header-eyebrow">Exported from Figma</div>
+    <div class="page-header-eyebrow">Living Style Guide</div>
     <h1>Design System</h1>
-    <p class="page-header-desc">A living reference of every token, component, and icon. All values come from <code>output/tokens/tokens.css</code> — never hardcode colours, type sizes, or shadows.</p>
+    <p class="page-header-desc">A living reference for every token, component, pattern, and icon — exported directly from Figma. Use <code>output/tokens/tokens.css</code> for all values; never hardcode colours, type sizes, or shadows.</p>
   </div>
+
+  <!-- Contents nav -->
+  <section class="section">
+    <div class="section-header">
+      <h2>Contents</h2>
+      <span class="section-count">9 sections</span>
+    </div>
+    <div class="nav-cards">
+
+      <a href="styleguide-colors.html" class="nav-card">
+        <div class="nav-card-tag">Foundations</div>
+        <div class="nav-card-title">Colors</div>
+        <div class="nav-card-desc">Semantic tokens, reference ramps, status and secondary palettes.</div>
+        <div class="nav-card-arrow">View →</div>
+      </a>
+
+      <a href="styleguide-typography.html" class="nav-card">
+        <div class="nav-card-tag">Foundations</div>
+        <div class="nav-card-title">Typography</div>
+        <div class="nav-card-desc">Helvetica Neue UI scale and Lota Grotesque display headings.</div>
+        <div class="nav-card-arrow">View →</div>
+      </a>
+
+      <a href="styleguide-shadows.html" class="nav-card">
+        <div class="nav-card-tag">Foundations</div>
+        <div class="nav-card-title">Shadows</div>
+        <div class="nav-card-desc">Five elevation tokens for cards, widgets, and media surfaces.</div>
+        <div class="nav-card-arrow">View →</div>
+      </a>
+
+      <a href="styleguide-spacing.html" class="nav-card">
+        <div class="nav-card-tag">Foundations</div>
+        <div class="nav-card-title">Spacing</div>
+        <div class="nav-card-desc">11-step linear scale from 0 to 32px via <code>--spacing-*</code> tokens.</div>
+        <div class="nav-card-arrow">View →</div>
+      </a>
+
+      <a href="styleguide-iconography.html" class="nav-card">
+        <div class="nav-card-tag">Foundations</div>
+        <div class="nav-card-title">Iconography</div>
+        <div class="nav-card-desc">429 SVG icons in 9 categories — arrows, status, social, brands, and more.</div>
+        <div class="nav-card-arrow">View →</div>
+      </a>
+
+      <a href="styleguide-components.html" class="nav-card">
+        <div class="nav-card-tag">Components</div>
+        <div class="nav-card-title">Main Components</div>
+        <div class="nav-card-desc">Buttons, inputs, tags, avatars, overlays, and data display — live configurators.</div>
+        <div class="nav-card-arrow">View →</div>
+      </a>
+
+      <a href="styleguide-patterns.html" class="nav-card">
+        <div class="nav-card-tag">Components</div>
+        <div class="nav-card-title">Patterns</div>
+        <div class="nav-card-desc">Navigation, data tables, cards, media elements, and approval workflows.</div>
+        <div class="nav-card-arrow">View →</div>
+      </a>
+
+      <a href="styleguide-guidelines.html" class="nav-card">
+        <div class="nav-card-tag">Guidelines</div>
+        <div class="nav-card-title">Guidelines</div>
+        <div class="nav-card-desc">Usage rules for colour, typography, accessibility, and component states.</div>
+        <div class="nav-card-arrow">View →</div>
+      </a>
+
+      <a href="styleguide-templates.html" class="nav-card">
+        <div class="nav-card-tag">Templates</div>
+        <div class="nav-card-title">Templates</div>
+        <div class="nav-card-desc">Full-page layout templates assembled from components — coming soon.</div>
+        <div class="nav-card-arrow">View →</div>
+      </a>
+
+    </div>
+  </section>
 
   <!-- Primary Colors -->
   <section class="section">
@@ -52,7 +182,7 @@
       <h2>Primary Colors</h2>
       <a href="styleguide-colors.html" style="font-size:12px;color:var(--clay);text-decoration:none;font-weight:500">View all →</a>
     </div>
-    <p class="section-intro">Use semantic tokens in code. The brand primary is <code>--sys-primary-default</code> (#1339ec).</p>
+    <p class="section-intro">Always use semantic tokens in code — never hardcode hex values. The brand primary is <code>--sys-primary-default</code> (#1339ec).</p>
     <div class="summary-colors">
       <div class="color-card">
         <div class="color-swatch" style="background:#1339ec"></div>
@@ -99,95 +229,8 @@
       <h2>Primary Elements</h2>
       <a href="styleguide-components.html" style="font-size:12px;color:var(--clay);text-decoration:none;font-weight:500">View all →</a>
     </div>
-    <p class="section-intro">Core interactive components. Full variants in Library 1 and Library 2.</p>
-
-    <div class="summary-elements">
-
-      <div class="summary-element-group">
-        <h3>Buttons</h3>
-        <div class="element-row">
-          <div style="height:36px;background:#1339ec;border-radius:8px;display:inline-flex;align-items:center;padding:0 16px;gap:8px;cursor:pointer">
-            <span style="font-family:'Helvetica Neue',sans-serif;font-size:14px;font-weight:700;color:#fff;line-height:20px">Primary</span>
-          </div>
-          <div style="height:36px;background:rgba(95,106,130,0.08);border-radius:8px;display:inline-flex;align-items:center;padding:0 16px;cursor:pointer">
-            <span style="font-family:'Helvetica Neue',sans-serif;font-size:14px;font-weight:700;color:#111317;line-height:20px">Secondary</span>
-          </div>
-          <div style="height:36px;background:#ffebeb;border-radius:8px;display:inline-flex;align-items:center;padding:0 16px;cursor:pointer">
-            <span style="font-family:'Helvetica Neue',sans-serif;font-size:14px;font-weight:700;color:#cc0000;line-height:20px">Danger</span>
-          </div>
-        </div>
-        <div class="element-row" style="margin-top:4px">
-          <div style="height:32px;background:#1339ec;border-radius:8px;display:inline-flex;align-items:center;padding:0 12px;cursor:pointer">
-            <span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;font-weight:700;color:#fff">Small</span>
-          </div>
-          <div style="height:40px;background:#1339ec;border-radius:8px;display:inline-flex;align-items:center;padding:0 20px;cursor:pointer">
-            <span style="font-family:'Helvetica Neue',sans-serif;font-size:14px;font-weight:700;color:#fff">Large</span>
-          </div>
-          <div style="height:36px;background:#1339ec;border-radius:100px;display:inline-flex;align-items:center;padding:0 16px;cursor:pointer">
-            <span style="font-family:'Helvetica Neue',sans-serif;font-size:14px;font-weight:700;color:#fff">Rounded</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="summary-element-group">
-        <h3>Status &amp; Badges</h3>
-        <div class="element-row">
-          <div style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:#e9ffcf;border-radius:100px">
-            <div style="width:7px;height:7px;border-radius:50%;background:#2e881b"></div>
-            <span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;font-weight:500;color:#2e881b">Approved</span>
-          </div>
-          <div style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:#ffede2;border-radius:100px">
-            <div style="width:7px;height:7px;border-radius:50%;background:#e05a00"></div>
-            <span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;font-weight:500;color:#e05a00">Pending</span>
-          </div>
-          <div style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:#ffebeb;border-radius:100px">
-            <div style="width:7px;height:7px;border-radius:50%;background:#cc0000"></div>
-            <span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;font-weight:500;color:#cc0000">Rejected</span>
-          </div>
-        </div>
-        <div class="element-row" style="margin-top:4px">
-          <div style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;background:#dfe7fd;border-radius:100px">
-            <div style="width:7px;height:7px;border-radius:50%;background:#1339ec"></div>
-            <span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;font-weight:500;color:#1339ec">Blue</span>
-          </div>
-          <div style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;background:#eddcf3;border-radius:100px">
-            <div style="width:7px;height:7px;border-radius:50%;background:#8d6599"></div>
-            <span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;font-weight:500;color:#8d6599">Violet</span>
-          </div>
-          <div style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;background:#d9fbfe;border-radius:100px">
-            <div style="width:7px;height:7px;border-radius:50%;background:#00818f"></div>
-            <span style="font-family:'Helvetica Neue',sans-serif;font-size:12px;font-weight:500;color:#00818f">Petrol</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="summary-element-group">
-        <h3>Inputs &amp; Controls</h3>
-        <div class="element-row" style="flex-direction:column;align-items:flex-start;gap:10px">
-          <div style="width:100%">
-            <div style="font-family:'Helvetica Neue',sans-serif;font-size:12px;font-weight:500;color:#111317;margin-bottom:4px">Label</div>
-            <div style="width:100%;height:36px;background:#fff;border:1.5px solid #d3d7de;border-radius:8px;display:flex;align-items:center;padding:0 12px">
-              <span style="font-family:'Helvetica Neue',sans-serif;font-size:14px;color:#848ea4">Placeholder text</span>
-            </div>
-          </div>
-          <div style="width:100%">
-            <div style="font-family:'Helvetica Neue',sans-serif;font-size:12px;font-weight:500;color:#111317;margin-bottom:4px">Focused</div>
-            <div style="width:100%;height:36px;background:#fff;border:1.5px solid #5581f1;border-radius:8px;display:flex;align-items:center;padding:0 12px;box-shadow:0 0 0 3px rgba(85,129,241,0.15)">
-              <span style="font-family:'Helvetica Neue',sans-serif;font-size:14px;color:#111317">Value</span>
-            </div>
-          </div>
-          <div style="display:flex;align-items:center;gap:8px">
-            <div style="width:18px;height:18px;background:#1339ec;border-radius:4px;display:flex;align-items:center;justify-content:center">
-              <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-            <span style="font-family:'Helvetica Neue',sans-serif;font-size:13px;color:#111317">Checked</span>
-            <div style="width:18px;height:18px;border:1.5px solid #d3d7de;border-radius:4px;margin-left:8px"></div>
-            <span style="font-family:'Helvetica Neue',sans-serif;font-size:13px;color:#111317">Unchecked</span>
-          </div>
-        </div>
-      </div>
-
-    </div>
+    <p class="section-intro">Core interactive components fetched directly from the Figma export. Use the <a href="styleguide-components.html" style="color:var(--clay)">Components</a> and <a href="styleguide-patterns.html" style="color:var(--clay)">Patterns</a> pages to explore full variant configurators.</p>
+    <div class="elem-strip" id="elem-strip"></div>
   </section>
 
   <!-- Primary Fonts -->
@@ -217,11 +260,19 @@
         </tr>
         <tr>
           <td class="meta">
+            <div class="style-label">Heading Md</div>
+            <div class="style-token">---bb-update-heading-heading-md</div>
+          </td>
+          <td class="meta"><div class="style-specs">20px / 700 / lh 28px<br>Helvetica Neue</div></td>
+          <td class="specimen-cell"><div style="font-family:'Helvetica Neue',sans-serif;font-size:20px;font-weight:700;line-height:28px;color:#141413">Section Heading</div></td>
+        </tr>
+        <tr>
+          <td class="meta">
             <div class="style-label">Heading Sm</div>
             <div class="style-token">---bb-update-heading-heading-sm</div>
           </td>
           <td class="meta"><div class="style-specs">16px / 700 / lh 24px<br>Helvetica Neue</div></td>
-          <td class="specimen-cell"><div style="font-family:'Helvetica Neue',sans-serif;font-size:16px;font-weight:700;line-height:24px;color:#141413">Section Heading</div></td>
+          <td class="specimen-cell"><div style="font-family:'Helvetica Neue',sans-serif;font-size:16px;font-weight:700;line-height:24px;color:#141413">Card Heading</div></td>
         </tr>
         <tr>
           <td class="meta">
@@ -257,14 +308,6 @@
         </tr>
         <tr>
           <td class="meta">
-            <div class="style-label">Extra Small</div>
-            <div class="style-token">--extras-small-extra-small</div>
-          </td>
-          <td class="meta"><div class="style-specs">12px / 400 / lh 18px<br>Helvetica Neue</div></td>
-          <td class="specimen-cell"><div style="font-family:'Helvetica Neue',sans-serif;font-size:12px;font-weight:400;line-height:18px;color:#5f6a82">Caption, metadata, labels</div></td>
-        </tr>
-        <tr>
-          <td class="meta">
             <div class="style-label">Display H1</div>
             <div class="style-token">--headings-h1---72-regular</div>
           </td>
@@ -277,5 +320,54 @@
 
 </main>
 </div>
+
+<script>
+(function () {
+  const COMPONENTS = [
+    { path: 'output/components/action-primary--size-medium--emphasis-bold--state-default--icon-only-false--shape-rectangle.html', label: 'Button — Primary' },
+    { path: 'output/components/action-secondary--size-medium--emphasis-bold--state-default--icon-only-false--shape-rectangle.html', label: 'Button — Secondary' },
+    { path: 'output/components/action-danger--size-medium--emphasis-bold--state-default--icon-only-false--shape-rectangle.html', label: 'Button — Danger' },
+    { path: 'output/components/status--status-approved.html', label: 'Status — Approved' },
+    { path: 'output/components/tag--appearance-colored--color-blue--size-medium--slim-false.html', label: 'Tag — Colored' },
+    { path: 'output/components/input-field--type-text--size-medium--state-default--filled-false.html', label: 'Input Field' },
+  ];
+
+  const strip = document.getElementById('elem-strip');
+
+  COMPONENTS.forEach(function (comp, i) {
+    const card = document.createElement('div');
+    card.className = 'elem-card';
+    card.innerHTML =
+      '<div class="elem-viewport" id="ev-' + i + '"><span style="font-size:11px;color:#a8a49d">Loading…</span></div>' +
+      '<div class="elem-label">' + comp.label + '</div>';
+    strip.appendChild(card);
+
+    fetch(comp.path)
+      .then(function (r) { return r.text(); })
+      .then(function (html) {
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        const svg = doc.querySelector('.checker > svg');
+        if (!svg) return;
+        const vp = document.getElementById('ev-' + i);
+        const natW = parseFloat(svg.getAttribute('width')) || 200;
+        const natH = parseFloat(svg.getAttribute('height')) || 60;
+        const maxW = vp.clientWidth - 24;
+        const maxH = 64;
+        const scale = Math.min(1, maxW / natW, maxH / natH);
+        const clone = svg.cloneNode(true);
+        clone.style.transform = 'scale(' + scale + ')';
+        clone.style.transformOrigin = 'center center';
+        clone.style.display = 'block';
+        clone.style.flexShrink = '0';
+        vp.innerHTML = '';
+        vp.appendChild(clone);
+      })
+      .catch(function () {
+        const vp = document.getElementById('ev-' + i);
+        if (vp) vp.innerHTML = '<span style="font-size:10px;color:#a8a49d">Preview unavailable</span>';
+      });
+  });
+})();
+</script>
 </body>
 </html>
