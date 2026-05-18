@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design System — Main Components</title>
+<link rel="stylesheet" href="output/tokens/tokens.css">
+<link rel="stylesheet" href="styleguide.css">
+<style>
+  .comp-quick-nav { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; }
+  .comp-quick-nav a {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 14px; border-radius: 20px;
+    background: var(--surface); border: 1.5px solid var(--border);
+    font-size: 12px; font-weight: 500; color: var(--text);
+    text-decoration: none; transition: border-color .15s, background .15s;
+  }
+  .comp-quick-nav a:hover { border-color: var(--sys-primary-default); color: var(--sys-primary-default); background: var(--sys-primary-subtle-hover); }
+  .comp-category { margin-bottom: 56px; }
+  .comp-category-header { display: flex; align-items: baseline; gap: 10px; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1.5px solid var(--border); }
+  .comp-category-header h2 { font-size: 16px; font-weight: 700; margin: 0; }
+  .comp-subcategory { margin-bottom: 32px; }
+  .comp-subcategory h3 { font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--text-faint); margin: 0 0 12px; }
+  .components-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+  .component-card {
+    background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius);
+    overflow: hidden; transition: box-shadow .15s, border-color .15s;
+  }
+  .component-card:hover { box-shadow: var(--shadow-card); border-color: var(--sys-primary-default); }
+  .component-card iframe {
+    width: 100%; height: 80px; border: none; display: block;
+    pointer-events: none; overflow: hidden;
+  }
+  .component-card iframe.tall { height: 120px; }
+  .component-card iframe.xtall { height: 180px; }
+  .component-label {
+    padding: 6px 10px; font-size: 10px; color: var(--text-faint);
+    border-top: 1px solid var(--border); background: var(--bg);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+
+<aside class="sidebar">
+  <a href="styleguide.html" class="sidebar-brand">
+    <div class="sidebar-logo">Design System</div>
+    <div class="sidebar-sub">Living Style Guide</div>
+  </a>
+  <div class="sidebar-section">Overview</div>
+  <a href="styleguide.html">Summary</a>
+  <div class="sidebar-section">Foundations</div>
+  <a href="styleguide-colors.html">Colors</a>
+  <a href="styleguide-typography.html">Typography</a>
+  <a href="styleguide-shadows.html">Shadows</a>
+  <a href="styleguide-spacing.html">Spacing</a>
+  <a href="styleguide-iconography.html">Iconography</a>
+  <div class="sidebar-section">Components</div>
+  <a href="styleguide-components.html" class="active">Main Components</a>
+  <a href="styleguide-patterns.html">Patterns</a>
+  <div class="sidebar-section">Guidelines</div>
+  <a href="styleguide-guidelines.html">Guidelines</a>
+  <div class="sidebar-section">Templates</div>
+  <a href="styleguide-templates.html">Templates</a>
+  <div class="sidebar-stat">
+    <p><strong>1,140</strong> components</p>
+    <p><strong>429</strong> icons</p>
+    <p><strong>74</strong> design tokens</p>
+  </div>
+</aside>
+
+<main class="main">
+
+  <div class="page-header">
+    <div class="page-decoration"></div>
+    <div class="page-header-eyebrow">Components</div>
+    <h1>Main Components</h1>
+    <p class="page-header-desc">Core UI primitives — actions, indicators, inputs, and overlays. All files live in <code>output/components/</code>. Use the default state as a base and layer state overrides in CSS.</p>
+  </div>
+
+  <nav class="comp-quick-nav" aria-label="Component sections">
+    <a href="#actions">Actions</a>
+    <a href="#avatar">Avatar</a>
+    <a href="#indicators">Indicators</a>
+    <a href="#inputs">Inputs</a>
+    <a href="#overlays">Overlays</a>
+    <a href="#data-display">Data Display</a>
+  </nav>
+
+  <!-- Actions -->
+  <section class="comp-category" id="actions">
+    <div class="comp-category-header">
+      <h2>Actions</h2>
+    </div>
+
+    <div class="comp-subcategory">
+      <h3>Primary Button</h3>
+      <div class="components-grid">
+        <div class="component-card">
+          <iframe src="output/components/action-primary--size-medium--emphasis-bold--state-default--icon-only-false--shape-rectangle.html" title="Primary Bold Default"></iframe>
+          <div class="component-label">primary · bold · default</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/action-primary--size-medium--emphasis-bold--state-hover--icon-only-false--shape-rectangle.html" title="Primary Bold Hover"></iframe>
+          <div class="component-label">primary · bold · hover</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/action-primary--size-medium--emphasis-subtle--state-default--icon-only-false--shape-rectangle.html" title="Primary Subtle Default"></iframe>
+          <div class="component-label">primary · subtle · default</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/action-primary--size-medium--emphasis-minimal--state-default--icon-only-false--shape-rectangle.html" title="Primary Minimal Default"></iframe>
+          <div class="component-label">primary · minimal · default</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/action-primary--size-small--emphasis-bold--state-default--icon-only-false--shape-rectangle.html" title="Primary Small Bold"></iframe>
+          <div class="component-label">primary · small · bold</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/action-primary--size-medium--emphasis-bold--state-disabled--icon-only-false--shape-rectangle.html" title="Primary Disabled"></iframe>
+          <div class="component-label">primary · disabled</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp-subcategory">
+      <h3>Secondary Button</h3>
+      <div class="components-grid">
+        <div class="component-card">
+          <iframe src="output/components/action-secondary--size-medium--emphasis-bold--state-default--icon-only-false--shape-rectangle.html" title="Secondary Bold Default"></iframe>
+          <div class="component-label">secondary · bold · default</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/action-secondary--size-medium--emphasis-bold--state-hover--icon-only-false--shape-rectangle.html" title="Secondary Bold Hover"></iframe>
+          <div class="component-label">secondary · bold · hover</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/action-secondary--size-medium--emphasis-subtle--state-default--icon-only-false--shape-rectangle.html" title="Secondary Subtle"></iframe>
+          <div class="component-label">secondary · subtle · default</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/action-secondary--size-medium--emphasis-minimal--state-default--icon-only-false--shape-rectangle.html" title="Secondary Minimal"></iframe>
+          <div class="component-label">secondary · minimal · default</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp-subcategory">
+      <h3>Danger Button</h3>
+      <div class="components-grid">
+        <div class="component-card">
+          <iframe src="output/components/action-danger--size-medium--emphasis-bold--state-default--icon-only-false--shape-rectangle.html" title="Danger Bold Default"></iframe>
+          <div class="component-label">danger · bold · default</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/action-danger--size-medium--emphasis-bold--state-hover--icon-only-false--shape-rectangle.html" title="Danger Bold Hover"></iframe>
+          <div class="component-label">danger · bold · hover</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/action-danger--size-medium--emphasis-subtle--state-default--icon-only-false--shape-rectangle.html" title="Danger Subtle"></iframe>
+          <div class="component-label">danger · subtle · default</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp-subcategory">
+      <h3>Success &amp; Warning</h3>
+      <div class="components-grid">
+        <div class="component-card">
+          <iframe src="output/components/action-success--size-medium--emphasis-bold--state-default--icon-only-false--shape-rectangle.html" title="Success Bold Default"></iframe>
+          <div class="component-label">success · bold · default</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/action-success--size-medium--emphasis-subtle--state-default--icon-only-false--shape-rectangle.html" title="Success Subtle"></iframe>
+          <div class="component-label">success · subtle · default</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/action-warning--size-medium--emphasis-bold--state-default--icon-only-false--shape-rectangle.html" title="Warning Bold Default"></iframe>
+          <div class="component-label">warning · bold · default</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/action-warning--size-medium--emphasis-subtle--state-default--icon-only-false--shape-rectangle.html" title="Warning Subtle"></iframe>
+          <div class="component-label">warning · subtle · default</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp-subcategory">
+      <h3>Link</h3>
+      <div class="components-grid">
+        <div class="component-card">
+          <iframe src="output/components/link--type-primary--state-default.html" title="Link Primary Default"></iframe>
+          <div class="component-label">link · primary · default</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/link--type-primary--state-hover.html" title="Link Primary Hover"></iframe>
+          <div class="component-label">link · primary · hover</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/link--type-secondary--state-default.html" title="Link Secondary Default"></iframe>
+          <div class="component-label">link · secondary · default</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Avatar -->
+  <section class="comp-category" id="avatar">
+    <div class="comp-category-header">
+      <h2>Avatar</h2>
+    </div>
+    <div class="components-grid">
+      <div class="component-card">
+        <iframe src="output/components/avatar--size-large--type-photo.html" title="Avatar Large Photo"></iframe>
+        <div class="component-label">avatar · large · photo</div>
+      </div>
+      <div class="component-card">
+        <iframe src="output/components/avatar--size-large--type-initials.html" title="Avatar Large Initials"></iframe>
+        <div class="component-label">avatar · large · initials</div>
+      </div>
+      <div class="component-card">
+        <iframe src="output/components/avatar--size-medium--type-photo.html" title="Avatar Medium Photo"></iframe>
+        <div class="component-label">avatar · medium · photo</div>
+      </div>
+      <div class="component-card">
+        <iframe src="output/components/avatar--size-medium--type-initials.html" title="Avatar Medium Initials"></iframe>
+        <div class="component-label">avatar · medium · initials</div>
+      </div>
+      <div class="component-card">
+        <iframe src="output/components/avatar--size-small--type-photo.html" title="Avatar Small Photo"></iframe>
+        <div class="component-label">avatar · small · photo</div>
+      </div>
+      <div class="component-card">
+        <iframe src="output/components/avatar--size-small--type-initials.html" title="Avatar Small Initials"></iframe>
+        <div class="component-label">avatar · small · initials</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Indicators -->
+  <section class="comp-category" id="indicators">
+    <div class="comp-category-header">
+      <h2>Indicators</h2>
+    </div>
+
+    <div class="comp-subcategory">
+      <h3>Status Badges</h3>
+      <div class="components-grid">
+        <div class="component-card">
+          <iframe src="output/components/status--status-approved.html" title="Status Approved"></iframe>
+          <div class="component-label">status · approved</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/status--status-draft-unscheduled.html" title="Status Draft Unscheduled"></iframe>
+          <div class="component-label">status · draft-unscheduled</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/status--status-scheduled.html" title="Status Scheduled"></iframe>
+          <div class="component-label">status · scheduled</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/status--status-published.html" title="Status Published"></iframe>
+          <div class="component-label">status · published</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/status--status-pending.html" title="Status Pending"></iframe>
+          <div class="component-label">status · pending</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/status--status-rejected.html" title="Status Rejected"></iframe>
+          <div class="component-label">status · rejected</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/status--status-error.html" title="Status Error"></iframe>
+          <div class="component-label">status · error</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/status--status-connected.html" title="Status Connected"></iframe>
+          <div class="component-label">status · connected</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp-subcategory">
+      <h3>Appearance Chips</h3>
+      <div class="components-grid">
+        <div class="component-card">
+          <iframe src="output/components/appearance--colored--color-blue.html" title="Appearance Blue"></iframe>
+          <div class="component-label">appearance · colored · blue</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/appearance--colored--color-amber.html" title="Appearance Amber"></iframe>
+          <div class="component-label">appearance · colored · amber</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/appearance--colored--color-coral.html" title="Appearance Coral"></iframe>
+          <div class="component-label">appearance · colored · coral</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/appearance--colored--color-emerald.html" title="Appearance Emerald"></iframe>
+          <div class="component-label">appearance · colored · emerald</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/appearance--colored--color-purple.html" title="Appearance Purple"></iframe>
+          <div class="component-label">appearance · colored · purple</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/appearance--colored--color-grey.html" title="Appearance Grey"></iframe>
+          <div class="component-label">appearance · colored · grey</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp-subcategory">
+      <h3>Progress Indicators</h3>
+      <div class="components-grid">
+        <div class="component-card">
+          <iframe src="output/components/progress-indicator--type-circular--state-in-progress.html" title="Progress Circular In Progress" class="tall"></iframe>
+          <div class="component-label">progress · circular · in-progress</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/progress-indicator--type-circular--state-completed.html" title="Progress Circular Completed" class="tall"></iframe>
+          <div class="component-label">progress · circular · completed</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/progress-indicator--type-circular--state-not-started.html" title="Progress Circular Not Started" class="tall"></iframe>
+          <div class="component-label">progress · circular · not-started</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/progress-indicator--type-line--location-card.html" title="Progress Line Card"></iframe>
+          <div class="component-label">progress · line · card</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/progress-indicator--type-line--location-header.html" title="Progress Line Header"></iframe>
+          <div class="component-label">progress · line · header</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp-subcategory">
+      <h3>Column Card</h3>
+      <div class="components-grid">
+        <div class="component-card">
+          <iframe src="output/components/column-card--color-blue.html" title="Column Card Blue" class="tall"></iframe>
+          <div class="component-label">column-card · blue</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/column-card--color-amber.html" title="Column Card Amber" class="tall"></iframe>
+          <div class="component-label">column-card · amber</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/column-card--color-coral.html" title="Column Card Coral" class="tall"></iframe>
+          <div class="component-label">column-card · coral</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/column-card--color-emerald.html" title="Column Card Emerald" class="tall"></iframe>
+          <div class="component-label">column-card · emerald</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Inputs -->
+  <section class="comp-category" id="inputs">
+    <div class="comp-category-header">
+      <h2>Inputs</h2>
+    </div>
+
+    <div class="comp-subcategory">
+      <h3>Input Field</h3>
+      <div class="components-grid">
+        <div class="component-card">
+          <iframe src="output/components/input-field--type-search--size-medium--state-default--filled-false.html" title="Input Search Default"></iframe>
+          <div class="component-label">input · search · default · empty</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/input-field--type-search--size-medium--state-default--filled-true.html" title="Input Search Filled"></iframe>
+          <div class="component-label">input · search · default · filled</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/input-field--type-search--size-medium--state-focus--filled-false.html" title="Input Search Focus"></iframe>
+          <div class="component-label">input · search · focus</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/input-field--type-search--size-medium--state-error--filled-true.html" title="Input Search Error"></iframe>
+          <div class="component-label">input · search · error</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp-subcategory">
+      <h3>Segmented Control</h3>
+      <div class="components-grid">
+        <div class="component-card">
+          <iframe src="output/components/segmented-control--size-large.html" title="Segmented Control Large"></iframe>
+          <div class="component-label">segmented-control · large</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/segmented-control--size-small.html" title="Segmented Control Small"></iframe>
+          <div class="component-label">segmented-control · small</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp-subcategory">
+      <h3>Tab Group</h3>
+      <div class="components-grid">
+        <div class="component-card">
+          <iframe src="output/components/tab-group.html" title="Tab Group" class="tall"></iframe>
+          <div class="component-label">tab-group</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp-subcategory">
+      <h3>Scroll Bar</h3>
+      <div class="components-grid">
+        <div class="component-card">
+          <iframe src="output/components/scroll-bar--orientation-horizontal.html" title="Scroll Bar Horizontal"></iframe>
+          <div class="component-label">scroll-bar · horizontal</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/scroll-bar--orientation-vertical.html" title="Scroll Bar Vertical" class="tall"></iframe>
+          <div class="component-label">scroll-bar · vertical</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp-subcategory">
+      <h3>Date Range Picker</h3>
+      <div class="components-grid" style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));">
+        <div class="component-card">
+          <iframe src="output/components/date-range-picker--size-desktop--state-default.html" title="Date Range Desktop Default" class="xtall"></iframe>
+          <div class="component-label">date-range-picker · desktop · default</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/date-range-picker--size-mobile--state-default.html" title="Date Range Mobile Default" class="xtall"></iframe>
+          <div class="component-label">date-range-picker · mobile · default</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Overlays -->
+  <section class="comp-category" id="overlays">
+    <div class="comp-category-header">
+      <h2>Overlays</h2>
+    </div>
+
+    <div class="comp-subcategory">
+      <h3>Popover</h3>
+      <div class="components-grid">
+        <div class="component-card">
+          <iframe src="output/components/popover.html" title="Popover" class="xtall"></iframe>
+          <div class="component-label">popover</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp-subcategory">
+      <h3>Modal</h3>
+      <div class="components-grid" style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));">
+        <div class="component-card">
+          <iframe src="output/components/modal--breakpoint-desktop--size-sm--height-content-height.html" title="Modal Desktop SM" class="xtall"></iframe>
+          <div class="component-label">modal · desktop · sm</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/modal--breakpoint-mobile--size-sm--height-content-height.html" title="Modal Mobile SM" class="xtall"></iframe>
+          <div class="component-label">modal · mobile · sm</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/modal-header--breakpoint-desktop.html" title="Modal Header Desktop"></iframe>
+          <div class="component-label">modal-header · desktop</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/modal-header--breakpoint-mobile.html" title="Modal Header Mobile"></iframe>
+          <div class="component-label">modal-header · mobile</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/modal-item--header.html" title="Modal Item Header"></iframe>
+          <div class="component-label">modal-item · header</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/modal-item--footer.html" title="Modal Item Footer"></iframe>
+          <div class="component-label">modal-item · footer</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp-subcategory">
+      <h3>Tooltip</h3>
+      <div class="components-grid">
+        <div class="component-card">
+          <iframe src="output/components/tooltip-v02--complex-content--alignment-top.html" title="Tooltip Top" class="tall"></iframe>
+          <div class="component-label">tooltip-v02 · top</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/tooltip-v02--complex-content--alignment-bottom.html" title="Tooltip Bottom" class="tall"></iframe>
+          <div class="component-label">tooltip-v02 · bottom</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/tooltip-v02--complex-content--alignment-left.html" title="Tooltip Left" class="tall"></iframe>
+          <div class="component-label">tooltip-v02 · left</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/tooltip-v02--complex-content--alignment-right.html" title="Tooltip Right" class="tall"></iframe>
+          <div class="component-label">tooltip-v02 · right</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp-subcategory">
+      <h3>Notification</h3>
+      <div class="components-grid">
+        <div class="component-card">
+          <iframe src="output/components/notification.html" title="Notification" class="tall"></iframe>
+          <div class="component-label">notification</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/notification--popover.html" title="Notification Popover" class="xtall"></iframe>
+          <div class="component-label">notification · popover</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Data Display -->
+  <section class="comp-category" id="data-display">
+    <div class="comp-category-header">
+      <h2>Data Display</h2>
+    </div>
+
+    <div class="comp-subcategory">
+      <h3>Data Column</h3>
+      <div class="components-grid">
+        <div class="component-card">
+          <iframe src="output/components/data-column--type-leading--size-default.html" title="Data Column Leading Default"></iframe>
+          <div class="component-label">data-column · leading · default</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/data-column--type-badge--size-default.html" title="Data Column Badge Default"></iframe>
+          <div class="component-label">data-column · badge · default</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/data-column--type-status--size-default.html" title="Data Column Status Default"></iframe>
+          <div class="component-label">data-column · status · default</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/data-column--type-icons--size-default.html" title="Data Column Icons Default"></iframe>
+          <div class="component-label">data-column · icons · default</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/data-column--type-number--size-default.html" title="Data Column Number Default"></iframe>
+          <div class="component-label">data-column · number · default</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/data-column--type-dropdown--size-default.html" title="Data Column Dropdown Default"></iframe>
+          <div class="component-label">data-column · dropdown · default</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/data-column--type-bulk--size-default.html" title="Data Column Bulk Default"></iframe>
+          <div class="component-label">data-column · bulk · default</div>
+        </div>
+        <div class="component-card">
+          <iframe src="output/components/data-column--type-leading--size-compact.html" title="Data Column Leading Compact"></iframe>
+          <div class="component-label">data-column · leading · compact</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp-subcategory">
+      <h3>View Switcher</h3>
+      <div class="components-grid">
+        <div class="component-card">
+          <iframe src="output/components/view-switcher.html" title="View Switcher"></iframe>
+          <div class="component-label">view-switcher</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+</div>
+</body>
+</html>
