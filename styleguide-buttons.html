@@ -8,16 +8,29 @@
 <link rel="stylesheet" href="styleguide.css">
 <style>
 
+/* ── Two-column layout ─────────────────────────────────────────── */
+.config-layout {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+.config-col {
+  width: 340px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 24px;
+}
+.preview-col {
+  flex: 1;
+  min-width: 0;
+}
+
 /* ── Configurator ──────────────────────────────────────────────── */
 .configurator {
-  position: sticky;
-  top: 0;
-  z-index: 20;
   background: var(--surface);
   border: 1.5px solid var(--border);
   border-radius: var(--radius);
   padding: 0 24px 12px;
-  margin-bottom: 40px;
   box-shadow: var(--shadow-lift);
 }
 
@@ -296,10 +309,12 @@
     <div class="page-decoration"></div>
     <div class="page-header-eyebrow">Components → Micro · Atoms</div>
     <h1>Buttons</h1>
-    <p class="page-header-desc">5 families × 3 emphases × 4 sizes × 6 states × 2 shapes. Configure every property below to preview the exact variant.</p>
   </div>
 
-  <!-- ─── Configurator ──────────────────────────────────────────── -->
+  <div class="config-layout">
+
+  <!-- ─── Left: Configurator ───────────────────────────────────── -->
+  <div class="config-col">
   <div class="configurator" id="configurator">
 
     <div class="config-row">
@@ -361,6 +376,10 @@
     </div>
 
   </div>
+  </div><!-- end config-col -->
+
+  <!-- ─── Right: Preview + Dev panel ──────────────────────────── -->
+  <div class="preview-col">
 
   <!-- ─── Constraint notice (shown when auto-correction happened) ─── -->
   <div class="notice" id="constraint-notice" style="display:none">
@@ -428,6 +447,9 @@
     </div>
 
   </div>
+
+  </div><!-- end preview-col -->
+  </div><!-- end config-layout -->
 
 </main>
 </div>
