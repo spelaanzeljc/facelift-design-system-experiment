@@ -248,61 +248,29 @@ tag.html
 
 Before writing any custom UI element, check `output/components/` for a matching family. Open the HTML file to inspect its exact dimensions, colours, spacing, and markup structure, then reproduce that in your code. Do not build buttons, badges, status indicators, inputs, or navigation from scratch.
 
----
-
-## Component Library 2 (`output/components2/`)
-
-A second Figma component library (file key `iskI6eokj50ZA7WunMjEVd`) exported to `output/components2/`. 2,399 components. Same HTML format and naming convention as library 1 — check both folders before building anything custom.
-
-Library 2 skews toward **product UI and composed patterns**: full-page layouts, network-specific elements, media handling, and inbox/feed views. Library 1 skews toward **atomic design system primitives**: buttons with all variant/state combinations, form controls, tokens-level components.
-
-**Key families unique to library 2**
+**Additional families (from Figma library 2, now merged into the same folder)**
 
 | Family prefix | What it is |
 |---|---|
-| `button_*` | Standalone button components |
-| `button-group_*` | Grouped button rows |
-| `dropdown_*` | Dropdown menus |
-| `select---popover_*` | Select dropdown overlays |
-| `banner_*` | Banner / announcement bars |
-| `badge_*` | Notification badges |
-| `notification_*` / `notification---popover_*` | Notification items and popover shells |
-| `modal_*` / `modal-item_*` | Modal dialogs and their row items |
-| `tooltip_*` / `tooltip-v02---complex-content_*` | Tooltip variants incl. rich content |
-| `popover-alt_*` / `popover-item_*` | Popover overlays and items |
-| `tab-group_*` | Tab navigation |
-| `navigation-bar_*` | Top navigation bar |
-| `app-header_*` | Full application header |
-| `segmented-control_*` | Segmented toggle control |
-| `progress-indicator_*` | Progress / loading indicators |
-| `collapsible-section_*` | Expandable/collapsible sections |
-| `form-section_*` / `toggle-form-section_*` | Form layout sections |
-| `data-list_*` | Data list / key-value rows |
-| `context-item_*` | Contextual action row items |
-| `section-header_*` | Section heading rows |
-| `feed_*` | Social feed layouts |
-| `media_*` / `media-element_*` / `image-card_*` | Media display components |
-| `inbox_*` / `inbox-custom_*` | Inbox list items |
-| `engagement-sidebar_*` | Engagement sidebar panel |
-| `richtext_*` | Rich text editor toolbar |
-| `status_*` | Status indicators |
-| `appearance_*` | Colour-coded appearance chips |
-| `check-box-checked-outline_*` / `check-mark_*` | Checkboxes and check marks |
-| `view-switcher_*` | List/grid view toggle |
-| `view-analytics_*` | Analytics view components |
-| `tags_*` | Tag UI elements |
-| `sentiment_*` | Sentiment indicator components |
-| `profile_*` / `profiles_*` | Profile and avatar elements |
-| `user_*` / `user-badge_*` | User display components |
-| `post-pool_*` / `posttemplate_*` | Post and template cards |
-| `campaign_*` | Campaign card layouts |
-| `briefing_*` | Briefing panel components |
-| `tree-node_*` | Hierarchy / tree navigation |
-| `discussion_*` | Discussion thread items |
-
-**Searching across both libraries**
-
-If the component you need isn't in library 1, check library 2, and vice versa. Some families appear in both (e.g. `status`, `appearance`, `tab-group`, `navigation-bar`) — when in doubt, open both and use the one with dimensions that best match your context.
+| `card--state-*` | Product card — default / hover states |
+| `contextual-sidebar--*` | Contextual sidebar — chat / custom / filter content |
+| `data-column--*` | Data column header — 10 types × compact / default |
+| `data-list` | Key-value data list |
+| `data-table--*` | Data table — default / bulk / skeleton |
+| `date-range-picker--*` | Date range picker — desktop + mobile |
+| `media-element--*` | Media library item — medium + small × all states |
+| `modal--*` | Modal dialogs — breakpoint × size × height |
+| `modal-header--*` | Modal header — desktop + mobile |
+| `notification` / `notification--popover` | Notification item and popover shell |
+| `section--type-*` | Section containers — collapsible / form / toggle-form |
+| `section-header` | Section heading row |
+| `section-item--*` | Section nav item — general / toggle × levels × states |
+| `sidebar-info` | Sidebar info panel |
+| `table-cell-compact--*` / `table-cell-default--*` | Table cells — type × state × alignment |
+| `table-cell-general--*` | General table row — iteration × state × size |
+| `table-cell-header--*` | Table header cell — state × alignment |
+| `tooltip-v02--*` | Complex-content tooltip — 4 alignments |
+| `view-switcher` | List/grid view toggle |
 
 ---
 

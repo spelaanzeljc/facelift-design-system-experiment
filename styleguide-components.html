@@ -3,9 +3,224 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Design System — Library 1 Primitives</title>
+<title>Main Components — Design System</title>
 <link rel="stylesheet" href="output/tokens/tokens.css">
 <link rel="stylesheet" href="styleguide.css">
+<style>
+/* ── Two-column layout ─────────────────────────────────────────── */
+.config-layout { display:flex; gap:24px; align-items:flex-start; margin-bottom:64px; }
+.config-col { width:340px; flex-shrink:0; position:sticky; top:24px; }
+.preview-col { flex:1; min-width:0; }
+
+/* ── Configurator panel ───────────────────────────────────────── */
+.configurator {
+  background:var(--surface); border:1.5px solid var(--border);
+  border-radius:var(--radius); padding:0 24px 12px;
+  box-shadow:var(--shadow-lift);
+}
+.config-row {
+  display:flex; align-items:center; gap:16px;
+  padding:9px 0; border-bottom:1px solid var(--border);
+}
+.config-row:first-child { padding-top:16px; }
+.config-row:last-child  { border-bottom:none; padding-bottom:0; }
+.config-label {
+  font-size:10.5px; font-weight:600; letter-spacing:.07em;
+  text-transform:uppercase; color:var(--text-faint);
+  width:76px; flex-shrink:0;
+}
+
+/* ── Seg buttons ──────────────────────────────────────────────── */
+.seg-group { display:flex; gap:4px; flex-wrap:wrap; }
+.seg-btn {
+  font-size:12px; font-weight:500; padding:4px 12px;
+  border-radius:6px; border:1.5px solid var(--border);
+  background:transparent; color:var(--text-muted);
+  cursor:pointer; transition:border-color .1s,background .1s,color .1s;
+  white-space:nowrap; line-height:1.45; user-select:none;
+}
+.seg-btn:hover:not([disabled]) { border-color:var(--clay); color:var(--clay); background:#fef9f6; }
+.seg-btn.active { background:var(--clay); border-color:var(--clay); color:#fff; font-weight:600; }
+.seg-btn[disabled] { opacity:.25; cursor:not-allowed; }
+
+/* ── Type cards ───────────────────────────────────────────────── */
+.type-grid {
+  display:grid; grid-template-columns:1fr 1fr; gap:7px;
+  padding:10px 0 4px; flex:1;
+}
+.type-card {
+  border:1.5px solid var(--border); border-radius:7px;
+  padding:9px 11px 10px; cursor:pointer;
+  transition:border-color .12s,box-shadow .12s;
+  background:var(--surface); user-select:none;
+}
+.type-card:hover:not([disabled]) { border-color:var(--clay); }
+.type-card.active { border-color:var(--clay); box-shadow:0 0 0 3px rgba(217,119,87,.12); }
+.type-card[disabled] { opacity:.25; cursor:not-allowed; }
+.type-card-label {
+  display:block; font-size:9px; font-weight:700;
+  letter-spacing:.09em; text-transform:uppercase;
+  color:var(--text-faint); margin-bottom:7px;
+}
+.type-mini-btn {
+  display:inline-flex; align-items:center; gap:4px;
+  height:20px; padding:0 7px; border-radius:4px;
+  font-size:10px; font-weight:600; white-space:nowrap;
+  pointer-events:none; letter-spacing:.01em;
+}
+.type-mini-icon { width:8px; height:8px; border-radius:2px; flex-shrink:0; opacity:.55; }
+.mini-primary   { background:#1339ec; color:#fff; }
+.mini-secondary { background:transparent; border:1.5px solid #d3d7de; color:#111317; }
+.mini-danger    { background:#cc0000; color:#fff; }
+.mini-success   { background:#2e881b; color:#fff; }
+.mini-warning   { background:#e05a00; color:#fff; }
+
+/* ── Toggle switch ────────────────────────────────────────────── */
+.options-list { display:flex; flex-direction:column; flex:1; }
+.toggle-row {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:5px 0; cursor:pointer; gap:12px;
+}
+.toggle-row-label { font-size:12px; font-weight:500; color:var(--text-muted); flex:1; }
+.toggle-switch { position:relative; flex-shrink:0; }
+.toggle-switch input { position:absolute; opacity:0; width:0; height:0; pointer-events:none; }
+.toggle-track {
+  display:block; width:34px; height:19px; border-radius:10px;
+  background:var(--border); position:relative; transition:background .15s;
+}
+.toggle-track::after {
+  content:''; position:absolute; top:2px; left:2px;
+  width:15px; height:15px; border-radius:50%;
+  background:#fff; box-shadow:0 1px 3px rgba(0,0,0,.25); transition:transform .15s;
+}
+.toggle-switch input:checked ~ .toggle-track { background:var(--clay); }
+.toggle-switch input:checked ~ .toggle-track::after { transform:translateX(15px); }
+.toggle-switch input:disabled ~ .toggle-track { opacity:.3; cursor:not-allowed; }
+
+/* ── Color swatches ───────────────────────────────────────────── */
+.color-swatch { display:flex; flex-wrap:wrap; gap:5px; flex:1; padding:4px 0; }
+.swatch-btn {
+  width:20px; height:20px; border-radius:50%;
+  border:2px solid transparent; cursor:pointer; outline:none;
+  transition:transform .1s;
+}
+.swatch-btn:hover { transform:scale(1.15); }
+.swatch-btn.active { box-shadow:0 0 0 2px #fff, 0 0 0 4px #111317; }
+
+/* ── Preview viewport ─────────────────────────────────────────── */
+.preview-section { margin-bottom:32px; }
+.preview-card {
+  background:var(--surface); border:1.5px solid var(--border);
+  border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow-card);
+}
+.preview-viewport {
+  background-color:#f0f0f0;
+  background-image:
+    linear-gradient(45deg,#e3e3e3 25%,transparent 25%),
+    linear-gradient(-45deg,#e3e3e3 25%,transparent 25%),
+    linear-gradient(45deg,transparent 75%,#e3e3e3 75%),
+    linear-gradient(-45deg,transparent 75%,#e3e3e3 75%);
+  background-size:20px 20px;
+  background-position:0 0,0 10px,10px -10px,-10px 0;
+  min-height:160px; display:flex; align-items:center;
+  justify-content:center; padding:48px;
+  border-bottom:1.5px solid var(--border);
+  transition:opacity .12s ease;
+}
+.preview-viewport.loading { opacity:.3; }
+.preview-footer {
+  padding:14px 20px; display:flex; align-items:center;
+  justify-content:space-between; gap:16px;
+}
+.preview-name { font-size:13px; font-weight:500; color:var(--text-muted); }
+.preview-open {
+  display:inline-flex; align-items:center; gap:5px;
+  font-size:12px; color:var(--text-faint); text-decoration:none;
+  transition:color .12s; flex-shrink:0;
+}
+.preview-open:hover { color:var(--clay); }
+
+/* ── Dev panel ────────────────────────────────────────────────── */
+.dev-panel {
+  background:var(--surface); border:1.5px solid var(--border);
+  border-radius:var(--radius); overflow:hidden;
+  box-shadow:var(--shadow-card); margin-bottom:72px;
+}
+.dev-row { display:flex; align-items:stretch; border-bottom:1px solid var(--border); }
+.dev-row:last-child { border-bottom:none; }
+.dev-row-label {
+  font-family:'SF Mono',ui-monospace,Menlo,monospace;
+  font-size:9.5px; font-weight:600; letter-spacing:.07em;
+  text-transform:uppercase; color:var(--text-faint);
+  width:110px; flex-shrink:0; padding:16px;
+  border-right:1px solid var(--border);
+  display:flex; align-items:flex-start;
+}
+.dev-row-body { padding:13px 18px; flex:1; min-width:0; }
+.dev-props { display:flex; flex-wrap:wrap; gap:5px 20px; }
+.dev-prop  { display:flex; align-items:baseline; gap:5px; }
+.dev-prop-key { font-size:11px; color:var(--text-faint); }
+.dev-prop-val { font-size:11.5px; font-weight:600; color:var(--text); }
+.dev-dims { font-size:13px; font-weight:500; color:var(--text); line-height:1.6; }
+.dev-embed-row { display:flex; align-items:center; gap:12px; }
+.dev-embed-snippet {
+  font-family:'SF Mono',ui-monospace,Menlo,monospace;
+  font-size:11px; color:var(--text-muted); flex:1; min-width:0;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+.dev-copy-btn {
+  font-size:11px; font-weight:600; padding:5px 12px;
+  border-radius:5px; border:1.5px solid var(--border);
+  background:var(--surface); color:var(--text-muted);
+  cursor:pointer; transition:border-color .12s,color .12s,background .12s;
+  white-space:nowrap; flex-shrink:0;
+}
+.dev-copy-btn:hover  { border-color:var(--clay); color:var(--clay); }
+.dev-copy-btn.copied { background:var(--clay); border-color:var(--clay); color:#fff; }
+.dev-toggle {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:11px 18px; cursor:pointer; user-select:none;
+  border-bottom:1px solid var(--border); transition:background .1s;
+}
+.dev-toggle:hover { background:var(--bg); }
+.dev-toggle-label { font-size:11px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; color:var(--text-faint); }
+.dev-toggle-chevron { transition:transform .2s ease; color:var(--text-faint); flex-shrink:0; }
+.dev-panel.collapsed .dev-toggle-chevron { transform:rotate(-90deg); }
+.dev-panel.collapsed .dev-body { display:none; }
+.dev-panel.collapsed .dev-toggle { border-bottom:none; }
+
+/* ── Constraint notice ────────────────────────────────────────── */
+.notice {
+  display:inline-flex; align-items:center; gap:8px;
+  font-size:12px; color:var(--text-faint);
+  padding:8px 14px; background:var(--bg);
+  border:1px solid var(--border); border-radius:6px; margin-bottom:20px;
+}
+.notice-dot { width:6px; height:6px; border-radius:50%; background:var(--clay); flex-shrink:0; }
+
+/* ── Static preview ───────────────────────────────────────────── */
+.static-preview { margin-bottom:64px; }
+
+/* ── Quick-nav pills ──────────────────────────────────────────── */
+.quicknav { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:40px; }
+.quicknav a {
+  font-size:12px; font-weight:600; padding:6px 14px;
+  border-radius:20px; border:1.5px solid var(--border);
+  color:var(--text-muted); text-decoration:none;
+  transition:border-color .12s,color .12s,background .12s;
+}
+.quicknav a:hover { border-color:var(--clay); color:var(--clay); background:#fef9f6; }
+
+/* ── Section dividers ─────────────────────────────────────────── */
+.comp-section-title {
+  font-size:11px; font-weight:700; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--text-faint);
+  margin:0 0 4px; padding:32px 0 12px;
+  border-bottom:1px solid var(--border);
+}
+.comp-h2 { font-size:18px; font-weight:700; margin:0 0 4px; color:var(--text); padding-top:28px; }
+.comp-desc { font-size:13px; color:var(--text-muted); margin:0 0 24px; line-height:1.5; }
+</style>
 </head>
 <body>
 <div class="layout">
@@ -17,18 +232,21 @@
   </a>
   <div class="sidebar-section">Overview</div>
   <a href="styleguide.html">Summary</a>
-  <div class="sidebar-section">Foundation</div>
+  <div class="sidebar-section">Foundations</div>
   <a href="styleguide-colors.html">Colors</a>
   <a href="styleguide-typography.html">Typography</a>
   <a href="styleguide-shadows.html">Shadows</a>
+  <a href="styleguide-spacing.html">Spacing</a>
+  <a href="styleguide-iconography.html">Iconography</a>
   <div class="sidebar-section">Components</div>
-  <a href="styleguide-components-main.html">Components</a>
-  <a href="styleguide-components.html" class="active" style="font-size:11px;color:var(--text-faint);padding-left:8px;">↳ Library 1 — Primitives</a>
-  <div class="sidebar-section">Assets</div>
-  <a href="styleguide-icons.html">Icons</a>
+  <a href="styleguide-components.html" class="active">Main Components</a>
+  <a href="styleguide-patterns.html">Patterns</a>
+  <div class="sidebar-section">Guidelines</div>
+  <a href="styleguide-guidelines.html">Guidelines</a>
+  <div class="sidebar-section">Templates</div>
+  <a href="styleguide-templates.html">Templates</a>
   <div class="sidebar-stat">
-    <p><strong>1,517</strong> components · Library 1</p>
-    <p><strong>2,399</strong> components · Library 2</p>
+    <p><strong>1,140</strong> components</p>
     <p><strong>429</strong> icons</p>
     <p><strong>74</strong> design tokens</p>
   </div>
@@ -39,457 +257,971 @@
   <div class="page-header">
     <div class="page-decoration"></div>
     <div class="page-header-eyebrow">Components</div>
-    <h1>Library 1 — Primitives</h1>
-    <p class="page-header-desc">1,517 atomic components in <code>output/components/</code>. Every card below is a live preview of the actual exported file — click any card to open the full component page with dimensions and token references.</p>
+    <h1>Main Components</h1>
+    <p class="page-header-desc">Interactive configurators for every component family. Select properties to preview any variant.</p>
   </div>
 
-  <!-- Primary Action Buttons -->
-  <section class="section">
-    <div class="section-header">
-      <h2>Primary Buttons</h2>
-      <span class="section-count">action_primary_*</span>
-    </div>
-    <p class="section-intro">Bold, subtle, and minimal emphasis × six states (default, hover, active, focused, pressed, disabled) × three sizes × icon-only variants. File pattern: <code>action_primary_-size_medium_-emphasis_bold_-state_default_-icon-only_false_-shape_rectangle.html</code></p>
+  <a href="sitemap/component-inventory.html" style="display:inline-flex;align-items:center;gap:8px;margin-bottom:32px;padding:9px 14px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:13px;font-weight:500;color:var(--text-muted);text-decoration:none;box-shadow:var(--shadow-card);transition:border-color .15s,color .15s" onmouseover="this.style.color='var(--clay)';this.style.borderColor='var(--border-mid)'" onmouseout="this.style.color='var(--text-muted)';this.style.borderColor='var(--border)'">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="4.5" height="4.5" rx="1" stroke="currentColor" stroke-width="1.4"/><rect x="8.5" y="1" width="4.5" height="4.5" rx="1" stroke="currentColor" stroke-width="1.4"/><rect x="1" y="8.5" width="4.5" height="4.5" rx="1" stroke="currentColor" stroke-width="1.4"/><rect x="8.5" y="8.5" width="4.5" height="4.5" rx="1" stroke="currentColor" stroke-width="1.4"/></svg>
+    Component Inventory
+    <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H4M9 2v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </a>
 
-    <div class="divider-label">Bold</div>
-    <div class="components-grid">
-      <a href="output/components/action_primary_-size_medium_-emphasis_bold_-state_default_-icon-only_false_-shape_rectangle.html" class="comp-link" target="_blank">
-        <div class="component-card">
-          <div class="comp-frame">
-            <iframe src="output/components/action_primary_-size_medium_-emphasis_bold_-state_default_-icon-only_false_-shape_rectangle.html" loading="lazy" scrolling="no" title="Primary Bold Default"></iframe>
-          </div>
-          <div class="component-info">
-            <div class="name">Bold · Medium · Default</div>
-            <span class="lib-tag">Lib 1</span>
-          </div>
-        </div>
-      </a>
-      <a href="output/components/action_primary_-size_medium_-emphasis_bold_-state_hover_-icon-only_false_-shape_rectangle.html" class="comp-link" target="_blank">
-        <div class="component-card">
-          <div class="comp-frame">
-            <iframe src="output/components/action_primary_-size_medium_-emphasis_bold_-state_hover_-icon-only_false_-shape_rectangle.html" loading="lazy" scrolling="no" title="Primary Bold Hover"></iframe>
-          </div>
-          <div class="component-info">
-            <div class="name">Bold · Medium · Hover</div>
-            <span class="lib-tag">Lib 1</span>
-          </div>
-        </div>
-      </a>
-      <a href="output/components/action_primary_-size_medium_-emphasis_bold_-state_disabled_-icon-only_false_-shape_rectangle.html" class="comp-link" target="_blank">
-        <div class="component-card">
-          <div class="comp-frame">
-            <iframe src="output/components/action_primary_-size_medium_-emphasis_bold_-state_disabled_-icon-only_false_-shape_rectangle.html" loading="lazy" scrolling="no" title="Primary Bold Disabled"></iframe>
-          </div>
-          <div class="component-info">
-            <div class="name">Bold · Medium · Disabled</div>
-            <span class="lib-tag">Lib 1</span>
+  <nav class="quicknav">
+    <a href="#actions">Actions</a>
+    <a href="#avatar">Avatar</a>
+    <a href="#indicators">Indicators</a>
+    <a href="#inputs">Inputs</a>
+    <a href="#overlays">Overlays</a>
+    <a href="#data-display">Data Display</a>
+  </nav>
+
+  <!-- ═══════════════════════ ACTIONS ═══════════════════════════ -->
+  <div id="actions">
+    <p class="comp-section-title">Actions</p>
+
+    <!-- Buttons -->
+    <h2 class="comp-h2">Buttons</h2>
+    <p class="comp-desc">Five semantic button families across emphasis levels, sizes, and interaction states.</p>
+    <div class="config-layout" id="cl-buttons">
+      <div class="config-col"><div class="configurator">
+        <div class="config-row" style="align-items:flex-start">
+          <span class="config-label" style="padding-top:13px">Family</span>
+          <div class="type-grid" data-dim="family">
+            <div class="type-card active" data-val="primary"><span class="type-card-label">Primary</span><span class="type-mini-btn mini-primary"><span class="type-mini-icon" style="background:rgba(255,255,255,.5)"></span>Action</span></div>
+            <div class="type-card" data-val="secondary"><span class="type-card-label">Secondary</span><span class="type-mini-btn mini-secondary"><span class="type-mini-icon" style="background:#d3d7de"></span>Action</span></div>
+            <div class="type-card" data-val="danger"><span class="type-card-label">Danger</span><span class="type-mini-btn mini-danger"><span class="type-mini-icon" style="background:rgba(255,255,255,.5)"></span>Action</span></div>
+            <div class="type-card" data-val="success"><span class="type-card-label">Success</span><span class="type-mini-btn mini-success"><span class="type-mini-icon" style="background:rgba(255,255,255,.5)"></span>Action</span></div>
+            <div class="type-card" data-val="warning"><span class="type-card-label">Warning</span><span class="type-mini-btn mini-warning"><span class="type-mini-icon" style="background:rgba(255,255,255,.5)"></span>Action</span></div>
           </div>
         </div>
-      </a>
-      <a href="output/components/action_primary_-size_large_-emphasis_bold_-state_default_-icon-only_false_-shape_rectangle.html" class="comp-link" target="_blank">
-        <div class="component-card">
-          <div class="comp-frame">
-            <iframe src="output/components/action_primary_-size_large_-emphasis_bold_-state_default_-icon-only_false_-shape_rectangle.html" loading="lazy" scrolling="no" title="Primary Bold Large"></iframe>
-          </div>
-          <div class="component-info">
-            <div class="name">Bold · Large · Default</div>
-            <span class="lib-tag">Lib 1</span>
+        <div class="config-row"><span class="config-label">Emphasis</span>
+          <div class="seg-group" data-dim="emphasis">
+            <button class="seg-btn active" data-val="bold">Bold</button>
+            <button class="seg-btn" data-val="subtle">Subtle</button>
+            <button class="seg-btn" data-val="minimal">Minimal</button>
           </div>
         </div>
-      </a>
+        <div class="config-row"><span class="config-label">Size</span>
+          <div class="seg-group" data-dim="size">
+            <button class="seg-btn" data-val="xsmall">XS</button>
+            <button class="seg-btn" data-val="small">S</button>
+            <button class="seg-btn active" data-val="medium">M</button>
+            <button class="seg-btn" data-val="large">L</button>
+          </div>
+        </div>
+        <div class="config-row"><span class="config-label">State</span>
+          <div class="seg-group" data-dim="state">
+            <button class="seg-btn active" data-val="default">Default</button>
+            <button class="seg-btn" data-val="hover">Hover</button>
+            <button class="seg-btn" data-val="active">Active</button>
+            <button class="seg-btn" data-val="pressed">Pressed</button>
+            <button class="seg-btn" data-val="focused">Focused</button>
+            <button class="seg-btn" data-val="disabled">Disabled</button>
+          </div>
+        </div>
+        <div class="config-row" style="align-items:flex-start">
+          <span class="config-label" style="padding-top:7px">Options</span>
+          <div class="options-list">
+            <label class="toggle-row"><span class="toggle-row-label">Icon only</span><div class="toggle-switch"><input type="checkbox" data-dim="iconOnly"><span class="toggle-track"></span></div></label>
+            <label class="toggle-row"><span class="toggle-row-label">Round shape</span><div class="toggle-switch"><input type="checkbox" data-dim="shape"><span class="toggle-track"></span></div></label>
+          </div>
+        </div>
+      </div></div>
+      <div class="preview-col">
+        <div class="notice" style="display:none"><span class="notice-dot"></span><span>Auto-adjusted</span></div>
+        <div class="preview-section"><div class="preview-card">
+          <div class="preview-viewport"></div>
+          <div class="preview-footer"><span class="preview-name"></span><a class="preview-open" href="#" target="_blank">Open file <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H4M9 2v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>
+        </div></div>
+        <div class="dev-panel collapsed"><div class="dev-toggle"><span class="dev-toggle-label">Component info</span><svg class="dev-toggle-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5L7 9L11 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="dev-body">
+          <div class="dev-row"><span class="dev-row-label">Properties</span><div class="dev-row-body"><div class="dev-props"></div></div></div>
+          <div class="dev-row"><span class="dev-row-label">Dimensions</span><div class="dev-row-body"><span class="dev-dims">—</span></div></div>
+          <div class="dev-row"><span class="dev-row-label">Embed</span><div class="dev-row-body"><div class="dev-embed-row"><span class="dev-embed-snippet">—</span><button class="dev-copy-btn">Copy</button></div></div></div>
+        </div></div>
+      </div>
     </div>
 
-    <div class="divider-label">Subtle &amp; Minimal</div>
-    <div class="components-grid">
-      <a href="output/components/action_primary_-size_medium_-emphasis_subtle_-state_default_-icon-only_false_-shape_rectangle.html" class="comp-link" target="_blank">
-        <div class="component-card">
-          <div class="comp-frame">
-            <iframe src="output/components/action_primary_-size_medium_-emphasis_subtle_-state_default_-icon-only_false_-shape_rectangle.html" loading="lazy" scrolling="no" title="Primary Subtle Default"></iframe>
-          </div>
-          <div class="component-info">
-            <div class="name">Subtle · Medium · Default</div>
-            <span class="lib-tag">Lib 1</span>
-          </div>
-        </div>
-      </a>
-      <a href="output/components/action_primary_-size_medium_-emphasis_subtle_-state_hover_-icon-only_false_-shape_rectangle.html" class="comp-link" target="_blank">
-        <div class="component-card">
-          <div class="comp-frame">
-            <iframe src="output/components/action_primary_-size_medium_-emphasis_subtle_-state_hover_-icon-only_false_-shape_rectangle.html" loading="lazy" scrolling="no" title="Primary Subtle Hover"></iframe>
-          </div>
-          <div class="component-info">
-            <div class="name">Subtle · Medium · Hover</div>
-            <span class="lib-tag">Lib 1</span>
+    <!-- Link -->
+    <h2 class="comp-h2">Link</h2>
+    <p class="comp-desc">Inline text links in primary and secondary styles.</p>
+    <div class="config-layout" id="cl-link">
+      <div class="config-col"><div class="configurator">
+        <div class="config-row"><span class="config-label">Type</span>
+          <div class="seg-group" data-dim="type">
+            <button class="seg-btn active" data-val="primary">Primary</button>
+            <button class="seg-btn" data-val="secondary">Secondary</button>
           </div>
         </div>
-      </a>
-      <a href="output/components/action_primary_-size_medium_-emphasis_minimal_-state_default_-icon-only_false_-shape_rectangle.html" class="comp-link" target="_blank">
-        <div class="component-card">
-          <div class="comp-frame">
-            <iframe src="output/components/action_primary_-size_medium_-emphasis_minimal_-state_default_-icon-only_false_-shape_rectangle.html" loading="lazy" scrolling="no" title="Primary Minimal Default"></iframe>
-          </div>
-          <div class="component-info">
-            <div class="name">Minimal · Medium · Default</div>
-            <span class="lib-tag">Lib 1</span>
+        <div class="config-row"><span class="config-label">State</span>
+          <div class="seg-group" data-dim="state">
+            <button class="seg-btn active" data-val="default">Default</button>
+            <button class="seg-btn" data-val="hover">Hover</button>
+            <button class="seg-btn" data-val="pressed">Pressed</button>
           </div>
         </div>
-      </a>
-      <a href="output/components/action_primary_-size_medium_-emphasis_minimal_-state_hover_-icon-only_false_-shape_rectangle.html" class="comp-link" target="_blank">
-        <div class="component-card">
-          <div class="comp-frame">
-            <iframe src="output/components/action_primary_-size_medium_-emphasis_minimal_-state_hover_-icon-only_false_-shape_rectangle.html" loading="lazy" scrolling="no" title="Primary Minimal Hover"></iframe>
-          </div>
-          <div class="component-info">
-            <div class="name">Minimal · Medium · Hover</div>
-            <span class="lib-tag">Lib 1</span>
-          </div>
-        </div>
-      </a>
+      </div></div>
+      <div class="preview-col">
+        <div class="notice" style="display:none"><span class="notice-dot"></span><span>Auto-adjusted</span></div>
+        <div class="preview-section"><div class="preview-card"><div class="preview-viewport"></div><div class="preview-footer"><span class="preview-name"></span><a class="preview-open" href="#" target="_blank">Open file <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H4M9 2v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div></div>
+        <div class="dev-panel collapsed"><div class="dev-toggle"><span class="dev-toggle-label">Component info</span><svg class="dev-toggle-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5L7 9L11 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="dev-body"><div class="dev-row"><span class="dev-row-label">Properties</span><div class="dev-row-body"><div class="dev-props"></div></div></div><div class="dev-row"><span class="dev-row-label">Dimensions</span><div class="dev-row-body"><span class="dev-dims">—</span></div></div><div class="dev-row"><span class="dev-row-label">Embed</span><div class="dev-row-body"><div class="dev-embed-row"><span class="dev-embed-snippet">—</span><button class="dev-copy-btn">Copy</button></div></div></div></div></div>
+      </div>
     </div>
-  </section>
+  </div>
 
-  <!-- Secondary & Danger -->
-  <section class="section">
-    <div class="section-header">
-      <h2>Secondary &amp; Danger Buttons</h2>
-      <span class="section-count">action_secondary_* · action_danger_*</span>
+  <!-- ═══════════════════════ AVATAR ════════════════════════════ -->
+  <div id="avatar">
+    <p class="comp-section-title">Avatar</p>
+    <h2 class="comp-h2">Avatar</h2>
+    <p class="comp-desc">User avatars in photo or initials form across three sizes.</p>
+    <div class="config-layout" id="cl-avatar">
+      <div class="config-col"><div class="configurator">
+        <div class="config-row"><span class="config-label">Size</span>
+          <div class="seg-group" data-dim="size">
+            <button class="seg-btn" data-val="small">Small</button>
+            <button class="seg-btn active" data-val="medium">Medium</button>
+            <button class="seg-btn" data-val="large">Large</button>
+          </div>
+        </div>
+        <div class="config-row"><span class="config-label">Type</span>
+          <div class="seg-group" data-dim="type">
+            <button class="seg-btn active" data-val="photo">Photo</button>
+            <button class="seg-btn" data-val="initials">Initials</button>
+          </div>
+        </div>
+      </div></div>
+      <div class="preview-col">
+        <div class="notice" style="display:none"><span class="notice-dot"></span><span>Auto-adjusted</span></div>
+        <div class="preview-section"><div class="preview-card"><div class="preview-viewport"></div><div class="preview-footer"><span class="preview-name"></span><a class="preview-open" href="#" target="_blank">Open file <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H4M9 2v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div></div>
+        <div class="dev-panel collapsed"><div class="dev-toggle"><span class="dev-toggle-label">Component info</span><svg class="dev-toggle-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5L7 9L11 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="dev-body"><div class="dev-row"><span class="dev-row-label">Properties</span><div class="dev-row-body"><div class="dev-props"></div></div></div><div class="dev-row"><span class="dev-row-label">Dimensions</span><div class="dev-row-body"><span class="dev-dims">—</span></div></div><div class="dev-row"><span class="dev-row-label">Embed</span><div class="dev-row-body"><div class="dev-embed-row"><span class="dev-embed-snippet">—</span><button class="dev-copy-btn">Copy</button></div></div></div></div></div>
+      </div>
     </div>
-    <p class="section-intro">Secondary uses a grey ghost style; danger is a red-tinted destructive action. Both follow the same variant matrix as primary.</p>
-    <div class="components-grid">
-      <a href="output/components/action_secondary_-size_medium_-emphasis_bold_-state_default_-icon-only_false_-shape_rectangle.html" class="comp-link" target="_blank">
-        <div class="component-card">
-          <div class="comp-frame">
-            <iframe src="output/components/action_secondary_-size_medium_-emphasis_bold_-state_default_-icon-only_false_-shape_rectangle.html" loading="lazy" scrolling="no" title="Secondary Bold Default"></iframe>
-          </div>
-          <div class="component-info">
-            <div class="name">Secondary · Bold · Default</div>
-            <span class="lib-tag">Lib 1</span>
-          </div>
-        </div>
-      </a>
-      <a href="output/components/action_secondary_-size_medium_-emphasis_bold_-state_hover_-icon-only_false_-shape_rectangle.html" class="comp-link" target="_blank">
-        <div class="component-card">
-          <div class="comp-frame">
-            <iframe src="output/components/action_secondary_-size_medium_-emphasis_bold_-state_hover_-icon-only_false_-shape_rectangle.html" loading="lazy" scrolling="no" title="Secondary Bold Hover"></iframe>
-          </div>
-          <div class="component-info">
-            <div class="name">Secondary · Bold · Hover</div>
-            <span class="lib-tag">Lib 1</span>
-          </div>
-        </div>
-      </a>
-      <a href="output/components/action_secondary_-size_medium_-emphasis_bold_-state_disabled_-icon-only_false_-shape_rectangle.html" class="comp-link" target="_blank">
-        <div class="component-card">
-          <div class="comp-frame">
-            <iframe src="output/components/action_secondary_-size_medium_-emphasis_bold_-state_disabled_-icon-only_false_-shape_rectangle.html" loading="lazy" scrolling="no" title="Secondary Bold Disabled"></iframe>
-          </div>
-          <div class="component-info">
-            <div class="name">Secondary · Bold · Disabled</div>
-            <span class="lib-tag">Lib 1</span>
-          </div>
-        </div>
-      </a>
-      <a href="output/components/action_danger_-size_medium_-emphasis_bold_-state_default_-icon-only_false_-shape_rectangle.html" class="comp-link" target="_blank">
-        <div class="component-card">
-          <div class="comp-frame">
-            <iframe src="output/components/action_danger_-size_medium_-emphasis_bold_-state_default_-icon-only_false_-shape_rectangle.html" loading="lazy" scrolling="no" title="Danger Bold Default"></iframe>
-          </div>
-          <div class="component-info">
-            <div class="name">Danger · Bold · Default</div>
-            <span class="lib-tag">Lib 1</span>
-          </div>
-        </div>
-      </a>
-      <a href="output/components/action_danger_-size_medium_-emphasis_bold_-state_hover_-icon-only_false_-shape_rectangle.html" class="comp-link" target="_blank">
-        <div class="component-card">
-          <div class="comp-frame">
-            <iframe src="output/components/action_danger_-size_medium_-emphasis_bold_-state_hover_-icon-only_false_-shape_rectangle.html" loading="lazy" scrolling="no" title="Danger Bold Hover"></iframe>
-          </div>
-          <div class="component-info">
-            <div class="name">Danger · Bold · Hover</div>
-            <span class="lib-tag">Lib 1</span>
-          </div>
-        </div>
-      </a>
-      <a href="output/components/action_danger_-size_large_-emphasis_bold_-state_default_-icon-only_false_-shape_rectangle.html" class="comp-link" target="_blank">
-        <div class="component-card">
-          <div class="comp-frame">
-            <iframe src="output/components/action_danger_-size_large_-emphasis_bold_-state_default_-icon-only_false_-shape_rectangle.html" loading="lazy" scrolling="no" title="Danger Bold Large"></iframe>
-          </div>
-          <div class="component-info">
-            <div class="name">Danger · Bold · Large</div>
-            <span class="lib-tag">Lib 1</span>
-          </div>
-        </div>
-      </a>
-    </div>
-  </section>
+  </div>
 
-  <!-- Form Controls -->
-  <section class="section">
-    <div class="section-header">
-      <h2>Form Controls</h2>
-      <span class="section-count">tab-group_* · range_* · tooltip_*</span>
-    </div>
-    <p class="section-intro">Tab navigation, range sliders, and tooltips. Each has default and interactive states.</p>
-    <div class="components-grid">
-      <a href="output/components/tab-group.html" class="comp-link" target="_blank">
-        <div class="component-card">
-          <div class="comp-frame">
-            <iframe src="output/components/tab-group.html" loading="lazy" scrolling="no" title="Tab Group"></iframe>
-          </div>
-          <div class="component-info">
-            <div class="name">Tab Group</div>
-            <span class="lib-tag">Lib 1</span>
-          </div>
-        </div>
-      </a>
-      <a href="output/components/range_yes.html" class="comp-link" target="_blank">
-        <div class="component-card">
-          <div class="comp-frame">
-            <iframe src="output/components/range_yes.html" loading="lazy" scrolling="no" title="Range Slider"></iframe>
-          </div>
-          <div class="component-info">
-            <div class="name">Range · Active</div>
-            <span class="lib-tag">Lib 1</span>
-          </div>
-        </div>
-      </a>
-      <a href="output/components/tooltip.html" class="comp-link" target="_blank">
-        <div class="component-card">
-          <div class="comp-frame">
-            <iframe src="output/components/tooltip.html" loading="lazy" scrolling="no" title="Tooltip"></iframe>
-          </div>
-          <div class="component-info">
-            <div class="name">Tooltip</div>
-            <span class="lib-tag">Lib 1</span>
-          </div>
-        </div>
-      </a>
-    </div>
-  </section>
+  <!-- ══════════════════════ INDICATORS ═════════════════════════ -->
+  <div id="indicators">
+    <p class="comp-section-title">Indicators</p>
 
-  <!-- Status Badges -->
-  <section class="section">
-    <div class="section-header">
-      <h2>Status Badges</h2>
-      <span class="section-count">status_*</span>
+    <!-- Status -->
+    <h2 class="comp-h2">Status</h2>
+    <p class="comp-desc">Semantic status badges for workflow, content, and connection states.</p>
+    <div class="config-layout" id="cl-status">
+      <div class="config-col"><div class="configurator">
+        <div class="config-row" style="align-items:flex-start">
+          <span class="config-label" style="padding-top:6px">Status</span>
+          <div class="seg-group" data-dim="status" style="flex:1">
+            <button class="seg-btn active" data-val="approved">Approved</button>
+            <button class="seg-btn" data-val="connected">Connected</button>
+            <button class="seg-btn" data-val="disconnected">Disconnected</button>
+            <button class="seg-btn" data-val="draft-scheduled">Draft scheduled</button>
+            <button class="seg-btn" data-val="draft-unscheduled">Draft unscheduled</button>
+            <button class="seg-btn" data-val="error">Error</button>
+            <button class="seg-btn" data-val="pending">Pending</button>
+            <button class="seg-btn" data-val="published">Published</button>
+            <button class="seg-btn" data-val="rejected">Rejected</button>
+            <button class="seg-btn" data-val="scheduled">Scheduled</button>
+            <button class="seg-btn" data-val="to-be-approved">To be approved</button>
+            <button class="seg-btn" data-val="warning">Warning</button>
+            <button class="seg-btn" data-val="read">Read</button>
+            <button class="seg-btn" data-val="unread-unresolved">Unread unresolved</button>
+            <button class="seg-btn" data-val="public">Public</button>
+            <button class="seg-btn" data-val="partial-connected">Partial connected</button>
+            <button class="seg-btn" data-val="empty-placeholder">Empty placeholder</button>
+          </div>
+        </div>
+      </div></div>
+      <div class="preview-col">
+        <div class="notice" style="display:none"><span class="notice-dot"></span><span>Auto-adjusted</span></div>
+        <div class="preview-section"><div class="preview-card"><div class="preview-viewport"></div><div class="preview-footer"><span class="preview-name"></span><a class="preview-open" href="#" target="_blank">Open file <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H4M9 2v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div></div>
+        <div class="dev-panel collapsed"><div class="dev-toggle"><span class="dev-toggle-label">Component info</span><svg class="dev-toggle-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5L7 9L11 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="dev-body"><div class="dev-row"><span class="dev-row-label">Properties</span><div class="dev-row-body"><div class="dev-props"></div></div></div><div class="dev-row"><span class="dev-row-label">Dimensions</span><div class="dev-row-body"><span class="dev-dims">—</span></div></div><div class="dev-row"><span class="dev-row-label">Embed</span><div class="dev-row-body"><div class="dev-embed-row"><span class="dev-embed-snippet">—</span><button class="dev-copy-btn">Copy</button></div></div></div></div></div>
+      </div>
     </div>
-    <p class="section-intro">Compact coloured dots signalling workflow state. File: <code>status_approved.html</code>, <code>status_draft.html</code>, <code>status_published.html</code>, etc.</p>
-    <div class="components-grid">
-      <a href="output/components/status_approved.html" class="comp-link" target="_blank">
-        <div class="component-card">
-          <div class="comp-frame">
-            <iframe src="output/components/status_approved.html" loading="lazy" scrolling="no" title="Status Approved"></iframe>
-          </div>
-          <div class="component-info">
-            <div class="name">Approved</div>
-            <span class="lib-tag">Lib 1</span>
-          </div>
-        </div>
-      </a>
-      <a href="output/components/status_draft.html" class="comp-link" target="_blank">
-        <div class="component-card">
-          <div class="comp-frame">
-            <iframe src="output/components/status_draft.html" loading="lazy" scrolling="no" title="Status Draft"></iframe>
-          </div>
-          <div class="component-info">
-            <div class="name">Draft</div>
-            <span class="lib-tag">Lib 1</span>
-          </div>
-        </div>
-      </a>
-      <a href="output/components/status_scheduled.html" class="comp-link" target="_blank">
-        <div class="component-card">
-          <div class="comp-frame">
-            <iframe src="output/components/status_scheduled.html" loading="lazy" scrolling="no" title="Status Scheduled"></iframe>
-          </div>
-          <div class="component-info">
-            <div class="name">Scheduled</div>
-            <span class="lib-tag">Lib 1</span>
-          </div>
-        </div>
-      </a>
-      <a href="output/components/status_published.html" class="comp-link" target="_blank">
-        <div class="component-card">
-          <div class="comp-frame">
-            <iframe src="output/components/status_published.html" loading="lazy" scrolling="no" title="Status Published"></iframe>
-          </div>
-          <div class="component-info">
-            <div class="name">Published</div>
-            <span class="lib-tag">Lib 1</span>
-          </div>
-        </div>
-      </a>
-      <a href="output/components/status_rejected.html" class="comp-link" target="_blank">
-        <div class="component-card">
-          <div class="comp-frame">
-            <iframe src="output/components/status_rejected.html" loading="lazy" scrolling="no" title="Status Rejected"></iframe>
-          </div>
-          <div class="component-info">
-            <div class="name">Rejected</div>
-            <span class="lib-tag">Lib 1</span>
-          </div>
-        </div>
-      </a>
-      <a href="output/components/status_error.html" class="comp-link" target="_blank">
-        <div class="component-card">
-          <div class="comp-frame">
-            <iframe src="output/components/status_error.html" loading="lazy" scrolling="no" title="Status Error"></iframe>
-          </div>
-          <div class="component-info">
-            <div class="name">Error</div>
-            <span class="lib-tag">Lib 1</span>
-          </div>
-        </div>
-      </a>
-      <a href="output/components/status_connected.html" class="comp-link" target="_blank">
-        <div class="component-card">
-          <div class="comp-frame">
-            <iframe src="output/components/status_connected.html" loading="lazy" scrolling="no" title="Status Connected"></iframe>
-          </div>
-          <div class="component-info">
-            <div class="name">Connected</div>
-            <span class="lib-tag">Lib 1</span>
-          </div>
-        </div>
-      </a>
-      <a href="output/components/status_pending.html" class="comp-link" target="_blank">
-        <div class="component-card">
-          <div class="comp-frame">
-            <iframe src="output/components/status_pending.html" loading="lazy" scrolling="no" title="Status Pending"></iframe>
-          </div>
-          <div class="component-info">
-            <div class="name">Pending</div>
-            <span class="lib-tag">Lib 1</span>
-          </div>
-        </div>
-      </a>
-    </div>
-  </section>
 
-  <!-- Appearance Chips -->
-  <section class="section">
-    <div class="section-header">
-      <h2>Appearance Chips</h2>
-      <span class="section-count">appearance_colored_* · appearance_subtle_*</span>
+    <!-- Tag -->
+    <h2 class="comp-h2">Tag</h2>
+    <p class="comp-desc">Colored label chips in four appearance styles with configurable color, size, and weight.</p>
+    <div class="config-layout" id="cl-tag">
+      <div class="config-col"><div class="configurator">
+        <div class="config-row" style="align-items:flex-start">
+          <span class="config-label" style="padding-top:13px">Appearance</span>
+          <div class="type-grid" data-dim="appearance" style="flex:1">
+            <div class="type-card active" data-val="colored"><span class="type-card-label">Colored</span><span style="display:inline-block;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:600;background:#dfe7fd;color:#1339ec">Label</span></div>
+            <div class="type-card" data-val="subtle"><span class="type-card-label">Subtle</span><span style="display:inline-block;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:600;background:#f3f5f7;color:#5f6a82">Label</span></div>
+            <div class="type-card" data-val="floating"><span class="type-card-label">Floating</span><span style="display:inline-block;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:600;background:#fff;border:1px solid #d3d7de;color:#111317">Label</span></div>
+            <div class="type-card" data-val="inline"><span class="type-card-label">Inline</span><span style="font-size:10px;font-weight:600;color:#cc0000;text-decoration:underline">Label</span></div>
+          </div>
+        </div>
+        <div class="config-row" data-row="tag-color">
+          <span class="config-label">Color</span>
+          <div class="color-swatch" data-dim="color">
+            <button class="swatch-btn active" data-val="blue" style="background:#1339ec" title="Blue"></button>
+            <button class="swatch-btn" data-val="amber" style="background:#f59e0b" title="Amber"></button>
+            <button class="swatch-btn" data-val="azure" style="background:#0ea5e9" title="Azure"></button>
+            <button class="swatch-btn" data-val="beige" style="background:#c9a87c" title="Beige"></button>
+            <button class="swatch-btn" data-val="cobalt" style="background:#4f46e5" title="Cobalt"></button>
+            <button class="swatch-btn" data-val="coral" style="background:#f97316" title="Coral"></button>
+            <button class="swatch-btn" data-val="emerald" style="background:#10b981" title="Emerald"></button>
+            <button class="swatch-btn" data-val="grey" style="background:#9ca3af" title="Grey"></button>
+            <button class="swatch-btn" data-val="indigo" style="background:#6366f1" title="Indigo"></button>
+            <button class="swatch-btn" data-val="mint" style="background:#22d3ee" title="Mint"></button>
+            <button class="swatch-btn" data-val="peridot" style="background:#a3e635" title="Peridot"></button>
+            <button class="swatch-btn" data-val="petrol" style="background:#0891b2" title="Petrol"></button>
+            <button class="swatch-btn" data-val="purple" style="background:#a855f7" title="Purple"></button>
+            <button class="swatch-btn" data-val="violet" style="background:#7c3aed" title="Violet"></button>
+            <button class="swatch-btn" data-val="yellow" style="background:#fbbf24" title="Yellow"></button>
+          </div>
+        </div>
+        <div class="config-row" data-row="tag-size">
+          <span class="config-label">Size</span>
+          <div class="seg-group" data-dim="size">
+            <button class="seg-btn" data-val="xsmall">XS</button>
+            <button class="seg-btn active" data-val="small">S</button>
+            <button class="seg-btn" data-val="medium">M</button>
+            <button class="seg-btn" data-val="large">L</button>
+          </div>
+        </div>
+        <div class="config-row" data-row="tag-slim">
+          <span class="config-label">Options</span>
+          <div class="options-list">
+            <label class="toggle-row"><span class="toggle-row-label">Slim</span><div class="toggle-switch"><input type="checkbox" data-dim="slim"><span class="toggle-track"></span></div></label>
+          </div>
+        </div>
+        <div class="config-row" data-row="tag-type" style="display:none">
+          <span class="config-label">Type</span>
+          <div class="seg-group" data-dim="tagtype">
+            <button class="seg-btn active" data-val="danger">Danger</button>
+            <button class="seg-btn" data-val="info">Info</button>
+            <button class="seg-btn" data-val="success">Success</button>
+            <button class="seg-btn" data-val="warning">Warning</button>
+          </div>
+        </div>
+      </div></div>
+      <div class="preview-col">
+        <div class="notice" style="display:none"><span class="notice-dot"></span><span>Auto-adjusted</span></div>
+        <div class="preview-section"><div class="preview-card"><div class="preview-viewport"></div><div class="preview-footer"><span class="preview-name"></span><a class="preview-open" href="#" target="_blank">Open file <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H4M9 2v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div></div>
+        <div class="dev-panel collapsed"><div class="dev-toggle"><span class="dev-toggle-label">Component info</span><svg class="dev-toggle-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5L7 9L11 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="dev-body"><div class="dev-row"><span class="dev-row-label">Properties</span><div class="dev-row-body"><div class="dev-props"></div></div></div><div class="dev-row"><span class="dev-row-label">Dimensions</span><div class="dev-row-body"><span class="dev-dims">—</span></div></div><div class="dev-row"><span class="dev-row-label">Embed</span><div class="dev-row-body"><div class="dev-embed-row"><span class="dev-embed-snippet">—</span><button class="dev-copy-btn">Copy</button></div></div></div></div></div>
+      </div>
     </div>
-    <p class="section-intro">Coloured label/badge chips. Variants by <code>color</code> (amber, blue, coral, emerald, purple, grey…) and <code>size</code> (xsmall, small, medium, large). File: <code>appearance_colored_-color_amber_-size_medium_-slim_false.html</code></p>
-    <div class="components-grid">
-      <a href="output/components/appearance_colored_-color_amber_-size_medium_-slim_false.html" class="comp-link" target="_blank">
-        <div class="component-card">
-          <div class="comp-frame">
-            <iframe src="output/components/appearance_colored_-color_amber_-size_medium_-slim_false.html" loading="lazy" scrolling="no" title="Appearance Amber Medium"></iframe>
-          </div>
-          <div class="component-info">
-            <div class="name">Colored · Amber · Medium</div>
-            <span class="lib-tag">Lib 1</span>
-          </div>
-        </div>
-      </a>
-      <a href="output/components/appearance_colored_-color_blue_-size_medium_-slim_false.html" class="comp-link" target="_blank">
-        <div class="component-card">
-          <div class="comp-frame">
-            <iframe src="output/components/appearance_colored_-color_blue_-size_medium_-slim_false.html" loading="lazy" scrolling="no" title="Appearance Blue Medium"></iframe>
-          </div>
-          <div class="component-info">
-            <div class="name">Colored · Blue · Medium</div>
-            <span class="lib-tag">Lib 1</span>
-          </div>
-        </div>
-      </a>
-      <a href="output/components/appearance_colored_-color_amber_-size_large_-slim_false.html" class="comp-link" target="_blank">
-        <div class="component-card">
-          <div class="comp-frame">
-            <iframe src="output/components/appearance_colored_-color_amber_-size_large_-slim_false.html" loading="lazy" scrolling="no" title="Appearance Amber Large"></iframe>
-          </div>
-          <div class="component-info">
-            <div class="name">Colored · Amber · Large</div>
-            <span class="lib-tag">Lib 1</span>
-          </div>
-        </div>
-      </a>
-      <a href="output/components/appearance_colored_-color_amber_-size_small_-slim_false.html" class="comp-link" target="_blank">
-        <div class="component-card">
-          <div class="comp-frame">
-            <iframe src="output/components/appearance_colored_-color_amber_-size_small_-slim_false.html" loading="lazy" scrolling="no" title="Appearance Amber Small"></iframe>
-          </div>
-          <div class="component-info">
-            <div class="name">Colored · Amber · Small</div>
-            <span class="lib-tag">Lib 1</span>
-          </div>
-        </div>
-      </a>
-      <a href="output/components/appearance_colored_-color_amber_-size_xsmall_-slim_false.html" class="comp-link" target="_blank">
-        <div class="component-card">
-          <div class="comp-frame">
-            <iframe src="output/components/appearance_colored_-color_amber_-size_xsmall_-slim_false.html" loading="lazy" scrolling="no" title="Appearance Amber XSmall"></iframe>
-          </div>
-          <div class="component-info">
-            <div class="name">Colored · Amber · XSmall</div>
-            <span class="lib-tag">Lib 1</span>
-          </div>
-        </div>
-      </a>
-      <a href="output/components/appearance_colored_-color_amber_-size_small_-slim_true.html" class="comp-link" target="_blank">
-        <div class="component-card">
-          <div class="comp-frame">
-            <iframe src="output/components/appearance_colored_-color_amber_-size_small_-slim_true.html" loading="lazy" scrolling="no" title="Appearance Amber Slim"></iframe>
-          </div>
-          <div class="component-info">
-            <div class="name">Colored · Amber · Slim</div>
-            <span class="lib-tag">Lib 1</span>
-          </div>
-        </div>
-      </a>
-    </div>
-  </section>
 
-  <!-- All components note -->
-  <section class="section">
-    <div class="section-header"><h2>All 1,517 Components</h2></div>
-    <div class="card" style="max-width:560px">
-      <div class="card-label">Browsing the full library</div>
-      <div class="card-name" style="font-size:14px;line-height:1.65;color:var(--text-muted)">Each component variant is a standalone HTML file with a built-in preview, pixel dimensions, and token references. Browse <code>output/components/</code> directly or search by family prefix. Key families not shown above: <code>action_success_*</code>, <code>action_warning_*</code>, <code>appearance_subtle_*</code>, <code>appearance_floating_*</code>, <code>appearance_inline_*</code>, <code>check-box_*</code>, <code>counter-input_*</code>, <code>table-row_*</code>, <code>column-header_*</code>, <code>popover_*</code>, <code>modal-item_*</code>, <code>compact_*</code>, <code>row_*</code>.</div>
+    <!-- Progress Indicator -->
+    <h2 class="comp-h2">Progress Indicator</h2>
+    <p class="comp-desc">Circular and line progress indicators for task completion states.</p>
+    <div class="config-layout" id="cl-progress">
+      <div class="config-col"><div class="configurator">
+        <div class="config-row"><span class="config-label">Type</span>
+          <div class="seg-group" data-dim="type">
+            <button class="seg-btn active" data-val="circular">Circular</button>
+            <button class="seg-btn" data-val="line">Line</button>
+          </div>
+        </div>
+        <div class="config-row" data-row="progress-state">
+          <span class="config-label">State</span>
+          <div class="seg-group" data-dim="state">
+            <button class="seg-btn active" data-val="not-started">Not started</button>
+            <button class="seg-btn" data-val="in-progress">In progress</button>
+            <button class="seg-btn" data-val="completed">Completed</button>
+          </div>
+        </div>
+        <div class="config-row" data-row="progress-location" style="display:none">
+          <span class="config-label">Location</span>
+          <div class="seg-group" data-dim="location">
+            <button class="seg-btn active" data-val="card">Card</button>
+            <button class="seg-btn" data-val="header">Header</button>
+          </div>
+        </div>
+      </div></div>
+      <div class="preview-col">
+        <div class="notice" style="display:none"><span class="notice-dot"></span><span>Auto-adjusted</span></div>
+        <div class="preview-section"><div class="preview-card"><div class="preview-viewport"></div><div class="preview-footer"><span class="preview-name"></span><a class="preview-open" href="#" target="_blank">Open file <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H4M9 2v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div></div>
+        <div class="dev-panel collapsed"><div class="dev-toggle"><span class="dev-toggle-label">Component info</span><svg class="dev-toggle-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5L7 9L11 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="dev-body"><div class="dev-row"><span class="dev-row-label">Properties</span><div class="dev-row-body"><div class="dev-props"></div></div></div><div class="dev-row"><span class="dev-row-label">Dimensions</span><div class="dev-row-body"><span class="dev-dims">—</span></div></div><div class="dev-row"><span class="dev-row-label">Embed</span><div class="dev-row-body"><div class="dev-embed-row"><span class="dev-embed-snippet">—</span><button class="dev-copy-btn">Copy</button></div></div></div></div></div>
+      </div>
     </div>
-  </section>
+
+    <!-- Column Card -->
+    <h2 class="comp-h2">Column Card</h2>
+    <p class="comp-desc">Kanban-style column headers with optional dot or counter variants.</p>
+    <div class="config-layout" id="cl-column-card">
+      <div class="config-col"><div class="configurator">
+        <div class="config-row"><span class="config-label">Color</span>
+          <div class="color-swatch" data-dim="color">
+            <button class="swatch-btn active" data-val="blue" style="background:#1339ec" title="Blue"></button>
+            <button class="swatch-btn" data-val="amber" style="background:#f59e0b" title="Amber"></button>
+            <button class="swatch-btn" data-val="azure" style="background:#0ea5e9" title="Azure"></button>
+            <button class="swatch-btn" data-val="beige" style="background:#c9a87c" title="Beige"></button>
+            <button class="swatch-btn" data-val="cobalt" style="background:#4f46e5" title="Cobalt"></button>
+            <button class="swatch-btn" data-val="coral" style="background:#f97316" title="Coral"></button>
+            <button class="swatch-btn" data-val="emerald" style="background:#10b981" title="Emerald"></button>
+            <button class="swatch-btn" data-val="grey" style="background:#9ca3af" title="Grey"></button>
+            <button class="swatch-btn" data-val="indigo" style="background:#6366f1" title="Indigo"></button>
+            <button class="swatch-btn" data-val="mint" style="background:#22d3ee" title="Mint"></button>
+            <button class="swatch-btn" data-val="peridot" style="background:#a3e635" title="Peridot"></button>
+            <button class="swatch-btn" data-val="petrol" style="background:#0891b2" title="Petrol"></button>
+            <button class="swatch-btn" data-val="purple" style="background:#a855f7" title="Purple"></button>
+            <button class="swatch-btn" data-val="violet" style="background:#7c3aed" title="Violet"></button>
+            <button class="swatch-btn" data-val="yellow" style="background:#fbbf24" title="Yellow"></button>
+          </div>
+        </div>
+        <div class="config-row"><span class="config-label">Variant</span>
+          <div class="seg-group" data-dim="variant">
+            <button class="seg-btn active" data-val="default">Default</button>
+            <button class="seg-btn" data-val="dot">Dot</button>
+            <button class="seg-btn" data-val="counter">Counter</button>
+          </div>
+        </div>
+        <div class="config-row" data-row="colcard-type" style="display:none">
+          <span class="config-label">Type</span>
+          <div class="seg-group" data-dim="type">
+            <button class="seg-btn active" data-val="square">Square</button>
+            <button class="seg-btn" data-val="rounded">Rounded</button>
+          </div>
+        </div>
+      </div></div>
+      <div class="preview-col">
+        <div class="notice" style="display:none"><span class="notice-dot"></span><span>Auto-adjusted</span></div>
+        <div class="preview-section"><div class="preview-card"><div class="preview-viewport"></div><div class="preview-footer"><span class="preview-name"></span><a class="preview-open" href="#" target="_blank">Open file <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H4M9 2v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div></div>
+        <div class="dev-panel collapsed"><div class="dev-toggle"><span class="dev-toggle-label">Component info</span><svg class="dev-toggle-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5L7 9L11 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="dev-body"><div class="dev-row"><span class="dev-row-label">Properties</span><div class="dev-row-body"><div class="dev-props"></div></div></div><div class="dev-row"><span class="dev-row-label">Dimensions</span><div class="dev-row-body"><span class="dev-dims">—</span></div></div><div class="dev-row"><span class="dev-row-label">Embed</span><div class="dev-row-body"><div class="dev-embed-row"><span class="dev-embed-snippet">—</span><button class="dev-copy-btn">Copy</button></div></div></div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════ INPUTS ═══════════════════════════ -->
+  <div id="inputs">
+    <p class="comp-section-title">Inputs</p>
+
+    <!-- Input Field -->
+    <h2 class="comp-h2">Input Field</h2>
+    <p class="comp-desc">Text, search, and select inputs across sizes and interaction states.</p>
+    <div class="config-layout" id="cl-input-field">
+      <div class="config-col"><div class="configurator">
+        <div class="config-row"><span class="config-label">Type</span>
+          <div class="seg-group" data-dim="type">
+            <button class="seg-btn active" data-val="text">Text</button>
+            <button class="seg-btn" data-val="search">Search</button>
+            <button class="seg-btn" data-val="select">Select</button>
+          </div>
+        </div>
+        <div class="config-row"><span class="config-label">Size</span>
+          <div class="seg-group" data-dim="size">
+            <button class="seg-btn active" data-val="medium">Medium</button>
+            <button class="seg-btn" data-val="large">Large</button>
+          </div>
+        </div>
+        <div class="config-row"><span class="config-label">State</span>
+          <div class="seg-group" data-dim="state">
+            <button class="seg-btn active" data-val="default">Default</button>
+            <button class="seg-btn" data-val="hover">Hover</button>
+            <button class="seg-btn" data-val="focus">Focus</button>
+            <button class="seg-btn" data-val="error">Error</button>
+            <button class="seg-btn" data-val="disabled">Disabled</button>
+          </div>
+        </div>
+        <div class="config-row"><span class="config-label">Options</span>
+          <div class="options-list">
+            <label class="toggle-row"><span class="toggle-row-label">Filled</span><div class="toggle-switch"><input type="checkbox" data-dim="filled"><span class="toggle-track"></span></div></label>
+          </div>
+        </div>
+      </div></div>
+      <div class="preview-col">
+        <div class="notice" style="display:none"><span class="notice-dot"></span><span>Auto-adjusted</span></div>
+        <div class="preview-section"><div class="preview-card"><div class="preview-viewport"></div><div class="preview-footer"><span class="preview-name"></span><a class="preview-open" href="#" target="_blank">Open file <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H4M9 2v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div></div>
+        <div class="dev-panel collapsed"><div class="dev-toggle"><span class="dev-toggle-label">Component info</span><svg class="dev-toggle-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5L7 9L11 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="dev-body"><div class="dev-row"><span class="dev-row-label">Properties</span><div class="dev-row-body"><div class="dev-props"></div></div></div><div class="dev-row"><span class="dev-row-label">Dimensions</span><div class="dev-row-body"><span class="dev-dims">—</span></div></div><div class="dev-row"><span class="dev-row-label">Embed</span><div class="dev-row-body"><div class="dev-embed-row"><span class="dev-embed-snippet">—</span><button class="dev-copy-btn">Copy</button></div></div></div></div></div>
+      </div>
+    </div>
+
+    <!-- Segmented Control -->
+    <h2 class="comp-h2">Segmented Control</h2>
+    <p class="comp-desc">Inline control group for mutually exclusive options.</p>
+    <div class="config-layout" id="cl-segmented-control">
+      <div class="config-col"><div class="configurator">
+        <div class="config-row"><span class="config-label">Size</span>
+          <div class="seg-group" data-dim="size">
+            <button class="seg-btn active" data-val="small">Small</button>
+            <button class="seg-btn" data-val="large">Large</button>
+          </div>
+        </div>
+      </div></div>
+      <div class="preview-col">
+        <div class="notice" style="display:none"><span class="notice-dot"></span><span>Auto-adjusted</span></div>
+        <div class="preview-section"><div class="preview-card"><div class="preview-viewport"></div><div class="preview-footer"><span class="preview-name"></span><a class="preview-open" href="#" target="_blank">Open file <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H4M9 2v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div></div>
+        <div class="dev-panel collapsed"><div class="dev-toggle"><span class="dev-toggle-label">Component info</span><svg class="dev-toggle-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5L7 9L11 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="dev-body"><div class="dev-row"><span class="dev-row-label">Properties</span><div class="dev-row-body"><div class="dev-props"></div></div></div><div class="dev-row"><span class="dev-row-label">Dimensions</span><div class="dev-row-body"><span class="dev-dims">—</span></div></div><div class="dev-row"><span class="dev-row-label">Embed</span><div class="dev-row-body"><div class="dev-embed-row"><span class="dev-embed-snippet">—</span><button class="dev-copy-btn">Copy</button></div></div></div></div></div>
+      </div>
+    </div>
+
+    <!-- Tab Group (static) -->
+    <h2 class="comp-h2">Tab Group</h2>
+    <p class="comp-desc">Horizontal tab navigation for switching between content views.</p>
+    <div class="static-preview" id="cl-tab-group">
+      <div class="preview-card"><div class="preview-viewport"></div><div class="preview-footer"><span class="preview-name">tab-group</span><a class="preview-open" href="#" target="_blank">Open file <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H4M9 2v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div>
+    </div>
+
+    <!-- Scroll Bar -->
+    <h2 class="comp-h2">Scroll Bar</h2>
+    <p class="comp-desc">Scroll bar in horizontal and vertical orientations.</p>
+    <div class="config-layout" id="cl-scroll-bar">
+      <div class="config-col"><div class="configurator">
+        <div class="config-row"><span class="config-label">Orientation</span>
+          <div class="seg-group" data-dim="orientation">
+            <button class="seg-btn active" data-val="horizontal">Horizontal</button>
+            <button class="seg-btn" data-val="vertical">Vertical</button>
+          </div>
+        </div>
+      </div></div>
+      <div class="preview-col">
+        <div class="notice" style="display:none"><span class="notice-dot"></span><span>Auto-adjusted</span></div>
+        <div class="preview-section"><div class="preview-card"><div class="preview-viewport"></div><div class="preview-footer"><span class="preview-name"></span><a class="preview-open" href="#" target="_blank">Open file <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H4M9 2v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div></div>
+        <div class="dev-panel collapsed"><div class="dev-toggle"><span class="dev-toggle-label">Component info</span><svg class="dev-toggle-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5L7 9L11 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="dev-body"><div class="dev-row"><span class="dev-row-label">Properties</span><div class="dev-row-body"><div class="dev-props"></div></div></div><div class="dev-row"><span class="dev-row-label">Dimensions</span><div class="dev-row-body"><span class="dev-dims">—</span></div></div><div class="dev-row"><span class="dev-row-label">Embed</span><div class="dev-row-body"><div class="dev-embed-row"><span class="dev-embed-snippet">—</span><button class="dev-copy-btn">Copy</button></div></div></div></div></div>
+      </div>
+    </div>
+
+    <!-- Date Range Picker -->
+    <h2 class="comp-h2">Date Range Picker</h2>
+    <p class="comp-desc">Calendar-based date selection for desktop and mobile breakpoints.</p>
+    <div class="config-layout" id="cl-date-range">
+      <div class="config-col"><div class="configurator">
+        <div class="config-row"><span class="config-label">Size</span>
+          <div class="seg-group" data-dim="size">
+            <button class="seg-btn active" data-val="desktop">Desktop</button>
+            <button class="seg-btn" data-val="mobile">Mobile</button>
+          </div>
+        </div>
+        <div class="config-row"><span class="config-label">State</span>
+          <div class="seg-group" data-dim="state">
+            <button class="seg-btn active" data-val="default">Default</button>
+            <button class="seg-btn" data-val="expanded">Expanded</button>
+            <button class="seg-btn" data-val="select-range">Select range</button>
+          </div>
+        </div>
+      </div></div>
+      <div class="preview-col">
+        <div class="notice" style="display:none"><span class="notice-dot"></span><span>Auto-adjusted</span></div>
+        <div class="preview-section"><div class="preview-card"><div class="preview-viewport"></div><div class="preview-footer"><span class="preview-name"></span><a class="preview-open" href="#" target="_blank">Open file <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H4M9 2v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div></div>
+        <div class="dev-panel collapsed"><div class="dev-toggle"><span class="dev-toggle-label">Component info</span><svg class="dev-toggle-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5L7 9L11 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="dev-body"><div class="dev-row"><span class="dev-row-label">Properties</span><div class="dev-row-body"><div class="dev-props"></div></div></div><div class="dev-row"><span class="dev-row-label">Dimensions</span><div class="dev-row-body"><span class="dev-dims">—</span></div></div><div class="dev-row"><span class="dev-row-label">Embed</span><div class="dev-row-body"><div class="dev-embed-row"><span class="dev-embed-snippet">—</span><button class="dev-copy-btn">Copy</button></div></div></div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════ OVERLAYS ══════════════════════════ -->
+  <div id="overlays">
+    <p class="comp-section-title">Overlays</p>
+
+    <!-- Modal -->
+    <h2 class="comp-h2">Modal</h2>
+    <p class="comp-desc">Dialog overlays across breakpoints, sizes, and viewport widths.</p>
+    <div class="config-layout" id="cl-modal">
+      <div class="config-col"><div class="configurator">
+        <div class="config-row"><span class="config-label">Breakpoint</span>
+          <div class="seg-group" data-dim="breakpoint">
+            <button class="seg-btn active" data-val="desktop">Desktop</button>
+            <button class="seg-btn" data-val="mobile">Mobile</button>
+          </div>
+        </div>
+        <div class="config-row"><span class="config-label">Size</span>
+          <div class="seg-group" data-dim="size">
+            <button class="seg-btn active" data-val="sm">SM</button>
+            <button class="seg-btn" data-val="md">MD</button>
+            <button class="seg-btn" data-val="lg">LG</button>
+          </div>
+        </div>
+        <div class="config-row" data-row="modal-viewport" style="display:none">
+          <span class="config-label">Viewport</span>
+          <div class="seg-group" data-dim="viewport">
+            <button class="seg-btn active" data-val="narrow">Narrow</button>
+            <button class="seg-btn" data-val="wide">Wide</button>
+          </div>
+        </div>
+      </div></div>
+      <div class="preview-col">
+        <div class="notice" style="display:none"><span class="notice-dot"></span><span>Auto-adjusted</span></div>
+        <div class="preview-section"><div class="preview-card"><div class="preview-viewport"></div><div class="preview-footer"><span class="preview-name"></span><a class="preview-open" href="#" target="_blank">Open file <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H4M9 2v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div></div>
+        <div class="dev-panel collapsed"><div class="dev-toggle"><span class="dev-toggle-label">Component info</span><svg class="dev-toggle-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5L7 9L11 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="dev-body"><div class="dev-row"><span class="dev-row-label">Properties</span><div class="dev-row-body"><div class="dev-props"></div></div></div><div class="dev-row"><span class="dev-row-label">Dimensions</span><div class="dev-row-body"><span class="dev-dims">—</span></div></div><div class="dev-row"><span class="dev-row-label">Embed</span><div class="dev-row-body"><div class="dev-embed-row"><span class="dev-embed-snippet">—</span><button class="dev-copy-btn">Copy</button></div></div></div></div></div>
+      </div>
+    </div>
+
+    <!-- Tooltip -->
+    <h2 class="comp-h2">Tooltip</h2>
+    <p class="comp-desc">Rich-content tooltip with four alignment positions.</p>
+    <div class="config-layout" id="cl-tooltip">
+      <div class="config-col"><div class="configurator">
+        <div class="config-row"><span class="config-label">Alignment</span>
+          <div class="seg-group" data-dim="alignment">
+            <button class="seg-btn active" data-val="top">Top</button>
+            <button class="seg-btn" data-val="bottom">Bottom</button>
+            <button class="seg-btn" data-val="left">Left</button>
+            <button class="seg-btn" data-val="right">Right</button>
+          </div>
+        </div>
+      </div></div>
+      <div class="preview-col">
+        <div class="notice" style="display:none"><span class="notice-dot"></span><span>Auto-adjusted</span></div>
+        <div class="preview-section"><div class="preview-card"><div class="preview-viewport"></div><div class="preview-footer"><span class="preview-name"></span><a class="preview-open" href="#" target="_blank">Open file <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H4M9 2v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div></div>
+        <div class="dev-panel collapsed"><div class="dev-toggle"><span class="dev-toggle-label">Component info</span><svg class="dev-toggle-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5L7 9L11 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="dev-body"><div class="dev-row"><span class="dev-row-label">Properties</span><div class="dev-row-body"><div class="dev-props"></div></div></div><div class="dev-row"><span class="dev-row-label">Dimensions</span><div class="dev-row-body"><span class="dev-dims">—</span></div></div><div class="dev-row"><span class="dev-row-label">Embed</span><div class="dev-row-body"><div class="dev-embed-row"><span class="dev-embed-snippet">—</span><button class="dev-copy-btn">Copy</button></div></div></div></div></div>
+      </div>
+    </div>
+
+    <!-- Notification -->
+    <h2 class="comp-h2">Notification</h2>
+    <p class="comp-desc">Inline notification item and popover notification panel.</p>
+    <div class="config-layout" id="cl-notification">
+      <div class="config-col"><div class="configurator">
+        <div class="config-row"><span class="config-label">Type</span>
+          <div class="seg-group" data-dim="type">
+            <button class="seg-btn active" data-val="item">Item</button>
+            <button class="seg-btn" data-val="popover">Popover</button>
+          </div>
+        </div>
+      </div></div>
+      <div class="preview-col">
+        <div class="notice" style="display:none"><span class="notice-dot"></span><span>Auto-adjusted</span></div>
+        <div class="preview-section"><div class="preview-card"><div class="preview-viewport"></div><div class="preview-footer"><span class="preview-name"></span><a class="preview-open" href="#" target="_blank">Open file <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H4M9 2v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div></div>
+        <div class="dev-panel collapsed"><div class="dev-toggle"><span class="dev-toggle-label">Component info</span><svg class="dev-toggle-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5L7 9L11 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="dev-body"><div class="dev-row"><span class="dev-row-label">Properties</span><div class="dev-row-body"><div class="dev-props"></div></div></div><div class="dev-row"><span class="dev-row-label">Dimensions</span><div class="dev-row-body"><span class="dev-dims">—</span></div></div><div class="dev-row"><span class="dev-row-label">Embed</span><div class="dev-row-body"><div class="dev-embed-row"><span class="dev-embed-snippet">—</span><button class="dev-copy-btn">Copy</button></div></div></div></div></div>
+      </div>
+    </div>
+
+    <!-- Popover (static) -->
+    <h2 class="comp-h2">Popover</h2>
+    <p class="comp-desc">Floating container anchored to a trigger element.</p>
+    <div class="static-preview" id="cl-popover">
+      <div class="preview-card"><div class="preview-viewport"></div><div class="preview-footer"><span class="preview-name">popover</span><a class="preview-open" href="#" target="_blank">Open file <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H4M9 2v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════ DATA DISPLAY ═══════════════════════ -->
+  <div id="data-display">
+    <p class="comp-section-title">Data Display</p>
+
+    <!-- Data Column -->
+    <h2 class="comp-h2">Data Column</h2>
+    <p class="comp-desc">Table column header cells in ten types and two density modes.</p>
+    <div class="config-layout" id="cl-data-column">
+      <div class="config-col"><div class="configurator">
+        <div class="config-row" style="align-items:flex-start">
+          <span class="config-label" style="padding-top:6px">Type</span>
+          <div class="seg-group" data-dim="type" style="flex:1">
+            <button class="seg-btn active" data-val="leading">Leading</button>
+            <button class="seg-btn" data-val="badge">Badge</button>
+            <button class="seg-btn" data-val="status">Status</button>
+            <button class="seg-btn" data-val="icons">Icons</button>
+            <button class="seg-btn" data-val="number">Number</button>
+            <button class="seg-btn" data-val="dropdown">Dropdown</button>
+            <button class="seg-btn" data-val="bulk">Bulk</button>
+            <button class="seg-btn" data-val="textleft">Text left</button>
+            <button class="seg-btn" data-val="textright">Text right</button>
+            <button class="seg-btn" data-val="skeleton">Skeleton</button>
+          </div>
+        </div>
+        <div class="config-row"><span class="config-label">Size</span>
+          <div class="seg-group" data-dim="size">
+            <button class="seg-btn active" data-val="default">Default</button>
+            <button class="seg-btn" data-val="compact">Compact</button>
+          </div>
+        </div>
+      </div></div>
+      <div class="preview-col">
+        <div class="notice" style="display:none"><span class="notice-dot"></span><span>Auto-adjusted</span></div>
+        <div class="preview-section"><div class="preview-card"><div class="preview-viewport"></div><div class="preview-footer"><span class="preview-name"></span><a class="preview-open" href="#" target="_blank">Open file <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H4M9 2v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div></div>
+        <div class="dev-panel collapsed"><div class="dev-toggle"><span class="dev-toggle-label">Component info</span><svg class="dev-toggle-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5L7 9L11 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="dev-body"><div class="dev-row"><span class="dev-row-label">Properties</span><div class="dev-row-body"><div class="dev-props"></div></div></div><div class="dev-row"><span class="dev-row-label">Dimensions</span><div class="dev-row-body"><span class="dev-dims">—</span></div></div><div class="dev-row"><span class="dev-row-label">Embed</span><div class="dev-row-body"><div class="dev-embed-row"><span class="dev-embed-snippet">—</span><button class="dev-copy-btn">Copy</button></div></div></div></div></div>
+      </div>
+    </div>
+
+    <!-- View Switcher (static) -->
+    <h2 class="comp-h2">View Switcher</h2>
+    <p class="comp-desc">Toggle control for switching between list and grid views.</p>
+    <div class="static-preview" id="cl-view-switcher">
+      <div class="preview-card"><div class="preview-viewport"></div><div class="preview-footer"><span class="preview-name">view-switcher</span><a class="preview-open" href="#" target="_blank">Open file <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H4M9 2v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div>
+    </div>
+  </div>
 
 </main>
 </div>
+
 <script>
-(function () {
-  document.querySelectorAll('.comp-frame iframe').forEach(function (iframe) {
-    iframe.addEventListener('load', function () {
-      try {
-        var doc = this.contentDocument;
-        // Fix 1: remove checkerboard, give transparent components a clean white bg
-        // Fix 2: non-auto-layout icon wrappers lack position:relative, so their
-        //         position:absolute children escape — adding it here anchors them
-        var s = doc.createElement('style');
-        s.textContent = '.checker{background-image:none!important;background-color:#fff!important}.checker div{position:relative}';
-        doc.head.appendChild(s);
+/* ── Shared DS engine ─────────────────────────────────────────────── */
+window.DS = (function () {
+  'use strict';
 
-        var isWide = this.parentElement && this.parentElement.classList.contains('comp-frame--wide');
-        var preview = doc.querySelector ? doc.querySelector('.preview-wrap') : doc.querySelector('.preview-wrap');
-        if (!preview) return;
+  function makePreviewer(opts) {
+    var root       = opts.root;
+    var sel        = opts.sel;
+    var viewport   = root.querySelector('.preview-viewport');
+    var nameEl     = root.querySelector('.preview-name');
+    var linkEl     = root.querySelector('.preview-open');
+    var noticeEl   = root.querySelector('.notice');
+    var devPropsEl = root.querySelector('.dev-props');
+    var devDimsEl  = root.querySelector('.dev-dims');
+    var devEmbedEl = root.querySelector('.dev-embed-snippet');
+    var devCopyBtn = root.querySelector('.dev-copy-btn');
+    var embedStr   = '';
 
-        if (isWide) {
-          this.style.marginTop = '-' + (preview.offsetTop + 16) + 'px';
-        } else {
-          // Center the component vertically in the 120px clip window
-          var checker = doc.querySelector('.checker');
-          if (!checker) { this.style.marginTop = '-' + (preview.offsetTop + 16) + 'px'; return; }
-          var rect = checker.getBoundingClientRect();
-          var centerY = rect.top + rect.height / 2;
-          // Clamp: never scroll above preview-wrap so tiny components
-          // don't expose the "Preview" heading from the page above
-          var offset = Math.max(preview.offsetTop, Math.max(0, centerY - 60));
-          this.style.marginTop = '-' + offset + 'px';
-        }
-      } catch (e) {}
+    function refresh() {
+      var path = opts.buildPath(sel);
+      viewport.classList.add('loading');
+      if (linkEl) linkEl.href = path;
+      if (nameEl && opts.buildLabel) nameEl.textContent = opts.buildLabel(sel);
+
+      fetch(path)
+        .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
+        .then(function (html) {
+          var doc   = new DOMParser().parseFromString(html, 'text/html');
+          var svgEl = doc.querySelector('.checker > svg') || doc.querySelector('svg');
+          if (!svgEl) {
+            viewport.innerHTML = '<p style="color:#999;font-size:13px;font-family:system-ui;text-align:center">Preview unavailable</p>';
+            viewport.classList.remove('loading'); return;
+          }
+          var natW  = parseFloat(svgEl.getAttribute('width'))  || 200;
+          var natH  = parseFloat(svgEl.getAttribute('height')) || 40;
+          var scale = Math.min(4.5, Math.max(1, 440 / natW));
+          var clone = svgEl.cloneNode(true);
+          clone.setAttribute('width',  Math.round(natW * scale));
+          clone.setAttribute('height', Math.round(natH * scale));
+          clone.style.display = 'block';
+          viewport.innerHTML  = ''; viewport.appendChild(clone);
+          viewport.classList.remove('loading');
+          if (devPropsEl) {
+            devPropsEl.innerHTML = '';
+            var meta = doc.querySelector('meta[name="figma-name"]');
+            if (meta) meta.getAttribute('content').split(', ').forEach(function (pair) {
+              var i = pair.indexOf('='); if (i < 0) return;
+              var el = document.createElement('span');
+              el.className = 'dev-prop';
+              el.innerHTML = '<span class="dev-prop-key">' + pair.slice(0,i).trim() + '</span>'
+                           + '<span class="dev-prop-val">' + pair.slice(i+1).trim() + '</span>';
+              devPropsEl.appendChild(el);
+            });
+          }
+          if (devDimsEl)  devDimsEl.textContent  = natW + ' × ' + natH + ' px';
+          embedStr = '<iframe src="' + path + '" width="' + natW + '" height="' + natH + '" scrolling="no"></iframe>';
+          if (devEmbedEl) devEmbedEl.textContent = embedStr;
+        })
+        .catch(function () {
+          viewport.innerHTML = '<p style="color:#999;font-size:13px;font-family:system-ui;text-align:center">Component not found</p>';
+          viewport.classList.remove('loading');
+        });
+    }
+
+    function showNotice(msgs) {
+      if (!noticeEl) return;
+      if (msgs && msgs.length) {
+        var sp = noticeEl.querySelector('span:last-child');
+        if (sp) sp.textContent = 'Auto-adjusted: ' + msgs.join(' · ');
+        noticeEl.style.display = 'inline-flex';
+      } else { noticeEl.style.display = 'none'; }
+    }
+
+    function renderControls() {
+      root.querySelectorAll('.seg-group[data-dim]').forEach(function (g) {
+        var dim = g.getAttribute('data-dim');
+        g.querySelectorAll('.seg-btn').forEach(function (b) {
+          b.classList.toggle('active', sel[dim] === b.getAttribute('data-val'));
+        });
+      });
+      root.querySelectorAll('.type-grid[data-dim]').forEach(function (g) {
+        var dim = g.getAttribute('data-dim');
+        g.querySelectorAll('.type-card').forEach(function (c) {
+          c.classList.toggle('active', sel[dim] === c.getAttribute('data-val'));
+        });
+      });
+      root.querySelectorAll('.color-swatch[data-dim]').forEach(function (g) {
+        var dim = g.getAttribute('data-dim');
+        g.querySelectorAll('.swatch-btn').forEach(function (b) {
+          b.classList.toggle('active', sel[dim] === b.getAttribute('data-val'));
+        });
+      });
+      root.querySelectorAll('input[data-dim]').forEach(function (cb) {
+        cb.checked = sel[cb.getAttribute('data-dim')] === 'true';
+      });
+      if (opts.onRenderControls) opts.onRenderControls(sel, root);
+    }
+
+    root.addEventListener('click', function (e) {
+      var btn = e.target.closest('.seg-btn');
+      if (btn && !btn.hasAttribute('disabled')) {
+        var g = btn.closest('.seg-group[data-dim]');
+        if (g) { sel[g.getAttribute('data-dim')] = btn.getAttribute('data-val'); showNotice(opts.correct ? opts.correct(g.getAttribute('data-dim'), sel) : []); renderControls(); refresh(); return; }
+      }
+      var card = e.target.closest('.type-card');
+      if (card && !card.hasAttribute('disabled')) {
+        var g2 = card.closest('.type-grid[data-dim]');
+        if (g2) { sel[g2.getAttribute('data-dim')] = card.getAttribute('data-val'); showNotice(opts.correct ? opts.correct(g2.getAttribute('data-dim'), sel) : []); renderControls(); refresh(); return; }
+      }
+      var sw = e.target.closest('.swatch-btn');
+      if (sw) {
+        var g3 = sw.closest('.color-swatch[data-dim]');
+        if (g3) { sel[g3.getAttribute('data-dim')] = sw.getAttribute('data-val'); renderControls(); refresh(); return; }
+      }
+      var toggle = e.target.closest('.dev-toggle');
+      if (toggle) { var panel = toggle.closest('.dev-panel'); if (panel) panel.classList.toggle('collapsed'); }
     });
-  });
+
+    root.addEventListener('change', function (e) {
+      var cb = e.target;
+      if (cb.tagName === 'INPUT' && cb.type === 'checkbox' && cb.hasAttribute('data-dim')) {
+        var dim = cb.getAttribute('data-dim');
+        sel[dim] = cb.checked ? 'true' : 'false';
+        showNotice(opts.correct ? opts.correct(dim, sel) : []);
+        renderControls(); refresh();
+      }
+    });
+
+    if (devCopyBtn) devCopyBtn.addEventListener('click', function () {
+      if (!embedStr) return;
+      navigator.clipboard.writeText(embedStr).then(function () {
+        devCopyBtn.textContent = 'Copied!'; devCopyBtn.classList.add('copied');
+        setTimeout(function () { devCopyBtn.textContent = 'Copy'; devCopyBtn.classList.remove('copied'); }, 1500);
+      });
+    });
+
+    renderControls(); refresh();
+  }
+
+  function staticPreview(root, path) {
+    var viewport  = root.querySelector('.preview-viewport');
+    var linkEl    = root.querySelector('.preview-open');
+    if (linkEl) linkEl.href = path;
+
+    fetch(path)
+      .then(function (r) { if (!r.ok) throw new Error(); return r.text(); })
+      .then(function (html) {
+        var doc   = new DOMParser().parseFromString(html, 'text/html');
+        var svgEl = doc.querySelector('.checker > svg') || doc.querySelector('svg');
+        if (!svgEl) { if (viewport) viewport.innerHTML = '<p style="color:#999;font-size:13px;font-family:system-ui;text-align:center">Preview unavailable</p>'; return; }
+        var natW  = parseFloat(svgEl.getAttribute('width'))  || 200;
+        var natH  = parseFloat(svgEl.getAttribute('height')) || 40;
+        var scale = Math.min(4.5, Math.max(1, 440 / natW));
+        var clone = svgEl.cloneNode(true);
+        clone.setAttribute('width',  Math.round(natW * scale));
+        clone.setAttribute('height', Math.round(natH * scale));
+        clone.style.display = 'block';
+        if (viewport) { viewport.innerHTML = ''; viewport.appendChild(clone); }
+      })
+      .catch(function () { if (viewport) viewport.innerHTML = '<p style="color:#999;font-size:13px;font-family:system-ui;text-align:center">Component not found</p>'; });
+  }
+
+  return { makePreviewer: makePreviewer, staticPreview: staticPreview };
 }());
+
+/* ── Buttons ──────────────────────────────────────────────────────── */
+DS.makePreviewer({
+  root: document.getElementById('cl-buttons'),
+  sel:  { family:'primary', emphasis:'bold', size:'medium', state:'default', iconOnly:'false', shape:'false' },
+  buildPath: function (s) {
+    return 'output/components/action-' + s.family
+      + '--size-'      + s.size
+      + '--emphasis-'  + s.emphasis
+      + '--state-'     + s.state
+      + '--icon-only-' + s.iconOnly
+      + '--shape-'     + (s.shape === 'true' ? 'rounded' : 'rectangle') + '.html';
+  },
+  buildLabel: function (s) {
+    return s.family + ' · ' + s.emphasis + ' · ' + s.size + ' · ' + s.state;
+  },
+  correct: function (dim, s) {
+    var msgs = [];
+    if (s.size === 'xsmall') {
+      if (s.emphasis !== 'minimal') { s.emphasis = 'minimal'; msgs.push('Emphasis → Minimal'); }
+      if (s.iconOnly !== 'true')    { s.iconOnly = 'true';    msgs.push('Icon only → on'); }
+      if (s.shape   === 'true')     { s.shape    = 'false';   msgs.push('Shape → rectangle'); }
+    } else if (s.size === 'large') {
+      if (s.iconOnly === 'true') {
+        if (dim === 'size') { s.iconOnly = 'false'; msgs.push('Icon only → off'); }
+        else                 { s.size = 'medium';   msgs.push('Size → medium'); }
+      }
+      if (s.shape === 'true') {
+        if (dim === 'size') { s.shape = 'false';  msgs.push('Shape → rectangle'); }
+        else                 { s.size = 'medium'; msgs.push('Size → medium'); }
+      }
+    } else if (s.shape === 'true' && s.iconOnly === 'false') {
+      if (dim === 'shape') { s.iconOnly = 'true';  msgs.push('Icon only → on'); }
+      else                  { s.shape   = 'false'; msgs.push('Shape → rectangle'); }
+    }
+    return msgs;
+  },
+  onRenderControls: function (s, root) {
+    var cbIO = root.querySelector('input[data-dim="iconOnly"]');
+    var cbSh = root.querySelector('input[data-dim="shape"]');
+    if (cbIO) cbIO.disabled = s.size === 'xsmall' || s.size === 'large';
+    if (cbSh) cbSh.disabled = s.size === 'xsmall' || s.size === 'large';
+  }
+});
+
+/* ── Link ─────────────────────────────────────────────────────────── */
+DS.makePreviewer({
+  root: document.getElementById('cl-link'),
+  sel:  { type:'primary', state:'default' },
+  buildPath:  function (s) { return 'output/components/link--type-' + s.type + '--state-' + s.state + '.html'; },
+  buildLabel: function (s) { return 'Link · ' + s.type + ' · ' + s.state; }
+});
+
+/* ── Avatar ───────────────────────────────────────────────────────── */
+DS.makePreviewer({
+  root: document.getElementById('cl-avatar'),
+  sel:  { size:'medium', type:'photo' },
+  buildPath:  function (s) { return 'output/components/avatar--size-' + s.size + '--type-' + s.type + '.html'; },
+  buildLabel: function (s) { return 'Avatar · ' + s.size + ' · ' + s.type; }
+});
+
+/* ── Status ───────────────────────────────────────────────────────── */
+DS.makePreviewer({
+  root: document.getElementById('cl-status'),
+  sel:  { status:'approved' },
+  buildPath:  function (s) { return 'output/components/status--status-' + s.status + '.html'; },
+  buildLabel: function (s) { return 'Status · ' + s.status; }
+});
+
+/* ── Tag ──────────────────────────────────────────────────────────── */
+DS.makePreviewer({
+  root: document.getElementById('cl-tag'),
+  sel:  { appearance:'colored', color:'blue', size:'small', slim:'false', tagtype:'danger' },
+  buildPath: function (s) {
+    if (s.appearance === 'colored') return 'output/components/tag--appearance-colored--color-' + s.color + '--size-' + s.size + '--slim-' + s.slim + '.html';
+    if (s.appearance === 'subtle')  return 'output/components/tag--appearance-subtle--color-'  + s.color + '--size-' + s.size + '--slim-false.html';
+    return 'output/components/tag--appearance-' + s.appearance + '--type-' + s.tagtype + '--size-large.html';
+  },
+  buildLabel: function (s) {
+    if (s.appearance === 'colored' || s.appearance === 'subtle') return 'Tag · ' + s.appearance + ' · ' + s.color + ' · ' + s.size;
+    return 'Tag · ' + s.appearance + ' · ' + s.tagtype;
+  },
+  correct: function (dim, s) {
+    var msgs = [];
+    if (s.appearance === 'colored' && s.slim === 'true' && s.size !== 'small') { s.slim = 'false'; msgs.push('Slim → off'); }
+    return msgs;
+  },
+  onRenderControls: function (s, root) {
+    var isCS = s.appearance === 'colored' || s.appearance === 'subtle';
+    var isFI = s.appearance === 'floating' || s.appearance === 'inline';
+    root.querySelector('[data-row="tag-color"]').style.display = isCS ? 'flex' : 'none';
+    root.querySelector('[data-row="tag-size"]').style.display  = isCS ? 'flex' : 'none';
+    root.querySelector('[data-row="tag-slim"]').style.display  = (s.appearance === 'colored' && s.size === 'small') ? 'flex' : 'none';
+    root.querySelector('[data-row="tag-type"]').style.display  = isFI ? 'flex' : 'none';
+  }
+});
+
+/* ── Progress Indicator ───────────────────────────────────────────── */
+DS.makePreviewer({
+  root: document.getElementById('cl-progress'),
+  sel:  { type:'circular', state:'not-started', location:'card' },
+  buildPath: function (s) {
+    if (s.type === 'circular') return 'output/components/progress-indicator--type-circular--state-' + s.state + '.html';
+    return 'output/components/progress-indicator--type-line--location-' + s.location + '.html';
+  },
+  buildLabel: function (s) {
+    return 'Progress · ' + s.type + (s.type === 'circular' ? ' · ' + s.state : ' · ' + s.location);
+  },
+  onRenderControls: function (s, root) {
+    root.querySelector('[data-row="progress-state"]').style.display    = s.type === 'circular' ? 'flex' : 'none';
+    root.querySelector('[data-row="progress-location"]').style.display = s.type === 'line'     ? 'flex' : 'none';
+  }
+});
+
+/* ── Column Card ──────────────────────────────────────────────────── */
+DS.makePreviewer({
+  root: document.getElementById('cl-column-card'),
+  sel:  { color:'blue', variant:'default', type:'square' },
+  buildPath: function (s) {
+    if (s.variant === 'default') return 'output/components/column-card--color-' + s.color + '.html';
+    return 'output/components/column-card--color-' + s.color + '--variant-' + s.variant + '--type-' + s.type + '.html';
+  },
+  buildLabel: function (s) {
+    return 'Column card · ' + s.color + (s.variant !== 'default' ? ' · ' + s.variant + ' · ' + s.type : '');
+  },
+  onRenderControls: function (s, root) {
+    root.querySelector('[data-row="colcard-type"]').style.display = s.variant !== 'default' ? 'flex' : 'none';
+  }
+});
+
+/* ── Input Field ──────────────────────────────────────────────────── */
+DS.makePreviewer({
+  root: document.getElementById('cl-input-field'),
+  sel:  { type:'text', size:'medium', state:'default', filled:'false' },
+  buildPath:  function (s) { return 'output/components/input-field--type-' + s.type + '--size-' + s.size + '--state-' + s.state + '--filled-' + s.filled + '.html'; },
+  buildLabel: function (s) { return 'Input · ' + s.type + ' · ' + s.size + ' · ' + s.state; }
+});
+
+/* ── Segmented Control ────────────────────────────────────────────── */
+DS.makePreviewer({
+  root: document.getElementById('cl-segmented-control'),
+  sel:  { size:'small' },
+  buildPath:  function (s) { return 'output/components/segmented-control--size-' + s.size + '.html'; },
+  buildLabel: function (s) { return 'Segmented control · ' + s.size; }
+});
+
+/* ── Tab Group ────────────────────────────────────────────────────── */
+DS.staticPreview(document.getElementById('cl-tab-group'), 'output/components/tab-group.html');
+
+/* ── Scroll Bar ───────────────────────────────────────────────────── */
+DS.makePreviewer({
+  root: document.getElementById('cl-scroll-bar'),
+  sel:  { orientation:'horizontal' },
+  buildPath:  function (s) { return 'output/components/scroll-bar--orientation-' + s.orientation + '.html'; },
+  buildLabel: function (s) { return 'Scroll bar · ' + s.orientation; }
+});
+
+/* ── Date Range Picker ────────────────────────────────────────────── */
+DS.makePreviewer({
+  root: document.getElementById('cl-date-range'),
+  sel:  { size:'desktop', state:'default' },
+  buildPath:  function (s) { return 'output/components/date-range-picker--size-' + s.size + '--state-' + s.state + '.html'; },
+  buildLabel: function (s) { return 'Date range · ' + s.size + ' · ' + s.state; }
+});
+
+/* ── Modal ────────────────────────────────────────────────────────── */
+DS.makePreviewer({
+  root: document.getElementById('cl-modal'),
+  sel:  { breakpoint:'desktop', size:'sm', viewport:'narrow' },
+  buildPath: function (s) {
+    var sz = s.size;
+    if (s.size === 'md') sz = 'md-' + (s.viewport === 'wide' ? '>712'  : '<712');
+    if (s.size === 'lg') sz = 'lg-' + (s.viewport === 'wide' ? '>1040' : '<1040');
+    return 'output/components/modal--breakpoint-' + s.breakpoint + '--size-' + sz + '--height-content-height.html';
+  },
+  buildLabel: function (s) {
+    var suf = s.size !== 'sm' ? ' · ' + (s.viewport === 'wide' ? 'wide' : 'narrow') : '';
+    return 'Modal · ' + s.breakpoint + ' · ' + s.size + suf;
+  },
+  correct: function (dim, s) {
+    var msgs = [];
+    if (s.breakpoint === 'mobile' && s.viewport === 'wide') { s.viewport = 'narrow'; msgs.push('Viewport → narrow'); }
+    return msgs;
+  },
+  onRenderControls: function (s, root) {
+    var vpRow   = root.querySelector('[data-row="modal-viewport"]');
+    var wideBtn = root.querySelector('.seg-btn[data-val="wide"]');
+    var narBtn  = root.querySelector('.seg-btn[data-val="narrow"]');
+    if (vpRow) vpRow.style.display = s.size !== 'sm' ? 'flex' : 'none';
+    if (wideBtn) { if (s.breakpoint === 'mobile') wideBtn.setAttribute('disabled',''); else wideBtn.removeAttribute('disabled'); }
+    if (narBtn)  narBtn.textContent  = s.size === 'lg' ? '< 1040px' : '< 712px';
+    if (wideBtn) wideBtn.textContent = s.size === 'lg' ? '> 1040px' : '> 712px';
+  }
+});
+
+/* ── Tooltip ──────────────────────────────────────────────────────── */
+DS.makePreviewer({
+  root: document.getElementById('cl-tooltip'),
+  sel:  { alignment:'top' },
+  buildPath:  function (s) { return 'output/components/tooltip-v02--complex-content--alignment-' + s.alignment + '.html'; },
+  buildLabel: function (s) { return 'Tooltip · ' + s.alignment; }
+});
+
+/* ── Notification ─────────────────────────────────────────────────── */
+DS.makePreviewer({
+  root: document.getElementById('cl-notification'),
+  sel:  { type:'item' },
+  buildPath:  function (s) { return s.type === 'popover' ? 'output/components/notification--popover.html' : 'output/components/notification.html'; },
+  buildLabel: function (s) { return 'Notification · ' + s.type; }
+});
+
+/* ── Popover ──────────────────────────────────────────────────────── */
+DS.staticPreview(document.getElementById('cl-popover'), 'output/components/popover.html');
+
+/* ── Data Column ──────────────────────────────────────────────────── */
+DS.makePreviewer({
+  root: document.getElementById('cl-data-column'),
+  sel:  { type:'leading', size:'default' },
+  buildPath:  function (s) { return 'output/components/data-column--type-' + s.type + '--size-' + s.size + '.html'; },
+  buildLabel: function (s) { return 'Data column · ' + s.type + ' · ' + s.size; }
+});
+
+/* ── View Switcher ────────────────────────────────────────────────── */
+DS.staticPreview(document.getElementById('cl-view-switcher'), 'output/components/view-switcher.html');
 </script>
 </body>
 </html>

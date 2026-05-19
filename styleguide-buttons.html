@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buttons — Design System</title>
+<link rel="stylesheet" href="output/tokens/tokens.css">
+<link rel="stylesheet" href="styleguide.css">
+<style>
+
+/* ── Two-column layout ─────────────────────────────────────────── */
+.config-layout {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+.config-col {
+  width: 340px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 24px;
+}
+.preview-col {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ── Configurator ──────────────────────────────────────────────── */
+.configurator {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0 24px 12px;
+  box-shadow: var(--shadow-lift);
+}
+
+.config-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border);
+}
+.config-row:first-child { padding-top: 16px; }
+.config-row:last-child  { border-bottom: none; padding-bottom: 0; }
+
+.config-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  width: 76px;
+  flex-shrink: 0;
+}
+
+.seg-group { display: flex; gap: 4px; flex-wrap: wrap; }
+
+.seg-btn {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 6px;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: border-color .1s, background .1s, color .1s;
+  white-space: nowrap;
+  line-height: 1.45;
+  user-select: none;
+}
+.seg-btn:hover:not([disabled]) {
+  border-color: var(--clay);
+  color: var(--clay);
+  background: #fef9f6;
+}
+.seg-btn.active {
+  background: var(--clay);
+  border-color: var(--clay);
+  color: #fff;
+  font-weight: 600;
+}
+.seg-btn[disabled] {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
+/* ── Type cards (Family) ───────────────────────────────────────── */
+.type-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+  padding: 10px 0 4px;
+  flex: 1;
+}
+.type-card {
+  border: 1.5px solid var(--border);
+  border-radius: 7px;
+  padding: 9px 11px 10px;
+  cursor: pointer;
+  transition: border-color .12s, box-shadow .12s;
+  background: var(--surface);
+  user-select: none;
+}
+.type-card:hover:not([disabled]) { border-color: var(--clay); }
+.type-card.active {
+  border-color: var(--clay);
+  box-shadow: 0 0 0 3px rgba(217,119,87,.12);
+}
+.type-card[disabled] { opacity: 0.25; cursor: not-allowed; }
+.type-card-label {
+  display: block;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+/* ── Options toggles ───────────────────────────────────────────── */
+.options-list { display: flex; flex-direction: column; flex: 1; }
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 0;
+  cursor: pointer;
+  gap: 12px;
+}
+.toggle-row-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  flex: 1;
+}
+.toggle-switch { position: relative; flex-shrink: 0; }
+.toggle-switch input {
+  position: absolute; opacity: 0; width: 0; height: 0; pointer-events: none;
+}
+.toggle-track {
+  display: block;
+  width: 34px; height: 19px;
+  border-radius: 10px;
+  background: var(--border);
+  position: relative;
+  transition: background .15s;
+}
+.toggle-track::after {
+  content: '';
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 15px; height: 15px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,.25);
+  transition: transform .15s;
+}
+.toggle-switch input:checked ~ .toggle-track { background: var(--clay); }
+.toggle-switch input:checked ~ .toggle-track::after { transform: translateX(15px); }
+.toggle-switch input:disabled ~ .toggle-track { opacity: 0.3; cursor: not-allowed; }
+
+/* ── Preview ───────────────────────────────────────────────────── */
+.preview-section { margin-bottom: 32px; }
+
+.preview-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.preview-viewport {
+  background-color: #f0f0f0;
+  background-image:
+    linear-gradient(45deg, #e3e3e3 25%, transparent 25%),
+    linear-gradient(-45deg, #e3e3e3 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #e3e3e3 75%),
+    linear-gradient(-45deg, transparent 75%, #e3e3e3 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  border-bottom: 1.5px solid var(--border);
+  transition: opacity .12s ease;
+}
+.preview-viewport.loading { opacity: 0.3; }
+
+.preview-footer {
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.preview-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+.preview-open {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--text-faint);
+  text-decoration: none;
+  transition: color .12s;
+  flex-shrink: 0;
+}
+.preview-open:hover { color: var(--clay); }
+
+/* ── Dev info panel ───────────────────────────────────────────── */
+.dev-panel {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  margin-bottom: 72px;
+}
+
+.dev-row {
+  display: flex;
+  align-items: stretch;
+  border-bottom: 1px solid var(--border);
+}
+.dev-row:last-child { border-bottom: none; }
+
+.dev-row-label {
+  font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  width: 110px;
+  flex-shrink: 0;
+  padding: 16px;
+  border-right: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+}
+
+.dev-row-body {
+  padding: 13px 18px;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Property chips */
+.dev-props { display: flex; flex-wrap: wrap; gap: 5px 20px; }
+.dev-prop  { display: flex; align-items: baseline; gap: 5px; }
+.dev-prop-key {
+  font-size: 11px;
+  color: var(--text-faint);
+}
+.dev-prop-val {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* Dimensions */
+.dev-dims {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.6;
+}
+
+/* Token chips */
+.dev-tokens { display: flex; flex-direction: column; gap: 10px; }
+.dev-token-group { display: flex; flex-direction: column; gap: 4px; }
+.dev-token-sublabel {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+.dev-token-chip {
+  display: inline-flex;
+  align-items: center;
+  font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+  font-size: 11px;
+  color: var(--clay);
+  background: #fef9f6;
+  border: 1px solid #f0ddd3;
+  border-radius: 4px;
+  padding: 3px 8px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Embed row */
+.dev-embed-row { display: flex; align-items: center; gap: 12px; }
+.dev-embed-snippet {
+  font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+  font-size: 11px;
+  color: var(--text-muted);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dev-copy-btn {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 5px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: border-color .12s, color .12s, background .12s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.dev-copy-btn:hover  { border-color: var(--clay); color: var(--clay); }
+.dev-copy-btn.copied { background: var(--clay); border-color: var(--clay); color: #fff; }
+
+/* Collapsible toggle */
+.dev-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 18px;
+  cursor: pointer;
+  user-select: none;
+  border-bottom: 1px solid var(--border);
+  transition: background .1s;
+}
+.dev-toggle:hover { background: var(--bg); }
+.dev-toggle-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+.dev-toggle-chevron {
+  transition: transform .2s ease;
+  color: var(--text-faint);
+  flex-shrink: 0;
+}
+.dev-panel.collapsed .dev-toggle-chevron { transform: rotate(-90deg); }
+.dev-panel.collapsed .dev-body { display: none; }
+.dev-panel.collapsed .dev-toggle { border-bottom: none; }
+
+/* ── Constraint notice ─────────────────────────────────────────── */
+.notice {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-faint);
+  padding: 8px 14px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+.notice-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--clay);
+  flex-shrink: 0;
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<!-- ─── Sidebar ─────────────────────────────────────────────────── -->
+<aside class="sidebar">
+  <a href="styleguide.html" class="sidebar-brand">
+    <div class="sidebar-logo">Design System</div>
+    <div class="sidebar-sub">Living Style Guide</div>
+  </a>
+  <div class="sidebar-section">Overview</div>
+  <a href="styleguide.html">Summary</a>
+  <div class="sidebar-section">Foundations</div>
+  <a href="styleguide-colors.html">Colors</a>
+  <a href="styleguide-typography.html">Typography</a>
+  <a href="styleguide-shadows.html">Shadows</a>
+  <a href="styleguide-spacing.html">Spacing</a>
+  <a href="styleguide-iconography.html">Iconography</a>
+  <div class="sidebar-section">Components</div>
+  <a href="styleguide-components.html" class="active">Main Components</a>
+  <a href="styleguide-patterns.html">Patterns</a>
+  <div class="sidebar-section">Guidelines</div>
+  <a href="styleguide-guidelines.html">Guidelines</a>
+  <div class="sidebar-section">Templates</div>
+  <a href="styleguide-templates.html">Templates</a>
+  <div class="sidebar-stat">
+    <p><strong>1,140</strong> components</p>
+    <p><strong>429</strong> icons</p>
+    <p><strong>74</strong> design tokens</p>
+  </div>
+</aside>
+
+<!-- ─── Main ────────────────────────────────────────────────────── -->
+<main class="main">
+
+  <div class="page-header">
+    <div class="page-decoration"></div>
+    <div class="page-header-eyebrow">Components → Micro · Atoms</div>
+    <h1>Buttons</h1>
+  </div>
+
+  <div class="config-layout">
+
+  <!-- ─── Left: Configurator ───────────────────────────────────── -->
+  <div class="config-col">
+  <div class="configurator" id="configurator">
+
+    <div class="config-row" style="align-items:flex-start">
+      <span class="config-label" style="padding-top:13px">Family</span>
+      <div class="type-grid" data-dim="family">
+
+        <div class="type-card active" data-val="primary"><span class="type-card-label">Primary</span></div>
+        <div class="type-card" data-val="secondary"><span class="type-card-label">Secondary</span></div>
+        <div class="type-card" data-val="danger"><span class="type-card-label">Danger</span></div>
+        <div class="type-card" data-val="success"><span class="type-card-label">Success</span></div>
+        <div class="type-card" data-val="warning"><span class="type-card-label">Warning</span></div>
+
+      </div>
+    </div>
+
+    <div class="config-row">
+      <span class="config-label">Emphasis</span>
+      <div class="seg-group" data-dim="emphasis">
+        <button class="seg-btn active" data-val="bold">Bold</button>
+        <button class="seg-btn"        data-val="subtle">Subtle</button>
+        <button class="seg-btn"        data-val="minimal">Minimal</button>
+      </div>
+    </div>
+
+    <div class="config-row">
+      <span class="config-label">Size</span>
+      <div class="seg-group" data-dim="size">
+        <button class="seg-btn"        data-val="small">S — 32px</button>
+        <button class="seg-btn active" data-val="medium">M — 36px</button>
+        <button class="seg-btn"        data-val="large">L — 40px</button>
+      </div>
+    </div>
+
+    <div class="config-row">
+      <span class="config-label">State</span>
+      <div class="seg-group" data-dim="state">
+        <button class="seg-btn active" data-val="default">Default</button>
+        <button class="seg-btn"        data-val="hover">Hover</button>
+        <button class="seg-btn"        data-val="active">Active</button>
+        <button class="seg-btn"        data-val="pressed">Pressed</button>
+        <button class="seg-btn"        data-val="focused">Focused</button>
+        <button class="seg-btn"        data-val="disabled">Disabled</button>
+      </div>
+    </div>
+
+    <div class="config-row" style="align-items:flex-start">
+      <span class="config-label" style="padding-top:7px">Options</span>
+      <div class="options-list">
+        <label class="toggle-row">
+          <span class="toggle-row-label">Icon only</span>
+          <div class="toggle-switch">
+            <input type="checkbox" id="cb-icon-only">
+            <span class="toggle-track"></span>
+          </div>
+        </label>
+        <label class="toggle-row">
+          <span class="toggle-row-label">Round shape</span>
+          <div class="toggle-switch">
+            <input type="checkbox" id="cb-shape">
+            <span class="toggle-track"></span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+  </div>
+  </div><!-- end config-col -->
+
+  <!-- ─── Right: Preview + Dev panel ──────────────────────────── -->
+  <div class="preview-col">
+
+  <!-- ─── Constraint notice (shown when auto-correction happened) ─── -->
+  <div class="notice" id="constraint-notice" style="display:none">
+    <span class="notice-dot"></span>
+    <span id="constraint-msg">Some properties were adjusted to match valid combinations.</span>
+  </div>
+
+  <!-- ─── Preview ───────────────────────────────────────────────── -->
+  <div class="preview-section">
+    <div class="preview-card">
+      <div class="preview-viewport" id="preview-viewport">
+        <!-- SVG injected here by JS -->
+      </div>
+      <div class="preview-footer">
+        <span class="preview-name" id="preview-name">Primary · Bold · Medium · Default · Label + icon · Rectangle</span>
+        <a class="preview-open" id="preview-link" href="#" target="_blank">
+          Open file
+          <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H4M9 2v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Dev info panel ──────────────────────────────────────────── -->
+  <div class="dev-panel" id="dev-panel">
+
+    <div class="dev-toggle" id="dev-toggle">
+      <span class="dev-toggle-label">Component info</span>
+      <svg class="dev-toggle-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M3 5L7 9L11 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <div class="dev-body">
+
+    <div class="dev-row">
+      <span class="dev-row-label">Properties</span>
+      <div class="dev-row-body">
+        <div class="dev-props" id="dev-props"><!-- populated by JS --></div>
+      </div>
+    </div>
+
+    <div class="dev-row">
+      <span class="dev-row-label">Dimensions</span>
+      <div class="dev-row-body">
+        <span class="dev-dims" id="dev-dims">—</span>
+      </div>
+    </div>
+
+    <div class="dev-row">
+      <span class="dev-row-label">Tokens</span>
+      <div class="dev-row-body">
+        <div class="dev-tokens">
+          <div class="dev-token-group">
+            <span class="dev-token-sublabel">Background</span>
+            <span class="dev-token-chip" id="dev-token-bg">—</span>
+          </div>
+          <div class="dev-token-group">
+            <span class="dev-token-sublabel">Border radius</span>
+            <span class="dev-token-chip" id="dev-token-radius">—</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dev-row">
+      <span class="dev-row-label">Embed</span>
+      <div class="dev-row-body">
+        <div class="dev-embed-row">
+          <span class="dev-embed-snippet" id="dev-embed">—</span>
+          <button class="dev-copy-btn" id="dev-copy-btn">Copy</button>
+        </div>
+      </div>
+    </div>
+
+    </div><!-- end dev-body -->
+  </div>
+
+  </div><!-- end preview-col -->
+  </div><!-- end config-layout -->
+
+</main>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  // ── Current selection ──────────────────────────────────────────
+  var sel = {
+    family:   'primary',
+    emphasis: 'bold',
+    size:     'medium',
+    state:    'default',
+    iconOnly: 'false',
+    shape:    'rectangle'
+  };
+
+  // ── Constraint check ───────────────────────────────────────────
+  // Returns true if the combination of (size, emphasis, iconOnly, shape) exists as a file.
+  // family and state have no constraints between each other or other dims.
+  function isValid(size, emphasis, iconOnly, shape) {
+    if (size === 'large') {
+      // large: no icon-only=true, no rounded
+      if (iconOnly === 'true') return false;
+      if (shape === 'rounded') return false;
+    }
+    if (shape === 'rounded') {
+      // rounded: only small or medium, only icon-only=true
+      if (size !== 'small' && size !== 'medium') return false;
+      if (iconOnly === 'false') return false;
+    }
+    return true;
+  }
+
+  // ── Auto-correct after a dimension change ──────────────────────
+  // Respects the user's intent for changedDim; cascades to other dims.
+  function correct(changedDim) {
+    if (isValid(sel.size, sel.emphasis, sel.iconOnly, sel.shape)) return false;
+
+    var corrected = [];
+
+    // large + icon-only=true conflict
+    if (sel.size === 'large' && sel.iconOnly === 'true') {
+      if (changedDim === 'size') { sel.iconOnly = 'false'; corrected.push('icon-only → false'); }
+      else                       { sel.size = 'medium';   corrected.push('size → medium'); }
+    }
+
+    // large + rounded conflict
+    if (sel.size === 'large' && sel.shape === 'rounded') {
+      if (changedDim === 'size') { sel.shape = 'rectangle'; corrected.push('shape → rectangle'); }
+      else                       { sel.size = 'medium';     corrected.push('size → medium'); }
+    }
+
+    // rounded + icon-only=false conflict
+    if (sel.shape === 'rounded' && sel.iconOnly === 'false') {
+      if (changedDim === 'shape') { sel.iconOnly = 'true';       corrected.push('icon-only → true'); }
+      else                        { sel.shape = 'rectangle';     corrected.push('shape → rectangle'); }
+    }
+
+    // rounded + non-small/medium size (shouldn't reach here after above, but safety)
+    if (sel.shape === 'rounded' && sel.size !== 'small' && sel.size !== 'medium') {
+      sel.size = 'medium';
+      corrected.push('size → medium');
+    }
+
+    return corrected.length > 0;
+  }
+
+  // ── Build file path ────────────────────────────────────────────
+  function buildPath() {
+    return 'output/components/action-' + sel.family +
+      '--size-'      + sel.size      +
+      '--emphasis-'  + sel.emphasis  +
+      '--state-'     + sel.state     +
+      '--icon-only-' + sel.iconOnly  +
+      '--shape-'     + sel.shape     + '.html';
+  }
+
+  // ── Human-readable label ───────────────────────────────────────
+  function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+  function buildLabel() {
+    var io = sel.iconOnly === 'true' ? 'Icon only' : 'Label + icon';
+    return [cap(sel.family), cap(sel.emphasis), cap(sel.size), cap(sel.state), io, cap(sel.shape)].join(' · ');
+  }
+
+  // ── DOM refs ───────────────────────────────────────────────────
+  var viewport    = document.getElementById('preview-viewport');
+  var nameEl      = document.getElementById('preview-name');
+  var linkEl      = document.getElementById('preview-link');
+  var noticeEl    = document.getElementById('constraint-notice');
+  var noticeMsgEl = document.getElementById('constraint-msg');
+
+  // Toggle refs
+  var cbIconOnly = document.getElementById('cb-icon-only');
+  var cbShape    = document.getElementById('cb-shape');
+
+  // Dev panel refs
+  var devPropsEl  = document.getElementById('dev-props');
+  var devDimsEl   = document.getElementById('dev-dims');
+  var devBgEl     = document.getElementById('dev-token-bg');
+  var devRadEl    = document.getElementById('dev-token-radius');
+  var devEmbedEl  = document.getElementById('dev-embed');
+  var devCopyBtn  = document.getElementById('dev-copy-btn');
+  var embedStr    = '';
+
+  // ── Build dev panel ────────────────────────────────────────────
+  function buildDevInfo(w, h, doc) {
+    // Properties — parse figma-name meta tag
+    var metaEl = doc.querySelector('meta[name="figma-name"]');
+    devPropsEl.innerHTML = '';
+    if (metaEl) {
+      metaEl.getAttribute('content').split(', ').forEach(function (pair) {
+        var idx = pair.indexOf('=');
+        if (idx < 0) return;
+        var key = pair.slice(0, idx).trim();
+        var val = pair.slice(idx + 1).trim();
+        var chip = document.createElement('span');
+        chip.className = 'dev-prop';
+        chip.innerHTML = '<span class="dev-prop-key">' + key + '</span>'
+                       + '<span class="dev-prop-val">' + val + '</span>';
+        devPropsEl.appendChild(chip);
+      });
+    }
+
+    // Dimensions
+    devDimsEl.textContent = w + ' × ' + h + ' px';
+
+    // Background token (Figma pattern: --Button-{Family}-{Emphasis}-button-{family}-{state})
+    devBgEl.textContent = '--Button-' + cap(sel.family) + '-' + cap(sel.emphasis)
+                        + '-button-' + sel.family + '-' + sel.state;
+
+    // Border radius token
+    var radMap = { small: '--radius-sm-6', medium: '--radius-md-8', large: '--radius-lg-12' };
+    devRadEl.textContent = sel.shape === 'rounded'
+      ? '--radius-full'
+      : (radMap[sel.size] || '--radius-md-8');
+
+    // Embed snippet
+    embedStr = '<iframe src="' + buildPath() + '" width="' + w + '" height="' + h + '" scrolling="no"></iframe>';
+    devEmbedEl.textContent = embedStr;
+  }
+
+  // ── Refresh preview ────────────────────────────────────────────
+  var currentPath = '';
+
+  function refresh() {
+    var path = buildPath();
+    if (path === currentPath) return;  // no change
+    currentPath = path;
+
+    viewport.classList.add('loading');
+    linkEl.href        = path;
+    nameEl.textContent = buildLabel();
+
+    fetch(path)
+      .then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.text();
+      })
+      .then(function (html) {
+        var parser = new DOMParser();
+        var doc    = parser.parseFromString(html, 'text/html');
+        var svgEl  = doc.querySelector('.checker > svg') || doc.querySelector('svg');
+
+        if (!svgEl) {
+          viewport.innerHTML = '<p style="color:#999;font-size:13px;font-family:system-ui">Preview unavailable</p>';
+          viewport.classList.remove('loading');
+          return;
+        }
+
+        // Scale SVG up for comfortable viewing
+        var natW  = parseFloat(svgEl.getAttribute('width'))  || 200;
+        var natH  = parseFloat(svgEl.getAttribute('height')) || 40;
+        var scale = Math.min(4.5, Math.max(1, 440 / natW));
+        var dispW = Math.round(natW * scale);
+        var dispH = Math.round(natH * scale);
+
+        // Clone to avoid mutating parsed doc
+        var clone = svgEl.cloneNode(true);
+        clone.setAttribute('width',  dispW);
+        clone.setAttribute('height', dispH);
+        clone.style.display = 'block';
+
+        viewport.innerHTML = '';
+        viewport.appendChild(clone);
+        viewport.classList.remove('loading');
+
+        // Populate dev panel
+        buildDevInfo(natW, natH, doc);
+      })
+      .catch(function (err) {
+        viewport.innerHTML = '<p style="color:#999;font-size:13px;font-family:system-ui">Component not found<br><small style="opacity:.6">' + buildPath() + '</small></p>';
+        viewport.classList.remove('loading');
+      });
+  }
+
+  // ── Update all control states ──────────────────────────────────
+  function renderControls() {
+    // Segmented buttons: emphasis, size, state
+    document.querySelectorAll('.seg-group').forEach(function (group) {
+      var dim = group.getAttribute('data-dim');
+      group.querySelectorAll('.seg-btn').forEach(function (btn) {
+        var val = btn.getAttribute('data-val');
+        btn.classList.toggle('active', sel[dim] === val);
+        if (dim === 'state') { btn.removeAttribute('disabled'); return; }
+        var testSize     = dim === 'size'     ? val : sel.size;
+        var testEmphasis = dim === 'emphasis' ? val : sel.emphasis;
+        if (isValid(testSize, testEmphasis, sel.iconOnly, sel.shape)) {
+          btn.removeAttribute('disabled');
+        } else {
+          btn.setAttribute('disabled', '');
+        }
+      });
+    });
+
+    // Type cards: family (never constrained)
+    document.querySelectorAll('.type-card').forEach(function (card) {
+      card.classList.toggle('active', sel.family === card.getAttribute('data-val'));
+      card.removeAttribute('disabled');
+    });
+
+    // Toggles: reflect state + disable when size forces a value
+    cbIconOnly.checked  = sel.iconOnly === 'true';
+    cbShape.checked     = sel.shape    === 'rounded';
+    cbIconOnly.disabled = sel.size === 'large';
+    cbShape.disabled    = sel.size === 'large';
+  }
+
+  // ── Event listeners ────────────────────────────────────────────
+
+  // Segmented buttons (emphasis, size, state)
+  document.querySelectorAll('.seg-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      if (btn.hasAttribute('disabled')) return;
+      var dim    = btn.closest('.seg-group').getAttribute('data-dim');
+      var before = Object.assign({}, sel);
+      sel[dim]   = btn.getAttribute('data-val');
+      var corrected = correct(dim);
+      if (corrected) {
+        var changes = [];
+        if (sel.emphasis !== before.emphasis) changes.push('Emphasis → ' + cap(sel.emphasis));
+        if (sel.iconOnly !== before.iconOnly) changes.push('Icon only → ' + (sel.iconOnly === 'true' ? 'on' : 'off'));
+        if (sel.shape    !== before.shape)    changes.push('Shape → ' + cap(sel.shape));
+        if (sel.size     !== before.size)     changes.push('Size → ' + cap(sel.size));
+        noticeMsgEl.textContent = 'Auto-adjusted: ' + changes.join(' · ');
+        noticeEl.style.display = 'inline-flex';
+      } else {
+        noticeEl.style.display = 'none';
+      }
+      renderControls();
+      refresh();
+    });
+  });
+
+  // Type cards (family)
+  document.querySelectorAll('.type-card').forEach(function (card) {
+    card.addEventListener('click', function () {
+      if (card.hasAttribute('disabled')) return;
+      sel.family = card.getAttribute('data-val');
+      noticeEl.style.display = 'none';
+      renderControls();
+      refresh();
+    });
+  });
+
+  // Toggle: icon only
+  cbIconOnly.addEventListener('change', function () {
+    var before = Object.assign({}, sel);
+    sel.iconOnly = cbIconOnly.checked ? 'true' : 'false';
+    var corrected = correct('iconOnly');
+    if (corrected) {
+      var changes = [];
+      if (sel.shape !== before.shape) changes.push('Shape → ' + cap(sel.shape));
+      if (sel.size  !== before.size)  changes.push('Size → ' + cap(sel.size));
+      noticeMsgEl.textContent = 'Auto-adjusted: ' + changes.join(' · ');
+      noticeEl.style.display = 'inline-flex';
+    } else {
+      noticeEl.style.display = 'none';
+    }
+    renderControls();
+    refresh();
+  });
+
+  // Toggle: shape
+  cbShape.addEventListener('change', function () {
+    var before = Object.assign({}, sel);
+    sel.shape = cbShape.checked ? 'rounded' : 'rectangle';
+    var corrected = correct('shape');
+    if (corrected) {
+      var changes = [];
+      if (sel.iconOnly !== before.iconOnly) changes.push('Icon only → ' + (sel.iconOnly === 'true' ? 'on' : 'off'));
+      if (sel.size     !== before.size)     changes.push('Size → ' + cap(sel.size));
+      noticeMsgEl.textContent = 'Auto-adjusted: ' + changes.join(' · ');
+      noticeEl.style.display = 'inline-flex';
+    } else {
+      noticeEl.style.display = 'none';
+    }
+    renderControls();
+    refresh();
+  });
+
+  // ── Dev panel collapse toggle ──────────────────────────────────
+  document.getElementById('dev-toggle').addEventListener('click', function () {
+    document.getElementById('dev-panel').classList.toggle('collapsed');
+  });
+
+  // ── Copy embed snippet ─────────────────────────────────────────
+  devCopyBtn.addEventListener('click', function () {
+    if (!embedStr) return;
+    navigator.clipboard.writeText(embedStr).then(function () {
+      devCopyBtn.textContent = 'Copied!';
+      devCopyBtn.classList.add('copied');
+      setTimeout(function () {
+        devCopyBtn.textContent = 'Copy';
+        devCopyBtn.classList.remove('copied');
+      }, 1500);
+    });
+  });
+
+  // ── Init ───────────────────────────────────────────────────────
+  renderControls();
+  refresh();
+
+}());
+</script>
+</body>
+</html>

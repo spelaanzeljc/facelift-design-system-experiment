@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design System — Guidelines</title>
+<link rel="stylesheet" href="output/tokens/tokens.css">
+<link rel="stylesheet" href="styleguide.css">
+</head>
+<body>
+<div class="layout">
+
+<aside class="sidebar">
+  <a href="styleguide.html" class="sidebar-brand">
+    <div class="sidebar-logo">Design System</div>
+    <div class="sidebar-sub">Living Style Guide</div>
+  </a>
+  <div class="sidebar-section">Overview</div>
+  <a href="styleguide.html">Summary</a>
+  <div class="sidebar-section">Foundations</div>
+  <a href="styleguide-colors.html">Colors</a>
+  <a href="styleguide-typography.html">Typography</a>
+  <a href="styleguide-shadows.html">Shadows</a>
+  <a href="styleguide-spacing.html">Spacing</a>
+  <a href="styleguide-iconography.html">Iconography</a>
+  <div class="sidebar-section">Components</div>
+  <a href="styleguide-components.html">Main Components</a>
+  <a href="styleguide-patterns.html">Patterns</a>
+  <div class="sidebar-section">Guidelines</div>
+  <a href="styleguide-guidelines.html" class="active">Guidelines</a>
+  <div class="sidebar-section">Templates</div>
+  <a href="styleguide-templates.html">Templates</a>
+  <div class="sidebar-stat">
+    <p><strong>1,140</strong> components</p>
+    <p><strong>429</strong> icons</p>
+    <p><strong>74</strong> design tokens</p>
+  </div>
+</aside>
+
+<main class="main">
+
+  <div class="page-header">
+    <div class="page-decoration"></div>
+    <div class="page-header-eyebrow">Guidelines</div>
+    <h1>Guidelines</h1>
+    <p class="page-header-desc">Usage principles, accessibility standards, and design decisions that govern how the system is applied.</p>
+  </div>
+
+  <section class="section">
+    <div class="section-header">
+      <h2>Core Principles</h2>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:32px;">
+      <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:20px;">
+        <div style="font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--sys-primary-default);margin-bottom:8px;">Tokens First</div>
+        <p style="font-size:13px;line-height:1.6;color:var(--text);margin:0;">Every colour, size, and shadow must reference a <code>--token</code> from <code>tokens.css</code>. Never write raw hex, rgba, or hardcoded pixel values for design properties.</p>
+      </div>
+      <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:20px;">
+        <div style="font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--sys-primary-default);margin-bottom:8px;">Components Before Custom</div>
+        <p style="font-size:13px;line-height:1.6;color:var(--text);margin:0;">Before writing any UI element, check <code>output/components/</code> for a matching family. Only build custom if no match exists. Mirror the component's exact dimensions and markup structure.</p>
+      </div>
+      <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:20px;">
+        <div style="font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--sys-primary-default);margin-bottom:8px;">Semantic Tokens</div>
+        <p style="font-size:13px;line-height:1.6;color:var(--text);margin:0;">Always prefer semantic tokens (<code>--sys-primary-default</code>, <code>--sys-text-primary</code>) over reference palette tokens (<code>--blue-500</code>, <code>--grey-900</code>). Use reference tokens only when no semantic alias exists.</p>
+      </div>
+      <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:20px;">
+        <div style="font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--sys-primary-default);margin-bottom:8px;">State Defaults</div>
+        <p style="font-size:13px;line-height:1.6;color:var(--text);margin:0;">Use the <code>state-default</code> variant as the base. Layer hover, focus, active, and disabled states via CSS on top — don't load separate component files per state at runtime.</p>
+      </div>
+      <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:20px;">
+        <div style="font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--sys-primary-default);margin-bottom:8px;">Type Scale</div>
+        <p style="font-size:13px;line-height:1.6;color:var(--text);margin:0;">Use the BB Update body/heading scale (Helvetica Neue) for all in-app UI. Reserve the Lota Grotesque display scale exclusively for marketing or hero sections. Never mix the two within the same UI context.</p>
+      </div>
+      <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:20px;">
+        <div style="font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--sys-primary-default);margin-bottom:8px;">Icon Sizing</div>
+        <p style="font-size:13px;line-height:1.6;color:var(--text);margin:0;">All icons are designed on a 20×20 or 24×24 grid. Default to 20px. Check the surrounding component's HTML file to confirm the intended size before placing an icon.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <h2>Colour Usage</h2>
+    </div>
+    <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-card);">
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <thead>
+          <tr>
+            <th style="text-align:left;padding:10px 20px;background:var(--bg);border-bottom:1.5px solid var(--border);font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--text-faint);">Situation</th>
+            <th style="text-align:left;padding:10px 20px;background:var(--bg);border-bottom:1.5px solid var(--border);font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--text-faint);">Token to use</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:10px 20px;">Primary CTA, links, active states</td><td style="padding:10px 20px;font-family:monospace;font-size:12px;">--sys-primary-default</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:10px 20px;">Default body text</td><td style="padding:10px 20px;font-family:monospace;font-size:12px;">--sys-text-primary</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:10px 20px;">Muted / supporting text</td><td style="padding:10px 20px;font-family:monospace;font-size:12px;">--sys-text-secondary</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:10px 20px;">Page / panel background</td><td style="padding:10px 20px;font-family:monospace;font-size:12px;">--sys-background-base</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:10px 20px;">Subtle tinted surface</td><td style="padding:10px 20px;font-family:monospace;font-size:12px;">--sys-background-neutral</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:10px 20px;">Default input / container border</td><td style="padding:10px 20px;font-family:monospace;font-size:12px;">--sys-border-base</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:10px 20px;">Focus ring</td><td style="padding:10px 20px;font-family:monospace;font-size:12px;">--sys-border-focus</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:10px 20px;">Success feedback</td><td style="padding:10px 20px;font-family:monospace;font-size:12px;">--sys-success-default / --sys-success-content</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:10px 20px;">Warning feedback</td><td style="padding:10px 20px;font-family:monospace;font-size:12px;">--sys-warning-default / --sys-warning-content</td></tr>
+          <tr><td style="padding:10px 20px;">Danger / destructive feedback</td><td style="padding:10px 20px;font-family:monospace;font-size:12px;">--sys-danger-default / --sys-danger-content</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <h2>Accessibility</h2>
+    </div>
+    <div style="display:grid;gap:12px;">
+      <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px 20px;">
+        <strong style="font-size:13px;">Colour contrast:</strong>
+        <span style="font-size:13px;color:var(--text-secondary);margin-left:6px;">All text on light backgrounds must meet WCAG AA (4.5:1 for normal text, 3:1 for large text). Use <code>--sys-text-primary</code> on <code>--sys-background-base</code> as the default pairing.</span>
+      </div>
+      <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px 20px;">
+        <strong style="font-size:13px;">Focus states:</strong>
+        <span style="font-size:13px;color:var(--text-secondary);margin-left:6px;">Every interactive element must have a visible focus ring using <code>--sys-border-focus</code>. Never suppress <code>outline</code> without a CSS-based replacement.</span>
+      </div>
+      <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px 20px;">
+        <strong style="font-size:13px;">Icon-only buttons:</strong>
+        <span style="font-size:13px;color:var(--text-secondary);margin-left:6px;">Always include an <code>aria-label</code> or visually hidden label. Never rely on a tooltip as the only label for an action.</span>
+      </div>
+      <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px 20px;">
+        <strong style="font-size:13px;">Motion:</strong>
+        <span style="font-size:13px;color:var(--text-secondary);margin-left:6px;">Respect <code>prefers-reduced-motion</code>. Wrap non-essential transitions and animations in a media query and disable them when the user has requested reduced motion.</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <h2>Coming Soon</h2>
+    </div>
+    <p style="font-size:14px;color:var(--text-secondary);">Additional guidelines covering responsive breakpoints, content tone &amp; voice, form validation patterns, and loading states are in progress.</p>
+  </section>
+
+</main>
+</div>
+</body>
+</html>
