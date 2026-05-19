@@ -19,7 +19,10 @@ body{
 /* ── App shell ── */
 .app{display:flex;flex-direction:column;height:100vh}
 
-/* ── Header ── */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   APP HEADER
+   H=44px, bg=grey-900 (matches navigation-bar component)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .app-header{
   height:44px;
   background:var(--grey-900);
@@ -36,14 +39,11 @@ body{
   color:var(--grey-white);
   letter-spacing:-.3px;
   margin-right:24px;
-  font-style:italic
+  font-style:italic;
+  user-select:none
 }
-.header-nav{
-  display:flex;
-  align-items:center;
-  gap:2px;
-  flex:1
-}
+/* nav pills — matches tab-group component: active bg=grey-900, inactive=alpha-grey-8, rounded=6px */
+.header-nav{display:flex;align-items:center;gap:2px;flex:1}
 .nav-pill{
   padding:5px 12px;
   font-size:13px;
@@ -56,13 +56,15 @@ body{
   font-family:inherit;
   transition:background .15s,color .15s
 }
-.nav-pill:hover{color:var(--grey-white)}
+.nav-pill:hover{color:var(--grey-white);background:var(--alpha-white-16)}
 .nav-pill.active{
   background:var(--sys-primary-default);
   color:var(--grey-white);
   font-weight:600
 }
 .header-right{display:flex;align-items:center;gap:8px}
+
+/* AI Agent toggle — violet treatment per Facelift AI pattern */
 .ai-toggle-btn{
   display:flex;
   align-items:center;
@@ -80,10 +82,16 @@ body{
 }
 .ai-toggle-btn:hover{background:var(--violet-200)}
 
-/* ── App body ── */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   APP BODY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .app-body{display:flex;flex:1;overflow:hidden}
 
-/* ── Inbox sidebar ── */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   INBOX SIDEBAR  220px dark
+   Matches section-item component pattern:
+   item h=32px, hover bg=alpha-white-16, radius=6px
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .inbox-sidebar{
   width:220px;
   background:var(--grey-900);
@@ -95,6 +103,8 @@ body{
   padding:8px 0 12px
 }
 .inbox-sidebar::-webkit-scrollbar{width:0}
+
+/* section-header component: uppercase label, 10px, letter-spacing */
 .sidebar-section-label{
   font-size:10px;
   font-weight:700;
@@ -103,6 +113,8 @@ body{
   color:var(--grey-600);
   padding:12px 12px 6px
 }
+
+/* section-item: h=32px, px=12px, radius=6px, color=grey-400 default */
 .sidebar-item{
   height:32px;
   padding:0 12px;
@@ -118,22 +130,26 @@ body{
 .sidebar-item:hover{background:var(--alpha-white-16);color:var(--grey-300)}
 .sidebar-item.active{background:var(--alpha-white-16);color:var(--grey-white)}
 .sidebar-item-name{flex:1}
+
+/* badge count — matches badge component: pill, font-weight 600 */
 .sidebar-count{
   font-size:11px;
   font-weight:600;
   background:var(--alpha-white-16);
   color:var(--grey-500);
   border-radius:1024px;
-  padding:1px 6px;
+  padding:1px 7px;
   min-width:20px;
   text-align:center
 }
-.sidebar-count.red{
+.sidebar-count.danger{
   background:var(--sys-danger-default);
   color:var(--sys-danger-content)
 }
 
-/* ── Feed panel ── */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   FEED PANEL  flex:1
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .feed-panel{
   flex:1;
   background:var(--sys-background-base);
@@ -142,6 +158,8 @@ body{
   flex-direction:column;
   min-width:0
 }
+
+/* Feed header row */
 .feed-header{
   height:48px;
   display:flex;
@@ -151,7 +169,31 @@ body{
   border-bottom:1px solid var(--sys-border-soft);
   flex-shrink:0
 }
+/* checkbox in feed header — matches checkbox component: 16×16, border grey-300, radius 4px */
+.feed-header-checkbox{
+  width:16px;
+  height:16px;
+  border:1.5px solid var(--sys-border-bold);
+  border-radius:4px;
+  flex-shrink:0;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--sys-background-base);
+  transition:background .1s,border-color .1s
+}
+.feed-header-checkbox.checked{
+  background:var(--sys-primary-default);
+  border-color:var(--sys-primary-default)
+}
+.feed-header-checkbox.indeterminate{
+  background:var(--sys-primary-default);
+  border-color:var(--sys-primary-default)
+}
 .feed-title{font-size:15px;font-weight:700;color:var(--sys-text-primary)}
+
+/* count badge — matches badge component */
 .count-badge{
   background:var(--sys-background-neutral);
   color:var(--sys-text-secondary);
@@ -162,6 +204,8 @@ body{
   border:1px solid var(--sys-border-soft)
 }
 .feed-header-spacer{flex:1}
+
+/* icon-btn-sm — matches action-secondary icon-only component: 28×28, radius 6px */
 .icon-btn-sm{
   width:28px;
   height:28px;
@@ -172,28 +216,151 @@ body{
   cursor:pointer;
   color:var(--sys-text-secondary);
   background:none;
-  border:none
+  border:none;
+  transition:background .1s,color .1s
 }
-.icon-btn-sm:hover{background:var(--sys-background-neutral)}
+.icon-btn-sm:hover{background:var(--sys-background-neutral);color:var(--sys-text-primary)}
+.icon-btn-sm.active{background:var(--sys-primary-subtle-hover);color:var(--sys-primary-default)}
 .icon-btn-sm svg{width:16px;height:16px}
 
-.feed-list{flex:1;overflow-y:auto;padding:4px 0}
+/* Bulk action bar — appears when items are checked */
+.bulk-bar{
+  display:none;
+  align-items:center;
+  gap:8px;
+  padding:0 16px;
+  height:40px;
+  background:var(--blue-50);
+  border-bottom:1px solid var(--sys-border-soft);
+  flex-shrink:0
+}
+.bulk-bar.visible{display:flex}
+.bulk-bar-label{
+  font-size:13px;
+  font-weight:500;
+  color:var(--sys-primary-default);
+  flex:1
+}
+/* action-secondary bold medium: h=36px, bg=alpha-grey-8, radius=8px */
+.bulk-btn{
+  height:28px;
+  padding:0 10px;
+  background:var(--sys-secondary-default);
+  border:1px solid var(--sys-border-base);
+  border-radius:6px;
+  font-size:12px;
+  font-weight:500;
+  color:var(--sys-text-primary);
+  cursor:pointer;
+  font-family:inherit;
+  display:flex;
+  align-items:center;
+  gap:4px;
+  transition:background .1s
+}
+.bulk-btn:hover{background:var(--sys-secondary-hover)}
+.bulk-btn.danger{color:var(--sys-danger-content);border-color:var(--sys-danger-content)}
+.bulk-btn.danger:hover{background:var(--sys-danger-default)}
+
+/* Filter dropdown */
+.filter-dropdown{
+  position:absolute;
+  top:100%;
+  right:0;
+  margin-top:4px;
+  background:var(--sys-background-base);
+  border:1px solid var(--sys-border-base);
+  border-radius:8px;
+  box-shadow:var(--shadows-shadow-md);
+  padding:8px;
+  min-width:180px;
+  z-index:200;
+  display:none
+}
+.filter-dropdown.open{display:block}
+.filter-wrap{position:relative}
+.filter-section-label{
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:var(--sys-text-secondary);
+  padding:4px 8px 4px;
+  margin-top:4px
+}
+/* segmented-control item (filter chips in dropdown) */
+.filter-chip{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  padding:5px 8px;
+  border-radius:6px;
+  font-size:13px;
+  color:var(--sys-text-primary);
+  cursor:pointer;
+  transition:background .1s
+}
+.filter-chip:hover{background:var(--sys-background-neutral)}
+.filter-chip.active{background:var(--sys-primary-subtle-hover);color:var(--sys-primary-default);font-weight:500}
+.filter-chip-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  flex-shrink:0
+}
+
+.feed-list{flex:1;overflow-y:auto;padding:0}
 .feed-list::-webkit-scrollbar{width:4px}
 .feed-list::-webkit-scrollbar-thumb{background:var(--sys-border-base);border-radius:2px}
 
-/* ── Feed items ── */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   FEED ITEMS
+   compact/comment-item pattern:
+   left border accent, hover bg neutral, p=12px 16px
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .feed-item{
-  padding:11px 16px;
+  padding:11px 14px 11px 12px;
   cursor:pointer;
   border-left:3px solid transparent;
   border-bottom:1px solid var(--sys-border-subtle);
-  transition:background .1s
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  transition:background .1s;
+  position:relative
 }
 .feed-item:hover{background:var(--sys-background-neutral)}
+.feed-item.selected{background:var(--blue-50);border-left-color:var(--sys-primary-default)!important}
+.feed-item.hidden{display:none}
+
+/* left accent colors per sentiment */
 .feed-item.urgent{border-left-color:var(--sys-danger-content)}
 .feed-item.positive{border-left-color:var(--sys-success-content)}
 .feed-item.neutral-item{border-left-color:var(--sys-border-base)}
-.fi-top{display:flex;align-items:flex-start;gap:8px}
+
+/* checkbox per item — matches checkbox component: 16×16, border grey-300, radius 4px */
+.fi-checkbox{
+  width:16px;
+  height:16px;
+  border:1.5px solid var(--sys-border-bold);
+  border-radius:4px;
+  flex-shrink:0;
+  margin-top:10px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--sys-background-base);
+  transition:background .1s,border-color .1s;
+  opacity:0
+}
+.feed-item:hover .fi-checkbox,
+.fi-checkbox.checked{opacity:1}
+.fi-checkbox.checked{
+  background:var(--sys-primary-default);
+  border-color:var(--sys-primary-default)
+}
+/* avatar */
 .fi-avatar{
   width:32px;
   height:32px;
@@ -204,7 +371,8 @@ body{
   font-size:12px;
   font-weight:700;
   color:var(--grey-white);
-  flex-shrink:0
+  flex-shrink:0;
+  margin-top:2px
 }
 .fi-content{flex:1;min-width:0}
 .fi-title-row{
@@ -216,16 +384,18 @@ body{
 }
 .fi-handle{font-size:13px;font-weight:600;color:var(--sys-text-primary);line-height:1.3}
 .fi-meta{display:flex;align-items:center;gap:4px;flex-shrink:0}
+
+/* platform badge — brand color passthrough (not in token set) */
 .fi-platform{
   font-size:9px;
   font-weight:700;
-  padding:1px 5px;
+  padding:2px 5px;
   border-radius:3px;
-  letter-spacing:.04em
+  letter-spacing:.04em;
+  cursor:pointer
 }
-.fi-platform.ig{background:#e1306c;color:#fff}
-.fi-platform.fb{background:#1877f2;color:#fff}
-/* Facebook blue is a brand color passthrough, not a design token — noted */
+.fi-platform.ig{background:#e1306c;color:#fff} /* Instagram brand */
+.fi-platform.fb{background:#1877f2;color:#fff} /* Facebook brand */
 .fi-platform.tt{background:var(--grey-900);color:var(--grey-white)}
 .fi-time{font-size:11px;color:var(--sys-text-secondary)}
 .fi-preview{
@@ -238,22 +408,81 @@ body{
   overflow:hidden;
   margin-bottom:6px
 }
+
+/* ── Tags — matches DS tag component (colored/subtle, small=22px, pill) ── */
 .fi-tags{display:flex;gap:4px;flex-wrap:wrap}
 .fi-tag{
-  font-size:10px;
-  font-weight:600;
-  padding:2px 6px;
-  border-radius:3px;
-  letter-spacing:.03em;
-  text-transform:uppercase
+  /* tag small: h=22px, border-radius=1024px (full pill), font-size=12px, font-weight=500 */
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  height:20px;
+  padding:0 8px;
+  border-radius:1024px;
+  font-size:11px;
+  font-weight:500;
+  line-height:1;
+  cursor:pointer;
+  transition:filter .1s;
+  white-space:nowrap
 }
-.fi-tag.positive{background:var(--sys-success-default);color:var(--sys-success-content)}
-.fi-tag.negative{background:var(--sys-danger-default);color:var(--sys-danger-content)}
-.fi-tag.neutral{background:var(--sys-background-neutral);color:var(--sys-text-secondary)}
-.fi-tag.overdue{background:var(--sys-warning-default);color:var(--sys-warning-content)}
-.fi-tag.legal{background:var(--violet-100);color:var(--violet-800)}
+.fi-tag:hover{filter:brightness(.95)}
+.fi-tag.active-filter{box-shadow:0 0 0 2px currentColor}
 
-/* ── AI Agent panel ── */
+/* tag colored variants — from DS colored tag component */
+.fi-tag.positive{
+  background:var(--sys-success-default);   /* green-100 #e9ffcf */
+  color:var(--sys-success-content)          /* green-700 #2e881b */
+}
+.fi-tag.negative{
+  background:var(--sys-danger-default);    /* red-50 #ffebeb */
+  color:var(--sys-danger-content)           /* red-600 #cc0000 */
+}
+.fi-tag.neutral{
+  background:var(--sys-background-neutral); /* grey-50 */
+  color:var(--sys-text-secondary)
+}
+.fi-tag.overdue{
+  background:var(--sys-warning-default);   /* orange-50 #ffede2 */
+  color:var(--sys-warning-content)          /* orange-600 #e05a00 */
+}
+.fi-tag.legal{
+  background:var(--violet-100);            /* #eddcf3 */
+  color:var(--violet-800)                  /* #6d4e76 */
+}
+
+/* Action buttons shown on hover — action-secondary icon-only */
+.fi-actions{
+  display:flex;
+  gap:2px;
+  opacity:0;
+  transition:opacity .1s;
+  flex-shrink:0;
+  margin-top:8px
+}
+.feed-item:hover .fi-actions{opacity:1}
+.fi-action-btn{
+  width:24px;
+  height:24px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:5px;
+  cursor:pointer;
+  background:none;
+  border:none;
+  color:var(--sys-text-secondary);
+  transition:background .1s,color .1s
+}
+.fi-action-btn:hover{
+  background:var(--sys-background-neutral);
+  color:var(--sys-text-primary)
+}
+.fi-action-btn svg{width:14px;height:14px;flex-shrink:0}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   AI AGENT PANEL  360px right
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .ai-panel{
   width:360px;
   flex-shrink:0;
@@ -263,7 +492,7 @@ body{
   border-left:1px solid var(--sys-border-soft)
 }
 
-/* Zone 1: Panel header */
+/* Zone 1: Panel header — matches modal-header component pattern */
 .ai-panel-header{
   height:52px;
   display:flex;
@@ -316,10 +545,9 @@ body{
   align-self:flex-start;
   width:100%
 }
-.msg-user{
-  align-self:flex-end;
-  max-width:82%
-}
+.msg-user{align-self:flex-end;max-width:82%}
+
+/* user bubble — action-primary treatment */
 .user-bubble{
   background:var(--sys-primary-default);
   color:var(--grey-white);
@@ -328,22 +556,25 @@ body{
   font-size:13px;
   line-height:1.5
 }
+
+/* agent bubble — card widget style: white bg, soft border, shadow */
 .agent-bubble{
-  background:var(--grey-white);
+  background:var(--sys-background-base);
   border:1px solid var(--sys-border-soft);
   border-radius:2px 12px 12px 12px;
   padding:10px 14px;
   font-size:13px;
   line-height:1.5;
-  color:var(--sys-text-primary)
+  color:var(--sys-text-primary);
+  box-shadow:var(--card-widget---default)
 }
 .agent-bubble.error{
   background:var(--sys-danger-default);
-  border-color:var(--sys-border-danger);
+  border-color:var(--sys-danger-content);
   color:var(--sys-danger-content)
 }
 
-/* Briefing stats card */
+/* briefing stats card — violet treatment for AI surface */
 .briefing-stats{
   background:var(--violet-100);
   border:1px solid var(--violet-200);
@@ -369,24 +600,19 @@ body{
   line-height:1.1;
   margin-bottom:1px
 }
-.stat-label{
-  font-size:11px;
-  color:var(--violet-700);
-  line-height:1.3
-}
-.stat-value.grey{color:var(--sys-text-primary)}
-.stat-value.red{color:var(--sys-danger-content)}
-.stat-value.amber{color:var(--sys-warning-content)}
-.stat-value.green{color:var(--sys-success-content)}
+.stat-label{font-size:11px;color:var(--violet-700);line-height:1.3}
+.stat-value.clr-default{color:var(--sys-text-primary)}
+.stat-value.clr-danger{color:var(--sys-danger-content)}
+.stat-value.clr-warning{color:var(--sys-warning-content)}
+.stat-value.clr-success{color:var(--sys-success-content)}
 
-/* Suggestion chips */
-.suggestion-chips{
-  display:flex;
-  flex-wrap:wrap;
-  gap:6px
-}
+/* suggestion chips — tag subtle appearance, violet color */
+.suggestion-chips{display:flex;flex-wrap:wrap;gap:6px}
 .chip{
-  background:var(--grey-white);
+  /* tag medium subtle: h=28px approx, pill, bg=alpha-grey-8, border=violet-200 */
+  display:inline-flex;
+  align-items:center;
+  background:var(--sys-background-base);
   border:1px solid var(--violet-200);
   color:var(--violet-700);
   border-radius:1024px;
@@ -395,19 +621,22 @@ body{
   font-weight:500;
   cursor:pointer;
   font-family:inherit;
-  transition:background .15s,border-color .15s
+  transition:background .15s,border-color .15s;
+  white-space:nowrap
 }
 .chip:hover{background:var(--violet-50);border-color:var(--violet-300)}
+.chip:disabled{opacity:.5;cursor:not-allowed}
 
-/* Typing indicator */
+/* typing indicator */
 .typing-wrap{
-  background:var(--grey-white);
+  background:var(--sys-background-base);
   border:1px solid var(--sys-border-soft);
   border-radius:2px 12px 12px 12px;
   padding:12px 16px;
   display:inline-flex;
   align-items:center;
-  gap:4px
+  gap:5px;
+  box-shadow:var(--card-widget---default)
 }
 .typing-dot{
   width:7px;
@@ -423,15 +652,23 @@ body{
   30%{transform:translateY(-5px)}
 }
 
-/* API key bar */
+/* Zone 3: Input footer */
+.ai-input-footer{
+  border-top:1px solid var(--sys-border-soft);
+  padding:10px 12px;
+  background:var(--sys-background-base);
+  flex-shrink:0
+}
+/* API key bar — shows when no key stored */
 .api-key-bar{
   background:var(--violet-50);
-  border-bottom:1px solid var(--violet-200);
-  padding:8px 12px;
+  border:1px solid var(--violet-200);
+  border-radius:8px;
+  padding:8px 10px;
   display:flex;
   align-items:center;
   gap:6px;
-  flex-shrink:0
+  margin-bottom:10px
 }
 .api-key-bar label{
   font-size:11px;
@@ -439,10 +676,11 @@ body{
   color:var(--violet-700);
   white-space:nowrap
 }
+/* input-field component: h=36px (medium), radius=8px, border=grey-200 #D3D7DE */
 .api-key-input{
   flex:1;
   height:28px;
-  border:1px solid var(--violet-200);
+  border:1px solid var(--sys-border-base);
   border-radius:6px;
   padding:0 8px;
   font-size:12px;
@@ -451,7 +689,8 @@ body{
   background:var(--grey-white);
   outline:none
 }
-.api-key-input:focus{border-color:var(--violet-400)}
+.api-key-input:focus{border-color:var(--sys-border-focus)}
+/* action-primary subtle small */
 .api-key-save-btn{
   height:28px;
   padding:0 10px;
@@ -463,28 +702,19 @@ body{
   font-weight:500;
   cursor:pointer;
   font-family:inherit;
-  white-space:nowrap
+  white-space:nowrap;
+  transition:background .15s
 }
 .api-key-save-btn:hover{background:var(--violet-700)}
 
-/* Zone 3: Input footer */
-.ai-input-footer{
-  border-top:1px solid var(--sys-border-soft);
-  padding:10px 12px;
-  background:var(--sys-background-base);
-  flex-shrink:0
-}
-.ai-input-row{
-  display:flex;
-  align-items:flex-end;
-  gap:8px
-}
+.ai-input-row{display:flex;align-items:flex-end;gap:8px}
+/* input-field text medium: h=36px, radius=8px, border=grey-200, focus=blue-400 ring */
 .ai-textarea{
   flex:1;
   min-height:36px;
   max-height:100px;
   resize:none;
-  border:1px solid var(--sys-border-base);
+  border:1px solid var(--sys-border-base); /* D3D7DE — grey-200 per input-field component */
   border-radius:8px;
   padding:8px 12px;
   font-size:13px;
@@ -498,9 +728,10 @@ body{
 }
 .ai-textarea::placeholder{color:var(--sys-text-placeholder)}
 .ai-textarea:focus{
-  border-color:var(--sys-border-focus);
+  border-color:var(--sys-border-focus);  /* blue-400 per input-field focus component */
   box-shadow:0 0 0 3px var(--blue-50)
 }
+/* action-primary bold medium icon-only: 36×36, radius=8px, bg=blue-500 */
 .send-btn{
   width:36px;
   height:36px;
@@ -516,6 +747,7 @@ body{
   transition:background .15s
 }
 .send-btn:hover:not(:disabled){background:var(--sys-primary-hover)}
+/* action-primary disabled: bg=grey-200 */
 .send-btn:disabled{background:var(--sys-border-base);cursor:not-allowed}
 .ai-input-hint{
   font-size:11px;
@@ -528,16 +760,17 @@ body{
 <body>
 <div class="app">
 
-  <!-- ── App header ── -->
+  <!-- ── App header (navigation-bar component) ── -->
   <header class="app-header">
     <span class="header-wordmark">facelift</span>
-    <nav class="header-nav">
-      <button class="nav-pill">Marketing</button>
-      <button class="nav-pill active">Care</button>
-      <button class="nav-pill">Analytics</button>
+    <nav class="header-nav" id="headerNav">
+      <button class="nav-pill" data-nav="marketing">Marketing</button>
+      <button class="nav-pill active" data-nav="care">Care</button>
+      <button class="nav-pill" data-nav="analytics">Analytics</button>
     </nav>
     <div class="header-right">
       <button class="ai-toggle-btn">
+        <!-- AI icon (artifical-inteligence.svg) 16px violet treatment -->
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path fill-rule="evenodd" clip-rule="evenodd" d="M18.9487 2.68377C18.8126 2.27543 18.4304 2 18 2C17.5696 2 17.1874 2.27543 17.0513 2.68377L16.4594 4.45943L14.6838 5.05132C14.2754 5.18743 14 5.56957 14 6C14 6.43043 14.2754 6.81257 14.6838 6.94868L16.4594 7.54057L17.0513 9.31623C17.1874 9.72457 17.5696 10 18 10C18.4304 10 18.8126 9.72457 18.9487 9.31623L19.5406 7.54057L21.3162 6.94868C21.7246 6.81257 22 6.43043 22 6C22 5.56957 21.7246 5.18743 21.3162 5.05132L19.5406 4.45943L18.9487 2.68377ZM11.9487 4.68377C11.8126 4.27543 11.4304 4 11 4C10.5696 4 10.1874 4.27543 10.0513 4.68377L8.20943 10.2094L2.68377 12.0513C2.27543 12.1874 2 12.5696 2 13C2 13.4304 2.27543 13.8126 2.68377 13.9487L8.20943 15.7906L10.0513 21.3162C10.1874 21.7246 10.5696 22 11 22C11.4304 22 11.8126 21.7246 11.9487 21.3162L13.7906 15.7906L19.3162 13.9487C19.7246 13.8126 20 13.4304 20 13C20 12.5696 19.7246 12.1874 19.3162 12.0513L13.7906 10.2094L11.9487 4.68377Z" fill="currentColor"/>
         </svg>
@@ -546,187 +779,294 @@ body{
     </div>
   </header>
 
-  <!-- ── App body ── -->
   <div class="app-body">
 
-    <!-- ── Inbox sidebar ── -->
+    <!-- ── Inbox sidebar (section-item component pattern) ── -->
     <aside class="inbox-sidebar">
       <div class="sidebar-section-label">Inbox</div>
-      <div class="sidebar-item active">
+      <div class="sidebar-item active" data-inbox="all" data-label="All" data-count="47">
         <span class="sidebar-item-name">All</span>
         <span class="sidebar-count">47</span>
       </div>
-      <div class="sidebar-item">
+      <div class="sidebar-item" data-inbox="assigned" data-label="Assigned to me" data-count="12">
         <span class="sidebar-item-name">Assigned to me</span>
         <span class="sidebar-count">12</span>
       </div>
-      <div class="sidebar-item">
+      <div class="sidebar-item" data-inbox="colleagues" data-label="Colleagues" data-count="8">
         <span class="sidebar-item-name">Colleagues</span>
         <span class="sidebar-count">8</span>
       </div>
-      <div class="sidebar-item">
+      <div class="sidebar-item" data-inbox="unassigned" data-label="Unassigned" data-count="3">
         <span class="sidebar-item-name">Unassigned</span>
-        <span class="sidebar-count red">3</span>
+        <span class="sidebar-count danger">3</span>
       </div>
       <div class="sidebar-section-label">Custom Inboxes</div>
-      <div class="sidebar-item">
+      <div class="sidebar-item" data-inbox="brand" data-label="Brand mentions" data-count="14">
         <span class="sidebar-item-name">Brand mentions</span>
         <span class="sidebar-count">14</span>
       </div>
-      <div class="sidebar-item">
+      <div class="sidebar-item" data-inbox="complaints" data-label="Complaints" data-count="9">
         <span class="sidebar-item-name">Complaints</span>
-        <span class="sidebar-count red">9</span>
+        <span class="sidebar-count danger">9</span>
       </div>
-      <div class="sidebar-item">
+      <div class="sidebar-item" data-inbox="giveaways" data-label="Giveaways" data-count="21">
         <span class="sidebar-item-name">Giveaways</span>
         <span class="sidebar-count">21</span>
       </div>
-      <div class="sidebar-item">
+      <div class="sidebar-item" data-inbox="legal" data-label="Legal / PR risk" data-count="2">
         <span class="sidebar-item-name">Legal / PR risk</span>
-        <span class="sidebar-count red">2</span>
+        <span class="sidebar-count danger">2</span>
       </div>
     </aside>
 
     <!-- ── Feed panel ── -->
     <main class="feed-panel">
       <div class="feed-header">
-        <span class="feed-title">All</span>
-        <span class="count-badge">47</span>
-        <div class="feed-header-spacer"></div>
-        <button class="icon-btn-sm" title="Filter">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3 6h18M7 12h10M10 18h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <!-- select-all checkbox (checkbox component: 16×16, border grey-300, radius 4px) -->
+        <div class="feed-header-checkbox" id="selectAllBox" title="Select all" role="checkbox" aria-checked="false">
+          <svg width="10" height="8" viewBox="0 0 10 8" fill="none" style="display:none" id="selectAllCheck">
+            <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-        </button>
-        <button class="icon-btn-sm" title="Sort">
+          <svg width="10" height="2" viewBox="0 0 10 2" fill="none" style="display:none" id="selectAllDash">
+            <path d="M1 1H9" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="feed-title" id="feedTitle">All</span>
+        <span class="count-badge" id="feedCount">47</span>
+        <div class="feed-header-spacer"></div>
+        <!-- action-secondary icon-only small -->
+        <div class="filter-wrap">
+          <button class="icon-btn-sm" id="filterBtn" title="Filter">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 6h18M7 12h10M10 18h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <!-- filter dropdown (popover component pattern) -->
+          <div class="filter-dropdown" id="filterDropdown">
+            <div class="filter-section-label">Sentiment</div>
+            <div class="filter-chip" data-filter="negative">
+              <span class="filter-chip-dot" style="background:var(--sys-danger-content)"></span>Negative
+            </div>
+            <div class="filter-chip" data-filter="positive">
+              <span class="filter-chip-dot" style="background:var(--sys-success-content)"></span>Positive
+            </div>
+            <div class="filter-chip" data-filter="neutral">
+              <span class="filter-chip-dot" style="background:var(--grey-300)"></span>Neutral
+            </div>
+            <div class="filter-section-label">Status</div>
+            <div class="filter-chip" data-filter="overdue">
+              <span class="filter-chip-dot" style="background:var(--sys-warning-content)"></span>Overdue
+            </div>
+            <div class="filter-chip" data-filter="legal">
+              <span class="filter-chip-dot" style="background:var(--violet-500)"></span>Legal risk
+            </div>
+            <div class="filter-section-label">Platform</div>
+            <div class="filter-chip" data-filter="ig">
+              <span class="filter-chip-dot" style="background:#e1306c"></span>Instagram
+            </div>
+            <div class="filter-chip" data-filter="fb">
+              <span class="filter-chip-dot" style="background:#1877f2"></span>Facebook
+            </div>
+            <div class="filter-chip" data-filter="tt">
+              <span class="filter-chip-dot" style="background:var(--grey-900)"></span>TikTok
+            </div>
+          </div>
+        </div>
+        <button class="icon-btn-sm" id="sortBtn" title="Sort by newest">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M3 8l4-4 4 4M7 4v16M21 16l-4 4-4-4M17 20V4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </button>
       </div>
 
-      <div class="feed-list">
+      <!-- bulk action bar (appears when items checked) -->
+      <div class="bulk-bar" id="bulkBar">
+        <span class="bulk-bar-label" id="bulkLabel">0 items selected</span>
+        <!-- action-secondary buttons -->
+        <button class="bulk-btn" onclick="bulkAction('assign')">Assign</button>
+        <button class="bulk-btn" onclick="bulkAction('resolve')">Resolve</button>
+        <button class="bulk-btn danger" onclick="bulkAction('hide')">Hide</button>
+      </div>
+
+      <div class="feed-list" id="feedList">
 
         <!-- 1. @lisa.meier_23 — negative, urgent, overdue -->
-        <div class="feed-item urgent">
-          <div class="fi-top">
-            <div class="fi-avatar" style="background:linear-gradient(135deg,var(--coral-400),var(--purple-500))">L</div>
-            <div class="fi-content">
-              <div class="fi-title-row">
-                <span class="fi-handle">@lisa.meier_23</span>
-                <div class="fi-meta">
-                  <span class="fi-platform ig">IG</span>
-                  <span class="fi-time">2h ago</span>
-                </div>
-              </div>
-              <p class="fi-preview">"This is absolutely unacceptable. I've been waiting 3 weeks for my refund and nobody responds. I'm going to the press."</p>
-              <div class="fi-tags">
-                <span class="fi-tag negative">Negative</span>
-                <span class="fi-tag overdue">Overdue 2h</span>
+        <div class="feed-item urgent" data-id="1" data-tags="negative,overdue" data-platform="ig">
+          <div class="fi-checkbox" data-id="1">
+            <svg width="10" height="8" viewBox="0 0 10 8" fill="none" style="display:none" class="check-svg">
+              <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="fi-avatar" style="background:linear-gradient(135deg,var(--coral-400),var(--purple-500))">L</div>
+          <div class="fi-content">
+            <div class="fi-title-row">
+              <span class="fi-handle">@lisa.meier_23</span>
+              <div class="fi-meta">
+                <span class="fi-platform ig" data-platform="ig">IG</span>
+                <span class="fi-time">2h ago</span>
               </div>
             </div>
+            <p class="fi-preview">"This is absolutely unacceptable. I've been waiting 3 weeks for my refund and nobody responds. I'm going to the press."</p>
+            <div class="fi-tags">
+              <span class="fi-tag negative" data-tag="negative">Negative</span>
+              <span class="fi-tag overdue" data-tag="overdue">Overdue 2h</span>
+            </div>
+          </div>
+          <div class="fi-actions">
+            <button class="fi-action-btn" title="Reply" onclick="event.stopPropagation();agentAction('Draft a reply for lisa.meier_23')">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1v-9.5z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button class="fi-action-btn" title="Assign" onclick="event.stopPropagation();agentAction('Who should I assign the legal item to?')">
+              <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.5"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </button>
+            <button class="fi-action-btn" title="Hide" onclick="event.stopPropagation();agentAction('Hide the press escalation from lisa.meier_23')">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M3 3l18 18M10.5 10.7A3 3 0 0013.3 13.5M6.5 6.6A10 10 0 003 12s3.6 7 9 7a9.9 9.9 0 005.4-1.6M9 3.6A10 10 0 0121 12a10 10 0 01-1 2.1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </button>
           </div>
         </div>
 
         <!-- 2. @thomas.bergmann — negative, legal risk -->
-        <div class="feed-item urgent">
-          <div class="fi-top">
-            <div class="fi-avatar" style="background:linear-gradient(135deg,var(--azure-500),var(--blue-600))">T</div>
-            <div class="fi-content">
-              <div class="fi-title-row">
-                <span class="fi-handle">@thomas.bergmann</span>
-                <div class="fi-meta">
-                  <span class="fi-platform fb">FB</span>
-                  <span class="fi-time">3h ago</span>
-                </div>
-              </div>
-              <p class="fi-preview">"My lawyer will be in touch regarding the product defect incident."</p>
-              <div class="fi-tags">
-                <span class="fi-tag negative">Negative</span>
-                <span class="fi-tag legal">Legal risk</span>
+        <div class="feed-item urgent" data-id="2" data-tags="negative,legal" data-platform="fb">
+          <div class="fi-checkbox" data-id="2">
+            <svg width="10" height="8" viewBox="0 0 10 8" fill="none" style="display:none" class="check-svg">
+              <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="fi-avatar" style="background:linear-gradient(135deg,var(--azure-500),var(--blue-600))">T</div>
+          <div class="fi-content">
+            <div class="fi-title-row">
+              <span class="fi-handle">@thomas.bergmann</span>
+              <div class="fi-meta">
+                <span class="fi-platform fb" data-platform="fb">FB</span>
+                <span class="fi-time">3h ago</span>
               </div>
             </div>
+            <p class="fi-preview">"My lawyer will be in touch regarding the product defect incident."</p>
+            <div class="fi-tags">
+              <span class="fi-tag negative" data-tag="negative">Negative</span>
+              <span class="fi-tag legal" data-tag="legal">Legal risk</span>
+            </div>
+          </div>
+          <div class="fi-actions">
+            <button class="fi-action-btn" title="Assign to legal team" onclick="event.stopPropagation();agentAction('Who should I assign the legal item to?')">
+              <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.5"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </button>
+            <button class="fi-action-btn" title="Hide" onclick="event.stopPropagation();agentAction('Hide the legal threat from thomas.bergmann')">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M3 3l18 18M10.5 10.7A3 3 0 0013.3 13.5M6.5 6.6A10 10 0 003 12s3.6 7 9 7a9.9 9.9 0 005.4-1.6M9 3.6A10 10 0 0121 12a10 10 0 01-1 2.1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </button>
           </div>
         </div>
 
         <!-- 3. @hannah.k — neutral, overdue -->
-        <div class="feed-item neutral-item">
-          <div class="fi-top">
-            <div class="fi-avatar" style="background:linear-gradient(135deg,var(--mint-500),var(--petrol-600))">H</div>
-            <div class="fi-content">
-              <div class="fi-title-row">
-                <span class="fi-handle">@hannah.k</span>
-                <div class="fi-meta">
-                  <span class="fi-platform tt">TT</span>
-                  <span class="fi-time">4h ago</span>
-                </div>
-              </div>
-              <p class="fi-preview">"Hey, do you ship to Austria?"</p>
-              <div class="fi-tags">
-                <span class="fi-tag neutral">Neutral</span>
-                <span class="fi-tag overdue">Overdue 1h</span>
+        <div class="feed-item neutral-item" data-id="3" data-tags="neutral,overdue" data-platform="tt">
+          <div class="fi-checkbox" data-id="3">
+            <svg width="10" height="8" viewBox="0 0 10 8" fill="none" style="display:none" class="check-svg">
+              <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="fi-avatar" style="background:linear-gradient(135deg,var(--mint-500),var(--petrol-600))">H</div>
+          <div class="fi-content">
+            <div class="fi-title-row">
+              <span class="fi-handle">@hannah.k</span>
+              <div class="fi-meta">
+                <span class="fi-platform tt" data-platform="tt">TT</span>
+                <span class="fi-time">4h ago</span>
               </div>
             </div>
+            <p class="fi-preview">"Hey, do you ship to Austria?"</p>
+            <div class="fi-tags">
+              <span class="fi-tag neutral" data-tag="neutral">Neutral</span>
+              <span class="fi-tag overdue" data-tag="overdue">Overdue 1h</span>
+            </div>
+          </div>
+          <div class="fi-actions">
+            <button class="fi-action-btn" title="Reply" onclick="event.stopPropagation();agentAction('Draft a reply for hannah.k about shipping to Austria')">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1v-9.5z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
           </div>
         </div>
 
         <!-- 4. @max.hoffmann — positive -->
-        <div class="feed-item positive">
-          <div class="fi-top">
-            <div class="fi-avatar" style="background:linear-gradient(135deg,var(--amber-400),var(--orange-500))">M</div>
-            <div class="fi-content">
-              <div class="fi-title-row">
-                <span class="fi-handle">@max.hoffmann</span>
-                <div class="fi-meta">
-                  <span class="fi-platform ig">IG</span>
-                  <span class="fi-time">5h ago</span>
-                </div>
-              </div>
-              <p class="fi-preview">"😍😍😍 obsessed with the new collection!!!"</p>
-              <div class="fi-tags">
-                <span class="fi-tag positive">Positive</span>
+        <div class="feed-item positive" data-id="4" data-tags="positive" data-platform="ig">
+          <div class="fi-checkbox" data-id="4">
+            <svg width="10" height="8" viewBox="0 0 10 8" fill="none" style="display:none" class="check-svg">
+              <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="fi-avatar" style="background:linear-gradient(135deg,var(--amber-400),var(--orange-500))">M</div>
+          <div class="fi-content">
+            <div class="fi-title-row">
+              <span class="fi-handle">@max.hoffmann</span>
+              <div class="fi-meta">
+                <span class="fi-platform ig" data-platform="ig">IG</span>
+                <span class="fi-time">5h ago</span>
               </div>
             </div>
+            <p class="fi-preview">"😍😍😍 obsessed with the new collection!!!"</p>
+            <div class="fi-tags">
+              <span class="fi-tag positive" data-tag="positive">Positive</span>
+            </div>
+          </div>
+          <div class="fi-actions">
+            <button class="fi-action-btn" title="Resolve" onclick="event.stopPropagation();agentAction('Resolve the positive comment from max.hoffmann')">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
           </div>
         </div>
 
         <!-- 5. @petra.w — positive -->
-        <div class="feed-item positive">
-          <div class="fi-top">
-            <div class="fi-avatar" style="background:linear-gradient(135deg,var(--purple-400),var(--violet-600))">P</div>
-            <div class="fi-content">
-              <div class="fi-title-row">
-                <span class="fi-handle">@petra.w</span>
-                <div class="fi-meta">
-                  <span class="fi-platform fb">FB</span>
-                  <span class="fi-time">5h ago</span>
-                </div>
-              </div>
-              <p class="fi-preview">"❤️"</p>
-              <div class="fi-tags">
-                <span class="fi-tag positive">Positive</span>
+        <div class="feed-item positive" data-id="5" data-tags="positive" data-platform="fb">
+          <div class="fi-checkbox" data-id="5">
+            <svg width="10" height="8" viewBox="0 0 10 8" fill="none" style="display:none" class="check-svg">
+              <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="fi-avatar" style="background:linear-gradient(135deg,var(--purple-400),var(--violet-600))">P</div>
+          <div class="fi-content">
+            <div class="fi-title-row">
+              <span class="fi-handle">@petra.w</span>
+              <div class="fi-meta">
+                <span class="fi-platform fb" data-platform="fb">FB</span>
+                <span class="fi-time">5h ago</span>
               </div>
             </div>
+            <p class="fi-preview">"❤️"</p>
+            <div class="fi-tags">
+              <span class="fi-tag positive" data-tag="positive">Positive</span>
+            </div>
+          </div>
+          <div class="fi-actions">
+            <button class="fi-action-btn" title="Resolve" onclick="event.stopPropagation();agentAction('Bulk resolve the emoji-only reactions')">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
           </div>
         </div>
 
         <!-- 6. @giveaway_entrant_441 — neutral -->
-        <div class="feed-item neutral-item">
-          <div class="fi-top">
-            <div class="fi-avatar" style="background:linear-gradient(135deg,var(--peridot-500),var(--emerald-600))">G</div>
-            <div class="fi-content">
-              <div class="fi-title-row">
-                <span class="fi-handle">@giveaway_entrant_441</span>
-                <div class="fi-meta">
-                  <span class="fi-platform ig">IG</span>
-                  <span class="fi-time">6h ago</span>
-                </div>
-              </div>
-              <p class="fi-preview">"#gewinnspiel #mitmachen 🎉"</p>
-              <div class="fi-tags">
-                <span class="fi-tag neutral">Neutral</span>
+        <div class="feed-item neutral-item" data-id="6" data-tags="neutral" data-platform="ig">
+          <div class="fi-checkbox" data-id="6">
+            <svg width="10" height="8" viewBox="0 0 10 8" fill="none" style="display:none" class="check-svg">
+              <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="fi-avatar" style="background:linear-gradient(135deg,var(--peridot-500),var(--emerald-600))">G</div>
+          <div class="fi-content">
+            <div class="fi-title-row">
+              <span class="fi-handle">@giveaway_entrant_441</span>
+              <div class="fi-meta">
+                <span class="fi-platform ig" data-platform="ig">IG</span>
+                <span class="fi-time">6h ago</span>
               </div>
             </div>
+            <p class="fi-preview">"#gewinnspiel #mitmachen 🎉"</p>
+            <div class="fi-tags">
+              <span class="fi-tag neutral" data-tag="neutral">Neutral</span>
+            </div>
+          </div>
+          <div class="fi-actions">
+            <button class="fi-action-btn" title="Set up auto-resolve" onclick="event.stopPropagation();agentAction('Set up bulk resolve for giveaway entries tagged #gewinnspiel')">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </button>
           </div>
         </div>
 
@@ -736,61 +1076,58 @@ body{
     <!-- ── AI Agent panel ── -->
     <aside class="ai-panel">
 
-      <!-- Zone 1: Header -->
+      <!-- Zone 1: Header (modal-header component pattern) -->
       <div class="ai-panel-header">
         <div class="ai-panel-icon">
+          <!-- AI icon white on violet gradient -->
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" clip-rule="evenodd" d="M18.9487 2.68377C18.8126 2.27543 18.4304 2 18 2C17.5696 2 17.1874 2.27543 17.0513 2.68377L16.4594 4.45943L14.6838 5.05132C14.2754 5.18743 14 5.56957 14 6C14 6.43043 14.2754 6.81257 14.6838 6.94868L16.4594 7.54057L17.0513 9.31623C17.1874 9.72457 17.5696 10 18 10C18.4304 10 18.8126 9.72457 18.9487 9.31623L19.5406 7.54057L21.3162 6.94868C21.7246 6.81257 22 6.43043 22 6C22 5.56957 21.7246 5.18743 21.3162 5.05132L19.5406 4.45943L18.9487 2.68377ZM11.9487 4.68377C11.8126 4.27543 11.4304 4 11 4C10.5696 4 10.1874 4.27543 10.0513 4.68377L8.20943 10.2094L2.68377 12.0513C2.27543 12.1874 2 12.5696 2 13C2 13.4304 2.27543 13.8126 2.68377 13.9487L8.20943 15.7906L10.0513 21.3162C10.1874 21.7246 10.5696 22 11 22C11.4304 22 11.8126 21.7246 11.9487 21.3162L13.7906 15.7906L19.3162 13.9487C19.7246 13.8126 20 13.4304 20 13C20 12.5696 19.7246 12.1874 19.3162 12.0513L13.7906 10.2094L11.9487 4.68377Z" fill="white"/>
           </svg>
         </div>
         <div class="ai-panel-title-group">
           <div class="ai-panel-name">Engage Agent</div>
-          <div class="ai-panel-status">Inbox briefing ready</div>
+          <div class="ai-panel-status" id="agentStatus">Inbox briefing ready</div>
         </div>
-      </div>
-
-      <!-- API key bar (hidden once key is saved) -->
-      <div class="api-key-bar" id="apiKeyBar">
-        <label for="apiKeyInput">API Key</label>
-        <input type="password" id="apiKeyInput" class="api-key-input" placeholder="sk-ant-…" autocomplete="off">
-        <button class="api-key-save-btn" onclick="saveApiKey()">Save</button>
       </div>
 
       <!-- Zone 2: Message thread -->
       <div class="ai-thread" id="aiThread">
 
-        <!-- Pre-rendered briefing -->
+        <!-- Pre-rendered briefing (agent message) -->
         <div class="msg-agent" id="briefingMsg">
+          <!-- stats card (violet AI surface) -->
           <div class="briefing-stats">
             <div class="briefing-stats-title">Inbox Summary</div>
             <div class="stats-grid">
               <div class="stat-item">
-                <div class="stat-value grey">47</div>
+                <div class="stat-value clr-default">47</div>
                 <div class="stat-label">Total unresolved</div>
               </div>
               <div class="stat-item">
-                <div class="stat-value red">4</div>
+                <div class="stat-value clr-danger">4</div>
                 <div class="stat-label">Critical / urgent</div>
               </div>
               <div class="stat-item">
-                <div class="stat-value red">2</div>
+                <div class="stat-value clr-danger">2</div>
                 <div class="stat-label">Legal / PR risk</div>
               </div>
               <div class="stat-item">
-                <div class="stat-value amber">3</div>
+                <div class="stat-value clr-warning">3</div>
                 <div class="stat-label">Overdue</div>
               </div>
               <div class="stat-item">
-                <div class="stat-value green">~21</div>
+                <div class="stat-value clr-success">~21</div>
                 <div class="stat-label">Bulk-resolvable</div>
               </div>
             </div>
           </div>
+          <!-- agent text bubble (card-widget component treatment) -->
           <div class="agent-bubble">Two items need immediate attention before you do anything else — a legal threat on Facebook and a press escalation on Instagram, both overdue. About 21 items look bulk-resolvable (giveaway entries, emoji-only reactions). Want me to suggest an automation to clear those?</div>
+          <!-- suggestion chips (tag subtle violet variant) -->
           <div class="suggestion-chips">
-            <button class="chip" onclick="sendChip(this, 'Show critical items')">Show critical items</button>
-            <button class="chip" onclick="sendChip(this, 'Set up bulk resolve')">Set up bulk resolve</button>
-            <button class="chip" onclick="sendChip(this, 'Who should I assign the legal item to?')">Who should I assign the legal item to?</button>
+            <button class="chip" onclick="sendChip(this,'Show critical items')">Show critical items</button>
+            <button class="chip" onclick="sendChip(this,'Set up bulk resolve')">Set up bulk resolve</button>
+            <button class="chip" onclick="sendChip(this,'Who should I assign the legal item to?')">Who should I assign the legal item to?</button>
           </div>
         </div>
 
@@ -798,6 +1135,12 @@ body{
 
       <!-- Zone 3: Input footer -->
       <div class="ai-input-footer">
+        <!-- API key bar (hidden once key is stored in sessionStorage) -->
+        <div class="api-key-bar" id="apiKeyBar">
+          <label for="apiKeyInput">API Key</label>
+          <input type="password" id="apiKeyInput" class="api-key-input" placeholder="sk-ant-…" autocomplete="off">
+          <button class="api-key-save-btn" onclick="saveApiKey()">Save</button>
+        </div>
         <div class="ai-input-row">
           <textarea
             id="aiInput"
@@ -805,6 +1148,7 @@ body{
             placeholder="Ask the agent…"
             rows="1"
           ></textarea>
+          <!-- send button: action-primary icon-only medium (36×36, radius 8px, blue-500) -->
           <button class="send-btn" id="sendBtn" disabled title="Send">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" clip-rule="evenodd" d="M16.76 6.99955L4.70127 6.67646L7.83269 10.5705L16.76 6.99955ZM8.70605 12.376L9.66715 18.3405L17.9521 8.67749L8.70605 12.376ZM20.4438 5.08971C21.7012 5.12339 22.347 6.61206 21.5218 7.5745L10.4737 20.4603C9.64268 21.4295 8.07334 20.9903 7.87055 19.7318L6.69977 12.466C6.68594 12.3802 6.65016 12.2996 6.59596 12.2322L2.4675 7.09828C1.66516 6.10053 2.403 4.60635 3.68114 4.64059L20.4438 5.08971Z" fill="white"/>
@@ -819,6 +1163,9 @@ body{
 </div>
 
 <script>
+/* ────────────────────────────────────────────
+   SYSTEM PROMPT
+──────────────────────────────────────────── */
 const SYSTEM_PROMPT = `You are the Engage AI Agent inside Facelift, a B2B social media management platform. You are a persistent assistant embedded as a side panel within the Engage community management inbox.
 
 Your role is to help community managers triage, prioritize, and act on their social inbox efficiently. The inbox contains items from Instagram, Facebook, TikTok, and other networks.
@@ -851,15 +1198,27 @@ Tone: direct, efficient, no filler. Surface what matters, propose concrete next 
 
 When the user gives a command (e.g. "hide the legal items", "show me overdue", "set up auto-resolve for giveaway hashtags"), describe what you would do in concrete terms and confirm the outcome. Reference specific items from the inbox state.`;
 
+/* ────────────────────────────────────────────
+   STATE
+──────────────────────────────────────────── */
 const conversationHistory = [];
-const thread = document.getElementById('aiThread');
-const input  = document.getElementById('aiInput');
-const sendBtn = document.getElementById('sendBtn');
+const checkedItems = new Set();
+let activeFilter = null;
 let isBusy = false;
+let selectedItemId = null;
 
-function getApiKey() {
-  return sessionStorage.getItem('fl_api_key') || '';
-}
+/* ────────────────────────────────────────────
+   DOM REFS
+──────────────────────────────────────────── */
+const thread  = document.getElementById('aiThread');
+const input   = document.getElementById('aiInput');
+const sendBtn = document.getElementById('sendBtn');
+const agentStatus = document.getElementById('agentStatus');
+
+/* ────────────────────────────────────────────
+   API KEY
+──────────────────────────────────────────── */
+function getApiKey() { return sessionStorage.getItem('fl_api_key') || ''; }
 
 function saveApiKey() {
   const val = document.getElementById('apiKeyInput').value.trim();
@@ -867,28 +1226,225 @@ function saveApiKey() {
   sessionStorage.setItem('fl_api_key', val);
   document.getElementById('apiKeyBar').style.display = 'none';
 }
+if (getApiKey()) document.getElementById('apiKeyBar').style.display = 'none';
+document.getElementById('apiKeyInput').addEventListener('keydown', e => { if (e.key === 'Enter') saveApiKey(); });
 
-// Hide key bar if already stored
-if (getApiKey()) {
-  document.getElementById('apiKeyBar').style.display = 'none';
-}
-
-// Allow Enter in key input to save
-document.getElementById('apiKeyInput').addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') saveApiKey();
+/* ────────────────────────────────────────────
+   NAV PILLS — click to switch active
+──────────────────────────────────────────── */
+document.getElementById('headerNav').addEventListener('click', e => {
+  const pill = e.target.closest('.nav-pill');
+  if (!pill) return;
+  document.querySelectorAll('.nav-pill').forEach(p => p.classList.remove('active'));
+  pill.classList.add('active');
 });
 
-function scrollToBottom() {
-  thread.scrollTop = thread.scrollHeight;
+/* ────────────────────────────────────────────
+   SIDEBAR ITEMS — click to switch active + update feed header
+──────────────────────────────────────────── */
+document.querySelectorAll('.sidebar-item').forEach(item => {
+  item.addEventListener('click', () => {
+    document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active'));
+    item.classList.add('active');
+    const label = item.dataset.label;
+    const count = item.dataset.count;
+    document.getElementById('feedTitle').textContent = label;
+    document.getElementById('feedCount').textContent = count;
+    clearFilter();
+    agentStatus.textContent = `Showing ${label}`;
+    setTimeout(() => { agentStatus.textContent = 'Ready'; }, 2000);
+  });
+});
+
+/* ────────────────────────────────────────────
+   FEED ITEMS — click to select, show detail in agent panel
+──────────────────────────────────────────── */
+document.querySelectorAll('.feed-item').forEach(item => {
+  item.addEventListener('click', e => {
+    if (e.target.closest('.fi-checkbox') || e.target.closest('.fi-action-btn')) return;
+    const id = item.dataset.id;
+    if (selectedItemId === id) {
+      // deselect
+      item.classList.remove('selected');
+      selectedItemId = null;
+      agentStatus.textContent = 'Inbox briefing ready';
+      return;
+    }
+    document.querySelectorAll('.feed-item').forEach(f => f.classList.remove('selected'));
+    item.classList.add('selected');
+    selectedItemId = id;
+    const handle = item.querySelector('.fi-handle').textContent;
+    const platform = item.querySelector('.fi-platform').textContent;
+    const tags = [...item.querySelectorAll('.fi-tag')].map(t => t.textContent).join(', ');
+    agentStatus.textContent = `Viewing ${handle}`;
+  });
+});
+
+/* ────────────────────────────────────────────
+   CHECKBOXES
+──────────────────────────────────────────── */
+document.querySelectorAll('.fi-checkbox').forEach(cb => {
+  cb.addEventListener('click', e => {
+    e.stopPropagation();
+    const id = cb.dataset.id;
+    const svg = cb.querySelector('.check-svg');
+    if (checkedItems.has(id)) {
+      checkedItems.delete(id);
+      cb.classList.remove('checked');
+      svg.style.display = 'none';
+    } else {
+      checkedItems.add(id);
+      cb.classList.add('checked');
+      svg.style.display = '';
+    }
+    updateBulkBar();
+    updateSelectAll();
+  });
+});
+
+const selectAllBox = document.getElementById('selectAllBox');
+selectAllBox.addEventListener('click', () => {
+  const visibleItems = [...document.querySelectorAll('.feed-item:not(.hidden)')];
+  const allChecked = visibleItems.every(i => checkedItems.has(i.dataset.id));
+  visibleItems.forEach(item => {
+    const id = item.dataset.id;
+    const cb = item.querySelector('.fi-checkbox');
+    const svg = cb.querySelector('.check-svg');
+    if (allChecked) {
+      checkedItems.delete(id);
+      cb.classList.remove('checked');
+      svg.style.display = 'none';
+    } else {
+      checkedItems.add(id);
+      cb.classList.add('checked');
+      svg.style.display = '';
+    }
+  });
+  updateBulkBar();
+  updateSelectAll();
+});
+
+function updateBulkBar() {
+  const bar = document.getElementById('bulkBar');
+  const label = document.getElementById('bulkLabel');
+  if (checkedItems.size > 0) {
+    bar.classList.add('visible');
+    label.textContent = `${checkedItems.size} item${checkedItems.size > 1 ? 's' : ''} selected`;
+  } else {
+    bar.classList.remove('visible');
+  }
 }
 
+function updateSelectAll() {
+  const visibleItems = [...document.querySelectorAll('.feed-item:not(.hidden)')];
+  const check = document.getElementById('selectAllCheck');
+  const dash  = document.getElementById('selectAllDash');
+  const allChecked  = visibleItems.length > 0 && visibleItems.every(i => checkedItems.has(i.dataset.id));
+  const someChecked = visibleItems.some(i => checkedItems.has(i.dataset.id));
+  selectAllBox.classList.toggle('checked',      allChecked);
+  selectAllBox.classList.toggle('indeterminate', someChecked && !allChecked);
+  check.style.display = allChecked  ? '' : 'none';
+  dash.style.display  = (someChecked && !allChecked) ? '' : 'none';
+}
+
+function bulkAction(action) {
+  const count = checkedItems.size;
+  agentAction(`${action.charAt(0).toUpperCase() + action.slice(1)} ${count} selected item${count > 1 ? 's' : ''}`);
+}
+
+/* ────────────────────────────────────────────
+   TAG CLICKS — filter feed
+──────────────────────────────────────────── */
+document.querySelectorAll('.fi-tag').forEach(tag => {
+  tag.addEventListener('click', e => {
+    e.stopPropagation();
+    const tagName = tag.dataset.tag;
+    if (activeFilter === tagName) {
+      clearFilter();
+    } else {
+      applyFilter(tagName);
+    }
+  });
+});
+
+/* Platform badge clicks — filter by platform */
+document.querySelectorAll('.fi-platform').forEach(badge => {
+  badge.addEventListener('click', e => {
+    e.stopPropagation();
+    const platform = badge.dataset.platform;
+    if (activeFilter === platform) {
+      clearFilter();
+    } else {
+      applyFilter(platform);
+    }
+  });
+});
+
+/* ────────────────────────────────────────────
+   FILTER DROPDOWN
+──────────────────────────────────────────── */
+document.getElementById('filterBtn').addEventListener('click', e => {
+  e.stopPropagation();
+  const dd = document.getElementById('filterDropdown');
+  const btn = document.getElementById('filterBtn');
+  const isOpen = dd.classList.contains('open');
+  dd.classList.toggle('open');
+  btn.classList.toggle('active', !isOpen);
+});
+
+document.querySelectorAll('.filter-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    const f = chip.dataset.filter;
+    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    if (activeFilter === f) {
+      clearFilter();
+    } else {
+      chip.classList.add('active');
+      applyFilter(f);
+      document.getElementById('filterDropdown').classList.remove('open');
+      document.getElementById('filterBtn').classList.add('active');
+    }
+  });
+});
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.filter-wrap')) {
+    document.getElementById('filterDropdown').classList.remove('open');
+  }
+});
+
+function applyFilter(value) {
+  activeFilter = value;
+  document.getElementById('filterBtn').classList.add('active');
+  document.querySelectorAll('.feed-item').forEach(item => {
+    const tags = item.dataset.tags || '';
+    const plat = item.dataset.platform || '';
+    const match = tags.includes(value) || plat === value;
+    item.classList.toggle('hidden', !match);
+  });
+  const visible = document.querySelectorAll('.feed-item:not(.hidden)').length;
+  document.getElementById('feedCount').textContent = visible;
+  updateSelectAll();
+}
+
+function clearFilter() {
+  activeFilter = null;
+  document.getElementById('filterBtn').classList.remove('active');
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.feed-item').forEach(i => i.classList.remove('hidden'));
+  document.getElementById('feedCount').textContent =
+    document.querySelector('.sidebar-item.active')?.dataset.count || '47';
+  updateSelectAll();
+}
+
+/* ────────────────────────────────────────────
+   CHAT HELPERS
+──────────────────────────────────────────── */
+function scrollToBottom() { thread.scrollTop = thread.scrollHeight; }
+
 function escapeHtml(str) {
-  return str
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/\n/g, '<br>');
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+            .replace(/"/g,'&quot;').replace(/\n/g,'<br>');
 }
 
 function appendUserMessage(text) {
@@ -905,7 +1461,6 @@ function appendAgentMessage(text) {
   div.innerHTML = `<div class="agent-bubble">${escapeHtml(text)}</div>`;
   thread.appendChild(div);
   scrollToBottom();
-  return div;
 }
 
 function appendErrorMessage(text) {
@@ -930,12 +1485,16 @@ function hideTyping() {
   if (el) el.remove();
 }
 
+/* ────────────────────────────────────────────
+   API CALL
+──────────────────────────────────────────── */
 async function sendMessage(text) {
   text = text.trim();
   if (!text || isBusy) return;
 
   isBusy = true;
   sendBtn.disabled = true;
+  agentStatus.textContent = 'Thinking…';
 
   appendUserMessage(text);
   conversationHistory.push({ role: 'user', content: text });
@@ -974,27 +1533,36 @@ async function sendMessage(text) {
     hideTyping();
     conversationHistory.push({ role: 'assistant', content: reply });
     appendAgentMessage(reply);
+    agentStatus.textContent = 'Ready';
   } catch (err) {
     hideTyping();
     appendErrorMessage(`Agent unavailable: ${err.message}`);
+    agentStatus.textContent = 'Error';
+    setTimeout(() => { agentStatus.textContent = 'Ready'; }, 3000);
   } finally {
     isBusy = false;
     sendBtn.disabled = !input.value.trim();
   }
 }
 
+/* send from chip or action button */
 function sendChip(btn, text) {
-  btn.disabled = true;
+  if (btn) btn.disabled = true;
   sendMessage(text);
 }
 
+function agentAction(text) { sendMessage(text); }
+
+/* ────────────────────────────────────────────
+   INPUT HANDLERS
+──────────────────────────────────────────── */
 input.addEventListener('input', () => {
   input.style.height = 'auto';
   input.style.height = Math.min(input.scrollHeight, 100) + 'px';
   sendBtn.disabled = isBusy || !input.value.trim();
 });
 
-input.addEventListener('keydown', (e) => {
+input.addEventListener('keydown', e => {
   if (e.key === 'Enter' && !e.shiftKey) {
     e.preventDefault();
     if (!sendBtn.disabled) sendMessage(input.value);
