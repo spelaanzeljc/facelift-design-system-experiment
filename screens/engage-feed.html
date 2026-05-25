@@ -1,0 +1,2656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Engage — Facelift</title>
+  <link rel="stylesheet" href="../output/tokens/tokens.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-width: 1280px;
+      background: var(--sys-background-base);
+    }
+
+    /* ── App Header ── */
+    #app-header {
+      height: 44px;
+      min-height: 44px;
+      background: var(--grey-900);
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+      gap: 4px;
+      z-index: 100;
+    }
+
+    .header-icon-btn {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      color: var(--grey-400);
+      flex-shrink: 0;
+      transition: background 0.15s;
+    }
+    .header-icon-btn:hover {
+      background: rgba(255,255,255,0.10);
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 4px;
+    }
+    .header-logo-text {
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+
+    .header-spacer { flex: 1; }
+
+    .header-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--grey-700);
+      border: 2px solid var(--orange-600);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: #ffffff;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    /* ── App Body ── */
+    #app-body {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* ── Sidebar placeholder ── */
+    #app-sidebar {
+      width: 52px;
+      min-width: 52px;
+      background: var(--sys-background-neutral);
+      border-right: 1px solid var(--sys-border-soft);
+      flex-shrink: 0;
+    }
+
+    /* ── Feed Panel ── */
+    #feed-panel {
+      width: 455px;
+      min-width: 455px;
+      background: var(--sys-background-base);
+      border-right: 1px solid var(--sys-border-soft);
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .feed-header {
+      height: 48px;
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      gap: 6px;
+      border-bottom: 1px solid var(--sys-border-soft);
+    }
+    .feed-header-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--sys-text-primary);
+    }
+    .feed-header-spacer { flex: 1; }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      height: 28px;
+      padding: 0 10px;
+      border-radius: 6px;
+      border: 1px solid var(--sys-border-base);
+      background: transparent;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--sys-text-primary);
+      cursor: pointer;
+      white-space: nowrap;
+      font-family: inherit;
+      transition: background 0.15s;
+    }
+    .btn-secondary:hover { background: var(--sys-background-neutral); }
+
+    .badge-new {
+      display: inline-flex;
+      align-items: center;
+      height: 16px;
+      padding: 0 5px;
+      border-radius: 20px;
+      background: var(--orange-600);
+      color: #fff;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+
+    .icon-btn {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      color: var(--sys-text-secondary);
+      flex-shrink: 0;
+      transition: background 0.15s, color 0.15s;
+    }
+    .icon-btn:hover {
+      background: var(--sys-background-neutral);
+      color: var(--sys-text-primary);
+    }
+
+    .feed-subheader {
+      height: 32px;
+      min-height: 32px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      gap: 4px;
+      border-bottom: 1px solid var(--sys-border-soft);
+    }
+    .feed-subheader-text {
+      font-size: 12px;
+      color: var(--sys-text-secondary);
+    }
+    .feed-subheader-sep {
+      font-size: 12px;
+      color: var(--sys-border-bold);
+      margin: 0 4px;
+    }
+
+    .feed-filters {
+      height: 40px;
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+      gap: 4px;
+      border-bottom: 1px solid var(--sys-border-soft);
+      position: relative;
+    }
+
+    .pill-active {
+      height: 26px;
+      padding: 0 12px;
+      border-radius: 20px;
+      border: none;
+      background: var(--sys-primary-default);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+
+    .filter-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      height: 26px;
+      padding: 0 10px;
+      border-radius: 6px;
+      border: 1px solid var(--sys-border-base);
+      background: transparent;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--sys-text-primary);
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+      transition: background 0.15s;
+    }
+    .filter-btn:hover { background: var(--sys-background-neutral); }
+
+    .filter-icon-btn {
+      position: relative;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      border: 1px solid var(--sys-border-base);
+      background: transparent;
+      cursor: pointer;
+      color: var(--sys-text-secondary);
+      transition: background 0.15s;
+    }
+    .filter-icon-btn:hover { background: var(--sys-background-neutral); }
+
+    .filter-badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      min-width: 16px;
+      height: 16px;
+      padding: 0 4px;
+      border-radius: 20px;
+      font-size: 9px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+    .badge-red { background: var(--sys-danger-content); }
+    .badge-orange { background: var(--orange-600); }
+
+    .filter-spacer { flex: 1; }
+
+    .feed-search {
+      height: 40px;
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+      gap: 6px;
+      border-bottom: 1px solid var(--sys-border-soft);
+      position: relative;
+    }
+
+    .master-checkbox {
+      width: 16px;
+      height: 16px;
+      border: 1.5px solid var(--sys-border-bold);
+      border-radius: 3px;
+      flex-shrink: 0;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      background: #fff;
+    }
+    .master-checkbox:checked {
+      background: var(--sys-primary-default);
+      border-color: var(--sys-primary-default);
+    }
+
+    .search-input-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      height: 28px;
+      border: 1px solid var(--sys-border-base);
+      border-radius: 6px;
+      padding: 0 8px;
+      background: #fff;
+    }
+    .search-input-wrap input {
+      border: none;
+      outline: none;
+      font-size: 12px;
+      color: var(--sys-text-primary);
+      background: transparent;
+      width: 100%;
+      font-family: inherit;
+    }
+    .search-input-wrap input::placeholder { color: var(--sys-text-placeholder); }
+
+    /* ── Feed Items ── */
+    #feed-list {
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .feed-item {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      padding: 10px 10px 10px 14px;
+      border-bottom: 1px solid var(--sys-border-soft);
+      border-left: 3px solid transparent;
+      cursor: pointer;
+      transition: background 0.1s;
+      background: #fff;
+    }
+    .feed-item:hover { background: var(--sys-background-neutral); }
+    .feed-item.selected {
+      border-left-color: var(--sys-primary-default);
+      background: var(--blue-50);
+    }
+
+    .feed-item-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+    }
+
+    .feed-cb {
+      width: 14px;
+      height: 14px;
+      border: 1.5px solid var(--sys-border-bold);
+      border-radius: 3px;
+      flex-shrink: 0;
+      margin-top: 2px;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      background: #fff;
+    }
+    .feed-cb:checked {
+      background: var(--sys-primary-default);
+      border-color: var(--sys-primary-default);
+    }
+
+    .feed-platform-icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .feed-item-body { flex: 1; min-width: 0; }
+
+    .feed-item-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--sys-text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .feed-item-meta {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 2px;
+      flex-wrap: wrap;
+    }
+
+    .feed-item-time {
+      font-size: 11px;
+      color: var(--sys-text-secondary);
+    }
+
+    .sentiment-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      height: 16px;
+      padding: 0 6px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+    .badge-positive {
+      color: var(--sys-success-content);
+      background: var(--sys-success-default);
+    }
+    .badge-neutral {
+      color: var(--sys-text-secondary);
+      background: var(--sys-background-neutral);
+    }
+    .badge-negative {
+      color: var(--sys-danger-content);
+      background: var(--sys-danger-default);
+    }
+    .badge-spam {
+      color: var(--orange-600);
+      background: var(--orange-50);
+    }
+
+    .feed-item-preview {
+      font-size: 12px;
+      color: var(--sys-text-secondary);
+      margin-top: 3px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .feed-item-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 5px;
+    }
+
+    .feed-tags {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      flex-wrap: nowrap;
+      overflow: hidden;
+    }
+
+    .feed-tag {
+      height: 18px;
+      padding: 0 7px;
+      border-radius: 20px;
+      border: 1px solid var(--sys-border-base);
+      font-size: 10px;
+      color: var(--sys-text-secondary);
+      white-space: nowrap;
+      background: #fff;
+    }
+    .feed-tag-more {
+      height: 18px;
+      padding: 0 7px;
+      border-radius: 20px;
+      background: var(--sys-background-neutral);
+      font-size: 10px;
+      color: var(--sys-text-secondary);
+      white-space: nowrap;
+    }
+
+    .feed-avatar {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    /* Hover action icons */
+    .feed-item-actions {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      display: flex;
+      gap: 2px;
+      opacity: 0;
+      transition: opacity 0.15s;
+      background: #fff;
+      border-radius: 6px;
+      padding: 2px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+    }
+    .feed-item:hover .feed-item-actions { opacity: 1; }
+    .feed-item.selected .feed-item-actions { background: var(--blue-50); }
+    .feed-action-btn {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      color: var(--sys-text-secondary);
+      transition: background 0.1s, color 0.1s;
+    }
+    .feed-action-btn:hover {
+      background: var(--sys-background-neutral);
+      color: var(--sys-text-primary);
+    }
+
+    /* ── Context Panel ── */
+    #context-panel {
+      flex: 1;
+      background: var(--sys-background-base);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      min-width: 0;
+    }
+
+    .context-header {
+      height: 48px;
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      gap: 4px;
+      border-bottom: 1px solid var(--sys-border-soft);
+    }
+    .context-header-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--sys-text-primary);
+    }
+    .context-header-spacer { flex: 1; }
+
+    .context-subheader {
+      height: 40px;
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      gap: 8px;
+      border-bottom: 1px solid var(--sys-border-soft);
+    }
+    .context-subheader-text {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--sys-text-primary);
+    }
+    .context-subheader-spacer { flex: 1; }
+
+    .btn-secondary-sm {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      height: 26px;
+      padding: 0 10px;
+      border-radius: 6px;
+      border: 1px solid var(--sys-border-base);
+      background: transparent;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--sys-text-primary);
+      cursor: pointer;
+      white-space: nowrap;
+      font-family: inherit;
+      transition: background 0.15s;
+    }
+    .btn-secondary-sm:hover { background: var(--sys-background-neutral); }
+
+    /* Post card */
+    #context-body {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .post-card {
+      border-bottom: 1px solid var(--sys-border-soft);
+      padding: 12px 14px;
+    }
+
+    .post-card-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .post-avatar-wrap {
+      position: relative;
+      flex-shrink: 0;
+    }
+    .post-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--blue-500);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .post-platform-badge {
+      position: absolute;
+      bottom: -2px;
+      right: -2px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #0A66C2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1.5px solid #fff;
+    }
+
+    .post-card-meta { flex: 1; min-width: 0; }
+    .post-card-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--sys-text-primary);
+    }
+    .post-card-date {
+      font-size: 11px;
+      color: var(--sys-text-secondary);
+      margin-top: 1px;
+    }
+
+    .post-collapse-btn {
+      font-size: 12px;
+      color: var(--sys-primary-default);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 500;
+      white-space: nowrap;
+      padding: 0 4px;
+    }
+    .post-collapse-btn:hover { text-decoration: underline; }
+
+    .post-body {
+      font-size: 12px;
+      color: var(--sys-text-secondary);
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .post-body.expanded {
+      display: block;
+      -webkit-line-clamp: unset;
+    }
+    .read-more-btn {
+      font-size: 12px;
+      color: var(--sys-primary-default);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 500;
+      padding: 0;
+      margin-top: 2px;
+      display: inline-block;
+    }
+    .read-more-btn:hover { text-decoration: underline; }
+
+    /* ── Comment Thread ── */
+    #comment-thread {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .comment-item {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--sys-border-soft);
+      position: relative;
+    }
+    .comment-item.selected {
+      background: var(--sys-primary-subtle-hover);
+    }
+
+    .comment-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+
+    .comment-cb {
+      width: 14px;
+      height: 14px;
+      border: 1.5px solid var(--sys-border-bold);
+      border-radius: 3px;
+      flex-shrink: 0;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      background: #fff;
+    }
+    .comment-cb:checked {
+      background: var(--sys-primary-default);
+      border-color: var(--sys-primary-default);
+    }
+    .comment-item.selected .comment-cb {
+      background: var(--sys-primary-default);
+      border-color: var(--sys-primary-default);
+    }
+
+    .comment-name {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--sys-text-primary);
+    }
+    .comment-time {
+      font-size: 11px;
+      color: var(--sys-text-secondary);
+    }
+    .comment-actions {
+      margin-left: auto;
+      display: flex;
+      gap: 2px;
+    }
+    .comment-action-btn {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      color: var(--sys-text-secondary);
+      transition: background 0.1s, color 0.1s;
+    }
+    .comment-action-btn:hover {
+      background: var(--sys-background-neutral);
+      color: var(--sys-text-primary);
+    }
+
+    .comment-text {
+      font-size: 12px;
+      color: var(--sys-text-primary);
+      line-height: 1.5;
+      margin-bottom: 6px;
+    }
+
+    .comment-footer {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .like-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      height: 22px;
+      padding: 0 8px;
+      border-radius: 20px;
+      border: 1px solid var(--sys-border-base);
+      background: #fff;
+      font-size: 11px;
+      color: var(--sys-text-secondary);
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.1s;
+    }
+    .like-pill:hover { background: var(--sys-background-neutral); }
+    .comment-footer-avatar {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .comment-footer-spacer { flex: 1; }
+
+    .comment-links {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .comment-link {
+      font-size: 11px;
+      color: var(--sys-text-secondary);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      padding: 2px 4px;
+      border-radius: 4px;
+      transition: background 0.1s, color 0.1s;
+    }
+    .comment-link:hover {
+      background: var(--sys-background-neutral);
+      color: var(--sys-text-primary);
+    }
+    .comment-link-sep {
+      font-size: 11px;
+      color: var(--sys-border-base);
+    }
+    .comment-tag-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      height: 18px;
+      padding: 0 6px;
+      border-radius: 20px;
+      background: var(--sys-background-neutral);
+      border: 1px solid var(--sys-border-base);
+      font-size: 10px;
+      color: var(--sys-text-secondary);
+      cursor: pointer;
+    }
+    .comment-tag-x {
+      font-size: 10px;
+      color: var(--sys-text-secondary);
+      opacity: 0.7;
+    }
+
+    .brand-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      height: 16px;
+      padding: 0 6px;
+      border-radius: 3px;
+      background: var(--sys-primary-default);
+      color: #fff;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    /* Nested replies indent */
+    .replies-container {
+      padding-left: 24px;
+      border-left: 2px solid var(--sys-border-soft);
+      margin: 4px 14px 0 28px;
+    }
+    .reply-item {
+      padding: 8px 0;
+      border-bottom: 1px solid var(--sys-border-soft);
+      position: relative;
+    }
+    .reply-item:last-child { border-bottom: none; }
+
+    /* Inline reply area */
+    .inline-reply {
+      margin-top: 8px;
+      border: 1px solid var(--sys-border-base);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .inline-reply-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-bottom: 1px solid var(--sys-border-soft);
+      background: var(--sys-background-neutral);
+    }
+    .reply-type-btn {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--sys-text-primary);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      padding: 0;
+    }
+    .inline-reply-body {
+      display: flex;
+      gap: 8px;
+      padding: 8px 10px;
+    }
+    .reply-avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--orange-600);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .reply-textarea {
+      flex: 1;
+      border: none;
+      outline: none;
+      resize: none;
+      font-size: 12px;
+      font-family: inherit;
+      color: var(--sys-text-primary);
+      min-height: 48px;
+      background: transparent;
+    }
+    .reply-textarea::placeholder { color: var(--sys-text-placeholder); }
+    .inline-reply-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      padding: 4px 10px 6px;
+      border-top: 1px solid var(--sys-border-soft);
+    }
+    .toolbar-btn {
+      width: 26px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      color: var(--sys-text-secondary);
+      transition: background 0.1s;
+    }
+    .toolbar-btn:hover { background: var(--sys-background-neutral); }
+    .toolbar-sep {
+      width: 1px;
+      height: 16px;
+      background: var(--sys-border-base);
+      margin: 0 4px;
+      flex-shrink: 0;
+    }
+    .toolbar-spacer { flex: 1; }
+    .translate-btn {
+      height: 24px;
+      padding: 0 8px;
+      border-radius: 4px;
+      background: var(--sys-primary-default);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    /* AI QR rows */
+    .ai-qr-row {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      padding: 7px 4px;
+      border: none;
+      background: transparent;
+      font-size: 12px;
+      font-family: inherit;
+      color: var(--sys-text-primary);
+      cursor: pointer;
+      border-radius: 6px;
+      text-align: left;
+      transition: background 0.1s;
+    }
+    .ai-qr-row:hover { background: var(--sys-background-neutral); }
+    .ai-qr-count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 20px;
+      height: 18px;
+      padding: 0 5px;
+      border-radius: 20px;
+      background: var(--sys-background-neutral);
+      font-size: 11px;
+      font-weight: 600;
+      margin-left: auto;
+      margin-right: 4px;
+    }
+    .ai-qr-arrow {
+      color: var(--sys-text-secondary);
+      font-size: 14px;
+    }
+
+    /* ── Sidebar ── */
+    #app-sidebar {
+      display: flex;
+      flex-direction: column;
+      padding: 6px 6px;
+      gap: 2px;
+      overflow: hidden;
+      transition: width 0.2s ease;
+    }
+
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 40px;
+      height: 40px;
+      min-height: 40px;
+      border-radius: 6px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      color: var(--sys-text-secondary);
+      padding: 0 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      transition: background 0.15s, color 0.15s;
+      flex-shrink: 0;
+    }
+    .sidebar-item:hover {
+      background: var(--sys-border-soft);
+      color: var(--sys-text-primary);
+    }
+    .sidebar-item.active {
+      background: var(--sys-primary-subtle-hover);
+      color: var(--sys-primary-default);
+    }
+    .sidebar-item svg { flex-shrink: 0; }
+    .sidebar-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: inherit;
+      display: none;
+    }
+
+    /* ── Right Icon Column ── */
+    #right-icon-col {
+      width: 32px;
+      min-width: 32px;
+      background: var(--sys-background-base);
+      border-left: 1px solid var(--sys-border-soft);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 8px;
+      gap: 2px;
+      flex-shrink: 0;
+    }
+    .right-col-btn {
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      color: var(--sys-text-secondary);
+      transition: background 0.15s, color 0.15s;
+    }
+    .right-col-btn:hover {
+      background: var(--sys-background-neutral);
+      color: var(--sys-text-primary);
+    }
+    .right-col-btn.active {
+      background: var(--sys-primary-subtle-hover);
+      color: var(--sys-primary-default);
+    }
+
+    /* ── Right Panels ── */
+    .right-panel {
+      width: 300px;
+      min-width: 300px;
+      background: var(--sys-background-base);
+      border-left: 1px solid var(--sys-border-soft);
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .right-panel.open { display: flex; }
+
+    .right-panel-header {
+      height: 48px;
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 12px;
+      border-bottom: 1px solid var(--sys-border-soft);
+    }
+    .right-panel-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--sys-text-primary);
+      flex: 1;
+    }
+    .right-panel-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════
+       APP HEADER
+  ════════════════════════════════════════════════ -->
+  <header id="app-header">
+
+    <!-- Left: hamburger + logo + title -->
+    <button class="header-icon-btn" title="Menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <path fill-rule="evenodd" clip-rule="evenodd"
+          d="M3 6a1 1 0 0 1 1-1h16a1 1 0 1 1 0 2H4a1 1 0 0 1-1-1zm0 6a1 1 0 0 1 1-1h16a1 1 0 1 1 0 2H4a1 1 0 0 1-1-1zm1 5a1 1 0 1 0 0 2h16a1 1 0 1 0 0-2H4z"
+          fill="currentColor"/>
+      </svg>
+    </button>
+
+    <div class="header-logo">
+      <!-- Orange diamond -->
+      <svg width="20" height="20" viewBox="0 0 34 40" fill="none">
+        <path d="M17 0L0 20L17 40L34 20Z" fill="#E05A00"/>
+      </svg>
+      <span class="header-logo-text">Engage</span>
+    </div>
+
+    <div class="header-spacer"></div>
+
+    <!-- Right: gear, help, bell, avatar -->
+    <button class="header-icon-btn" title="Settings">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <path fill-rule="evenodd" clip-rule="evenodd"
+          d="M9.95 2.44a2 2 0 0 1 4.1 0l.27.9a1 1 0 0 0 1.29.65l.87-.32a2 2 0 0 1 2.5 2.9l-.56.73a1 1 0 0 0 0 1.2l.56.73a2 2 0 0 1-2.5 2.9l-.87-.32a1 1 0 0 0-1.29.65l-.27.9a2 2 0 0 1-4.1 0l-.27-.9a1 1 0 0 0-1.29-.65l-.87.32a2 2 0 0 1-2.5-2.9l.56-.73a1 1 0 0 0 0-1.2l-.56-.73a2 2 0 0 1 2.5-2.9l.87.32a1 1 0 0 0 1.29-.65l.27-.9zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"
+          fill="currentColor"/>
+      </svg>
+    </button>
+
+    <button class="header-icon-btn" title="Help">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <path fill-rule="evenodd" clip-rule="evenodd"
+          d="M12 3a9 9 0 1 0 0 18A9 9 0 0 0 12 3zm0 13.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm.75-4.6v.35a.75.75 0 0 1-1.5 0v-.75c0-.414.336-.75.75-.75.69 0 1.25-.56 1.25-1.25S12.69 8.25 12 8.25s-1.25.56-1.25 1.25a.75.75 0 0 1-1.5 0 2.75 2.75 0 1 1 3.5 2.65z"
+          fill="currentColor"/>
+      </svg>
+    </button>
+
+    <button class="header-icon-btn" title="Notifications">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <path d="M12 22c1.1 0 2-.9 2-2h-4a2 2 0 0 0 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4a1.5 1.5 0 0 0-3 0v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"
+          fill="currentColor"/>
+      </svg>
+    </button>
+
+    <div class="header-avatar" title="Profile">LS</div>
+
+  </header>
+
+  <!-- ═══════════════════════════════════════════════
+       APP BODY
+  ════════════════════════════════════════════════ -->
+  <div id="app-body">
+
+    <!-- Sidebar (1b) -->
+    <nav id="app-sidebar">
+
+      <!-- 1: Collapse/Expand toggle -->
+      <button class="sidebar-item" id="sidebar-toggle" title="Collapse sidebar">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M5 3h2v18H5z" fill="currentColor"/>
+          <path d="M11 12l6-6v12z" fill="currentColor"/>
+        </svg>
+        <span class="sidebar-label">Collapse</span>
+      </button>
+
+      <!-- 2: Welcome / Network -->
+      <button class="sidebar-item" title="Welcome">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zM4.02 12.54A8 8 0 0 1 12 4a8 8 0 0 1 7.98 8.54l-3.24-1.73A4 4 0 0 0 12 8a4 4 0 0 0-4.74 2.81L4.02 12.54zm1.2 2.17A8 8 0 0 0 12 20a8 8 0 0 0 6.78-3.71L15.6 14.6A4 4 0 0 1 12 16a4 4 0 0 1-3.6-2.29L5.22 14.71z" fill="currentColor"/>
+        </svg>
+        <span class="sidebar-label">Welcome</span>
+      </button>
+
+      <!-- 3: Insights / Light bulb -->
+      <button class="sidebar-item" title="Insights">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2a7 7 0 0 0-4 12.83V17a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.17A7 7 0 0 0 12 2zm-2 15v-1h4v1H10zm1 2v-1h2v1a1 1 0 0 1-1 1 1 1 0 0 1-1-1zm1-15a5 5 0 0 1 3.54 8.54A2 2 0 0 0 14 14h-4a2 2 0 0 0-1.54.54A5 5 0 0 1 12 4z" fill="currentColor"/>
+        </svg>
+        <span class="sidebar-label">Insights</span>
+      </button>
+
+      <!-- 4: Publish / Calendar -->
+      <button class="sidebar-item" title="Publish">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M8 2a1 1 0 0 1 1 1v1h6V3a1 1 0 1 1 2 0v1h1a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3h1V3a1 1 0 0 1 1-1zM5 10v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-9H5zm2 3a1 1 0 0 1 1-1h8a1 1 0 1 1 0 2H8a1 1 0 0 1-1-1zm0 4a1 1 0 0 1 1-1h5a1 1 0 1 1 0 2H8a1 1 0 0 1-1-1z" fill="currentColor"/>
+        </svg>
+        <span class="sidebar-label">Publish</span>
+      </button>
+
+      <!-- 5: Analytics -->
+      <button class="sidebar-item" title="Analytics">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M19.5 3a1.5 1.5 0 0 1 1.5 1.5v15a1.5 1.5 0 0 1-3 0v-15A1.5 1.5 0 0 1 19.5 3zm-5 4a1.5 1.5 0 0 1 1.5 1.5v11a1.5 1.5 0 0 1-3 0v-11A1.5 1.5 0 0 1 14.5 7zm-5 3a1.5 1.5 0 0 1 1.5 1.5v8a1.5 1.5 0 0 1-3 0v-8A1.5 1.5 0 0 1 9.5 10zm-5 5a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-3 0v-3A1.5 1.5 0 0 1 4.5 15z" fill="currentColor"/>
+        </svg>
+        <span class="sidebar-label">Analytics</span>
+      </button>
+
+      <!-- 6: Engage (ACTIVE) -->
+      <button class="sidebar-item active" title="Engage">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M18 18.507C20.209 18.507 22 16.683 22 14.434V6.073C22 3.824 20.209 2 18 2L6 2C3.791 2 2 3.824 2 6.073L2 14.434C2 16.683 3.791 18.507 6 18.507H8.689L13.306 21.746C14.235 22.398 15.5 21.72 15.5 20.572V18.507H18zM20 14.434C20 15.558 19.105 16.47 18 16.47L15 16.47C14.172 16.47 13.5 17.154 13.5 17.998V19.409L9.695 16.74A1 1 0 0 0 9.094 16.47H6C4.895 16.47 4 15.558 4 14.434L4 6.073C4 4.948 4.895 4.037 6 4.037L18 4.037C19.105 4.037 20 4.948 20 6.073V14.434zM6 7.09C6 6.529 6.448 6.073 7 6.073H13C13.552 6.073 14 6.529 14 7.09C14 7.654 13.552 8.11 13 8.11H7C6.448 8.11 6 7.654 6 7.09zM18 13.201C18 12.639 17.552 12.183 17 12.183H12C11.448 12.183 11 12.639 11 13.201C11 13.763 11.448 14.219 12 14.219H17C17.552 14.219 18 13.763 18 13.201zM6 10.146C6 9.584 6.448 9.128 7 9.128H10C10.552 9.128 11 9.584 11 10.146C11 10.709 10.552 11.165 10 11.165H7C6.448 11.165 6 10.709 6 10.146z" fill="currentColor"/>
+        </svg>
+        <span class="sidebar-label">Engage</span>
+      </button>
+
+      <!-- 7: Content / Clipboard -->
+      <button class="sidebar-item" title="Content">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M9 2h6a1 1 0 0 1 1 1v1h1a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3h1V3a1 1 0 0 1 1-1zm0 4H7a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1h-2v.5a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5V6zm1-2v2h4V4h-4zm-1 9a1 1 0 0 1 1-1h6a1 1 0 1 1 0 2H10a1 1 0 0 1-1-1zm0 4a1 1 0 0 1 1-1h4a1 1 0 1 1 0 2h-4a1 1 0 0 1-1-1z" fill="currentColor"/>
+        </svg>
+        <span class="sidebar-label">Content</span>
+      </button>
+
+      <!-- 8: Campaigns / Brush -->
+      <button class="sidebar-item" title="Campaigns">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M20.71 5.63l-2.34-2.34a1 1 0 0 0-1.41 0l-3.12 3.12-1.41-1.42-1.42 1.42 1.41 1.41-6.6 6.6A1 1 0 0 0 5.5 15v3h3a1 1 0 0 0 .7-.3l6.6-6.6 1.42 1.42 1.41-1.42-1.41-1.41 3.12-3.12a1 1 0 0 0-.13-1.34zM8.09 16.5H7v-1.09l6.3-6.3 1.08 1.08-6.29 6.31z" fill="currentColor"/>
+        </svg>
+        <span class="sidebar-label">Campaigns</span>
+      </button>
+
+      <!-- 9: Approve / Check -->
+      <button class="sidebar-item" title="Approve">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M9 2h6a1 1 0 0 1 1 1v1h1a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3h1V3a1 1 0 0 1 1-1zm0 4H7a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1h-2v.5a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5V6zm1-2v2h4V4h-4zm5.78 6.28a.75.75 0 0 0-1.06-1.06L11 13l-1.72-1.72a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.06 0l4.25-4.31z" fill="currentColor"/>
+        </svg>
+        <span class="sidebar-label">Approve</span>
+      </button>
+
+      <!-- 10: Settings / Sun -->
+      <button class="sidebar-item" title="Settings">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0-2a3 3 0 1 1 0-6 3 3 0 0 1 0 6zM11 2h2v2.07A8 8 0 0 1 19.93 11H22v2h-2.07A8 8 0 0 1 13 19.93V22h-2v-2.07A8 8 0 0 1 4.07 13H2v-2h2.07A8 8 0 0 1 11 4.07V2z" fill="currentColor"/>
+        </svg>
+        <span class="sidebar-label">Settings</span>
+      </button>
+
+      <!-- 11: Ads / Tree -->
+      <button class="sidebar-item" title="Ads Manager">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M18 20h2v-2h-2v2zM11 20h2v-2h-2v2zM4 20h2v-2H4v2zM9 8h6V4H9v4zm8 .5C17 9.33 16.33 10 15.5 10H13v2h6c.55 0 1 .45 1 1v3h.5c.83 0 1.5.67 1.5 1.5v3c0 .83-.67 1.5-1.5 1.5h-3C16.67 22 16 21.33 16 20.5v-3c0-.83.67-1.5 1.5-1.5H18v-2h-5v2h.5c.83 0 1.5.67 1.5 1.5v3c0 .83-.67 1.5-1.5 1.5h-3C9.67 22 9 21.33 9 20.5v-3C9 16.67 9.67 16 10.5 16H11v-2H6v2h.5C7.33 16 8 16.67 8 17.5v3C8 21.33 7.33 22 6.5 22h-3C2.67 22 2 21.33 2 20.5v-3C2 16.67 2.67 16 3.5 16H4v-3c0-.55.45-1 1-1h5v-2H7.5C6.67 10 6 9.33 6 8.5v-5C6 2.67 6.67 2 7.5 2h7C15.33 2 16 2.67 16 3.5V8.5z" fill="currentColor"/>
+        </svg>
+        <span class="sidebar-label">Ads Manager</span>
+      </button>
+
+    </nav>
+
+    <!-- Feed Panel (1c + 1d) -->
+    <div id="feed-panel">
+
+      <!-- Feed header -->
+      <div class="feed-header">
+        <span class="feed-header-title">Feed</span>
+        <div class="feed-header-spacer"></div>
+        <button class="btn-secondary">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.75a.75.75 0 0 1 .53.22l4.5 4.5a.75.75 0 1 1-1.06 1.06L12.75 5.31V20a.75.75 0 0 1-1.5 0V5.31L8.03 8.53a.75.75 0 0 1-1.06-1.06l4.5-4.5A.75.75 0 0 1 12 2.75z" fill="currentColor"/>
+          </svg>
+          Export
+          <span class="badge-new">NEW</span>
+        </button>
+        <button class="icon-btn" title="Feed settings">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M9.95 2.44a2 2 0 0 1 4.1 0l.27.9a1 1 0 0 0 1.29.65l.87-.32a2 2 0 0 1 2.5 2.9l-.56.73a1 1 0 0 0 0 1.2l.56.73a2 2 0 0 1-2.5 2.9l-.87-.32a1 1 0 0 0-1.29.65l-.27.9a2 2 0 0 1-4.1 0l-.27-.9a1 1 0 0 0-1.29-.65l-.87.32a2 2 0 0 1-2.5-2.9l.56-.73a1 1 0 0 0 0-1.2l-.56-.73a2 2 0 0 1 2.5-2.9l.87.32a1 1 0 0 0 1.29-.65l.27-.9zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" fill="currentColor"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Sub-header -->
+      <div class="feed-subheader">
+        <span class="feed-subheader-text">All Inboxes</span>
+        <span class="feed-subheader-sep">|</span>
+        <span class="feed-subheader-text">23 Items</span>
+      </div>
+
+      <!-- Filter bar -->
+      <div class="feed-filters">
+        <button class="pill-active">All</button>
+
+        <button class="filter-btn" id="btn-state">
+          State
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 13.226L7.707 8.802a1 1 0 0 0-1.414 1.414l4.646 4.789a1.5 1.5 0 0 0 2.122 0l4.646-4.789a1 1 0 0 0-1.414-1.414L12 13.226z" fill="currentColor"/>
+          </svg>
+        </button>
+
+        <button class="filter-btn" id="btn-network">
+          Network
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 13.226L7.707 8.802a1 1 0 0 0-1.414 1.414l4.646 4.789a1.5 1.5 0 0 0 2.122 0l4.646-4.789a1 1 0 0 0-1.414-1.414L12 13.226z" fill="currentColor"/>
+          </svg>
+        </button>
+
+        <div class="filter-spacer"></div>
+
+        <button class="filter-icon-btn" title="Flagged items">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+            <path d="M5 3v18M5 4h11l-2.5 4.5L16 13H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="filter-badge badge-red">5</span>
+        </button>
+
+        <button class="filter-icon-btn" title="Warnings">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4m0 4h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+          </svg>
+          <span class="filter-badge badge-orange">99+</span>
+        </button>
+
+        <button class="filter-icon-btn" title="Filters">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+            <path d="M3 5h18M6 12h12M10 19h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Search row -->
+      <div class="feed-search">
+        <input type="checkbox" class="master-checkbox" title="Select all">
+        <div class="search-input-wrap">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="color:var(--sys-text-placeholder);flex-shrink:0">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M10.5 2a8.5 8.5 0 1 0 5.262 15.176l3.53 3.531a1 1 0 0 0 1.414-1.414l-3.53-3.531A8.5 8.5 0 0 0 10.5 2zm-6.5 8.5a6.5 6.5 0 1 1 13 0 6.5 6.5 0 0 1-13 0z" fill="currentColor"/>
+          </svg>
+          <input type="text" placeholder="Search Feed">
+        </div>
+        <button class="icon-btn" id="btn-sort" title="Sort">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M16.94 20.06a1.5 1.5 0 0 0 2.12 0l2.65-2.65a1 1 0 0 0-1.42-1.41L19 17.29V4.5a1 1 0 0 0-2 0v12.79l-1.29-1.29a1 1 0 0 0-1.42 1.41l2.65 2.65zM6 19.5a1 1 0 0 1-1 1H3a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1zM9 14.5a1 1 0 0 1-1 1H3a1 1 0 0 1 0-2h5a1 1 0 0 1 1 1zM11 9.5a1 1 0 0 1-1 1H3a1 1 0 0 1 0-2h7a1 1 0 0 1 1 1zM13 4.5a1 1 0 0 1-1 1H3a1 1 0 0 1 0-2h9a1 1 0 0 1 1 1z" fill="currentColor"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Feed items list (1d) -->
+      <div id="feed-list">
+
+        <!-- Item 1: James Greer — LinkedIn — POSITIVE — SELECTED -->
+        <div class="feed-item selected">
+          <div class="feed-item-top">
+            <input type="checkbox" class="feed-cb">
+            <svg class="feed-platform-icon" viewBox="0 0 24 24" fill="none">
+              <rect width="24" height="24" rx="4" fill="#0A66C2"/>
+              <path d="M7 10.5h2.5V17H7v-6.5zm1.25-4a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zM11 10.5h2.4v.9c.34-.65 1.17-1.1 2.1-1.1C17.66 10.3 19 11.64 19 13.3V17h-2.5v-3.2c0-.87-.7-1.6-1.5-1.6s-1.5.73-1.5 1.6V17H11v-6.5z" fill="#fff"/>
+            </svg>
+            <div class="feed-item-body">
+              <div class="feed-item-title">Comment on Mercedes-Benz Post</div>
+              <div class="feed-item-meta">
+                <span class="feed-item-time">Today at 10:05 AM</span>
+                <span class="sentiment-badge badge-positive">POSITIVE</span>
+              </div>
+              <div class="feed-item-preview">James Greer: This car is a masterpiece! The design is simply breathtaking and I can't believe how far automotive engineering has come...</div>
+              <div class="feed-item-footer">
+                <div class="feed-tags"></div>
+                <div class="feed-avatar" style="background:var(--orange-600)">JG</div>
+              </div>
+            </div>
+          </div>
+          <!-- Hover actions -->
+          <div class="feed-item-actions">
+            <button class="feed-action-btn" title="Resolve">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path fill-rule="evenodd" clip-rule="evenodd" d="M16.5 8.97a.75.75 0 0 1 0 1.06l-6 6a.75.75 0 0 1-1.06 0l-2.5-2.5a.75.75 0 1 1 1.06-1.06L10 14.44l5.44-5.47a.75.75 0 0 1 1.06 0z" fill="currentColor"/></svg>
+            </button>
+            <button class="feed-action-btn" title="Flag">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 3v18M5 4h11l-2.5 4.5L16 13H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button class="feed-action-btn" title="Check">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M20.03 5.97a.75.75 0 0 1 0 1.06l-11 11a.75.75 0 0 1-1.06 0l-4-4a.75.75 0 1 1 1.06-1.06L8.5 16.44 18.97 5.97a.75.75 0 0 1 1.06 0z" fill="currentColor"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Item 2: Michael Stadler — Facebook — NEUTRAL — tags -->
+        <div class="feed-item">
+          <div class="feed-item-top">
+            <input type="checkbox" class="feed-cb">
+            <svg class="feed-platform-icon" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="12" fill="#1877F2"/>
+              <path d="M15.5 8H13.5C13.22 8 13 8.22 13 8.5V10.5H15.5L15.17 13H13V20H10.5V13H9V10.5H10.5V8.5C10.5 6.57 12.07 5 14 5H15.5V8Z" fill="white"/>
+            </svg>
+            <div class="feed-item-body">
+              <div class="feed-item-title">Comment on Tesla Launch Event</div>
+              <div class="feed-item-meta">
+                <span class="feed-item-time">Today at 9:32 AM</span>
+                <span class="sentiment-badge badge-neutral">NEUTRAL</span>
+              </div>
+              <div class="feed-item-preview">Michael Stadler: I've seen this before but the new model does look quite interesting. Not sure if it will beat the competition though...</div>
+              <div class="feed-item-footer">
+                <div class="feed-tags">
+                  <span class="feed-tag">#Tag 1</span>
+                  <span class="feed-tag">#Tag 2</span>
+                  <span class="feed-tag">#Tag 3</span>
+                  <span class="feed-tag">#LongerTag4</span>
+                  <span class="feed-tag-more">+3 More</span>
+                </div>
+                <div class="feed-avatar" style="background:var(--amber-400,#f59e0b)">MS</div>
+              </div>
+            </div>
+          </div>
+          <div class="feed-item-actions">
+            <button class="feed-action-btn" title="Resolve"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path fill-rule="evenodd" clip-rule="evenodd" d="M16.5 8.97a.75.75 0 0 1 0 1.06l-6 6a.75.75 0 0 1-1.06 0l-2.5-2.5a.75.75 0 1 1 1.06-1.06L10 14.44l5.44-5.47a.75.75 0 0 1 1.06 0z" fill="currentColor"/></svg></button>
+            <button class="feed-action-btn" title="Flag"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 3v18M5 4h11l-2.5 4.5L16 13H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <button class="feed-action-btn" title="Check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M20.03 5.97a.75.75 0 0 1 0 1.06l-11 11a.75.75 0 0 1-1.06 0l-4-4a.75.75 0 1 1 1.06-1.06L8.5 16.44 18.97 5.97a.75.75 0 0 1 1.06 0z" fill="currentColor"/></svg></button>
+          </div>
+        </div>
+
+        <!-- Item 3: Elon Wilson — Facebook — SPAM + POSITIVE -->
+        <div class="feed-item">
+          <div class="feed-item-top">
+            <input type="checkbox" class="feed-cb">
+            <svg class="feed-platform-icon" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="12" fill="#1877F2"/>
+              <path d="M15.5 8H13.5C13.22 8 13 8.22 13 8.5V10.5H15.5L15.17 13H13V20H10.5V13H9V10.5H10.5V8.5C10.5 6.57 12.07 5 14 5H15.5V8Z" fill="white"/>
+            </svg>
+            <div class="feed-item-body">
+              <div class="feed-item-title">Post on Mercedes-Benz Page</div>
+              <div class="feed-item-meta">
+                <span class="feed-item-time">Today at 8:15 AM</span>
+                <span class="sentiment-badge badge-spam">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M15.7 2H8.25L2 8.3V15.7L8.3 22H15.7L22 15.7V8.3L15.7 2zM12 14.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-1-6.5v5a1 1 0 1 0 2 0V8a1 1 0 1 0-2 0z"/></svg>
+                  SPAM
+                </span>
+                <span class="sentiment-badge badge-positive">POSITIVE</span>
+              </div>
+              <div class="feed-item-preview">Elon Wilson: Amazing product launch! The innovation shown here is truly remarkable and I'm excited to see where this leads for the brand...</div>
+              <div class="feed-item-footer">
+                <div class="feed-tags">
+                  <span class="feed-tag">#Tag 1</span>
+                  <span class="feed-tag">#Tag 2</span>
+                  <span class="feed-tag">#Tag 3</span>
+                </div>
+                <div class="feed-avatar" style="background:var(--orange-500,#f97316)">EW</div>
+              </div>
+            </div>
+          </div>
+          <div class="feed-item-actions">
+            <button class="feed-action-btn" title="Resolve"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path fill-rule="evenodd" clip-rule="evenodd" d="M16.5 8.97a.75.75 0 0 1 0 1.06l-6 6a.75.75 0 0 1-1.06 0l-2.5-2.5a.75.75 0 1 1 1.06-1.06L10 14.44l5.44-5.47a.75.75 0 0 1 1.06 0z" fill="currentColor"/></svg></button>
+            <button class="feed-action-btn" title="Flag"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 3v18M5 4h11l-2.5 4.5L16 13H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <button class="feed-action-btn" title="Check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M20.03 5.97a.75.75 0 0 1 0 1.06l-11 11a.75.75 0 0 1-1.06 0l-4-4a.75.75 0 1 1 1.06-1.06L8.5 16.44 18.97 5.97a.75.75 0 0 1 1.06 0z" fill="currentColor"/></svg></button>
+          </div>
+        </div>
+
+        <!-- Item 4: Mauritz Schmidt — Facebook — SPAM — tags -->
+        <div class="feed-item">
+          <div class="feed-item-top">
+            <input type="checkbox" class="feed-cb">
+            <svg class="feed-platform-icon" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="12" fill="#1877F2"/>
+              <path d="M15.5 8H13.5C13.22 8 13 8.22 13 8.5V10.5H15.5L15.17 13H13V20H10.5V13H9V10.5H10.5V8.5C10.5 6.57 12.07 5 14 5H15.5V8Z" fill="white"/>
+            </svg>
+            <div class="feed-item-body">
+              <div class="feed-item-title">Review on Mercedes-Benz</div>
+              <div class="feed-item-meta">
+                <span class="feed-item-time">Today at 7:48 AM</span>
+                <span class="sentiment-badge badge-spam">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M15.7 2H8.25L2 8.3V15.7L8.3 22H15.7L22 15.7V8.3L15.7 2zM12 14.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-1-6.5v5a1 1 0 1 0 2 0V8a1 1 0 1 0-2 0z"/></svg>
+                  SPAM
+                </span>
+              </div>
+              <div class="feed-item-preview">Mauritz Schmidt: This is the worst experience I've ever had with a car brand. Complete waste of time and money, would not recommend...</div>
+              <div class="feed-item-footer">
+                <div class="feed-tags">
+                  <span class="feed-tag">#Tag 1</span>
+                  <span class="feed-tag">#Tag 2</span>
+                  <span class="feed-tag">#Tag 3</span>
+                  <span class="feed-tag">#LongerTag4</span>
+                  <span class="feed-tag-more">+3 More</span>
+                </div>
+                <div class="feed-avatar" style="background:var(--amber-400,#f59e0b)">MS</div>
+              </div>
+            </div>
+          </div>
+          <div class="feed-item-actions">
+            <button class="feed-action-btn" title="Resolve"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path fill-rule="evenodd" clip-rule="evenodd" d="M16.5 8.97a.75.75 0 0 1 0 1.06l-6 6a.75.75 0 0 1-1.06 0l-2.5-2.5a.75.75 0 1 1 1.06-1.06L10 14.44l5.44-5.47a.75.75 0 0 1 1.06 0z" fill="currentColor"/></svg></button>
+            <button class="feed-action-btn" title="Flag"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 3v18M5 4h11l-2.5 4.5L16 13H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <button class="feed-action-btn" title="Check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M20.03 5.97a.75.75 0 0 1 0 1.06l-11 11a.75.75 0 0 1-1.06 0l-4-4a.75.75 0 1 1 1.06-1.06L8.5 16.44 18.97 5.97a.75.75 0 0 1 1.06 0z" fill="currentColor"/></svg></button>
+          </div>
+        </div>
+
+        <!-- Item 5: Top Gëë — Facebook — NEGATIVE — no tags, no avatar -->
+        <div class="feed-item">
+          <div class="feed-item-top">
+            <input type="checkbox" class="feed-cb">
+            <svg class="feed-platform-icon" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="12" fill="#1877F2"/>
+              <path d="M15.5 8H13.5C13.22 8 13 8.22 13 8.5V10.5H15.5L15.17 13H13V20H10.5V13H9V10.5H10.5V8.5C10.5 6.57 12.07 5 14 5H15.5V8Z" fill="white"/>
+            </svg>
+            <div class="feed-item-body">
+              <div class="feed-item-title">Comment on BMW Series Post</div>
+              <div class="feed-item-meta">
+                <span class="feed-item-time">Yesterday at 11:20 PM</span>
+                <span class="sentiment-badge badge-negative">NEGATIVE</span>
+              </div>
+              <div class="feed-item-preview">Top Gëë: Terrible quality and the service is absolutely disgraceful! I will never buy from this brand again after this experience...</div>
+              <div class="feed-item-footer">
+                <div class="feed-tags"></div>
+              </div>
+            </div>
+          </div>
+          <div class="feed-item-actions">
+            <button class="feed-action-btn" title="Resolve"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path fill-rule="evenodd" clip-rule="evenodd" d="M16.5 8.97a.75.75 0 0 1 0 1.06l-6 6a.75.75 0 0 1-1.06 0l-2.5-2.5a.75.75 0 1 1 1.06-1.06L10 14.44l5.44-5.47a.75.75 0 0 1 1.06 0z" fill="currentColor"/></svg></button>
+            <button class="feed-action-btn" title="Flag"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 3v18M5 4h11l-2.5 4.5L16 13H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <button class="feed-action-btn" title="Check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M20.03 5.97a.75.75 0 0 1 0 1.06l-11 11a.75.75 0 0 1-1.06 0l-4-4a.75.75 0 1 1 1.06-1.06L8.5 16.44 18.97 5.97a.75.75 0 0 1 1.06 0z" fill="currentColor"/></svg></button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Context Panel (1e + 1f) -->
+    <div id="context-panel">
+
+      <!-- Context header -->
+      <div class="context-header">
+        <span class="context-header-title">Context</span>
+        <div class="context-header-spacer"></div>
+
+        <!-- Sort -->
+        <button class="icon-btn" title="Sort">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path d="M7 3l-4 4h3v10H4l4 4 4-4h-3V7h3L8 3zM17 21l4-4h-3V7h3l-4-4-4 4h3v10h-3l4 4z" fill="currentColor"/>
+          </svg>
+        </button>
+
+        <!-- AI Quick Resolve -->
+        <button class="icon-btn" id="btn-ai-qr" title="AI Quick Resolve">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10c0 .375-.024.75-.069 1.123a1 1 0 1 1-1.986-.246A8 8 0 1 0 11.764 20a1 1 0 1 1 .234-1.988A6.024 6.024 0 0 1 12 18" fill="currentColor"/>
+            <path d="M11.53 15.26l5.12-5.146a1 1 0 0 0-1.418-1.41l-4.12 4.14-2.12-2.122a1 1 0 0 0-1.414 1.414l2.828 2.834a1 1 0 0 0 1.41-.006l.004-.004-.29.3z" fill="currentColor"/>
+            <path d="M14.889 18.889C16.116 18.889 17.111 19.884 17.111 21.111 17.111 21.602 17.509 22 18 22s.889-.398.889-.889c0-1.227.994-2.222 2.222-2.222.491 0 .889-.398.889-.889s-.398-.889-.889-.889c-1.228 0-2.222-.994-2.222-2.222 0-.491-.398-.889-.889-.889s-.889.398-.889.889c0 1.228-.994 2.222-2.222 2.222-.491 0-.889.398-.889.889s.398.889.889.889z" fill="url(#aqr1)"/>
+            <defs><linearGradient id="aqr1" x1="14" y1="22" x2="22" y2="14" gradientUnits="userSpaceOnUse"><stop stop-color="#1339EC"/><stop offset=".66" stop-color="#C225F9"/></linearGradient></defs>
+          </svg>
+        </button>
+
+        <!-- User Info -->
+        <button class="icon-btn" id="btn-user-info" title="User Info">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm-3 7a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm9.13 8.19A8 8 0 0 1 4.87 17.2C5.7 15.56 7.37 14.5 9.25 14.5h5.5c1.88 0 3.54 1.06 4.38 2.69z" fill="currentColor"/>
+          </svg>
+        </button>
+
+        <!-- Internal Chat -->
+        <button class="icon-btn" title="Internal Chat">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M2 5a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H9.414l-3.707 3.707A1 1 0 0 1 4 17v-3a3 3 0 0 1-2-2.82V5zm3-1a1 1 0 0 0-1 1v6.18A1 1 0 0 0 5 12.18V15l2.293-2.293A1 1 0 0 1 8 12.387h7a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H5z" fill="currentColor"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Sub-header -->
+      <div class="context-subheader">
+        <input type="checkbox" class="master-checkbox">
+        <span class="context-subheader-text">13 Comments</span>
+        <div class="context-subheader-spacer"></div>
+        <button class="icon-btn" title="Copy">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+            <path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2M9 2h6a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <button class="btn-secondary-sm">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+            <path d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10c0 .375-.024.75-.069 1.123a1 1 0 1 1-1.986-.246A8 8 0 1 0 11.764 20a1 1 0 1 1 .234-1.988A6.024 6.024 0 0 1 12 18" fill="currentColor"/>
+            <path d="M11.53 15.26l5.12-5.146a1 1 0 0 0-1.418-1.41l-4.12 4.14-2.12-2.122a1 1 0 0 0-1.414 1.414l2.828 2.834a1 1 0 0 0 1.41-.006z" fill="currentColor"/>
+            <path d="M14.889 18.889C16.116 18.889 17.111 19.884 17.111 21.111 17.111 21.602 17.509 22 18 22s.889-.398.889-.889c0-1.227.994-2.222 2.222-2.222.491 0 .889-.398.889-.889s-.398-.889-.889-.889c-1.228 0-2.222-.994-2.222-2.222 0-.491-.398-.889-.889-.889s-.889.398-.889.889c0 1.228-.994 2.222-2.222 2.222-.491 0-.889.398-.889.889s.398.889.889.889z" fill="url(#aqr2)"/>
+            <defs><linearGradient id="aqr2" x1="14" y1="22" x2="22" y2="14" gradientUnits="userSpaceOnUse"><stop stop-color="#1339EC"/><stop offset=".66" stop-color="#C225F9"/></linearGradient></defs>
+          </svg>
+          Quick Resolve
+        </button>
+      </div>
+
+      <!-- Scrollable content body -->
+      <div id="context-body">
+
+        <!-- Post card -->
+        <div class="post-card">
+          <div class="post-card-header">
+            <div class="post-avatar-wrap">
+              <div class="post-avatar">JH</div>
+              <div class="post-platform-badge">
+                <svg width="8" height="8" viewBox="0 0 24 24" fill="none">
+                  <rect width="24" height="24" rx="3" fill="#0A66C2"/>
+                  <path d="M7 10.5h2.5V17H7v-6.5zm1.25-4a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zM11 10.5h2.4v.9c.34-.65 1.17-1.1 2.1-1.1C17.66 10.3 19 11.64 19 13.3V17h-2.5v-3.2c0-.87-.7-1.6-1.5-1.6s-1.5.73-1.5 1.6V17H11v-6.5z" fill="#fff"/>
+                </svg>
+              </div>
+            </div>
+            <div class="post-card-meta">
+              <div class="post-card-name">Jensen Huang</div>
+              <div class="post-card-date">Feb 19, 2026, 10:05 AM</div>
+            </div>
+            <button class="post-collapse-btn" id="post-collapse-btn">Collapse ∧</button>
+            <button class="icon-btn" title="More options">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="5" r="1.5" fill="currentColor"/>
+                <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+                <circle cx="12" cy="19" r="1.5" fill="currentColor"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="post-body" id="post-body">
+            Excited to announce our new partnership with Mercedes-Benz! We're bringing cutting-edge AI technology to automotive excellence. This collaboration represents a major milestone in our journey towards sustainable mobility. The future of transportation is here, and we couldn't be more proud to be part of this revolutionary change. Together, we are redefining what's possible.
+          </div>
+          <button class="read-more-btn" id="read-more-btn">Read more</button>
+        </div>
+
+        <!-- Comment thread (1f) -->
+        <div id="comment-thread">
+
+          <!-- Comment 1: Theodore Maximilian Montgomery — POSITIVE — SELECTED -->
+          <div class="comment-item selected">
+            <div class="comment-header">
+              <input type="checkbox" class="comment-cb" checked>
+              <span class="comment-name">Theodore Maximilian Montgomery</span>
+              <span class="comment-time">Today 10:05 AM</span>
+              <span class="sentiment-badge badge-positive" style="font-size:10px;height:16px;padding:0 6px;">POSITIVE</span>
+              <div class="comment-actions">
+                <button class="comment-action-btn" title="Like">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3m7-10v3a3 3 0 0 1-3 3H11l-2 6v1h.5a.5.5 0 0 0 .5-.5V14h7a2 2 0 0 0 2-2l-1-5a2 2 0 0 0-2-2h-2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <button class="comment-action-btn" title="View">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 5C6.48 5 2 9.48 2 12s4.48 7 10 7 10-4.48 10-7-4.48-7-10-7zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-8a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" fill="currentColor"/></svg>
+                </button>
+                <button class="comment-action-btn" title="Resolve">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path fill-rule="evenodd" clip-rule="evenodd" d="M16.5 8.97a.75.75 0 0 1 0 1.06l-6 6a.75.75 0 0 1-1.06 0l-2.5-2.5a.75.75 0 1 1 1.06-1.06L10 14.44l5.44-5.47a.75.75 0 0 1 1.06 0z" fill="currentColor"/></svg>
+                </button>
+                <button class="comment-action-btn" title="Assign">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM19 8v6M22 11h-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <button class="comment-action-btn" title="More">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
+                </button>
+              </div>
+            </div>
+            <div class="comment-text">I absolutely love what Mercedes-Benz has done with this new model. The integration with AI is simply mind-blowing and I can see this becoming the future standard for all automotive brands going forward.</div>
+            <div class="comment-footer">
+              <button class="like-pill">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3m7-10v3a3 3 0 0 1-3 3H11l-2 6v1h.5a.5.5 0 0 0 .5-.5V14h7a2 2 0 0 0 2-2l-1-5a2 2 0 0 0-2-2h-2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                1 Like
+              </button>
+              <div class="comment-footer-spacer"></div>
+              <div class="comment-footer-avatar" style="background:var(--amber-400,#f59e0b)">MS</div>
+            </div>
+            <div class="comment-links">
+              <button class="comment-link" id="toggle-replies-1">∧ Hide 2 Replies</button>
+              <span class="comment-link-sep">|</span>
+              <button class="comment-link">Reply</button>
+              <span class="comment-link-sep">|</span>
+              <button class="comment-link">🏷 Add Tags</button>
+            </div>
+          </div>
+
+          <!-- Nested replies for Comment 1 -->
+          <div class="replies-container" id="replies-1">
+
+            <!-- Reply 1: Theodore — NEUTRAL + inline reply open -->
+            <div class="reply-item">
+              <div class="comment-header">
+                <input type="checkbox" class="comment-cb">
+                <span class="comment-name">Theodore Maximilian Montgomery</span>
+                <span class="comment-time">Today 9:45 AM</span>
+                <span class="sentiment-badge badge-neutral" style="font-size:10px;height:16px;padding:0 6px;">NEUTRAL</span>
+                <div class="comment-actions">
+                  <button class="comment-action-btn" title="Like"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3m7-10v3a3 3 0 0 1-3 3H11l-2 6v1h.5a.5.5 0 0 0 .5-.5V14h7a2 2 0 0 0 2-2l-1-5a2 2 0 0 0-2-2h-2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                  <button class="comment-action-btn" title="More"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg></button>
+                </div>
+              </div>
+              <div class="comment-text">Looking forward to seeing this in action. The partnership seems very promising for the industry.</div>
+              <div class="comment-footer">
+                <button class="like-pill">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3m7-10v3a3 3 0 0 1-3 3H11l-2 6v1h.5a.5.5 0 0 0 .5-.5V14h7a2 2 0 0 0 2-2l-1-5a2 2 0 0 0-2-2h-2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  1 Like
+                </button>
+                <div class="comment-footer-spacer"></div>
+                <div class="comment-footer-avatar" style="background:var(--amber-400,#f59e0b)">MS</div>
+              </div>
+              <div class="comment-links">
+                <button class="comment-link">Reply</button>
+                <span class="comment-link-sep">|</span>
+                <span class="comment-tag-chip">🏷 Information <span class="comment-tag-x">×</span></span>
+                <span class="comment-tag-chip">🏷 Info <span class="comment-tag-x">×</span></span>
+              </div>
+
+              <!-- Inline reply area (open by default for static view) -->
+              <div class="inline-reply">
+                <div class="inline-reply-header">
+                  <button class="reply-type-btn">
+                    Private Message
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 13.226L7.707 8.802a1 1 0 0 0-1.414 1.414l4.646 4.789a1.5 1.5 0 0 0 2.122 0l4.646-4.789a1 1 0 0 0-1.414-1.414L12 13.226z" fill="currentColor"/></svg>
+                  </button>
+                </div>
+                <div class="inline-reply-body">
+                  <div class="reply-avatar">LS</div>
+                  <textarea class="reply-textarea" placeholder="Write your reply..." rows="2"></textarea>
+                </div>
+                <div class="inline-reply-toolbar">
+                  <!-- Emoji -->
+                  <button class="toolbar-btn" title="Emoji">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M8 13s1.5 2 4 2 4-2 4-2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="9" cy="10" r="1" fill="currentColor"/><circle cx="15" cy="10" r="1" fill="currentColor"/></svg>
+                  </button>
+                  <!-- Reply arrow -->
+                  <button class="toolbar-btn" title="Quote">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.345 5.257a.85.85 0 0 1 1.27.13l.118.133a.85.85 0 0 1-.006.966L6.99 8.2H13.334c4.786 0 8.666 3.761 8.666 8.4a1.5 1.5 0 0 1-3 0C19 14 16.565 12 13.334 12H7.017l2.064 2.001a.85.85 0 0 1-.001 1.234 1 1 0 0 1-1.402-.001L2.152 10.929a.5.5 0 0 1 .002-.72l5.054-4.829.137-.123z" fill="currentColor"/></svg>
+                  </button>
+                  <!-- Image -->
+                  <button class="toolbar-btn" title="Image">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.8"/><circle cx="8.5" cy="8.5" r="1.5" fill="currentColor"/><path d="M3 16l5-5 4 4 3-3 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                  </button>
+                  <!-- More -->
+                  <button class="toolbar-btn" title="More">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="5" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="19" cy="12" r="1.5" fill="currentColor"/></svg>
+                  </button>
+                  <div class="toolbar-sep"></div>
+                  <div class="toolbar-spacer"></div>
+                  <!-- Filter -->
+                  <button class="toolbar-btn" title="Filter">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 5h18M6 12h12M10 19h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                  </button>
+                  <!-- Translate -->
+                  <button class="translate-btn">Te</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Reply 2: Facelift BRAND -->
+            <div class="reply-item">
+              <div class="comment-header">
+                <input type="checkbox" class="comment-cb">
+                <span class="comment-name">Facelift</span>
+                <span class="brand-badge">✓ BRAND</span>
+                <button class="icon-btn" title="More" style="width:20px;height:20px;margin-left:auto">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
+                </button>
+              </div>
+              <div class="comment-header" style="margin-top:2px;margin-bottom:6px;">
+                <span style="width:14px;flex-shrink:0"></span><!-- spacer for cb -->
+                <span class="comment-time">Today 9:30 AM</span>
+                <span class="sentiment-badge badge-neutral" style="font-size:10px;height:16px;padding:0 6px;">NEUTRAL</span>
+              </div>
+              <div class="comment-text">Great suggestion! We're actively working on this. Stay tuned for updates.</div>
+              <div class="comment-links">
+                <button class="comment-link">Reply</button>
+                <span class="comment-link-sep">|</span>
+                <button class="comment-link">🏷 Add Tags</button>
+              </div>
+            </div>
+
+          </div><!-- /replies-container -->
+
+          <!-- Comment 2: Theodore — POSITIVE — partially visible -->
+          <div class="comment-item">
+            <div class="comment-header">
+              <input type="checkbox" class="comment-cb">
+              <span class="comment-name">Theodore Maximilian Montgomery</span>
+              <span class="comment-time">Today 9:15 AM</span>
+              <span class="sentiment-badge badge-positive" style="font-size:10px;height:16px;padding:0 6px;">POSITIVE</span>
+              <div class="comment-actions">
+                <button class="comment-action-btn" title="More"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg></button>
+              </div>
+            </div>
+            <div class="comment-text">Another great initiative from Mercedes-Benz! I'm very impressed with the direction this brand is taking towards sustainability and innovation...</div>
+            <div class="comment-links">
+              <button class="comment-link">∨ Show Replies</button>
+              <span class="comment-link-sep">|</span>
+              <button class="comment-link">Reply</button>
+              <span class="comment-link-sep">|</span>
+              <button class="comment-link">🏷 Add Tags</button>
+            </div>
+          </div>
+
+        </div><!-- /comment-thread -->
+
+      </div>
+    </div>
+
+    <!-- Right Panels (hidden, DOM present) -->
+
+    <!-- AI Quick Resolve Panel -->
+    <div class="right-panel" id="panel-ai-qr">
+      <div class="right-panel-header">
+        <span class="right-panel-title">AI Quick Resolve</span>
+        <button class="icon-btn" title="Refresh">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+            <path d="M4 12a8 8 0 0 1 14.93-4H16v2h5V5h-2v2.1A10 10 0 0 0 2 12h2zm16 0a8 8 0 0 1-14.93 4H8v-2H3v5h2v-2.1A10 10 0 0 0 22 12h-2z" fill="currentColor"/>
+          </svg>
+        </button>
+        <button class="icon-btn" id="close-ai-qr" title="Close">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M15.536 16.95a1 1 0 0 0 1.414-1.414L13.414 12l3.536-3.536a1 1 0 0 0-1.414-1.414L12 10.586 8.464 7.05A1 1 0 0 0 7.05 8.464L10.586 12 7.05 15.536a1 1 0 1 0 1.414 1.414L12 13.414l3.536 3.536z" fill="currentColor"/></svg>
+        </button>
+      </div>
+      <div class="right-panel-body" id="panel-ai-qr-body">
+        <!-- Summary section -->
+        <div style="margin-bottom:12px">
+          <div style="font-size:12px;font-weight:700;color:var(--sys-text-primary);margin-bottom:6px">Summary <span style="color:var(--sys-text-secondary);font-weight:400">| 23 Comments</span></div>
+          <div style="font-size:12px;color:var(--sys-text-secondary);font-style:italic;line-height:1.5">The comments reflect a mix of excitement and concern about the Mercedes-Benz AI partnership announcement. Key themes include brand perception, innovation sentiment, and service quality feedback.</div>
+        </div>
+
+        <!-- Key Highlights -->
+        <div style="margin-bottom:16px">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+            <span style="font-size:12px;font-weight:700;color:var(--sys-text-primary)">Key Highlights</span>
+            <span style="display:inline-flex;align-items:center;height:16px;padding:0 6px;border-radius:20px;background:var(--orange-50);color:var(--orange-600);font-size:10px;font-weight:700">8 URGENT</span>
+          </div>
+          <ul style="font-size:12px;color:var(--sys-text-secondary);padding-left:16px;line-height:1.8">
+            <li>8 abusive comments requiring immediate attention</li>
+            <li>2 cancellation complaints from premium members</li>
+            <li>3 positive brand mentions worth amplifying</li>
+          </ul>
+        </div>
+
+        <!-- Priority section -->
+        <div style="margin-bottom:12px">
+          <div style="font-size:12px;font-weight:700;color:var(--sys-text-primary);margin-bottom:4px;padding-bottom:6px;border-bottom:1px solid var(--sys-border-soft)">Priority <span style="color:var(--sys-text-secondary);font-weight:400">| 23 Items</span></div>
+          <button class="ai-qr-row" onclick="">◇ Critical <span class="ai-qr-count">3</span> <span class="ai-qr-arrow">›</span></button>
+          <button class="ai-qr-row" onclick="">⚑ Flag <span class="ai-qr-count">3</span> <span class="ai-qr-arrow">›</span></button>
+          <button class="ai-qr-row" id="btn-spam-drilldown">⊘ Spam <span class="ai-qr-count">3</span> <span class="ai-qr-arrow">›</span></button>
+          <button class="ai-qr-row" onclick="">✓ No Action Required <span class="ai-qr-count">8</span> <span class="ai-qr-arrow">›</span></button>
+        </div>
+
+        <!-- Sentiment section -->
+        <div>
+          <div style="font-size:12px;font-weight:700;color:var(--sys-text-primary);margin-bottom:4px;padding-bottom:6px;border-bottom:1px solid var(--sys-border-soft)">Sentiment <span style="color:var(--sys-text-secondary);font-weight:400">| 23 Items</span></div>
+          <button class="ai-qr-row">☹ Negative <span class="ai-qr-count">3</span> <span class="ai-qr-arrow">›</span></button>
+          <button class="ai-qr-row">😐 Neutral <span class="ai-qr-count">3</span> <span class="ai-qr-arrow">›</span></button>
+          <button class="ai-qr-row">🙂 Positive <span class="ai-qr-count">17</span> <span class="ai-qr-arrow">›</span></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Spam Drill-Down Panel -->
+    <div class="right-panel" id="panel-spam">
+      <div class="right-panel-header">
+        <button class="icon-btn" id="back-to-ai-qr" title="Back">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M13.226 4.806a.75.75 0 0 1 0 1.06L7.143 11.95l6.083 6.083a.75.75 0 1 1-1.06 1.06l-6.612-6.612a.75.75 0 0 1 0-1.06l6.611-6.615a.75.75 0 0 1 1.061 0z" fill="currentColor"/></svg>
+        </button>
+        <span class="right-panel-title">Spam</span>
+        <button class="icon-btn" title="Info">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm0 4a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm-1 4h2v6h-2v-6z" fill="currentColor"/></svg>
+        </button>
+        <button class="icon-btn" id="close-spam" title="Close">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M15.536 16.95a1 1 0 0 0 1.414-1.414L13.414 12l3.536-3.536a1 1 0 0 0-1.414-1.414L12 10.586 8.464 7.05A1 1 0 0 0 7.05 8.464L10.586 12 7.05 15.536a1 1 0 1 0 1.414 1.414L12 13.414l3.536 3.536z" fill="currentColor"/></svg>
+        </button>
+      </div>
+      <div style="height:40px;min-height:40px;display:flex;align-items:center;padding:0 12px;gap:8px;border-bottom:1px solid var(--sys-border-soft)">
+        <input type="checkbox" class="master-checkbox" id="spam-master-cb">
+        <span style="font-size:12px;font-weight:600;color:var(--sys-text-primary)" id="spam-count-label">3 Comments</span>
+      </div>
+      <div style="flex:1;overflow-y:auto" id="spam-list">
+        <!-- 3 spam comment items — populated in Phase 4 JS -->
+        <div class="spam-item" data-idx="0">
+          <div style="display:flex;align-items:flex-start;gap:6px;padding:10px 12px;border-bottom:1px solid var(--sys-border-soft);position:relative">
+            <input type="checkbox" class="comment-cb spam-cb" data-idx="0">
+            <div style="flex:1;min-width:0">
+              <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:3px">
+                <span style="font-size:12px;font-weight:700;color:var(--sys-text-primary)">Elon Wilson</span>
+                <span style="font-size:11px;color:var(--sys-text-secondary)">Today 8:15 AM</span>
+                <span class="sentiment-badge badge-spam" style="font-size:10px;height:16px;padding:0 6px;">SPAM</span>
+              </div>
+              <div style="font-size:12px;color:var(--sys-text-secondary);line-height:1.4;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">Amazing product launch! The innovation shown here is truly remarkable and I'm excited to see where this leads...</div>
+              <div style="display:flex;align-items:center;gap:3px">
+                <button class="comment-action-btn" title="Resolve"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path fill-rule="evenodd" clip-rule="evenodd" d="M16.5 8.97a.75.75 0 0 1 0 1.06l-6 6a.75.75 0 0 1-1.06 0l-2.5-2.5a.75.75 0 1 1 1.06-1.06L10 14.44l5.44-5.47a.75.75 0 0 1 1.06 0z" fill="currentColor"/></svg></button>
+                <button class="comment-action-btn" title="Flag"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M5 3v18M5 4h11l-2.5 4.5L16 13H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                <button class="comment-action-btn" title="Warning"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm0 4a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm-1 4h2v6h-2v-6z" fill="currentColor"/></svg></button>
+                <button class="comment-action-btn" title="Reply"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.345 5.257a.85.85 0 0 1 1.27.13l.118.133a.85.85 0 0 1-.006.966L6.99 8.2H13.334c4.786 0 8.666 3.761 8.666 8.4a1.5 1.5 0 0 1-3 0C19 14 16.565 12 13.334 12H7.017l2.064 2.001a.85.85 0 0 1-.001 1.234 1 1 0 0 1-1.402-.001L2.152 10.929a.5.5 0 0 1 .002-.72l5.054-4.829.137-.123z" fill="currentColor"/></svg></button>
+                <button class="comment-action-btn" title="View Context"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/><path d="M3 9h18M9 9v12" stroke="currentColor" stroke-width="2"/></svg></button>
+                <div style="flex:1"></div>
+                <div class="comment-footer-avatar" style="background:var(--orange-500,#f97316)">EW</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="spam-item" data-idx="1">
+          <div style="display:flex;align-items:flex-start;gap:6px;padding:10px 12px;border-bottom:1px solid var(--sys-border-soft)">
+            <input type="checkbox" class="comment-cb spam-cb" data-idx="1">
+            <div style="flex:1;min-width:0">
+              <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:3px">
+                <span style="font-size:12px;font-weight:700;color:var(--sys-text-primary)">Mauritz Schmidt</span>
+                <span style="font-size:11px;color:var(--sys-text-secondary)">Today 7:48 AM</span>
+                <span class="sentiment-badge badge-spam" style="font-size:10px;height:16px;padding:0 6px;">SPAM</span>
+              </div>
+              <div style="font-size:12px;color:var(--sys-text-secondary);line-height:1.4;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">This is the worst experience I've ever had with a car brand. Complete waste of time and money...</div>
+              <div style="display:flex;align-items:center;gap:3px">
+                <button class="comment-action-btn" title="Resolve"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path fill-rule="evenodd" clip-rule="evenodd" d="M16.5 8.97a.75.75 0 0 1 0 1.06l-6 6a.75.75 0 0 1-1.06 0l-2.5-2.5a.75.75 0 1 1 1.06-1.06L10 14.44l5.44-5.47a.75.75 0 0 1 1.06 0z" fill="currentColor"/></svg></button>
+                <button class="comment-action-btn" title="Flag"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M5 3v18M5 4h11l-2.5 4.5L16 13H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                <button class="comment-action-btn" title="Warning"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm0 4a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm-1 4h2v6h-2v-6z" fill="currentColor"/></svg></button>
+                <button class="comment-action-btn" title="Reply"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.345 5.257a.85.85 0 0 1 1.27.13l.118.133a.85.85 0 0 1-.006.966L6.99 8.2H13.334c4.786 0 8.666 3.761 8.666 8.4a1.5 1.5 0 0 1-3 0C19 14 16.565 12 13.334 12H7.017l2.064 2.001a.85.85 0 0 1-.001 1.234 1 1 0 0 1-1.402-.001L2.152 10.929a.5.5 0 0 1 .002-.72l5.054-4.829.137-.123z" fill="currentColor"/></svg></button>
+                <button class="comment-action-btn" title="View Context"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/><path d="M3 9h18M9 9v12" stroke="currentColor" stroke-width="2"/></svg></button>
+                <div style="flex:1"></div>
+                <div class="comment-footer-avatar" style="background:var(--amber-400,#f59e0b)">MS</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="spam-item" data-idx="2">
+          <div style="display:flex;align-items:flex-start;gap:6px;padding:10px 12px;border-bottom:1px solid var(--sys-border-soft)">
+            <input type="checkbox" class="comment-cb spam-cb" data-idx="2">
+            <div style="flex:1;min-width:0">
+              <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:3px">
+                <span style="font-size:12px;font-weight:700;color:var(--sys-text-primary)">Top Gëë</span>
+                <span style="font-size:11px;color:var(--sys-text-secondary)">Yesterday 11:20 PM</span>
+                <span class="sentiment-badge badge-negative" style="font-size:10px;height:16px;padding:0 6px;">NEGATIVE</span>
+              </div>
+              <div style="font-size:12px;color:var(--sys-text-secondary);line-height:1.4;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">Terrible quality and the service is absolutely disgraceful! I will never buy from this brand again...</div>
+              <div style="display:flex;align-items:center;gap:3px">
+                <button class="comment-action-btn" title="Resolve"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path fill-rule="evenodd" clip-rule="evenodd" d="M16.5 8.97a.75.75 0 0 1 0 1.06l-6 6a.75.75 0 0 1-1.06 0l-2.5-2.5a.75.75 0 1 1 1.06-1.06L10 14.44l5.44-5.47a.75.75 0 0 1 1.06 0z" fill="currentColor"/></svg></button>
+                <button class="comment-action-btn" title="Flag"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M5 3v18M5 4h11l-2.5 4.5L16 13H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                <button class="comment-action-btn" title="Warning"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm0 4a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm-1 4h2v6h-2v-6z" fill="currentColor"/></svg></button>
+                <button class="comment-action-btn" title="Reply"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.345 5.257a.85.85 0 0 1 1.27.13l.118.133a.85.85 0 0 1-.006.966L6.99 8.2H13.334c4.786 0 8.666 3.761 8.666 8.4a1.5 1.5 0 0 1-3 0C19 14 16.565 12 13.334 12H7.017l2.064 2.001a.85.85 0 0 1-.001 1.234 1 1 0 0 1-1.402-.001L2.152 10.929a.5.5 0 0 1 .002-.72l5.054-4.829.137-.123z" fill="currentColor"/></svg></button>
+                <button class="comment-action-btn" title="View Context"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/><path d="M3 9h18M9 9v12" stroke="currentColor" stroke-width="2"/></svg></button>
+                <div style="flex:1"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Action bar (hidden until items checked) -->
+      <div id="spam-action-bar" style="display:none;padding:10px 12px;border-top:1px solid var(--sys-border-soft);gap:6px;flex-wrap:wrap;background:#fff"></div>
+    </div>
+
+    <!-- User Info Panel -->
+    <div class="right-panel" id="panel-user-info">
+      <div class="right-panel-header">
+        <span class="right-panel-title">User Info</span>
+        <button class="icon-btn" id="close-user-info" title="Close">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M15.536 16.95a1 1 0 0 0 1.414-1.414L13.414 12l3.536-3.536a1 1 0 0 0-1.414-1.414L12 10.586 8.464 7.05A1 1 0 0 0 7.05 8.464L10.586 12 7.05 15.536a1 1 0 1 0 1.414 1.414L12 13.414l3.536 3.536z" fill="currentColor"/></svg>
+        </button>
+      </div>
+      <div class="right-panel-body">
+        <!-- User -->
+        <div style="display:flex;flex-direction:column;align-items:center;text-align:center;padding-bottom:14px;border-bottom:1px solid var(--sys-border-soft);margin-bottom:14px">
+          <div style="width:48px;height:48px;border-radius:50%;background:var(--grey-200);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:var(--sys-text-primary);margin-bottom:8px">MS</div>
+          <div style="display:flex;align-items:center;gap:4px;margin-bottom:6px">
+            <span style="font-size:13px;font-weight:700;color:var(--sys-primary-default);cursor:pointer">Mia Steen</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" stroke="var(--sys-primary-default)" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <span style="display:inline-flex;align-items:center;gap:4px;height:20px;padding:0 8px;border-radius:20px;background:var(--amber-50,#fffbeb);border:1px solid var(--amber-300,#fcd34d);font-size:11px;color:var(--amber-700,#b45309)">Influencer <span style="cursor:pointer;opacity:0.7">×</span></span>
+        </div>
+
+        <!-- Personal Data -->
+        <div style="margin-bottom:14px">
+          <div style="font-size:11px;font-weight:700;color:var(--sys-text-primary);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px">Personal Data</div>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <div style="display:flex;gap:8px;font-size:12px"><span style="color:var(--sys-text-secondary);min-width:80px;flex-shrink:0">Full Name</span><span style="color:var(--sys-text-primary)">Mia Steen</span></div>
+            <div style="display:flex;gap:8px;font-size:12px"><span style="color:var(--sys-text-secondary);min-width:80px;flex-shrink:0">Description</span><span style="color:var(--sys-text-primary)">Digital content creator and social media influencer</span></div>
+            <div style="display:flex;gap:8px;font-size:12px"><span style="color:var(--sys-text-secondary);min-width:80px;flex-shrink:0">Follower</span><span style="color:var(--sys-text-primary)">31,209</span></div>
+            <div style="display:flex;gap:8px;font-size:12px"><span style="color:var(--sys-text-secondary);min-width:80px;flex-shrink:0">Follows</span><span style="color:var(--sys-text-primary)">529</span></div>
+          </div>
+        </div>
+
+        <!-- Internal Note -->
+        <div style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--sys-border-soft)">
+          <div style="font-size:11px;font-weight:700;color:var(--sys-text-primary);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px">Internal Note</div>
+          <button class="btn-secondary" style="width:100%;justify-content:center;border-style:dashed;color:var(--sys-text-secondary)">+ Add Note</button>
+        </div>
+
+        <!-- Activity -->
+        <div>
+          <div style="font-size:11px;font-weight:700;color:var(--sys-text-primary);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px">Activity on Mercedes-Benz</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;gap:8px;align-items:flex-start">
+              <div style="width:24px;height:24px;border-radius:50%;background:var(--blue-50);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M2 5a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H9.414l-3.707 3.707A1 1 0 0 1 4 17v-3a3 3 0 0 1-2-2.82V5zm3-1a1 1 0 0 0-1 1v6.18A1 1 0 0 0 5 12.18V15l2.293-2.293A1 1 0 0 1 8 12.387h7a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H5z" fill="var(--sys-primary-default)"/></svg>
+              </div>
+              <div style="flex:1;min-width:0">
+                <div style="font-size:11px;color:var(--sys-text-primary)"><strong>Elias Weber</strong> commented on Mercedes post</div>
+                <div style="font-size:10px;color:var(--sys-text-secondary)">Feb 19, 2026, 1:01 PM</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:flex-start">
+              <div style="width:24px;height:24px;border-radius:50%;background:var(--blue-50);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M2 5a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H9.414l-3.707 3.707A1 1 0 0 1 4 17v-3a3 3 0 0 1-2-2.82V5zm3-1a1 1 0 0 0-1 1v6.18A1 1 0 0 0 5 12.18V15l2.293-2.293A1 1 0 0 1 8 12.387h7a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H5z" fill="var(--sys-primary-default)"/></svg>
+              </div>
+              <div style="flex:1;min-width:0">
+                <div style="font-size:11px;color:var(--sys-text-primary)"><strong>Elias Weber</strong> wrote on Mercedes page</div>
+                <div style="font-size:10px;color:var(--sys-text-secondary)">Feb 19, 2026, 1:01 PM</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:flex-start">
+              <div style="width:24px;height:24px;border-radius:50%;background:var(--blue-50);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M2 5a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H9.414l-3.707 3.707A1 1 0 0 1 4 17v-3a3 3 0 0 1-2-2.82V5zm3-1a1 1 0 0 0-1 1v6.18A1 1 0 0 0 5 12.18V15l2.293-2.293A1 1 0 0 1 8 12.387h7a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H5z" fill="var(--sys-primary-default)"/></svg>
+              </div>
+              <div style="flex:1;min-width:0">
+                <div style="font-size:11px;color:var(--sys-text-primary)"><strong>Elias Weber</strong> posted on Mercedes page</div>
+                <div style="font-size:10px;color:var(--sys-text-secondary)">Feb 19, 2026, 1:01 PM</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Icon Column (1g) -->
+    <div id="right-icon-col">
+      <button class="right-col-btn" title="Sort">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+          <path d="M7 3l-4 4h3v10H4l4 4 4-4h-3V7h3L8 3zM17 21l4-4h-3V7h3l-4-4-4 4h3v10h-3l4 4z" fill="currentColor"/>
+        </svg>
+      </button>
+      <button class="right-col-btn" id="rc-btn-ai-qr" title="AI Quick Resolve">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+          <path d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10c0 .375-.024.75-.069 1.123a1 1 0 1 1-1.986-.246A8 8 0 1 0 11.764 20a1 1 0 1 1 .234-1.988A6.024 6.024 0 0 1 12 18" fill="currentColor"/>
+          <path d="M11.53 15.26l5.12-5.146a1 1 0 0 0-1.418-1.41l-4.12 4.14-2.12-2.122a1 1 0 0 0-1.414 1.414l2.828 2.834a1 1 0 0 0 1.41-.006z" fill="currentColor"/>
+          <path d="M14.889 18.889C16.116 18.889 17.111 19.884 17.111 21.111 17.111 21.602 17.509 22 18 22s.889-.398.889-.889c0-1.227.994-2.222 2.222-2.222.491 0 .889-.398.889-.889s-.398-.889-.889-.889c-1.228 0-2.222-.994-2.222-2.222 0-.491-.398-.889-.889-.889s-.889.398-.889.889c0 1.228-.994 2.222-2.222 2.222-.491 0-.889.398-.889.889s.398.889.889.889z" fill="url(#aqr3)"/>
+          <defs><linearGradient id="aqr3" x1="14" y1="22" x2="22" y2="14" gradientUnits="userSpaceOnUse"><stop stop-color="#1339EC"/><stop offset=".66" stop-color="#C225F9"/></linearGradient></defs>
+        </svg>
+      </button>
+      <button class="right-col-btn" id="rc-btn-user-info" title="User Info">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm-3 7a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm9.13 8.19A8 8 0 0 1 4.87 17.2C5.7 15.56 7.37 14.5 9.25 14.5h5.5c1.88 0 3.54 1.06 4.38 2.69z" fill="currentColor"/>
+        </svg>
+      </button>
+      <button class="right-col-btn" title="Internal Chat">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M2 5a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H9.414l-3.707 3.707A1 1 0 0 1 4 17v-3a3 3 0 0 1-2-2.82V5zm3-1a1 1 0 0 0-1 1v6.18A1 1 0 0 0 5 12.18V15l2.293-2.293A1 1 0 0 1 8 12.387h7a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H5z" fill="currentColor"/>
+        </svg>
+      </button>
+    </div>
+
+  </div>
+
+<!-- ═══════════════════════════════════════════════
+     DROPDOWNS (positioned via JS)
+════════════════════════════════════════════════ -->
+
+<!-- State dropdown -->
+<div id="dd-state" class="dropdown" style="display:none">
+  <button class="dd-item dd-item--checked" data-val="all">All</button>
+  <button class="dd-item" data-val="resolved">Resolved</button>
+  <button class="dd-item" data-val="unresolved">Unresolved</button>
+</div>
+
+<!-- Sort dropdown -->
+<div id="dd-sort" class="dropdown" style="display:none">
+  <button class="dd-item dd-item--checked" data-val="newest">Newest First</button>
+  <button class="dd-item" data-val="oldest">Oldest First</button>
+  <button class="dd-item" data-val="unresolved">Unresolved First</button>
+</div>
+
+<!-- Export dropdown -->
+<div id="dd-export" class="dropdown" style="display:none">
+  <button class="dd-item">Export as CSV</button>
+  <button class="dd-item">Export as PDF</button>
+  <button class="dd-item">Export as Excel</button>
+</div>
+
+<!-- Network dropdown -->
+<div id="dd-network" class="dropdown" style="display:none;width:280px;padding:0">
+  <div style="padding:6px 8px;border-bottom:1px solid var(--sys-border-soft)">
+    <div class="search-input-wrap" style="height:28px">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" style="color:var(--sys-text-placeholder);flex-shrink:0"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.5 2a8.5 8.5 0 1 0 5.262 15.176l3.53 3.531a1 1 0 0 0 1.414-1.414l-3.53-3.531A8.5 8.5 0 0 0 10.5 2zm-6.5 8.5a6.5 6.5 0 1 1 13 0 6.5 6.5 0 0 1-13 0z" fill="currentColor"/></svg>
+      <input type="text" placeholder="Search networks" style="font-size:12px;border:none;outline:none;background:transparent;width:100%;font-family:inherit">
+    </div>
+  </div>
+  <!-- Facebook row -->
+  <div class="network-row">
+    <input type="checkbox" class="nw-cb" style="accent-color:var(--sys-primary-default)" indeterminate-js="true">
+    <svg width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#1877F2"/><path d="M15.5 8H13.5C13.22 8 13 8.22 13 8.5V10.5H15.5L15.17 13H13V20H10.5V13H9V10.5H10.5V8.5C10.5 6.57 12.07 5 14 5H15.5V8Z" fill="white"/></svg>
+    <span class="network-name">Facebook</span>
+    <span class="network-count">2/5</span>
+    <button class="nw-expand-btn" data-target="fb-children">∧</button>
+  </div>
+  <div id="fb-children" class="network-children">
+    <div class="network-child-row"><input type="checkbox" class="nw-cb" checked style="accent-color:var(--sys-primary-default)"><span>Message</span></div>
+    <div class="network-child-row"><input type="checkbox" class="nw-cb" checked style="accent-color:var(--sys-primary-default)"><span>Post</span></div>
+    <div class="network-child-row"><input type="checkbox" class="nw-cb" style="accent-color:var(--sys-primary-default)"><span>Post Comment</span></div>
+    <div class="network-child-row"><input type="checkbox" class="nw-cb" style="accent-color:var(--sys-primary-default)"><span>Review</span></div>
+    <div class="network-child-row"><input type="checkbox" class="nw-cb" style="accent-color:var(--sys-primary-default)"><span>Review Comment</span></div>
+  </div>
+  <!-- Instagram row -->
+  <div class="network-row">
+    <input type="checkbox" class="nw-cb" checked style="accent-color:var(--sys-primary-default)">
+    <svg width="16" height="16" viewBox="0 0 24 24"><defs><linearGradient id="ig2" x1="0" y1="24" x2="24" y2="0" gradientUnits="userSpaceOnUse"><stop stop-color="#F58529"/><stop offset=".5" stop-color="#DD2A7B"/><stop offset="1" stop-color="#515BD4"/></linearGradient></defs><rect width="24" height="24" rx="6" fill="url(#ig2)"/><rect x="7" y="7" width="10" height="10" rx="3" stroke="#fff" stroke-width="1.5" fill="none"/><circle cx="12" cy="12" r="2.5" stroke="#fff" stroke-width="1.5" fill="none"/><circle cx="16.5" cy="7.5" r="1" fill="#fff"/></svg>
+    <span class="network-name">Instagram</span>
+    <span class="network-count">5/5</span>
+    <button class="nw-expand-btn" data-target="ig-children">∨</button>
+  </div>
+  <div id="ig-children" class="network-children" style="display:none">
+    <div class="network-child-row"><input type="checkbox" class="nw-cb" checked style="accent-color:var(--sys-primary-default)"><span>Post</span></div>
+    <div class="network-child-row"><input type="checkbox" class="nw-cb" checked style="accent-color:var(--sys-primary-default)"><span>Story</span></div>
+    <div class="network-child-row"><input type="checkbox" class="nw-cb" checked style="accent-color:var(--sys-primary-default)"><span>Comment</span></div>
+  </div>
+</div>
+
+<!-- Bulk action bar (bottom of feed) -->
+<div id="bulk-bar" style="display:none;position:absolute;bottom:0;left:0;right:0;height:48px;background:var(--sys-primary-default);display:none;align-items:center;padding:0 12px;gap:8px;z-index:10">
+  <span id="bulk-label" style="font-size:13px;font-weight:600;color:#fff"></span>
+  <div style="flex:1"></div>
+  <button class="bulk-btn">✓ Resolve</button>
+  <button class="bulk-btn">⚑ Flag</button>
+  <button class="bulk-btn">🏷 Add Tags</button>
+</div>
+
+<style>
+  /* Dropdowns */
+  .dropdown {
+    position: fixed;
+    background: #fff;
+    border: 1px solid var(--sys-border-soft);
+    border-radius: 8px;
+    box-shadow: var(--shadows-shadow-md, 0 4px 16px rgba(0,0,0,0.12));
+    z-index: 1000;
+    min-width: 160px;
+    padding: 4px;
+    font-family: "Helvetica Neue", sans-serif;
+  }
+  .dd-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 7px 10px;
+    border: none;
+    background: transparent;
+    font-size: 12px;
+    font-family: inherit;
+    color: var(--sys-text-primary);
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: left;
+    gap: 6px;
+    transition: background 0.1s;
+  }
+  .dd-item:hover { background: var(--sys-background-neutral); }
+  .dd-item--checked::before {
+    content: "✓";
+    color: var(--sys-primary-default);
+    font-weight: 700;
+    margin-right: 2px;
+  }
+
+  /* Network dropdown rows */
+  .network-row {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 10px;
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+  .network-row:hover { background: var(--sys-background-neutral); }
+  .network-name { font-size: 12px; color: var(--sys-text-primary); flex: 1; }
+  .network-count { font-size: 11px; color: var(--sys-text-secondary); }
+  .nw-expand-btn {
+    border: none; background: transparent; cursor: pointer;
+    font-size: 11px; color: var(--sys-text-secondary); padding: 2px 4px;
+    border-radius: 4px; transition: background 0.1s;
+  }
+  .nw-expand-btn:hover { background: var(--sys-background-neutral); }
+  .network-children { padding: 0 10px 4px 32px; }
+  .network-child-row {
+    display: flex; align-items: center; gap: 7px;
+    padding: 5px 4px; font-size: 12px; color: var(--sys-text-secondary);
+    border-radius: 4px; transition: background 0.1s; cursor: pointer;
+  }
+  .network-child-row:hover { background: var(--sys-background-neutral); }
+
+  /* Bulk bar */
+  .bulk-btn {
+    height: 28px; padding: 0 10px; border-radius: 6px;
+    border: 1.5px solid rgba(255,255,255,0.5);
+    background: transparent; color: #fff; font-size: 12px;
+    font-weight: 500; cursor: pointer; font-family: inherit;
+    transition: background 0.1s;
+  }
+  .bulk-btn:hover { background: rgba(255,255,255,0.15); }
+
+  /* Sidebar expanded */
+  #app-sidebar.expanded {
+    width: 220px;
+    min-width: 220px;
+  }
+  #app-sidebar.expanded .sidebar-item {
+    width: 100%;
+  }
+  #app-sidebar.expanded .sidebar-label {
+    display: inline;
+  }
+</style>
+
+<script>
+(function() {
+
+  /* ── Utility: position dropdown near trigger ── */
+  function positionDropdown(dd, trigger) {
+    const r = trigger.getBoundingClientRect();
+    dd.style.top  = (r.bottom + 4) + 'px';
+    dd.style.left = r.left + 'px';
+    // keep on screen
+    const ddW = dd.offsetWidth || parseInt(dd.style.width) || 160;
+    const winW = window.innerWidth;
+    if (r.left + ddW > winW - 8) {
+      dd.style.left = (winW - ddW - 8) + 'px';
+    }
+  }
+
+  /* ── Close all dropdowns ── */
+  function closeAll(except) {
+    document.querySelectorAll('.dropdown').forEach(d => {
+      if (d !== except) d.style.display = 'none';
+    });
+  }
+
+  /* ── Toggle a dropdown ── */
+  function toggleDropdown(dd, trigger) {
+    const isOpen = dd.style.display !== 'none';
+    closeAll(null);
+    if (!isOpen) {
+      dd.style.display = 'block';
+      positionDropdown(dd, trigger);
+    }
+  }
+
+  /* ── State dropdown ── */
+  const btnState  = document.getElementById('btn-state');
+  const ddState   = document.getElementById('dd-state');
+  btnState.addEventListener('click', e => { e.stopPropagation(); toggleDropdown(ddState, btnState); });
+  ddState.querySelectorAll('.dd-item').forEach(item => {
+    item.addEventListener('click', () => {
+      ddState.querySelectorAll('.dd-item').forEach(i => i.classList.remove('dd-item--checked'));
+      item.classList.add('dd-item--checked');
+      btnState.firstChild.textContent = item.dataset.val === 'all' ? 'State ' : item.textContent.replace('✓','').trim() + ' ';
+      ddState.style.display = 'none';
+    });
+  });
+
+  /* ── Network dropdown ── */
+  const btnNetwork = document.getElementById('btn-network');
+  const ddNetwork  = document.getElementById('dd-network');
+  btnNetwork.addEventListener('click', e => { e.stopPropagation(); toggleDropdown(ddNetwork, btnNetwork); });
+
+  // Expand/collapse sub-networks
+  ddNetwork.querySelectorAll('.nw-expand-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const target = document.getElementById(btn.dataset.target);
+      const isHidden = target.style.display === 'none';
+      target.style.display = isHidden ? 'block' : 'none';
+      btn.textContent = isHidden ? '∧' : '∨';
+    });
+  });
+
+  /* ── Sort dropdown ── */
+  const btnSort  = document.getElementById('btn-sort');
+  const ddSort   = document.getElementById('dd-sort');
+  btnSort.addEventListener('click', e => { e.stopPropagation(); toggleDropdown(ddSort, btnSort); });
+  ddSort.querySelectorAll('.dd-item').forEach(item => {
+    item.addEventListener('click', () => {
+      ddSort.querySelectorAll('.dd-item').forEach(i => i.classList.remove('dd-item--checked'));
+      item.classList.add('dd-item--checked');
+      ddSort.style.display = 'none';
+    });
+  });
+
+  /* ── Export dropdown ── */
+  const btnExport = document.querySelector('.btn-secondary');
+  const ddExport  = document.getElementById('dd-export');
+  btnExport.addEventListener('click', e => { e.stopPropagation(); toggleDropdown(ddExport, btnExport); });
+  ddExport.querySelectorAll('.dd-item').forEach(item => {
+    item.addEventListener('click', () => { ddExport.style.display = 'none'; });
+  });
+
+  /* ── Close dropdowns on outside click ── */
+  document.addEventListener('click', () => closeAll(null));
+
+  /* ── Feed item selection ── */
+  const feedItems = document.querySelectorAll('.feed-item');
+  feedItems.forEach(item => {
+    item.addEventListener('click', e => {
+      // don't trigger if clicking checkbox or action buttons
+      if (e.target.closest('.feed-cb') || e.target.closest('.feed-item-actions')) return;
+      feedItems.forEach(i => i.classList.remove('selected'));
+      item.classList.add('selected');
+    });
+  });
+
+  /* ── Feed checkboxes → bulk bar ── */
+  const bulkBar   = document.getElementById('bulk-bar');
+  const bulkLabel = document.getElementById('bulk-label');
+
+  function updateBulkBar() {
+    const checked = document.querySelectorAll('.feed-cb:checked');
+    if (checked.length > 0) {
+      bulkBar.style.display = 'flex';
+      bulkLabel.textContent = checked.length + ' item' + (checked.length > 1 ? 's' : '') + ' selected';
+    } else {
+      bulkBar.style.display = 'none';
+    }
+  }
+
+  document.querySelectorAll('.feed-cb').forEach(cb => {
+    cb.addEventListener('change', updateBulkBar);
+    cb.addEventListener('click', e => e.stopPropagation()); // don't trigger item select
+  });
+
+  // Master checkbox
+  document.querySelector('.master-checkbox').addEventListener('change', function() {
+    document.querySelectorAll('.feed-cb').forEach(cb => { cb.checked = this.checked; });
+    updateBulkBar();
+  });
+
+  /* ── Sidebar toggle ── */
+  const sidebar       = document.getElementById('app-sidebar');
+  const sidebarToggle = document.getElementById('sidebar-toggle');
+  const toggleIcon    = sidebarToggle.querySelector('svg path');
+
+  sidebarToggle.addEventListener('click', () => {
+    const expanded = sidebar.classList.toggle('expanded');
+    sidebarToggle.title = expanded ? 'Expand sidebar' : 'Collapse sidebar';
+    // Flip arrow direction
+    if (expanded) {
+      sidebarToggle.querySelector('svg').innerHTML = '<path d="M19 3h-2v18h2zM13 12L7 6v12z" fill="currentColor"/>';
+    } else {
+      sidebarToggle.querySelector('svg').innerHTML = '<path d="M5 3h2v18H5z" fill="currentColor"/><path d="M11 12l6-6v12z" fill="currentColor"/>';
+    }
+  });
+
+  // Feed panel needs position:relative for bulk bar
+  document.getElementById('feed-panel').style.position = 'relative';
+
+  /* ══════════════════════════════════════
+     PHASE 3 — Context Panel interactivity
+  ══════════════════════════════════════ */
+
+  /* ── Post collapse / expand ── */
+  const postCollapseBtn = document.getElementById('post-collapse-btn');
+  const postBody        = document.getElementById('post-body');
+  const readMoreBtn     = document.getElementById('read-more-btn');
+
+  postCollapseBtn.addEventListener('click', () => {
+    const collapsed = postBody.style.display === 'none';
+    if (collapsed) {
+      postBody.style.display = '';
+      readMoreBtn.style.display = '';
+      postCollapseBtn.textContent = 'Collapse ∧';
+    } else {
+      postBody.style.display = 'none';
+      readMoreBtn.style.display = 'none';
+      postCollapseBtn.textContent = 'Expand ∨';
+    }
+  });
+
+  /* ── Read more ── */
+  let postExpanded = false;
+  readMoreBtn.addEventListener('click', () => {
+    postExpanded = !postExpanded;
+    if (postExpanded) {
+      postBody.classList.add('expanded');
+      readMoreBtn.textContent = 'Read less';
+    } else {
+      postBody.classList.remove('expanded');
+      readMoreBtn.textContent = 'Read more';
+    }
+  });
+
+  /* ── Hide / Show replies ── */
+  const toggleRepliesBtn = document.getElementById('toggle-replies-1');
+  const repliesContainer = document.getElementById('replies-1');
+
+  toggleRepliesBtn.addEventListener('click', () => {
+    const hidden = repliesContainer.style.display === 'none';
+    if (hidden) {
+      repliesContainer.style.display = '';
+      toggleRepliesBtn.textContent = '∧ Hide 2 Replies';
+    } else {
+      repliesContainer.style.display = 'none';
+      toggleRepliesBtn.textContent = '∨ Show 2 Replies';
+    }
+  });
+
+  /* ── Reply links → show/hide inline reply area ── */
+  // The inline reply area is already visible for the nested reply in static markup.
+  // For top-level "Reply" links, wire them to toggle a freshly-created reply box.
+
+  document.querySelectorAll('.comment-link').forEach(btn => {
+    if (btn.textContent.trim() !== 'Reply') return;
+    btn.addEventListener('click', () => {
+      // Find or create an inline reply area inside the nearest comment/reply container
+      const container = btn.closest('.comment-item, .reply-item');
+      if (!container) return;
+      let existing = container.querySelector('.inline-reply');
+      if (existing) {
+        existing.style.display = existing.style.display === 'none' ? '' : 'none';
+        return;
+      }
+      const replyBox = document.createElement('div');
+      replyBox.className = 'inline-reply';
+      replyBox.innerHTML = `
+        <div class="inline-reply-header">
+          <button class="reply-type-btn">
+            Public Reply
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 13.226L7.707 8.802a1 1 0 0 0-1.414 1.414l4.646 4.789a1.5 1.5 0 0 0 2.122 0l4.646-4.789a1 1 0 0 0-1.414-1.414L12 13.226z" fill="currentColor"/></svg>
+          </button>
+        </div>
+        <div class="inline-reply-body">
+          <div class="reply-avatar">LS</div>
+          <textarea class="reply-textarea" placeholder="Write your reply..." rows="2"></textarea>
+        </div>
+        <div class="inline-reply-toolbar">
+          <button class="toolbar-btn" title="Emoji"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M8 13s1.5 2 4 2 4-2 4-2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="9" cy="10" r="1" fill="currentColor"/><circle cx="15" cy="10" r="1" fill="currentColor"/></svg></button>
+          <button class="toolbar-btn" title="Image"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.8"/><circle cx="8.5" cy="8.5" r="1.5" fill="currentColor"/><path d="M3 16l5-5 4 4 3-3 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+          <div class="toolbar-sep"></div>
+          <div class="toolbar-spacer"></div>
+          <button class="translate-btn">Te</button>
+        </div>`;
+      container.appendChild(replyBox);
+    });
+  });
+
+  /* ── Comment checkboxes in context panel ── */
+  document.querySelectorAll('.comment-cb').forEach(cb => {
+    cb.addEventListener('change', function() {
+      const item = this.closest('.comment-item, .reply-item');
+      if (!item) return;
+      if (this.checked) {
+        item.classList.add('selected');
+      } else {
+        item.classList.remove('selected');
+      }
+    });
+  });
+
+  /* ── Private Message dropdown (reply area header) ── */
+  const pmDropdown = document.createElement('div');
+  pmDropdown.className = 'dropdown';
+  pmDropdown.style.display = 'none';
+  pmDropdown.style.minWidth = '160px';
+  pmDropdown.innerHTML = `
+    <button class="dd-item dd-item--checked">Private Message</button>
+    <button class="dd-item">Public Reply</button>
+    <button class="dd-item">Internal Note</button>`;
+  document.body.appendChild(pmDropdown);
+
+  document.querySelectorAll('.reply-type-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const isOpen = pmDropdown.style.display !== 'none';
+      closeAll(null);
+      if (!isOpen) {
+        pmDropdown.style.display = 'block';
+        positionDropdown(pmDropdown, btn);
+      }
+    });
+  });
+
+  pmDropdown.querySelectorAll('.dd-item').forEach(item => {
+    item.addEventListener('click', () => {
+      pmDropdown.querySelectorAll('.dd-item').forEach(i => i.classList.remove('dd-item--checked'));
+      item.classList.add('dd-item--checked');
+      document.querySelectorAll('.reply-type-btn').forEach(b => {
+        b.childNodes[0].textContent = item.textContent.replace('✓','').trim() + ' ';
+      });
+      pmDropdown.style.display = 'none';
+    });
+  });
+
+  /* ══════════════════════════════════════
+     PHASE 4 — Right Panels
+  ══════════════════════════════════════ */
+
+  const contextPanel  = document.getElementById('context-panel');
+  const contextHeader = document.querySelector('.context-header');
+  const panelAiQr     = document.getElementById('panel-ai-qr');
+  const panelSpam     = document.getElementById('panel-spam');
+  const panelUserInfo = document.getElementById('panel-user-info');
+
+  // Insert ►| toggle button into context header (hidden until panel opens)
+  const ctxToggleBtn = document.createElement('button');
+  ctxToggleBtn.className = 'icon-btn';
+  ctxToggleBtn.id = 'ctx-toggle-btn';
+  ctxToggleBtn.title = 'Hide Context';
+  ctxToggleBtn.style.display = 'none';
+  ctxToggleBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+    <path d="M5 3h2v18H5z" fill="currentColor"/>
+    <path d="M11 12l6-6v12z" fill="currentColor"/>
+  </svg>`;
+  // Insert as first child of context header (before the title)
+  contextHeader.insertBefore(ctxToggleBtn, contextHeader.firstChild);
+
+  let contextHidden = false;
+  let activePanel = null; // 'ai-qr' | 'spam' | 'user-info' | null
+
+  function openPanel(name) {
+    // Hide all panels first
+    [panelAiQr, panelSpam, panelUserInfo].forEach(p => p.classList.remove('open'));
+    // De-activate all right col buttons
+    document.querySelectorAll('.right-col-btn').forEach(b => b.classList.remove('active'));
+
+    if (name === activePanel) {
+      // Toggle off
+      activePanel = null;
+      ctxToggleBtn.style.display = 'none';
+      if (contextHidden) showContext();
+      return;
+    }
+
+    activePanel = name;
+    ctxToggleBtn.style.display = '';
+
+    if (name === 'ai-qr') {
+      panelAiQr.classList.add('open');
+      document.getElementById('rc-btn-ai-qr').classList.add('active');
+      document.getElementById('btn-ai-qr').classList.add('active');
+    } else if (name === 'spam') {
+      panelSpam.classList.add('open');
+    } else if (name === 'user-info') {
+      panelUserInfo.classList.add('open');
+      document.getElementById('rc-btn-user-info').classList.add('active');
+      document.getElementById('btn-user-info').classList.add('active');
+    }
+  }
+
+  function closeAllPanels() {
+    [panelAiQr, panelSpam, panelUserInfo].forEach(p => p.classList.remove('open'));
+    document.querySelectorAll('.right-col-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.context-header .icon-btn').forEach(b => b.classList.remove('active'));
+    activePanel = null;
+    ctxToggleBtn.style.display = 'none';
+    if (contextHidden) showContext();
+  }
+
+  function hideContext() {
+    contextHidden = true;
+    contextPanel.style.display = 'none';
+    ctxToggleBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+      <path d="M19 3h-2v18h2z" fill="currentColor"/>
+      <path d="M13 12L7 6v12z" fill="currentColor"/>
+    </svg>`;
+    ctxToggleBtn.title = 'Show Context';
+  }
+
+  function showContext() {
+    contextHidden = false;
+    contextPanel.style.display = '';
+    ctxToggleBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+      <path d="M5 3h2v18H5z" fill="currentColor"/>
+      <path d="M11 12l6-6v12z" fill="currentColor"/>
+    </svg>`;
+    ctxToggleBtn.title = 'Hide Context';
+  }
+
+  // Context hide/show toggle
+  ctxToggleBtn.addEventListener('click', () => {
+    contextHidden ? showContext() : hideContext();
+  });
+
+  // Open AI Quick Resolve (context header button + right col button)
+  document.getElementById('btn-ai-qr').addEventListener('click', () => openPanel('ai-qr'));
+  document.getElementById('rc-btn-ai-qr').addEventListener('click', () => openPanel('ai-qr'));
+
+  // Open User Info
+  document.getElementById('btn-user-info').addEventListener('click', () => openPanel('user-info'));
+  document.getElementById('rc-btn-user-info').addEventListener('click', () => openPanel('user-info'));
+
+  // Close buttons on panels
+  document.getElementById('close-ai-qr').addEventListener('click', closeAllPanels);
+  document.getElementById('close-spam').addEventListener('click', closeAllPanels);
+  document.getElementById('close-user-info').addEventListener('click', closeAllPanels);
+
+  // Spam drill-down: click "Spam →" row in AI QR
+  document.getElementById('btn-spam-drilldown').addEventListener('click', () => {
+    panelAiQr.classList.remove('open');
+    panelSpam.classList.add('open');
+    activePanel = 'spam';
+  });
+
+  // Back arrow: spam → AI QR
+  document.getElementById('back-to-ai-qr').addEventListener('click', () => {
+    panelSpam.classList.remove('open');
+    panelAiQr.classList.add('open');
+    activePanel = 'ai-qr';
+  });
+
+  /* ── Spam drill-down checkboxes + action bar ── */
+  const spamCbs       = document.querySelectorAll('.spam-cb');
+  const spamActionBar = document.getElementById('spam-action-bar');
+  const spamMasterCb  = document.getElementById('spam-master-cb');
+  const spamCountLbl  = document.getElementById('spam-count-label');
+  const SPAM_TOTAL    = 3;
+
+  function updateSpamBar() {
+    const checked = [...spamCbs].filter(c => c.checked);
+    const n = checked.length;
+
+    // Highlight selected rows
+    spamCbs.forEach(cb => {
+      const row = cb.closest('.spam-item');
+      if (row) row.style.borderLeft = cb.checked ? '3px solid var(--sys-primary-default)' : '3px solid transparent';
+    });
+
+    // Master checkbox state
+    spamMasterCb.indeterminate = n > 0 && n < SPAM_TOTAL;
+    spamMasterCb.checked = n === SPAM_TOTAL;
+
+    // Count label
+    spamCountLbl.textContent = n > 0 ? `${n} of ${SPAM_TOTAL} selected` : `${SPAM_TOTAL} Comments`;
+
+    // Action bar
+    if (n === 0) {
+      spamActionBar.style.display = 'none';
+      return;
+    }
+    spamActionBar.style.display = 'flex';
+    const all = n === SPAM_TOTAL;
+    spamActionBar.innerHTML = `
+      <button style="height:28px;padding:0 12px;border-radius:6px;border:none;background:var(--sys-primary-default);color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">
+        ✓ ${all ? 'Resolve All' : 'Resolve ' + n + ' item' + (n > 1 ? 's' : '')}
+      </button>
+      <button style="height:28px;padding:0 10px;border-radius:6px;border:1px solid var(--sys-border-base);background:transparent;font-size:12px;cursor:pointer;font-family:inherit">
+        ⚑ ${all ? 'Flag All' : 'Flag'}
+      </button>
+      <button style="height:28px;padding:0 10px;border-radius:6px;border:1px solid var(--sys-border-base);background:transparent;font-size:12px;cursor:pointer;font-family:inherit">
+        🏷 Add Tags
+      </button>
+      <button style="height:28px;padding:0 10px;border-radius:6px;border:1px solid var(--sys-border-base);background:transparent;font-size:12px;cursor:pointer;font-family:inherit">
+        ⊘ ${all ? 'Spam All' : 'Spam'}
+      </button>`;
+  }
+
+  spamCbs.forEach(cb => cb.addEventListener('change', updateSpamBar));
+
+  spamMasterCb.addEventListener('change', function() {
+    spamCbs.forEach(cb => { cb.checked = this.checked; });
+    updateSpamBar();
+  });
+
+})();
+</script>
+</body>
+</html>
