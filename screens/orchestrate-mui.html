@@ -764,7 +764,7 @@ const FiltersPanel = ({ open, onClose }) => {
 };
 
 // ── Date Range Picker Popover ─────────────────────────────────────────────────
-const DateRangePicker = ({ anchorEl, open, onClose }) => {
+const DateRangePicker = ({ anchorEl, open, onClose, panelRef }) => {
   const [range, setRange] = useState({ start: { y:2025, m:5, d:16 }, end: { y:2025, m:5, d:22 } });
   const DOW = ['Su','Mo','Tu','We','Th','Fr','Sa'];
   const TODAY = { y:2025, m:5, d:18 };
@@ -810,7 +810,7 @@ const DateRangePicker = ({ anchorEl, open, onClose }) => {
   };
 
   return (
-    <Box sx={{ position:'fixed', zIndex:300, bgcolor:'#fff', border:'1px solid #e7eaee', borderRadius:'10px', boxShadow:'0 8px 24px rgba(0,0,0,.14)', p:2, width:560, display: open ? 'block' : 'none',
+    <Box ref={panelRef} sx={{ position:'fixed', zIndex:300, bgcolor:'#fff', border:'1px solid #e7eaee', borderRadius:'10px', boxShadow:'0 8px 24px rgba(0,0,0,.14)', p:2, width:560, display: open ? 'block' : 'none',
       top: anchorEl ? anchorEl.getBoundingClientRect().bottom + 4 : 200,
       left: anchorEl ? anchorEl.getBoundingClientRect().left : 200,
     }}>
@@ -835,7 +835,7 @@ const DateRangePicker = ({ anchorEl, open, onClose }) => {
 };
 
 // ── View Options Popover ──────────────────────────────────────────────────────
-const ViewOptionsPopover = ({ anchorEl, open, onClose, opts, onChange }) => {
+const ViewOptionsPopover = ({ anchorEl, open, onClose, opts, onChange, panelRef }) => {
   const OPTIONS = [
     { key:'compact', label:'Compact (hide thumbnails)' },
     { key:'images',  label:'Show images' },
@@ -846,7 +846,7 @@ const ViewOptionsPopover = ({ anchorEl, open, onClose, opts, onChange }) => {
   if (!open) return null;
   const rect = anchorEl ? anchorEl.getBoundingClientRect() : {};
   return (
-    <Box sx={{ position:'fixed', zIndex:300, bgcolor:'#fff', border:'1px solid #e7eaee', borderRadius:'10px', boxShadow:'0 8px 24px rgba(0,0,0,.14)', width:260,
+    <Box ref={panelRef} sx={{ position:'fixed', zIndex:300, bgcolor:'#fff', border:'1px solid #e7eaee', borderRadius:'10px', boxShadow:'0 8px 24px rgba(0,0,0,.14)', width:260,
       top: (rect.bottom||0) + 4, left: (rect.right||0) - 260 }}>
       <Box sx={{ px:'14px', py:'12px', borderBottom:'1px solid #e7eaee', fontSize:13, fontWeight:600, color:'#111317' }}>View options</Box>
       {OPTIONS.map(({ key, label }) => (
@@ -1147,18 +1147,25 @@ const App = () => {
   const [datePickerOpen, setDatePickerOpen] = useState(false);
   const [viewOptsOpen,   setViewOptsOpen]   = useState(false);
   const [viewOpts,       setViewOpts]       = useState({ compact:false, images:true, tags:true, slim:false, colored:false });
-  const datePickerBtnRef = useRef(null);
-  const viewOptsBtnRef   = useRef(null);
+  const datePickerBtnRef   = useRef(null);
+  const datePickerPanelRef = useRef(null);
+  const viewOptsBtnRef     = useRef(null);
+  const viewOptsPanelRef   = useRef(null);
 
   const wd = WEEKS.find(w => w.offset === weekOffset);
   const handleCardClick = card => { setSelectedPost(card); setOpenPanel('postDetail'); };
   const togglePanel = id => setOpenPanel(p => p === id ? null : id);
 
-  // Close popovers on outside click
+  // Close popovers on outside click — exclude both the button AND the panel
   React.useEffect(() => {
     const handler = e => {
-      if (datePickerBtnRef.current && !datePickerBtnRef.current.contains(e.target)) setDatePickerOpen(false);
-      if (viewOptsBtnRef.current   && !viewOptsBtnRef.current.contains(e.target))   setViewOptsOpen(false);
+      const inDateBtn   = datePickerBtnRef.current   && datePickerBtnRef.current.contains(e.target);
+      const inDatePanel = datePickerPanelRef.current && datePickerPanelRef.current.contains(e.target);
+      if (!inDateBtn && !inDatePanel) setDatePickerOpen(false);
+
+      const inOptsBtn   = viewOptsBtnRef.current   && viewOptsBtnRef.current.contains(e.target);
+      const inOptsPanel = viewOptsPanelRef.current && viewOptsPanelRef.current.contains(e.target);
+      if (!inOptsBtn && !inOptsPanel) setViewOptsOpen(false);
     };
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
@@ -1192,8 +1199,8 @@ const App = () => {
         </Box>
       </Box>
       {/* Popovers */}
-      <DateRangePicker anchorEl={datePickerBtnRef.current} open={datePickerOpen} onClose={() => setDatePickerOpen(false)} />
-      <ViewOptionsPopover anchorEl={viewOptsBtnRef.current} open={viewOptsOpen} onClose={() => setViewOptsOpen(false)} opts={viewOpts} onChange={setViewOpts} />
+      <DateRangePicker anchorEl={datePickerBtnRef.current} open={datePickerOpen} onClose={() => setDatePickerOpen(false)} panelRef={datePickerPanelRef} />
+      <ViewOptionsPopover anchorEl={viewOptsBtnRef.current} open={viewOptsOpen} onClose={() => setViewOptsOpen(false)} opts={viewOpts} onChange={setViewOpts} panelRef={viewOptsPanelRef} />
       {/* Main nav overlay */}
       <MainNavDrawer open={mainNavOpen} onClose={() => setMainNavOpen(false)} />
       {/* Side panels */}
