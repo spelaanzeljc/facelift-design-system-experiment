@@ -240,10 +240,10 @@ const StatusShape = ({ status }) => {
 };
 
 // ── Post card ─────────────────────────────────────────────────────────────────
-const DEFAULT_VIEW_OPTS = { compact:false, images:true, tags:true, slim:false, colored:false };
+const DEFAULT_VIEW_OPTS = { images:true, tags:true, slim:false, colored:false };
 const PostCard = ({ card, onClick, viewOpts = DEFAULT_VIEW_OPTS }) => {
   const cfg = STATUS_CFG[card.s] || STATUS_CFG.draft;
-  const showThumb = viewOpts.images && !viewOpts.compact;
+  const showThumb = viewOpts.images;
   const cardBg = viewOpts.colored ? cfg.chipBg : '#fff';
   return (
     <Paper
@@ -835,27 +835,29 @@ const DateRangePicker = ({ anchorEl, open, onClose, panelRef }) => {
 };
 
 // ── View Options Popover ──────────────────────────────────────────────────────
+const SwitchRow = ({ label, checked, onChange, indent = false }) => (
+  <Box sx={{ display:'flex', alignItems:'center', justifyContent:'space-between', px:'14px', py:'8px', pl: indent ? '26px' : '14px' }}>
+    <Typography sx={{ fontSize:13, color: indent ? '#5f6a82' : '#111317' }}>{label}</Typography>
+    <Switch size="small" checked={checked} onChange={e => onChange(e.target.checked)}
+      sx={{ '& .MuiSwitch-switchBase.Mui-checked': { color:'#1339ec' }, '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': { bgcolor:'#1339ec' } }} />
+  </Box>
+);
+
 const ViewOptionsPopover = ({ anchorEl, open, onClose, opts, onChange, panelRef }) => {
-  const OPTIONS = [
-    { key:'compact', label:'Compact (hide thumbnails)' },
-    { key:'images',  label:'Show images' },
-    { key:'tags',    label:'Show tags' },
-    { key:'slim',    label:'Slim tags' },
-    { key:'colored', label:'Colored cards' },
-  ];
   if (!open) return null;
   const rect = anchorEl ? anchorEl.getBoundingClientRect() : {};
   return (
-    <Box ref={panelRef} sx={{ position:'fixed', zIndex:300, bgcolor:'#fff', border:'1px solid #e7eaee', borderRadius:'10px', boxShadow:'0 8px 24px rgba(0,0,0,.14)', width:260,
-      top: (rect.bottom||0) + 4, left: (rect.right||0) - 260 }}>
-      <Box sx={{ px:'14px', py:'12px', borderBottom:'1px solid #e7eaee', fontSize:13, fontWeight:600, color:'#111317' }}>View options</Box>
-      {OPTIONS.map(({ key, label }) => (
-        <Box key={key} sx={{ display:'flex', alignItems:'center', justifyContent:'space-between', px:'14px', py:'9px' }}>
-          <Typography sx={{ fontSize:13, color:'#111317' }}>{label}</Typography>
-          <Switch size="small" checked={!!opts[key]} onChange={e => onChange({ ...opts, [key]: e.target.checked })}
-            sx={{ '& .MuiSwitch-switchBase.Mui-checked': { color:'#1339ec' }, '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': { bgcolor:'#1339ec' } }} />
-        </Box>
-      ))}
+    <Box ref={panelRef} sx={{ position:'fixed', zIndex:300, bgcolor:'#fff', border:'1px solid #e7eaee', borderRadius:'10px', boxShadow:'0 8px 24px rgba(0,0,0,.14)', width:240,
+      top: (rect.bottom||0) + 4, left: (rect.right||0) - 240 }}>
+      <Box sx={{ px:'14px', py:'11px', borderBottom:'1px solid #e7eaee', fontSize:13, fontWeight:600, color:'#111317' }}>View options</Box>
+      <SwitchRow label="Show images" checked={!!opts.images} onChange={v => onChange({ ...opts, images: v })} />
+      <SwitchRow label="Show tags"   checked={!!opts.tags}   onChange={v => onChange({ ...opts, tags: v, slim: v ? opts.slim : false })} />
+      {opts.tags && (
+        <SwitchRow label="Slim tags" checked={!!opts.slim} onChange={v => onChange({ ...opts, slim: v })} indent />
+      )}
+      <Box sx={{ height:1, bgcolor:'#f3f5f7', mx:'14px' }} />
+      <SwitchRow label="Colored cards" checked={!!opts.colored} onChange={v => onChange({ ...opts, colored: v })} />
+      <Box sx={{ height:'6px' }} />
     </Box>
   );
 };
@@ -1146,7 +1148,7 @@ const App = () => {
   const [selectedPost,  setSelectedPost]  = useState(null);
   const [datePickerOpen, setDatePickerOpen] = useState(false);
   const [viewOptsOpen,   setViewOptsOpen]   = useState(false);
-  const [viewOpts,       setViewOpts]       = useState({ compact:false, images:true, tags:true, slim:false, colored:false });
+  const [viewOpts,       setViewOpts]       = useState({ images:true, tags:true, slim:false, colored:false });
   const datePickerBtnRef   = useRef(null);
   const datePickerPanelRef = useRef(null);
   const viewOptsBtnRef     = useRef(null);
