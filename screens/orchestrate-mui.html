@@ -39,7 +39,8 @@ const {
   Card, CardContent, Chip, Stack, Paper,
   Button, ButtonGroup, Menu, MenuItem, Slide,
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
-  TextField, InputAdornment, Switch,
+  TextField, InputAdornment, Switch, Drawer, List, ListItem, ListItemButton,
+  ListItemIcon, ListItemText, ListSubheader,
 } = MaterialUI;
 
 const { useState, useRef } = React;
@@ -239,69 +240,74 @@ const StatusShape = ({ status }) => {
 };
 
 // ── Post card ─────────────────────────────────────────────────────────────────
-const PostCard = ({ card, onClick, showThumb = true }) => {
+const DEFAULT_VIEW_OPTS = { compact:false, images:true, tags:true, slim:false, colored:false };
+const PostCard = ({ card, onClick, viewOpts = DEFAULT_VIEW_OPTS }) => {
   const cfg = STATUS_CFG[card.s] || STATUS_CFG.draft;
+  const showThumb = viewOpts.images && !viewOpts.compact;
+  const cardBg = viewOpts.colored ? cfg.chipBg : '#fff';
   return (
-    <Card
+    <Paper
       onClick={() => onClick && onClick(card)}
       elevation={0}
       sx={{
-        border: '1px solid #e7eaee',
-        borderLeft: `3px solid ${cfg.border}`,
+        border: `1px solid ${card.s === 'failed' ? cfg.border : '#e7eaee'}`,
         borderRadius: '8px',
-        background: '#fff',
+        background: cardBg,
         cursor: 'pointer',
         flexShrink: 0,
-        '&:hover': { boxShadow: '0 2px 10px rgba(0,0,0,.09)', borderColor: '#d3d7de' },
-        ...(card.s === 'failed' ? { border: `1.5px solid ${cfg.border}`, borderLeft: `3px solid ${cfg.border}` } : {}),
+        overflow: 'hidden',
+        '&:hover': { boxShadow: '0 2px 8px rgba(0,0,0,.1)', borderColor: '#d3d7de' },
       }}
     >
-      <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
-        {/* Status row */}
-        <Box sx={{ display:'flex', alignItems:'center', gap:.5, pt:'6px', pb:0, px:'7px', pl:'10px' }}>
-          <StatusShape status={card.s} />
-          <Typography sx={{ fontSize:11, fontWeight:600, color: cfg.chipText, flex:1, lineHeight:1, ml:.5 }}>
-            {cfg.label}
-          </Typography>
-          <Typography sx={{ fontSize:'10.5px', color:'#848ea4', whiteSpace:'nowrap' }}>{card.t}</Typography>
+      {/* Colored top accent bar */}
+      <Box sx={{ height:3, bgcolor: cfg.border, borderRadius:'8px 8px 0 0' }} />
+      {/* Status row */}
+      <Box sx={{ display:'flex', alignItems:'center', gap:'5px', pt:'7px', px:'8px' }}>
+        <Box sx={{ width:8, height:8, borderRadius:'50%', bgcolor: cfg.border, flexShrink:0 }} />
+        <Typography sx={{ fontSize:11, fontWeight:600, color: cfg.chipText, flex:1, lineHeight:1 }}>
+          {cfg.label}
+        </Typography>
+        <Typography sx={{ fontSize:'10.5px', color:'#848ea4', whiteSpace:'nowrap' }}>{card.t}</Typography>
+      </Box>
+      {/* Thumbnail */}
+      {showThumb && (
+        <Box sx={{ width:'100%', height:72, mt:'6px', display:'flex', alignItems:'center', justifyContent:'center', fontSize:24, background: card.bg }}>
+          {card.emoji}
         </Box>
-        {/* Thumbnail */}
-        {showThumb && (
-          <Box sx={{ width:'100%', height:76, mt:'5px', display:'flex', alignItems:'center', justifyContent:'center', fontSize:22, background: card.bg }}>
-            {card.emoji}
+      )}
+      {/* Body */}
+      <Box sx={{ px:'8px', pt:'5px', pb:'7px' }}>
+        <Typography sx={{ fontSize:'11.5px', fontWeight:500, lineHeight:1.4, color:'#111317', mb:'4px',
+          display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical', overflow:'hidden' }}>
+          {card.title}
+        </Typography>
+        {/* Tags */}
+        {viewOpts.tags && card.tags?.length > 0 && (
+          <Box sx={{ display:'flex', flexWrap:'wrap', gap:'3px', mb:'5px' }}>
+            {card.tags.map(([color, label], i) => {
+              const tc = TAG_CFG[color] || TAG_CFG.grey;
+              if (viewOpts.slim) {
+                return <Box key={i} sx={{ display:'inline-block', width:36, height:4, borderRadius:2, bgcolor: tc.bg }} />;
+              }
+              return (
+                <Box key={i} sx={{ display:'inline-flex', alignItems:'center', px:'6px', height:18, borderRadius:'3px', fontSize:10, fontWeight:500, bgcolor: tc.bg, color: tc.color }}>
+                  {label}
+                </Box>
+              );
+            })}
           </Box>
         )}
-        {/* Body */}
-        <Box sx={{ px:'7px', pl:'10px', pt:'5px', pb:'6px' }}>
-          <Typography sx={{ fontSize:'11.5px', fontWeight:500, lineHeight:1.4, color:'#111317', mb:.5,
-            display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical', overflow:'hidden' }}>
-            {card.title}
-          </Typography>
-          {/* Tags */}
-          {card.tags?.length > 0 && (
-            <Box sx={{ display:'flex', flexWrap:'wrap', gap:'3px', mb:.5 }}>
-              {card.tags.map(([color, label], i) => {
-                const tc = TAG_CFG[color] || TAG_CFG.grey;
-                return (
-                  <Box key={i} sx={{ display:'inline-flex', alignItems:'center', px:'6px', py:'2px', borderRadius:'3px', fontSize:10, fontWeight:500, bgcolor: tc.bg, color: tc.color }}>
-                    {label}
-                  </Box>
-                );
-              })}
-            </Box>
-          )}
-          {/* Networks */}
-          {card.nets?.length > 0 && (
-            <Box sx={{ display:'flex', gap:'3px', alignItems:'center' }}>
-              {card.nets.map(n => {
-                const Icon = NET_ICONS[n];
-                return Icon ? <Box key={n} sx={{ display:'flex' }}><Icon /></Box> : null;
-              })}
-            </Box>
-          )}
-        </Box>
-      </CardContent>
-    </Card>
+        {/* Networks */}
+        {card.nets?.length > 0 && (
+          <Box sx={{ display:'flex', gap:'3px', alignItems:'center' }}>
+            {card.nets.map(n => {
+              const Icon = NET_ICONS[n];
+              return Icon ? <Box key={n} sx={{ display:'flex' }}><Icon /></Box> : null;
+            })}
+          </Box>
+        )}
+      </Box>
+    </Paper>
   );
 };
 
@@ -359,8 +365,21 @@ const ColHeaders = ({ wd, viewMode }) => (
 );
 
 // ── Day grid (data-driven) ────────────────────────────────────────────────────
-const DayGrid = ({ wd, viewMode, onCardClick }) => (
+const DayGrid = ({ wd, viewMode, onCardClick, viewOpts }) => (
   <Box className="day-scroll" sx={{ flex:1, overflowY:'auto', minHeight:0 }}>
+    {/* Campaign bars — inside scroll, same grid layout */}
+    {CAMPS.map((c, ci) => (
+      <Box key={ci} sx={{ display:'grid', gridTemplateColumns:'50px 1fr', borderBottom: ci === CAMPS.length - 1 ? '1px solid #e7eaee' : '1px solid #f3f5f7' }}>
+        <Box sx={{ borderRight:'1px solid #e7eaee' }} />
+        <Box sx={{ height:26, px:'4px', py:'3px' }}>
+          <Box sx={{ height:20, borderRadius:'4px', display:'flex', alignItems:'center', gap:'5px', px:1, fontSize:11, fontWeight:500, whiteSpace:'nowrap', overflow:'hidden', bgcolor: c.color, color: c.text }}>
+            <Box component="span" sx={{ fontSize:11, flexShrink:0 }}>{c.emoji}</Box>
+            <Box component="span" sx={{ overflow:'hidden', textOverflow:'ellipsis', flex:1, minWidth:0 }}>{c.name}</Box>
+          </Box>
+        </Box>
+      </Box>
+    ))}
+    {/* Post cards */}
     <Box sx={{ display:'grid', gridTemplateColumns:'50px repeat(7,1fr)', minHeight:'100%', alignItems:'start' }}>
       <Box sx={{ borderRight:'1px solid #e7eaee', minHeight:420 }} />
       {wd.cards.map((cards, i) => (
@@ -372,7 +391,7 @@ const DayGrid = ({ wd, viewMode, onCardClick }) => (
           bgcolor: wd.isWknd[i] ? '#f3f5f7' : wd.isToday[i] ? 'rgba(19,57,236,0.025)' : 'transparent',
         }}>
           {cards.map((card, j) => (
-            <PostCard key={j} card={card} onClick={onCardClick} showThumb={viewMode !== 'month'} />
+            <PostCard key={j} card={card} onClick={onCardClick} viewOpts={viewOpts} />
           ))}
         </Box>
       ))}
@@ -486,7 +505,7 @@ const ListView = ({ wd, onCardClick }) => {
 };
 
 // ── Calendar area (dispatches to correct view) ────────────────────────────────
-const CalendarArea = ({ wd, viewMode, calView, onCardClick }) => {
+const CalendarArea = ({ wd, viewMode, calView, onCardClick, viewOpts }) => {
   if (calView === 'list') return <ListView wd={wd} onCardClick={onCardClick} />;
   if (viewMode === 'month-timeline') return (
     <Box sx={{ flex:1, overflow:'hidden', minHeight:0, p:'10px' }}>
@@ -498,9 +517,8 @@ const CalendarArea = ({ wd, viewMode, calView, onCardClick }) => {
   return (
     <Box sx={{ flex:1, overflow:'hidden', minHeight:0, p:'10px' }}>
       <Box sx={{ height:'100%', display:'flex', flexDirection:'column', bgcolor:'#fff', border:'1px solid #e7eaee', borderRadius:'10px', overflow:'hidden' }}>
-        <CampaignBars />
         <ColHeaders wd={wd} viewMode={viewMode} />
-        <DayGrid wd={wd} viewMode={viewMode} onCardClick={onCardClick} />
+        <DayGrid wd={wd} viewMode={viewMode} onCardClick={onCardClick} viewOpts={viewOpts} />
       </Box>
     </Box>
   );
@@ -965,63 +983,136 @@ const PageTitleBar = ({ onOpenDrafts }) => {
   );
 };
 
-// ── Sidebar nav items ─────────────────────────────────────────────────────────
-const NAV_ITEMS = [
-  { label:'Analytics', icon:'bar_chart' },
-  { label:'Engage',    icon:'campaign' },
-  { label:'Calendar',  icon:'calendar_month', active:true },
-  { label:'Queue',     icon:'format_list_bulleted' },
-  { label:'Channels',  icon:'hub' },
-  null, // separator
-  { label:'Inbox',     icon:'inbox' },
-  { label:'Approvals', icon:'check_circle_outline' },
-  { label:'Tasks',     icon:'task_alt' },
-  null, // separator
-  { label:'Team',      icon:'group' },
+// ── Orchestrate sub-nav (always visible, collapsible) ────────────────────────
+const SUBNAV_ITEMS = [
+  { label:'Welcome',            icon:'explore' },
+  { label:'Storyboard',         icon:'auto_stories' },
+  { label:'Calendar',           icon:'calendar_month', active:true },
+  { label:'Frames',             icon:'crop_free' },
+  { label:'Contents',           icon:'layers' },
+  { label:'Unscheduled Drafts', icon:'inbox' },
+  { label:'Templates',          icon:'article' },
+  { label:'Post Performance',   icon:'bar_chart', chevron:true },
+  { label:'Tasks',              icon:'task_alt',  chevron:true },
+  { label:'Approvals',          icon:'check_circle_outline' },
 ];
 
-const Sidebar = ({ open }) => (
+const SubNav = ({ open, onToggle }) => (
   <Box sx={{
     width: open ? 240 : 52,
     flexShrink: 0,
-    bgcolor: '#f3f5f7',
+    bgcolor: '#fff',
     borderRight: '1px solid #e7eaee',
     display: 'flex',
     flexDirection: 'column',
-    py: '6px',
-    gap: '1px',
     zIndex: 10,
     overflow: 'hidden',
     transition: 'width 0.2s cubic-bezier(.4,0,.2,1)',
   }}>
-    {NAV_ITEMS.map((item, i) =>
-      item === null ? (
-        <Box key={i} sx={{ height:1, bgcolor:'#e7eaee', mx:1, my:.5, flexShrink:0 }} />
-      ) : (
-        <Box key={i} component="button" sx={{
-          height:36, borderRadius:'8px', display:'flex', alignItems:'center', gap:'10px',
-          px:1, mx:1, border:'none', cursor:'pointer', whiteSpace:'nowrap', flexShrink:0,
-          bgcolor: item.active ? 'rgba(95,106,130,.12)' : 'transparent',
-          color: '#111317',
-          '&:hover': { bgcolor: item.active ? 'rgba(95,106,130,.12)' : 'rgba(95,106,130,.08)' },
+    {/* Collapse / expand button */}
+    <Box sx={{ height:44, display:'flex', alignItems:'center', justifyContent: open ? 'flex-end' : 'center', px: open ? '10px' : 0, flexShrink:0, borderBottom:'1px solid #f3f5f7' }}>
+      <IconButton size="small" onClick={onToggle} sx={{ width:28, height:28, borderRadius:'6px', color:'#848ea4', '&:hover':{ bgcolor:'#f3f5f7' } }}>
+        <span className="material-icons" style={{fontSize:16, transform: open ? 'scaleX(-1)' : 'none', display:'block'}}>keyboard_tab</span>
+      </IconButton>
+    </Box>
+    {/* Nav items */}
+    <Box sx={{ flex:1, overflowY:'auto', overflowX:'hidden', py:'6px' }}>
+      {SUBNAV_ITEMS.map((item) => (
+        <Box key={item.label} component="button" sx={{
+          width:'calc(100% - 8px)', mx:'4px', height:34, borderRadius:'7px',
+          display:'flex', alignItems:'center', gap:'10px',
+          px:'8px', border:'none', cursor:'pointer', whiteSpace:'nowrap', flexShrink:0,
+          bgcolor: item.active ? 'rgba(19,57,236,.08)' : 'transparent',
+          color: item.active ? '#1339ec' : '#111317',
+          '&:hover': { bgcolor: item.active ? 'rgba(19,57,236,.08)' : '#f3f5f7' },
           transition: 'background .1s',
         }}>
           <Box sx={{ width:20, height:20, flexShrink:0, display:'flex', alignItems:'center', justifyContent:'center' }}>
-            <span className="material-icons" style={{fontSize:18}}>{item.icon}</span>
+            <span className="material-icons" style={{fontSize:17, color: item.active ? '#1339ec' : '#5f6a82'}}>{item.icon}</span>
           </Box>
-          <Typography sx={{ fontSize:13, fontWeight:500, color:'#111317', opacity: open ? 1 : 0, transition:'opacity .12s', overflow:'hidden', whiteSpace:'nowrap', pointerEvents: open ? 'auto' : 'none' }}>
+          <Typography sx={{ fontSize:13, fontWeight: item.active ? 600 : 500, color: item.active ? '#1339ec' : '#111317', opacity: open ? 1 : 0, transition:'opacity .12s', overflow:'hidden', whiteSpace:'nowrap', flex:1, textAlign:'left' }}>
             {item.label}
           </Typography>
+          {item.chevron && open && (
+            <span className="material-icons" style={{fontSize:14, color:'#848ea4', flexShrink:0}}>chevron_right</span>
+          )}
         </Box>
-      )
-    )}
+      ))}
+    </Box>
   </Box>
 );
 
+// ── Main nav overlay (hamburger) ─────────────────────────────────────────────
+const MAIN_NAV = [
+  { section: null, items: [{ label:'Home', icon:'home' }] },
+  { section: 'Marketing', items: [
+    { label:'Orchestrate', icon:'calendar_month', active:true },
+    { label:'Ideate',      icon:'lightbulb_outline' },
+    { label:'Media Library', icon:'perm_media' },
+    { label:'Amplify',     icon:'campaign' },
+  ]},
+  { section: 'Care', items: [
+    { label:'Engage', icon:'forum' },
+  ]},
+  { section: 'Analytics', items: [
+    { label:'Dashboard',   icon:'bar_chart' },
+    { label:'Analyze',     icon:'analytics' },
+    { label:'Data Studio', icon:'table_chart' },
+    { label:'Reports',     icon:'assessment' },
+  ]},
+  { section: 'Additional', items: [
+    { label:'Custom Inbox', icon:'inbox' },
+    { label:'FDS',          icon:'diamond' },
+    { label:'Storyboard',   icon:'auto_stories' },
+  ]},
+];
+
+const MainNavDrawer = ({ open, onClose }) => (
+  <Drawer anchor="left" open={open} onClose={onClose}
+    PaperProps={{ sx: { width:300, bgcolor:'#fff', borderRight:'1px solid #e7eaee' } }}>
+    {/* Header */}
+    <Box sx={{ height:56, display:'flex', alignItems:'center', px:2, gap:'10px', bgcolor:'#111317', flexShrink:0 }}>
+      <Box sx={{ width:28, height:28, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+        <Box sx={{ width:16, height:16, bgcolor:'#f97316', transform:'rotate(45deg)', borderRadius:'2px' }} />
+      </Box>
+      <Typography sx={{ fontSize:15, fontWeight:700, color:'#fff', flex:1 }}>Facelift</Typography>
+      <IconButton onClick={onClose} size="small" sx={{ color:'#5f6a82', '&:hover':{ bgcolor:'rgba(255,255,255,.1)', color:'#a7aebe' } }}>
+        <span className="material-icons" style={{fontSize:18}}>close</span>
+      </IconButton>
+    </Box>
+    {/* Nav sections */}
+    <Box sx={{ flex:1, overflowY:'auto' }}>
+      {MAIN_NAV.map(({ section, items }, si) => (
+        <Box key={si}>
+          {si > 0 && <Divider sx={{ mx:2 }} />}
+          {section && (
+            <Typography sx={{ fontSize:10, fontWeight:700, color:'#848ea4', textTransform:'uppercase', letterSpacing:'0.06em', px:'20px', pt:'14px', pb:'4px' }}>
+              {section}
+            </Typography>
+          )}
+          {items.map(item => (
+            <ListItemButton key={item.label} onClick={onClose} sx={{
+              mx:'8px', borderRadius:'8px', px:'12px', py:'7px', mb:'1px',
+              bgcolor: item.active ? 'rgba(19,57,236,.08)' : 'transparent',
+              color: item.active ? '#1339ec' : '#111317',
+              '&:hover': { bgcolor: item.active ? 'rgba(19,57,236,.08)' : '#f3f5f7' },
+            }}>
+              <ListItemIcon sx={{ minWidth:32 }}>
+                <span className="material-icons" style={{fontSize:18, color: item.active ? '#1339ec' : '#5f6a82'}}>{item.icon}</span>
+              </ListItemIcon>
+              <ListItemText primary={item.label} primaryTypographyProps={{ fontSize:13, fontWeight: item.active ? 600 : 500, color: item.active ? '#1339ec' : '#111317' }} />
+            </ListItemButton>
+          ))}
+        </Box>
+      ))}
+    </Box>
+  </Drawer>
+);
+
 // ── App header ────────────────────────────────────────────────────────────────
-const AppHeader = ({ onToggleSidebar }) => (
+const AppHeader = ({ onOpenMainNav }) => (
   <Box sx={{ height:56, flexShrink:0, bgcolor:'#111317', display:'flex', alignItems:'center', px:2, gap:'10px', zIndex:20 }}>
-    <IconButton onClick={onToggleSidebar} sx={{ width:36, height:36, borderRadius:'8px', color:'#5f6a82', '&:hover':{ bgcolor:'rgba(255,255,255,.1)', color:'#a7aebe' } }}>
+    <IconButton onClick={onOpenMainNav} sx={{ width:36, height:36, borderRadius:'8px', color:'#5f6a82', '&:hover':{ bgcolor:'rgba(255,255,255,.1)', color:'#a7aebe' } }}>
       <span className="material-icons" style={{fontSize:20}}>menu</span>
     </IconButton>
     {/* Logo */}
@@ -1046,7 +1137,8 @@ const AppHeader = ({ onToggleSidebar }) => (
 
 // ── App root ──────────────────────────────────────────────────────────────────
 const App = () => {
-  const [sidebarOpen,   setSidebarOpen]   = useState(false);
+  const [subNavOpen,    setSubNavOpen]    = useState(true);
+  const [mainNavOpen,   setMainNavOpen]   = useState(false);
   const [weekOffset,    setWeekOffset]    = useState(0);
   const [viewMode,      setViewMode]      = useState('week');
   const [calView,       setCalView]       = useState('calendar');
@@ -1076,9 +1168,9 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Box sx={{ display:'flex', flexDirection:'column', height:'100vh', overflow:'hidden', minWidth:1280 }}>
-        <AppHeader onToggleSidebar={() => setSidebarOpen(o => !o)} />
+        <AppHeader onOpenMainNav={() => setMainNavOpen(true)} />
         <Box sx={{ display:'flex', flex:1, overflow:'hidden' }}>
-          <Sidebar open={sidebarOpen} />
+          <SubNav open={subNavOpen} onToggle={() => setSubNavOpen(o => !o)} />
           <Box component="main" sx={{ flex:1, display:'flex', flexDirection:'column', overflow:'hidden', bgcolor:'#f3f5f7' }}>
             <PageTitleBar onOpenDrafts={() => togglePanel('drafts')} />
             <ToolbarRow
@@ -1102,6 +1194,8 @@ const App = () => {
       {/* Popovers */}
       <DateRangePicker anchorEl={datePickerBtnRef.current} open={datePickerOpen} onClose={() => setDatePickerOpen(false)} />
       <ViewOptionsPopover anchorEl={viewOptsBtnRef.current} open={viewOptsOpen} onClose={() => setViewOptsOpen(false)} opts={viewOpts} onChange={setViewOpts} />
+      {/* Main nav overlay */}
+      <MainNavDrawer open={mainNavOpen} onClose={() => setMainNavOpen(false)} />
       {/* Side panels */}
       <PostDetailPanel open={openPanel === 'postDetail'} post={selectedPost} onClose={() => setOpenPanel(null)} />
       <SearchPanel  open={openPanel === 'search'}  onClose={() => setOpenPanel(null)} />
