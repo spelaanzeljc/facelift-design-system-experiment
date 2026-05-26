@@ -384,6 +384,19 @@ body{
 .day-col.is-today{background:rgba(19,57,236,0.025)}
 .day-col.is-wknd{background:var(--grey-50)}
 
+/* ── DAY VIEW MODE ── */
+.col-day{cursor:pointer;transition:background .1s}
+.col-day:hover{background:var(--sys-primary-subtle-hover)}
+.col-day.is-today:hover{background:rgba(19,57,236,.07)}
+.col-day.is-selected{
+  background:var(--sys-primary-subtle-pressed);
+  box-shadow:inset 0 -2px 0 var(--sys-primary-default);
+}
+.cal-inner.is-day-view .col-headers{grid-template-columns:50px 1fr}
+.cal-inner.is-day-view .col-day:not(.is-selected){display:none}
+.cal-inner.is-day-view .day-grid{grid-template-columns:50px 1fr}
+.cal-inner.is-day-view .day-col:not(.is-selected){display:none}
+
 /* ── POST CARD ── */
 .post-card{
   border:1px solid var(--sys-border-soft);
@@ -1061,13 +1074,13 @@ body{
       <!-- COLUMN HEADERS -->
       <div class="col-headers">
         <div class="col-wk"><span class="col-wk-num">46</span></div>
-        <div class="col-day"><span class="col-day-name">Monday</span><span class="col-day-num">16</span></div>
-        <div class="col-day"><span class="col-day-name">Tuesday</span><span class="col-day-num">17</span></div>
-        <div class="col-day is-today"><span class="col-day-name">Wednesday</span><span class="col-day-num">18</span></div>
-        <div class="col-day"><span class="col-day-name">Thursday</span><span class="col-day-num">19</span></div>
-        <div class="col-day"><span class="col-day-name">Friday</span><span class="col-day-num">20</span></div>
-        <div class="col-day is-wknd"><span class="col-day-name">Saturday</span><span class="col-day-num">21</span></div>
-        <div class="col-day is-wknd"><span class="col-day-name">Sunday</span><span class="col-day-num">22</span></div>
+        <div class="col-day" data-col="0"><span class="col-day-name">Monday</span><span class="col-day-num">16</span></div>
+        <div class="col-day" data-col="1"><span class="col-day-name">Tuesday</span><span class="col-day-num">17</span></div>
+        <div class="col-day is-today" data-col="2"><span class="col-day-name">Wednesday</span><span class="col-day-num">18</span></div>
+        <div class="col-day" data-col="3"><span class="col-day-name">Thursday</span><span class="col-day-num">19</span></div>
+        <div class="col-day" data-col="4"><span class="col-day-name">Friday</span><span class="col-day-num">20</span></div>
+        <div class="col-day is-wknd" data-col="5"><span class="col-day-name">Saturday</span><span class="col-day-num">21</span></div>
+        <div class="col-day is-wknd" data-col="6"><span class="col-day-name">Sunday</span><span class="col-day-num">22</span></div>
       </div>
       <!-- CAMPAIGN BARS -->
       <div class="camp-section">
@@ -1133,7 +1146,7 @@ body{
           <div class="day-spacer"></div>
 
           <!-- MONDAY 16 -->
-          <div class="day-col">
+          <div class="day-col" data-col="0">
             <!-- Card 1: Successful -->
             <div class="post-card s-successful">
               <div class="post-status">
@@ -1203,7 +1216,7 @@ body{
           </div>
 
           <!-- TUESDAY 17 -->
-          <div class="day-col">
+          <div class="day-col" data-col="1">
             <div class="post-card s-scheduled">
               <div class="post-status">
                 <span class="post-si"><svg viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" fill="currentColor" style="color:var(--blue-500)"/></svg></span>
@@ -1241,7 +1254,7 @@ body{
           </div>
 
           <!-- WEDNESDAY 18 (today) -->
-          <div class="day-col is-today">
+          <div class="day-col is-today" data-col="2">
             <div class="post-card s-successful">
               <div class="post-status">
                 <span class="post-si"><svg viewBox="0 0 12 12" fill="none"><polygon points="6,1 11,6 6,11 1,6" fill="currentColor" style="color:var(--green-700)"/></svg></span>
@@ -1304,7 +1317,7 @@ body{
           </div>
 
           <!-- THURSDAY 19 -->
-          <div class="day-col">
+          <div class="day-col" data-col="3">
             <div class="post-card s-draft">
               <div class="post-status">
                 <span class="post-si"><svg viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.5" style="color:var(--grey-400)"/></svg></span>
@@ -1327,7 +1340,7 @@ body{
           </div>
 
           <!-- FRIDAY 20 -->
-          <div class="day-col">
+          <div class="day-col" data-col="4">
             <div class="post-card s-successful">
               <div class="post-status">
                 <span class="post-si"><svg viewBox="0 0 12 12" fill="none"><polygon points="6,1 11,6 6,11 1,6" fill="currentColor" style="color:var(--green-700)"/></svg></span>
@@ -1370,7 +1383,7 @@ body{
           </div>
 
           <!-- SATURDAY 21 -->
-          <div class="day-col is-wknd">
+          <div class="day-col is-wknd" data-col="5">
             <div class="post-card s-scheduled">
               <div class="post-status">
                 <span class="post-si"><svg viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" fill="currentColor" style="color:var(--blue-500)"/></svg></span>
@@ -1429,7 +1442,7 @@ body{
           </div>
 
           <!-- SUNDAY 22 -->
-          <div class="day-col is-wknd">
+          <div class="day-col is-wknd" data-col="6">
             <div class="post-card s-draft">
               <div class="post-status">
                 <span class="post-si"><svg viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.5" style="color:var(--grey-400)"/></svg></span>
@@ -1923,6 +1936,33 @@ document.getElementById('tb-cal-icon').addEventListener('click', function(){
 document.getElementById('sb-toggle').addEventListener('click', function() {
   document.getElementById('sidebar').classList.toggle('is-expanded');
 });
+
+// ── Day Column Click → Day View ──
+(function(){
+  const calInner = document.querySelector('.cal-inner');
+  const headers  = Array.from(document.querySelectorAll('.col-day'));
+  const cols     = Array.from(document.querySelectorAll('.day-col'));
+
+  headers.forEach(function(hdr) {
+    hdr.addEventListener('click', function(e) {
+      // prevent card clicks inside the header from bubbling (none exist, but safe)
+      const col = this.dataset.col;
+      const alreadySelected = this.classList.contains('is-selected');
+
+      headers.forEach(function(h) { h.classList.remove('is-selected'); });
+      cols.forEach(function(c)    { c.classList.remove('is-selected'); });
+
+      if (alreadySelected) {
+        calInner.classList.remove('is-day-view');
+      } else {
+        this.classList.add('is-selected');
+        const matchCol = cols.find(function(c) { return c.dataset.col === col; });
+        if (matchCol) matchCol.classList.add('is-selected');
+        calInner.classList.add('is-day-view');
+      }
+    });
+  });
+})();
 
 document.querySelectorAll('[data-dd]').forEach(btn => {
   btn.addEventListener('click', function(e) {
