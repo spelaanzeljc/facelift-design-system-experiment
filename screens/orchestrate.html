@@ -76,21 +76,57 @@ body{
 /* ── SIDEBAR ── */
 .sidebar{
   width:52px;flex-shrink:0;
-  background:var(--grey-900);
-  border-right:1px solid var(--grey-800);
-  display:flex;flex-direction:column;align-items:center;
-  padding:8px 0;gap:2px;
+  background:var(--sys-background-neutral);
+  border-right:1px solid var(--sys-border-soft);
+  display:flex;flex-direction:column;
+  padding:6px 0;gap:1px;
   z-index:10;
+  overflow:hidden;
+  transition:width .2s cubic-bezier(.4,0,.2,1);
 }
-.sb-btn{
-  width:36px;height:36px;border-radius:8px;
+.sidebar.is-expanded{width:240px}
+/* toggle row at top */
+.sb-toggle-row{
+  display:flex;align-items:center;justify-content:flex-end;
+  height:36px;padding:0 8px;flex-shrink:0;margin-bottom:2px;
+}
+.sb-toggle-btn{
+  width:28px;height:28px;border-radius:6px;
   display:flex;align-items:center;justify-content:center;
-  color:var(--grey-600);
-  position:relative;
+  color:var(--sys-text-secondary);flex-shrink:0;
 }
-.sb-btn:hover{background:var(--alpha-white-16);color:var(--grey-300)}
-.sb-btn.is-active{background:rgba(85,129,241,0.18);color:var(--blue-400)}
-.sb-sep{width:28px;height:1px;background:var(--grey-800);margin:4px 0;flex-shrink:0}
+.sb-toggle-btn:hover{background:rgba(95,106,130,.08)}
+/* nav items */
+.sb-item{
+  height:36px;border-radius:8px;
+  display:flex;align-items:center;gap:10px;
+  padding:0 8px;
+  margin:0 8px;
+  color:var(--sys-text-primary);
+  cursor:pointer;
+  white-space:nowrap;
+  flex-shrink:0;
+  min-width:0;
+}
+.sb-item:hover{background:rgba(95,106,130,.08)}
+.sb-item.is-active{background:rgba(95,106,130,.12)}
+.sb-icon{
+  width:20px;height:20px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--sys-text-primary);
+}
+.sb-label{
+  font-size:13px;font-weight:500;
+  color:var(--sys-text-primary);
+  opacity:0;pointer-events:none;
+  transition:opacity .12s;
+  overflow:hidden;
+}
+.sidebar.is-expanded .sb-label{opacity:1;pointer-events:auto}
+.sb-sep{
+  height:1px;background:var(--sys-border-soft);
+  margin:4px 8px;flex-shrink:0;
+}
 
 /* ── PAGE TITLE BAR ── */
 .page-title-bar{
@@ -783,53 +819,6 @@ body{
 }
 .pdp-ig-caption strong{font-weight:700}
 
-/* ── CARD HOVER TOOLTIP ── */
-.card-tooltip{
-  position:fixed;z-index:300;
-  background:var(--sys-background-base);
-  border:1px solid var(--sys-border-soft);
-  border-radius:10px;
-  box-shadow:0 8px 24px rgba(0,0,0,.15);
-  width:260px;padding:14px;
-  display:none;pointer-events:none;
-}
-.card-tooltip.is-visible{display:block}
-.ct-title{font-size:13px;font-weight:600;color:var(--sys-text-primary);margin-bottom:8px;line-height:1.3}
-.ct-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--sys-text-placeholder);margin-bottom:5px}
-.ct-profiles{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:12px}
-.ct-chip{
-  display:inline-flex;align-items:center;gap:4px;
-  height:22px;padding:0 7px;border-radius:4px;
-  border:1px solid var(--sys-border-base);
-  font-size:11px;color:var(--sys-text-primary);
-}
-.ct-more{
-  height:22px;padding:0 7px;border-radius:4px;
-  background:var(--sys-background-neutral);
-  font-size:11px;font-weight:600;color:var(--sys-text-secondary);
-  display:inline-flex;align-items:center;
-}
-.ct-phone{
-  width:100%;height:140px;
-  background:linear-gradient(135deg,#f5f0ff 0%,#e8f4ff 100%);
-  border-radius:8px;overflow:hidden;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  position:relative;
-}
-.ct-phone-frame{
-  width:80px;height:130px;
-  background:#111317;border-radius:14px;
-  position:relative;overflow:hidden;
-  box-shadow:0 4px 12px rgba(0,0,0,.25);
-}
-.ct-phone-screen{
-  position:absolute;inset:3px;
-  background:#fff;border-radius:11px;
-  overflow:hidden;display:flex;flex-direction:column;
-}
-.ct-phone-header{height:16px;background:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 6px}
-.ct-phone-img{flex:1;background:linear-gradient(135deg,#ff9a9e,#fad0c4);display:flex;align-items:center;justify-content:center;font-size:18px}
-.ct-phone-caption{height:24px;background:#fff;padding:3px 5px;font-size:6px;color:#555;line-height:1.3;overflow:hidden}
 
 /* ── LIST VIEW ── */
 .list-view{
@@ -920,44 +909,60 @@ body{
 <div class="app-body">
 
 <!-- SIDEBAR -->
-<nav class="sidebar">
-  <!-- Analytics -->
-  <button class="sb-btn" title="Analytics">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M21 4.5C21 3.67157 20.3284 3 19.5 3C18.6716 3 18 3.67157 18 4.5V19.5C18 20.3284 18.6716 21 19.5 21C20.3284 21 21 20.3284 21 19.5V4.5ZM11 8.35712C11 7.52869 10.3284 6.85712 9.5 6.85712C8.67157 6.85712 8 7.52869 8 8.35712V19.5C8 20.3284 8.67157 21 9.5 21C10.3284 21 11 20.3284 11 19.5V8.35712ZM6 16.0714C6 15.243 5.32843 14.5714 4.5 14.5714C3.67157 14.5714 3 15.243 3 16.0714V19.5C3 20.3284 3.67157 21 4.5 21C5.32843 21 6 20.3284 6 19.5V16.0714ZM14.5 10.7143C15.3284 10.7143 16 11.3859 16 12.2143V19.5C16 20.3284 15.3284 21 14.5 21C13.6716 21 13 20.3284 13 19.5V12.2143C13 11.3859 13.6716 10.7143 14.5 10.7143Z" fill="currentColor"/></svg>
+<nav class="sidebar" id="sidebar">
+  <div class="sb-toggle-row">
+    <button class="sb-toggle-btn" id="sb-toggle" title="Toggle sidebar">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M3 5C3 4.44772 3.44772 4 4 4H20C20.5523 4 21 4.44772 21 5C21 5.55228 20.5523 6 20 6H4C3.44772 6 3 5.55228 3 5ZM3 12C3 11.4477 3.44772 11 4 11H20C20.5523 11 21 11.4477 21 12C21 12.5523 20.5523 13 20 13H4C3.44772 13 3 12.5523 3 12ZM4 18C3.44772 18 3 18.4477 3 19C3 19.5523 3.44772 20 4 20H20C20.5523 20 21 19.5523 21 19C21 18.4477 20.5523 18 20 18H4Z" fill="currentColor"/></svg>
+    </button>
+  </div>
+
+  <button class="sb-item" title="Analytics">
+    <span class="sb-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M21 4.5C21 3.67157 20.3284 3 19.5 3C18.6716 3 18 3.67157 18 4.5V19.5C18 20.3284 18.6716 21 19.5 21C20.3284 21 21 20.3284 21 19.5V4.5ZM11 8.35712C11 7.52869 10.3284 6.85712 9.5 6.85712C8.67157 6.85712 8 7.52869 8 8.35712V19.5C8 20.3284 8.67157 21 9.5 21C10.3284 21 11 20.3284 11 19.5V8.35712ZM6 16.0714C6 15.243 5.32843 14.5714 4.5 14.5714C3.67157 14.5714 3 15.243 3 16.0714V19.5C3 20.3284 3.67157 21 4.5 21C5.32843 21 6 20.3284 6 19.5V16.0714ZM14.5 10.7143C15.3284 10.7143 16 11.3859 16 12.2143V19.5C16 20.3284 15.3284 21 14.5 21C13.6716 21 13 20.3284 13 19.5V12.2143C13 11.3859 13.6716 10.7143 14.5 10.7143Z" fill="currentColor"/></svg></span>
+    <span class="sb-label">Analytics</span>
   </button>
-  <!-- Engage/Feed -->
-  <button class="sb-btn" title="Engage">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M13.4142 3.58579C12.6332 2.80474 11.3668 2.80474 10.5858 3.58579L3.58579 10.5858C2.80474 11.3668 2.80474 12.6332 3.58579 13.4142L10.5858 20.4142C11.3668 21.1953 12.6332 21.1953 13.4142 20.4142L20.4142 13.4142C21.1953 12.6332 21.1953 11.3668 20.4142 10.5858L13.4142 3.58579ZM13 8C13 7.44772 12.5523 7 12 7C11.4477 7 11 7.44772 11 8V12C11 12.5523 11.4477 13 12 13C12.5523 13 13 12.5523 13 12V8ZM12 15C11.4477 15 11 15.4477 11 16C11 16.5523 11.4477 17 12 17C12.5523 17 13 16.5523 13 16C13 15.4477 12.5523 15 12 15Z" fill="currentColor"/></svg>
+
+  <button class="sb-item" title="Engage">
+    <span class="sb-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M13.4142 3.58579C12.6332 2.80474 11.3668 2.80474 10.5858 3.58579L3.58579 10.5858C2.80474 11.3668 2.80474 12.6332 3.58579 13.4142L10.5858 20.4142C11.3668 21.1953 12.6332 21.1953 13.4142 20.4142L20.4142 13.4142C21.1953 12.6332 21.1953 11.3668 20.4142 10.5858L13.4142 3.58579ZM13 8C13 7.44772 12.5523 7 12 7C11.4477 7 11 7.44772 11 8V12C11 12.5523 11.4477 13 12 13C12.5523 13 13 12.5523 13 12V8ZM12 15C11.4477 15 11 15.4477 11 16C11 16.5523 11.4477 17 12 17C12.5523 17 13 16.5523 13 16C13 15.4477 12.5523 15 12 15Z" fill="currentColor"/></svg></span>
+    <span class="sb-label">Engage</span>
   </button>
-  <!-- Calendar (active) -->
-  <button class="sb-btn is-active" title="Calendar">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M6 6C4.89543 6 4 6.89543 4 8V18C4 19.1046 4.89543 20 6 20H18C19.1046 20 20 19.1046 20 18V8C20 6.89543 19.1046 6 18 6H16H8H6ZM9 4H15V3C15 2.44772 15.4477 2 16 2C16.5523 2 17 2.44772 17 3V4H18C20.2091 4 22 5.79086 22 8V18C22 20.2091 20.2091 22 18 22H6C3.79086 22 2 20.2091 2 18V8C2 5.79086 3.79086 4 6 4H7V3C7 2.44772 7.44772 2 8 2C8.55228 2 9 2.44772 9 3V4ZM7.5 12C7.22386 12 7 12.2239 7 12.5V13.5C7 13.7761 7.22386 14 7.5 14H8.5C8.77614 14 9 13.7761 9 13.5V12.5C9 12.2239 8.77614 12 8.5 12H7.5ZM11 12.5C11 12.2239 11.2239 12 11.5 12H12.5C12.7761 12 13 12.2239 13 12.5V13.5C13 13.7761 12.7761 14 12.5 14H11.5C11.2239 14 11 13.7761 11 13.5V12.5ZM15.5 12C15.2239 12 15 12.2239 15 12.5V13.5C15 13.7761 15.2239 14 15.5 14H16.5C16.7761 14 17 13.7761 17 13.5V12.5C17 12.2239 16.7761 12 16.5 12H15.5Z" fill="currentColor"/></svg>
+
+  <button class="sb-item is-active" title="Calendar">
+    <span class="sb-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M6 6C4.89543 6 4 6.89543 4 8V18C4 19.1046 4.89543 20 6 20H18C19.1046 20 20 19.1046 20 18V8C20 6.89543 19.1046 6 18 6H16H8H6ZM9 4H15V3C15 2.44772 15.4477 2 16 2C16.5523 2 17 2.44772 17 3V4H18C20.2091 4 22 5.79086 22 8V18C22 20.2091 20.2091 22 18 22H6C3.79086 22 2 20.2091 2 18V8C2 5.79086 3.79086 4 6 4H7V3C7 2.44772 7.44772 2 8 2C8.55228 2 9 2.44772 9 3V4ZM7.5 12C7.22386 12 7 12.2239 7 12.5V13.5C7 13.7761 7.22386 14 7.5 14H8.5C8.77614 14 9 13.7761 9 13.5V12.5C9 12.2239 8.77614 12 8.5 12H7.5ZM11 12.5C11 12.2239 11.2239 12 11.5 12H12.5C12.7761 12 13 12.2239 13 12.5V13.5C13 13.7761 12.7761 14 12.5 14H11.5C11.2239 14 11 13.7761 11 13.5V12.5ZM15.5 12C15.2239 12 15 12.2239 15 12.5V13.5C15 13.7761 15.2239 14 15.5 14H16.5C16.7761 14 17 13.7761 17 13.5V12.5C17 12.2239 16.7761 12 16.5 12H15.5Z" fill="currentColor"/></svg></span>
+    <span class="sb-label">Calendar</span>
   </button>
-  <!-- Queue -->
-  <button class="sb-btn" title="Queue">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M3 5C3 4.44772 3.44772 4 4 4H20C20.5523 4 21 4.44772 21 5C21 5.55228 20.5523 6 20 6H4C3.44772 6 3 5.55228 3 5ZM3 12C3 11.4477 3.44772 11 4 11H20C20.5523 11 21 11.4477 21 12C21 12.5523 20.5523 13 20 13H4C3.44772 13 3 12.5523 3 12ZM4 18C3.44772 18 3 18.4477 3 19C3 19.5523 3.44772 20 4 20H20C20.5523 20 21 19.5523 21 19C21 18.4477 20.5523 18 20 18H4Z" fill="currentColor"/></svg>
+
+  <button class="sb-item" title="Queue">
+    <span class="sb-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M3 5C3 4.44772 3.44772 4 4 4H20C20.5523 4 21 4.44772 21 5C21 5.55228 20.5523 6 20 6H4C3.44772 6 3 5.55228 3 5ZM3 12C3 11.4477 3.44772 11 4 11H20C20.5523 11 21 11.4477 21 12C21 12.5523 20.5523 13 20 13H4C3.44772 13 3 12.5523 3 12ZM4 18C3.44772 18 3 18.4477 3 19C3 19.5523 3.44772 20 4 20H20C20.5523 20 21 19.5523 21 19C21 18.4477 20.5523 18 20 18H4Z" fill="currentColor"/></svg></span>
+    <span class="sb-label">Queue</span>
   </button>
-  <!-- Channels -->
-  <button class="sb-btn" title="Channels">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2L2 7V17L12 22L22 17V7L12 2ZM12 4.23607L20 8.61803V15.382L12 19.764L4 15.382V8.61803L12 4.23607Z" fill="currentColor"/></svg>
+
+  <button class="sb-item" title="Channels">
+    <span class="sb-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2L2 7V17L12 22L22 17V7L12 2ZM12 4.23607L20 8.61803V15.382L12 19.764L4 15.382V8.61803L12 4.23607Z" fill="currentColor"/></svg></span>
+    <span class="sb-label">Channels</span>
   </button>
+
   <div class="sb-sep"></div>
-  <!-- Inbox -->
-  <button class="sb-btn" title="Inbox">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M2 6C2 4.89543 2.89543 4 4 4H20C21.1046 4 22 4.89543 22 6V18C22 19.1046 21.1046 20 20 20H4C2.89543 20 2 19.1046 2 18V6ZM4 6L12 13L20 6H4ZM4 8.23607V18H20V8.23607L12 15.2361L4 8.23607Z" fill="currentColor"/></svg>
+
+  <button class="sb-item" title="Inbox">
+    <span class="sb-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M2 6C2 4.89543 2.89543 4 4 4H20C21.1046 4 22 4.89543 22 6V18C22 19.1046 21.1046 20 20 20H4C2.89543 20 2 19.1046 2 18V6ZM4 6L12 13L20 6H4ZM4 8.23607V18H20V8.23607L12 15.2361L4 8.23607Z" fill="currentColor"/></svg></span>
+    <span class="sb-label">Inbox</span>
   </button>
-  <!-- Approvals -->
-  <button class="sb-btn" title="Approvals">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM16.7071 9.29289C17.0976 9.68342 17.0976 10.3166 16.7071 10.7071L11.4142 16C11.0237 16.3905 10.3905 16.3905 10 16L7.29289 13.2929C6.90237 12.9024 6.90237 12.2692 7.29289 11.8787C7.68342 11.4882 8.31658 11.4882 8.70711 11.8787L10.7071 13.8787L15.2929 9.29289C15.6834 8.90237 16.3166 8.90237 16.7071 9.29289Z" fill="currentColor"/></svg>
+
+  <button class="sb-item" title="Approvals">
+    <span class="sb-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM16.7071 9.29289C17.0976 9.68342 17.0976 10.3166 16.7071 10.7071L11.4142 16C11.0237 16.3905 10.3905 16.3905 10 16L7.29289 13.2929C6.90237 12.9024 6.90237 12.2692 7.29289 11.8787C7.68342 11.4882 8.31658 11.4882 8.70711 11.8787L10.7071 13.8787L15.2929 9.29289C15.6834 8.90237 16.3166 8.90237 16.7071 9.29289Z" fill="currentColor"/></svg></span>
+    <span class="sb-label">Approvals</span>
   </button>
-  <!-- Tasks -->
-  <button class="sb-btn" title="Tasks">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM13 7C13 6.44772 12.5523 6 12 6C11.4477 6 11 6.44772 11 7V12C11 12.3788 11.214 12.725 11.5528 12.8944L14.5528 14.3944C15.0468 14.6414 15.6474 14.4468 15.8944 13.9528C16.1414 13.4588 15.9468 12.8582 15.4528 12.6112L13 11.382V7Z" fill="currentColor"/></svg>
+
+  <button class="sb-item" title="Tasks">
+    <span class="sb-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM13 7C13 6.44772 12.5523 6 12 6C11.4477 6 11 6.44772 11 7V12C11 12.3788 11.214 12.725 11.5528 12.8944L14.5528 14.3944C15.0468 14.6414 15.6474 14.4468 15.8944 13.9528C16.1414 13.4588 15.9468 12.8582 15.4528 12.6112L13 11.382V7Z" fill="currentColor"/></svg></span>
+    <span class="sb-label">Tasks</span>
   </button>
+
   <div class="sb-sep"></div>
-  <!-- Team -->
-  <button class="sb-btn" title="Team">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M9 4C7.34315 4 6 5.34315 6 7C6 8.65685 7.34315 10 9 10C10.6569 10 12 8.65685 12 7C12 5.34315 10.6569 4 9 4ZM4 7C4 4.23858 6.23858 2 9 2C11.7614 2 14 4.23858 14 7C14 9.76142 11.7614 12 9 12C6.23858 12 4 9.76142 4 7ZM17 6C15.8954 6 15 6.89543 15 8C15 9.10457 15.8954 10 17 10C18.1046 10 19 9.10457 19 8C19 6.89543 18.1046 6 17 6ZM13 8C13 5.79086 14.7909 4 17 4C19.2091 4 21 5.79086 21 8C21 10.2091 19.2091 12 17 12C14.7909 12 13 10.2091 13 8ZM2 19C2 16.2386 4.23858 14 7 14H11C13.7614 14 16 16.2386 16 19V20C16 20.5523 15.5523 21 15 21C14.4477 21 14 20.5523 14 20V19C14 17.3431 12.6569 16 11 16H7C5.34315 16 4 17.3431 4 19V20C4 20.5523 3.55228 21 3 21C2.44772 21 2 20.5523 2 20V19ZM18 15C17.4477 15 17 15.4477 17 16C17 16.5523 17.4477 17 18 17H19V19C19 19.5523 19.4477 20 20 20C20.5523 20 21 19.5523 21 19V17H22C22.5523 17 23 16.5523 23 16C23 15.4477 22.5523 15 22 15H18Z" fill="currentColor"/></svg>
+
+  <button class="sb-item" title="Team">
+    <span class="sb-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M9 4C7.34315 4 6 5.34315 6 7C6 8.65685 7.34315 10 9 10C10.6569 10 12 8.65685 12 7C12 5.34315 10.6569 4 9 4ZM4 7C4 4.23858 6.23858 2 9 2C11.7614 2 14 4.23858 14 7C14 9.76142 11.7614 12 9 12C6.23858 12 4 9.76142 4 7ZM17 6C15.8954 6 15 6.89543 15 8C15 9.10457 15.8954 10 17 10C18.1046 10 19 9.10457 19 8C19 6.89543 18.1046 6 17 6ZM13 8C13 5.79086 14.7909 4 17 4C19.2091 4 21 5.79086 21 8C21 10.2091 19.2091 12 17 12C14.7909 12 13 10.2091 13 8ZM2 19C2 16.2386 4.23858 14 7 14H11C13.7614 14 16 16.2386 16 19V20C16 20.5523 15.5523 21 15 21C14.4477 21 14 20.5523 14 20V19C14 17.3431 12.6569 16 11 16H7C5.34315 16 4 17.3431 4 19V20C4 20.5523 3.55228 21 3 21C2.44772 21 2 20.5523 2 20V19ZM18 15C17.4477 15 17 15.4477 17 16C17 16.5523 17.4477 17 18 17H19V19C19 19.5523 19.4477 20 20 20C20.5523 20 21 19.5523 21 19V17H22C22.5523 17 23 16.5523 23 16C23 15.4477 22.5523 15 22 15H18Z" fill="currentColor"/></svg></span>
+    <span class="sb-label">Team</span>
   </button>
 </nav>
 
@@ -1638,27 +1643,6 @@ body{
   </div>
 </div>
 
-<!-- ── CARD HOVER TOOLTIP ── -->
-<div class="card-tooltip" id="card-tooltip">
-  <div class="ct-title" id="ct-title">Post title</div>
-  <div class="ct-label">Profiles</div>
-  <div class="ct-profiles">
-    <span class="ct-chip"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.0357 3.86108C14.9802 3.81346 14.6667 3.80155 11.996 3.80155C9.32539 3.80155 9.0119 3.80949 7.95634 3.86108C6.98015 3.90473 6.45238 4.07139 6.0992 4.20632C5.63095 4.38489 5.29761 4.60314 4.94841 4.95235C4.5992 5.30155 4.38492 5.63489 4.20238 6.10314C4.06349 6.45632 3.90079 6.98409 3.85714 7.96028C3.80952 9.01584 3.79761 9.32933 3.79761 12C3.79761 14.6706 3.80952 14.9841 3.85714 16.0396C3.90079 17.0158 4.06745 17.5436 4.20238 17.8968C4.38095 18.365 4.5992 18.6984 4.94841 19.0476C5.29761 19.3968 5.63095 19.6111 6.0992 19.7936C6.45238 19.9325 6.98015 20.0952 7.95634 20.1389C9.0119 20.1865 9.32539 20.1984 11.996 20.1984C14.6667 20.1984 14.9802 20.1865 16.0357 20.1389C17.0119 20.0952 17.5397 19.9285 17.8929 19.7936C18.3611 19.615 18.6944 19.3968 19.0436 19.0476C19.3929 18.6984 19.6071 18.365 19.7897 17.8968C19.9286 17.5436 20.0913 17.0158 20.1349 16.0396C20.1825 14.9841 20.1944 14.6706 20.1944 12C20.1944 9.32933 20.1825 9.01584 20.1349 7.96028C20.0913 6.98409 19.9246 6.45632 19.7897 6.10314C19.6111 5.63489 19.3929 5.30155 19.0436 4.95235C18.6944 4.60314 18.3611 4.38885 17.8929 4.20632C17.5397 4.06743 17.0119 3.90473 16.0357 3.86108ZM8.6627 11.9959C8.6627 10.1546 10.1548 8.66257 11.996 8.66257C13.8373 8.66257 15.3294 10.1546 15.3294 11.9959C15.3294 13.8372 13.8373 15.3292 11.996 15.3292C10.1548 15.3292 8.6627 13.8372 8.6627 11.9959Z" fill="#E2007A"/></svg> Facelift</span>
-    <span class="ct-chip"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.0357 3.86108C14.9802 3.81346 14.6667 3.80155 11.996 3.80155C9.32539 3.80155 9.0119 3.80949 7.95634 3.86108C6.98015 3.90473 6.45238 4.07139 6.0992 4.20632C5.63095 4.38489 5.29761 4.60314 4.94841 4.95235C4.5992 5.30155 4.38492 5.63489 4.20238 6.10314C4.06349 6.45632 3.90079 6.98409 3.85714 7.96028C3.80952 9.01584 3.79761 9.32933 3.79761 12C3.79761 14.6706 3.80952 14.9841 3.85714 16.0396C3.90079 17.0158 4.06745 17.5436 4.20238 17.8968C4.38095 18.365 4.5992 18.6984 4.94841 19.0476C5.29761 19.3968 5.63095 19.6111 6.0992 19.7936C6.45238 19.9325 6.98015 20.0952 7.95634 20.1389C9.0119 20.1865 9.32539 20.1984 11.996 20.1984C14.6667 20.1984 14.9802 20.1865 16.0357 20.1389C17.0119 20.0952 17.5397 19.9285 17.8929 19.7936C18.3611 19.615 18.6944 19.3968 19.0436 19.0476C19.3929 18.6984 19.6071 18.365 19.7897 17.8968C19.9286 17.5436 20.0913 17.0158 20.1349 16.0396C20.1825 14.9841 20.1944 14.6706 20.1944 12C20.1944 9.32933 20.1825 9.01584 20.1349 7.96028C20.0913 6.98409 19.9246 6.45632 19.7897 6.10314C19.6111 5.63489 19.3929 5.30155 19.0436 4.95235C18.6944 4.60314 18.3611 4.38885 17.8929 4.20632C17.5397 4.06743 17.0119 3.90473 16.0357 3.86108ZM8.6627 11.9959C8.6627 10.1546 10.1548 8.66257 11.996 8.66257C13.8373 8.66257 15.3294 10.1546 15.3294 11.9959C15.3294 13.8372 13.8373 15.3292 11.996 15.3292C10.1548 15.3292 8.6627 13.8372 8.6627 11.9959Z" fill="#E2007A"/></svg> Facelift Data Studio…</span>
-    <span class="ct-chip"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.0357 3.86108C14.9802 3.81346 14.6667 3.80155 11.996 3.80155C9.32539 3.80155 9.0119 3.80949 7.95634 3.86108C6.98015 3.90473 6.45238 4.07139 6.0992 4.20632C5.63095 4.38489 5.29761 4.60314 4.94841 4.95235C4.5992 5.30155 4.38492 5.63489 4.20238 6.10314C4.06349 6.45632 3.90079 6.98409 3.85714 7.96028C3.80952 9.01584 3.79761 9.32933 3.79761 12C3.79761 14.6706 3.80952 14.9841 3.85714 16.0396C3.90079 17.0158 4.06745 17.5436 4.20238 17.8968C4.38095 18.365 4.5992 18.6984 4.94841 19.0476C5.29761 19.3968 5.63095 19.6111 6.0992 19.7936C6.45238 19.9325 6.98015 20.0952 7.95634 20.1389C9.0119 20.1865 9.32539 20.1984 11.996 20.1984C14.6667 20.1984 14.9802 20.1865 16.0357 20.1389C17.0119 20.0952 17.5397 19.9285 17.8929 19.7936C18.3611 19.615 18.6944 19.3968 19.0436 19.0476C19.3929 18.6984 19.6071 18.365 19.7897 17.8968C19.9286 17.5436 20.0913 17.0158 20.1349 16.0396C20.1825 14.9841 20.1944 14.6706 20.1944 12C20.1944 9.32933 20.1825 9.01584 20.1349 7.96028C20.0913 6.98409 19.9246 6.45632 19.7897 6.10314C19.6111 5.63489 19.3929 5.30155 19.0436 4.95235C18.6944 4.60314 18.3611 4.38885 17.8929 4.20632C17.5397 4.06743 17.0119 3.90473 16.0357 3.86108ZM8.6627 11.9959C8.6627 10.1546 10.1548 8.66257 11.996 8.66257C13.8373 8.66257 15.3294 10.1546 15.3294 11.9959C15.3294 13.8372 13.8373 15.3292 11.996 15.3292C10.1548 15.3292 8.6627 13.8372 8.6627 11.9959Z" fill="#E2007A"/></svg> Facelift Secret…</span>
-    <span class="ct-more">+3</span>
-  </div>
-  <div class="ct-phone">
-    <div class="ct-phone-frame">
-      <div class="ct-phone-screen">
-        <div class="ct-phone-header"><span style="font-size:5px;color:#888">●●●</span><svg width="8" height="8" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" fill="#E2007A"/></svg></div>
-        <div class="ct-phone-img">😂</div>
-        <div class="ct-phone-caption">Collaboration Guidelines — check out our latest updates!</div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- ── LIST VIEW ── -->
 <div class="list-view" id="list-view">
   <div class="lv-header">
@@ -1935,31 +1919,10 @@ document.getElementById('tb-cal-icon').addEventListener('click', function(){
   });
 })();
 
-// ── Card Hover Tooltip ──
-(function(){
-  const tt = document.getElementById('card-tooltip');
-  let hideTimer;
-  document.querySelectorAll('.post-card').forEach(card => {
-    card.addEventListener('mouseenter', function(e){
-      clearTimeout(hideTimer);
-      const titleEl = this.querySelector('.post-title');
-      if(titleEl) document.getElementById('ct-title').textContent = titleEl.textContent;
-      const r = this.getBoundingClientRect();
-      let left = r.right + 8;
-      let top  = r.top;
-      if(left + 270 > window.innerWidth) left = r.left - 270;
-      if(top + 340 > window.innerHeight) top = window.innerHeight - 345;
-      tt.style.left = left + 'px';
-      tt.style.top  = top + 'px';
-      tt.classList.add('is-visible');
-    });
-    card.addEventListener('mouseleave', function(){
-      hideTimer = setTimeout(() => tt.classList.remove('is-visible'), 120);
-    });
-  });
-  tt.addEventListener('mouseenter', () => clearTimeout(hideTimer));
-  tt.addEventListener('mouseleave', () => tt.classList.remove('is-visible'));
-})();
+// ── Sidebar Toggle ──
+document.getElementById('sb-toggle').addEventListener('click', function() {
+  document.getElementById('sidebar').classList.toggle('is-expanded');
+});
 
 document.querySelectorAll('[data-dd]').forEach(btn => {
   btn.addEventListener('click', function(e) {
