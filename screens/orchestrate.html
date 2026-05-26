@@ -384,18 +384,10 @@ body{
 .day-col.is-today{background:rgba(19,57,236,0.025)}
 .day-col.is-wknd{background:var(--grey-50)}
 
-/* ── DAY VIEW MODE ── */
-.col-day{cursor:pointer;transition:background .1s}
+/* ── COL-DAY HOVER (no click) ── */
+.col-day{cursor:default;transition:background .1s}
 .col-day:hover{background:var(--sys-primary-subtle-hover)}
 .col-day.is-today:hover{background:rgba(19,57,236,.07)}
-.col-day.is-selected{
-  background:var(--sys-primary-subtle-pressed);
-  box-shadow:inset 0 -2px 0 var(--sys-primary-default);
-}
-.cal-inner.is-day-view .col-headers{grid-template-columns:50px 1fr}
-.cal-inner.is-day-view .col-day:not(.is-selected){display:none}
-.cal-inner.is-day-view .day-grid{grid-template-columns:50px 1fr}
-.cal-inner.is-day-view .day-col:not(.is-selected){display:none}
 
 /* ── POST CARD ── */
 .post-card{
@@ -1948,44 +1940,40 @@ document.getElementById('tb-cal-icon').addEventListener('click', function(){
   };
   const DATES = ['Jun 16','Jun 17','Jun 18','Jun 19','Jun 20','Jun 21','Jun 22'];
 
-  document.querySelectorAll('.post-card').forEach(card => {
-    card.addEventListener('click', function(e){
-      e.stopPropagation();
-      // close other panels
-      document.querySelectorAll('.side-panel').forEach(p=>p.classList.remove('is-open'));
+  // Event delegation — works for both static and dynamically rendered cards
+  document.getElementById('cal-area').addEventListener('click', function(e){
+    const card = e.target.closest('.post-card');
+    if (!card) return;
+    e.stopPropagation();
+    document.querySelectorAll('.side-panel').forEach(p=>p.classList.remove('is-open'));
 
-      const titleEl = this.querySelector('.post-title');
-      const title = titleEl ? titleEl.textContent.trim() : 'Post';
-      const statusCls = ['s-successful','s-scheduled','s-draft','s-failed'].find(c=>this.classList.contains(c)) || 's-draft';
-      const sm = STATUS_MAP[statusCls];
-      const timeEl = this.querySelector('.post-time');
-      const timeStr = timeEl ? timeEl.textContent : sm.time;
+    const titleEl = card.querySelector('.post-title');
+    const title = titleEl ? titleEl.textContent.trim() : 'Post';
+    const statusCls = ['s-successful','s-scheduled','s-draft','s-failed'].find(c=>card.classList.contains(c)) || 's-draft';
+    const sm = STATUS_MAP[statusCls];
+    const timeEl = card.querySelector('.post-time');
+    const timeStr = timeEl ? timeEl.textContent : sm.time;
 
-      // find day col date
-      const dayCol = this.closest('.day-col');
-      let dateStr = 'Jun 18, 2025';
-      if(dayCol){
-        const idx = Array.from(dayCol.parentElement.children).indexOf(dayCol) - 1; // -1 for spacer
-        if(idx >= 0 && idx < DATES.length) dateStr = DATES[idx] + ', 2025';
-      }
+    const dayCol = card.closest('.day-col');
+    let dateStr = 'Jun 18, 2025';
+    if(dayCol){
+      const idx = Array.from(dayCol.parentElement.children).indexOf(dayCol) - 1;
+      if(idx >= 0 && idx < DATES.length) dateStr = DATES[idx] + ', 2025';
+    }
 
-      document.getElementById('pdp-title').textContent = title;
-      const chip = document.getElementById('pdp-status-chip');
-      chip.textContent = sm.label;
-      chip.className = 'pdp-status-chip ' + sm.cls;
-      document.getElementById('pdp-date').textContent = dateStr + ', ' + timeStr;
+    document.getElementById('pdp-title').textContent = title;
+    const chip = document.getElementById('pdp-status-chip');
+    chip.textContent = sm.label;
+    chip.className = 'pdp-status-chip ' + sm.cls;
+    document.getElementById('pdp-date').textContent = dateStr + ', ' + timeStr;
 
-      // photo
-      const ph = document.getElementById('pdp-ig-photo');
-      ph.style.background = BG_MAP[statusCls] || '';
-      ph.innerHTML = '<span style="font-size:32px">' + (EMOJI_MAP[statusCls]||'📄') + '</span>';
+    const ph = document.getElementById('pdp-ig-photo');
+    ph.style.background = BG_MAP[statusCls] || '';
+    ph.innerHTML = '<span style="font-size:32px">' + (EMOJI_MAP[statusCls]||'📄') + '</span>';
+    document.getElementById('pdp-ig-caption').innerHTML =
+      '<strong>facelift_brand</strong> ' + title + ' — check out our latest content! ✨ <span style="color:#00376b">more</span>';
 
-      // caption
-      document.getElementById('pdp-ig-caption').innerHTML =
-        '<strong>facelift_brand</strong> ' + title + ' — check out our latest content! ✨ <span style="color:#00376b">more</span>';
-
-      panel.classList.add('is-open');
-    });
+    panel.classList.add('is-open');
   });
 
   document.getElementById('pdp-close').addEventListener('click', ()=> panel.classList.remove('is-open'));
@@ -2000,32 +1988,6 @@ document.getElementById('sb-toggle').addEventListener('click', function() {
   document.getElementById('sidebar').classList.toggle('is-expanded');
 });
 
-// ── Day Column Click → Day View ──
-(function(){
-  const calInner = document.querySelector('.cal-inner');
-  const headers  = Array.from(document.querySelectorAll('.col-day'));
-  const cols     = Array.from(document.querySelectorAll('.day-col'));
-
-  headers.forEach(function(hdr) {
-    hdr.addEventListener('click', function(e) {
-      // prevent card clicks inside the header from bubbling (none exist, but safe)
-      const col = this.dataset.col;
-      const alreadySelected = this.classList.contains('is-selected');
-
-      headers.forEach(function(h) { h.classList.remove('is-selected'); });
-      cols.forEach(function(c)    { c.classList.remove('is-selected'); });
-
-      if (alreadySelected) {
-        calInner.classList.remove('is-day-view');
-      } else {
-        this.classList.add('is-selected');
-        const matchCol = cols.find(function(c) { return c.dataset.col === col; });
-        if (matchCol) matchCol.classList.add('is-selected');
-        calInner.classList.add('is-day-view');
-      }
-    });
-  });
-})();
 
 document.querySelectorAll('[data-dd]').forEach(btn => {
   btn.addEventListener('click', function(e) {
@@ -2278,28 +2240,6 @@ document.getElementById('drafts-search').addEventListener('input', function(){
   }
 
   // --- Re-attach day col click handlers after DOM update ---
-  function attachDayColClickHandlers() {
-    var calInner = document.querySelector('.cal-inner');
-    var headers  = Array.from(document.querySelectorAll('.col-day'));
-    var cols     = Array.from(document.querySelectorAll('.day-col'));
-    headers.forEach(function(hdr) {
-      hdr.addEventListener('click', function() {
-        var col = this.dataset.col;
-        var alreadySelected = this.classList.contains('is-selected');
-        headers.forEach(function(h){h.classList.remove('is-selected');});
-        cols.forEach(function(c){c.classList.remove('is-selected');});
-        if (alreadySelected) {
-          calInner.classList.remove('is-day-view');
-        } else {
-          this.classList.add('is-selected');
-          var match = cols.find(function(c){return c.dataset.col===col;});
-          if (match) match.classList.add('is-selected');
-          calInner.classList.add('is-day-view');
-        }
-      });
-    });
-  }
-
   // --- Render week/month view ---
   function renderWeekView(wd, mode) {
     var calInner = document.querySelector('.cal-inner');
@@ -2327,7 +2267,6 @@ document.getElementById('drafts-search').addEventListener('input', function(){
       });
       document.querySelector('.day-grid').innerHTML = gridCols;
     }
-    attachDayColClickHandlers();
   }
 
   // --- Render month timeline ---
