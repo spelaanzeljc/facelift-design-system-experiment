@@ -887,6 +887,67 @@ body{
 .btn-discard:hover{background:var(--sys-background-neutral)}
 .btn-apply-f{height:30px;padding:0 14px;border-radius:6px;font-size:13px;font-weight:600;color:#fff;background:var(--sys-primary-default)}
 .btn-apply-f:hover{background:var(--sys-primary-hover)}
+
+/* ── MONTH VIEW (compact cards, no thumbnails) ── */
+.cal-inner.v-month .post-thumb{display:none}
+.cal-inner.v-month .col-day-num::after{content:'.'}
+
+/* ── MONTH TIMELINE ── */
+.cal-inner.v-month-timeline .col-headers,
+.cal-inner.v-month-timeline .camp-section,
+.cal-inner.v-month-timeline .day-scroll{display:none}
+.cal-inner.v-month-timeline #month-timeline{display:flex!important;flex-direction:column}
+.mt-wrap{flex:1;overflow-x:auto;overflow-y:auto;min-height:0;display:flex;flex-direction:column}
+.mt-header-row{
+  display:flex;flex-shrink:0;
+  border-bottom:1px solid var(--sys-border-soft);
+  background:var(--sys-background-base);
+  position:sticky;top:0;z-index:10;
+}
+.mt-spacer-cell{
+  width:50px;flex-shrink:0;
+  border-right:1px solid var(--sys-border-soft);
+}
+.mt-day-col{
+  flex:1;min-width:40px;text-align:center;
+  padding:8px 0 6px;position:relative;
+  border-right:1px solid var(--sys-border-subtle);
+  cursor:default;
+  font-size:11px;font-weight:600;color:var(--sys-text-secondary);
+}
+.mt-day-col:hover{background:var(--sys-background-neutral)}
+.mt-day-col.mt-today{color:var(--sys-primary-default)}
+.mt-day-col.mt-today .mt-day-num{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:20px;height:20px;border-radius:50%;
+  background:var(--sys-primary-default);color:#fff;
+  font-size:10px;
+}
+.mt-wk-badge{
+  position:absolute;top:3px;left:1px;
+  background:var(--grey-100);border-radius:3px;
+  font-size:9px;font-weight:700;padding:1px 3px;
+  color:var(--sys-text-secondary);line-height:1.3;
+}
+.mt-camp-section{flex-shrink:0;border-bottom:1px solid var(--sys-border-soft)}
+.mt-camp-row{height:26px;display:flex}
+.mt-camp-cell{flex:1;position:relative;overflow:hidden}
+.mt-post-section{flex:1;display:flex;overflow-y:auto;min-height:0}
+.mt-post-col{
+  flex:1;min-width:40px;
+  border-right:1px solid var(--sys-border-subtle);
+  padding:4px 3px;display:flex;flex-direction:column;gap:3px;align-items:center;
+}
+.mt-dot{
+  width:100%;max-width:40px;height:30px;border-radius:5px;flex-shrink:0;
+  cursor:pointer;transition:box-shadow .1s;
+}
+.mt-dot:hover{box-shadow:0 2px 6px rgba(0,0,0,.15)}
+.mt-dot-successful{background:#d4f0c0}
+.mt-dot-scheduled{background:#dfe7fd}
+.mt-dot-draft{background:#e7eaee}
+.mt-dot-failed{background:#ffebeb}
+.mt-post-spacer{border-right:1px solid var(--sys-border-soft);background:var(--sys-background-base);flex-shrink:0}
 </style>
 </head>
 <body>
@@ -1030,10 +1091,10 @@ body{
     <div class="toolbar">
       <span class="tb-entries">24 Entries</span>
       <button class="tb-today">Today</button>
-      <button class="tb-nav" title="Previous week">
+      <button class="tb-nav" id="tb-nav-prev" title="Previous week">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.20711 11L12.5 5.70711C12.8905 5.31658 12.8905 4.68342 12.5 4.29289C12.1095 3.90237 11.4763 3.90237 11.0858 4.29289L4.43934 10.9393C3.85356 11.5251 3.85355 12.4749 4.43934 13.0607L11.0858 19.7071C11.4763 20.0976 12.1095 20.0976 12.5 19.7071C12.8905 19.3166 12.8905 18.6834 12.5 18.2929L7.20711 13L19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11L7.20711 11Z" fill="currentColor"/></svg>
       </button>
-      <button class="tb-nav" title="Next week">
+      <button class="tb-nav" id="tb-nav-next" title="Next week">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.7929 13L11.5 18.2929C11.1095 18.6834 11.1095 19.3166 11.5 19.7071C11.8905 20.0976 12.5237 20.0976 12.9142 19.7071L19.5607 13.0607C20.1464 12.4749 20.1464 11.5251 19.5607 10.9393L12.9142 4.29289C12.5237 3.90237 11.8905 3.90237 11.5 4.29289C11.1095 4.68342 11.1095 5.31658 11.5 5.70711L16.7929 11L5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13L16.7929 13Z" fill="currentColor"/></svg>
       </button>
       <button class="tb-date" id="tb-date-btn">
@@ -1465,6 +1526,8 @@ body{
 
         </div><!-- /day-grid -->
       </div><!-- /day-scroll -->
+      <!-- MONTH TIMELINE (hidden by default) -->
+      <div id="month-timeline" style="display:none;flex:1;overflow:hidden;flex-direction:column;"></div>
     </div>
 
     <!-- LIST VIEW (hidden by default) -->
@@ -2134,15 +2197,261 @@ document.getElementById('drafts-search').addEventListener('input', function(){
   });
 });
 
-// Week option selection
-document.querySelectorAll('#dd-week .dd-item').forEach(item => {
-  item.addEventListener('click', function() {
-    document.querySelectorAll('#dd-week .dd-item').forEach(i => i.classList.remove('is-checked'));
-    this.classList.add('is-checked');
-    document.getElementById('tb-week-btn').childNodes[0].textContent = this.textContent + ' ';
-    closeAllDropdowns();
+// ── View Mode + Navigation Engine ──
+(function(){
+  // --- SVG helpers ---
+  const FB = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M22 12.0611C22 6.50451 17.5229 2 12 2C6.47715 2 2 6.50451 2 12.0611C2 17.0829 5.65686 21.2452 10.4375 22V14.9694H7.89844V12.0611H10.4375V9.84452C10.4375 7.32296 11.9304 5.93012 14.2146 5.93012C15.3087 5.93012 16.4531 6.12663 16.4531 6.12663V8.60261H15.1921C13.9499 8.60261 13.5625 9.37816 13.5625 10.1738V12.0611H16.3359L15.8926 14.9694H13.5625V22C18.3431 21.2452 22 17.0829 22 12.0611Z" fill="#1877F2"/></svg>';
+  const IG = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.0357 3.86108C14.9802 3.81346 14.6667 3.80155 11.996 3.80155C9.32539 3.80155 9.0119 3.80949 7.95634 3.86108C6.98015 3.90473 6.45238 4.07139 6.0992 4.20632C5.63095 4.38489 5.29761 4.60314 4.94841 4.95235C4.5992 5.30155 4.38492 5.63489 4.20238 6.10314C4.06349 6.45632 3.90079 6.98409 3.85714 7.96028C3.80952 9.01584 3.79761 9.32933 3.79761 12C3.79761 14.6706 3.80952 14.9841 3.85714 16.0396C3.90079 17.0158 4.06745 17.5436 4.20238 17.8968C4.38095 18.365 4.5992 18.6984 4.94841 19.0476C5.29761 19.3968 5.63095 19.6111 6.0992 19.7936C6.45238 19.9325 6.98015 20.0952 7.95634 20.1389C9.0119 20.1865 9.32539 20.1984 11.996 20.1984C14.6667 20.1984 14.9802 20.1865 16.0357 20.1389C17.0119 20.0952 17.5397 19.9285 17.8929 19.7936C18.3611 19.615 18.6944 19.3968 19.0436 19.0476C19.3929 18.6984 19.6071 18.365 19.7897 17.8968C19.9286 17.5436 20.0913 17.0158 20.1349 16.0396C20.1825 14.9841 20.1944 14.6706 20.1944 12C20.1944 9.32933 20.1825 9.01584 20.1349 7.96028C20.0913 6.98409 19.9246 6.45632 19.7897 6.10314C19.6111 5.63489 19.3929 5.30155 19.0436 4.95235C18.6944 4.60314 18.3611 4.38885 17.8929 4.20632C17.5397 4.06743 17.0119 3.90473 16.0357 3.86108ZM8.6627 11.9959C8.6627 10.1546 10.1548 8.66257 11.996 8.66257C13.8373 8.66257 15.3294 10.1546 15.3294 11.9959C15.3294 13.8372 13.8373 15.3292 11.996 15.3292C10.1548 15.3292 8.6627 13.8372 8.6627 11.9959Z" fill="#E2007A"/></svg>';
+  const LI = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M19.5754 2H4.42606C3.08587 2 2 3.08714 2 4.42857V19.5743C2 20.9157 3.0873 22 4.42606 22H19.5739C20.9155 22 22 20.9129 22 19.5743V4.42857C22.0028 3.08714 20.9155 2 19.5754 2ZM6.2606 9.33718C5.36333 9.33718 4.63751 8.60433 4.63751 7.70147C4.63751 6.79861 5.36476 6.06576 6.2606 6.06576C7.15787 6.06576 7.88369 6.79861 7.88369 7.70147C7.88369 8.60433 7.15787 9.33718 6.2606 9.33718ZM19.0496 19.1414H16.3178V14.4871C16.3178 13.21 15.8334 12.4986 14.8247 12.4986C13.726 12.4986 13.153 13.2414 13.153 14.4871V19.1414H10.5184V10.2757H13.1502V11.47C13.9431 10.0057 15.822 10.0057 15.822 10.0057C17.7008 10.0057 19.0482 11.1529 19.0482 13.5286L19.0496 19.1414Z" fill="#0A66C2"/></svg>';
+  const NETS_MAP = {fb:FB, ig:IG, li:LI};
+  const SI = {
+    successful: '<svg viewBox="0 0 12 12" fill="none"><polygon points="6,1 11,6 6,11 1,6" fill="currentColor" style="color:var(--green-700)"/></svg>',
+    scheduled:  '<svg viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" fill="currentColor" style="color:var(--blue-500)"/></svg>',
+    draft:      '<svg viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.5" style="color:var(--grey-400)"/></svg>',
+    failed:     '<svg viewBox="0 0 12 12" fill="none"><polygon points="6,1 11,11 1,11" fill="currentColor" style="color:var(--red-600)"/></svg>',
+  };
+  const SL = {successful:'Successful',scheduled:'Scheduled',draft:'Draft',failed:'Failed'};
+
+  // --- 3 weeks of data (-1, 0, +1) ---
+  const DAY_NAMES = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+  const WEEKS = [
+    { offset:-1, label:'9 — 15 June, 2025', dates:[9,10,11,12,13,14,15],
+      isToday:[false,false,false,false,false,false,false],
+      isWknd:[false,false,false,false,false,true,true],
+      cards:[
+        [{s:'scheduled',t:'10:00 AM',title:'Weekly Round-Up',bg:'linear-gradient(135deg,#d4edda,#a8d5b5)',emoji:'📰',tags:[['tag-green','Orchestrate']],nets:['li']}],
+        [{s:'draft',t:'2:00 PM',title:'Q3 Planning Draft',bg:'linear-gradient(135deg,#e8eaec,#cdd1d8)',emoji:'📋',tags:[['tag-grey','#planning']],nets:['fb']}],
+        [
+          {s:'successful',t:'9:30 AM',title:'Mid-Week Insights',bg:'linear-gradient(135deg,#fff3cd,#ffd77a)',emoji:'💡',tags:[['tag-orange','Updates']],nets:['ig','li']},
+          {s:'scheduled',t:'3:00 PM',title:'Orchestrate Webinar Teaser',bg:'linear-gradient(135deg,#cce5ff,#99caff)',emoji:'🎙',tags:[['tag-blue','Webinar']],nets:['li']},
+        ],
+        [],
+        [{s:'successful',t:'8:00 AM',title:'Friday Feature Drop',bg:'linear-gradient(135deg,#f5c6cb,#f1aeb5)',emoji:'🎉',tags:[['tag-teal','Community']],nets:['fb','ig','li']}],
+        [], [],
+      ]
+    },
+    { offset:0, label:'16 — 22 June, 2025', dates:[16,17,18,19,20,21,22],
+      isToday:[false,false,true,false,false,false,false],
+      isWknd:[false,false,false,false,false,true,true],
+      _useOriginal:true
+    },
+    { offset:1, label:'23 — 29 June, 2025', dates:[23,24,25,26,27,28,29],
+      isToday:[false,false,false,false,false,false,false],
+      isWknd:[false,false,false,false,false,true,true],
+      cards:[
+        [
+          {s:'successful',t:'9:00 AM',title:'Orchestrate 2.0 Launch',bg:'linear-gradient(135deg,#d4f0c0,#a8df8b)',emoji:'🚀',tags:[['tag-green','Launch']],nets:['fb','ig','li']},
+          {s:'draft',t:'11:00 AM',title:'Campaign Wrap-Up Report',bg:'linear-gradient(135deg,#e2ddf5,#b8b0e8)',emoji:'📊',tags:[['tag-blue','Analytics']],nets:['li']},
+        ],
+        [{s:'scheduled',t:'10:00 AM',title:'Partner Spotlight: BB Agency',bg:'linear-gradient(135deg,#fde9b0,#fbc652)',emoji:'🤝',tags:[['tag-amber','Partner']],nets:['fb','ig']}],
+        [{s:'successful',t:'9:30 AM',title:'Collaboration Guidelines v2',bg:'linear-gradient(135deg,#c7e9f7,#89d4f0)',emoji:'✅',tags:[['tag-teal','Updates']],nets:['li']}],
+        [{s:'scheduled',t:'2:00 PM',title:'Social Media Trends 2025',bg:'linear-gradient(135deg,#fcd6e8,#f8a8c8)',emoji:'📈',tags:[['tag-pink','Trends']],nets:['ig']}],
+        [
+          {s:'failed',t:'10:00 AM',title:'Legacy Post Migration',bg:'linear-gradient(135deg,#ffe0b2,#ffb74d)',emoji:'⚠️',tags:[['tag-orange','Migration']],nets:['fb']},
+          {s:'successful',t:'4:00 PM',title:'End-of-Week Summary',bg:'linear-gradient(135deg,#c8e6c9,#a5d6a7)',emoji:'🏁',tags:[['tag-green','Weekly']],nets:['fb','ig','li']},
+        ],
+        [], [],
+      ]
+    },
+  ];
+
+  // --- State ---
+  var state = {viewMode:'week', weekOffset:0};
+
+  // --- Snapshot original week-0 HTML ---
+  var origColHeaders = document.querySelector('.col-headers').innerHTML;
+  var origDayGrid    = document.querySelector('.day-grid').innerHTML;
+
+  // --- Build a single card ---
+  function buildCard(c, showThumb) {
+    var failed = c.s === 'failed';
+    var tags = c.tags ? c.tags.map(function(t){return '<span class="post-tag '+t[0]+'">'+t[1]+'</span>';}).join('') : '';
+    var nets = c.nets ? c.nets.map(function(n){return '<span class="post-net">'+NETS_MAP[n]+'</span>';}).join('') : '';
+    var thumb = (showThumb && c.emoji) ? '<div class="post-thumb" style="background:'+c.bg+'">'+c.emoji+'</div>' : '';
+    return '<div class="post-card s-'+c.s+(failed?' is-failed':'')+'">'+
+      '<div class="post-status"><span class="post-si">'+SI[c.s]+'</span><span class="post-st">'+SL[c.s]+'</span><span class="post-time">'+c.t+'</span></div>'+
+      thumb+
+      '<div class="post-body"><div class="post-title">'+c.title+'</div>'+
+      (tags?'<div class="post-tags">'+tags+'</div>':'')+
+      (nets?'<div class="post-nets">'+nets+'</div>':'')+
+      '</div></div>';
+  }
+
+  // --- Re-attach day col click handlers after DOM update ---
+  function attachDayColClickHandlers() {
+    var calInner = document.querySelector('.cal-inner');
+    var headers  = Array.from(document.querySelectorAll('.col-day'));
+    var cols     = Array.from(document.querySelectorAll('.day-col'));
+    headers.forEach(function(hdr) {
+      hdr.addEventListener('click', function() {
+        var col = this.dataset.col;
+        var alreadySelected = this.classList.contains('is-selected');
+        headers.forEach(function(h){h.classList.remove('is-selected');});
+        cols.forEach(function(c){c.classList.remove('is-selected');});
+        if (alreadySelected) {
+          calInner.classList.remove('is-day-view');
+        } else {
+          this.classList.add('is-selected');
+          var match = cols.find(function(c){return c.dataset.col===col;});
+          if (match) match.classList.add('is-selected');
+          calInner.classList.add('is-day-view');
+        }
+      });
+    });
+  }
+
+  // --- Render week/month view ---
+  function renderWeekView(wd, mode) {
+    var calInner = document.querySelector('.cal-inner');
+    calInner.classList.remove('v-month','v-month-timeline','is-day-view');
+    if (mode === 'month') calInner.classList.add('v-month');
+    document.getElementById('month-timeline').style.display = 'none';
+
+    if (wd._useOriginal) {
+      document.querySelector('.col-headers').innerHTML = origColHeaders;
+      document.querySelector('.day-grid').innerHTML    = origDayGrid;
+    } else {
+      var dot = mode === 'month' ? '.' : '';
+      var hdrs = '<div class="col-wk"><span class="col-wk-num">25</span></div>';
+      DAY_NAMES.forEach(function(name, i) {
+        var cls = 'col-day'+(wd.isToday[i]?' is-today':'')+(wd.isWknd[i]?' is-wknd':'');
+        hdrs += '<div class="'+cls+'" data-col="'+i+'"><span class="col-day-name">'+name+'</span><span class="col-day-num">'+wd.dates[i]+dot+'</span></div>';
+      });
+      document.querySelector('.col-headers').innerHTML = hdrs;
+
+      var gridCols = '<div class="day-spacer"></div>';
+      DAY_NAMES.forEach(function(_, i) {
+        var cls = 'day-col'+(wd.isToday[i]?' is-today':'')+(wd.isWknd[i]?' is-wknd':'');
+        var cards = (wd.cards[i]||[]).map(function(c){return buildCard(c, mode==='week');}).join('');
+        gridCols += '<div class="'+cls+'" data-col="'+i+'">'+cards+'</div>';
+      });
+      document.querySelector('.day-grid').innerHTML = gridCols;
+    }
+    attachDayColClickHandlers();
+  }
+
+  // --- Render month timeline ---
+  function renderMonthTimeline() {
+    var calInner  = document.querySelector('.cal-inner');
+    calInner.classList.remove('v-month','is-day-view');
+    calInner.classList.add('v-month-timeline');
+    var N = 30; // June 2025
+    // Week numbers: June 1 is Sunday (week 22 ISO). Mon Jun 2 starts week 23.
+    var weekOf = function(d) {
+      var dow = new Date(2025,5,d).getDay(); // 0=Sun
+      return Math.ceil((d + (dow===0?6:dow-1))/7) + 21;
+    };
+
+    // Day header cells
+    var dayHeaders = '';
+    for (var d=1; d<=N; d++) {
+      var dow = new Date(2025,5,d).getDay();
+      var isMon = (dow===1);
+      var isToday = (d===18);
+      var wkBadge = isMon ? '<span class="mt-wk-badge">W'+weekOf(d)+'</span>' : '';
+      var cls = 'mt-day-col'+(isToday?' mt-today':'');
+      dayHeaders += '<div class="'+cls+'" data-day="'+d+'">'+wkBadge+'<span class="mt-day-num">'+d+'</span></div>';
+    }
+
+    // Campaign bars
+    var CAMPS = [
+      {name:'Getting Things Done',cls:'camp-bar-grey',emoji:'🔗',s:1,e:30},
+      {name:'Engage Product Webinar Campaign',cls:'camp-bar-amber',emoji:'📣',s:1,e:22},
+      {name:'GTM Phase 2: Launch Communication Orchestration',cls:'camp-bar-pink',emoji:'📢',s:1,e:19},
+      {name:'P1 Product Release: Orchestrate',cls:'camp-bar-green',emoji:'🚀',s:1,e:30},
+      {name:'P2 Product Release: Analyze',cls:'camp-bar-blue',emoji:'📊',s:1,e:19},
+    ];
+    var campRows = CAMPS.map(function(c) {
+      var l = ((c.s-1)/N*100).toFixed(2);
+      var w = ((c.e-c.s+1)/N*100).toFixed(2);
+      return '<div class="mt-camp-row"><div class="mt-spacer-cell"></div>'+
+        '<div class="mt-camp-cell">'+
+        '<div class="camp-bar '+c.cls+'" style="position:absolute;left:'+l+'%;width:'+w+'%;top:3px">'+
+        '<span>'+c.emoji+'</span><span class="camp-bar-name">'+c.name+'</span></div>'+
+        '</div></div>';
+    }).join('');
+
+    // Post dots
+    var POSTS = {
+      1:[{s:'successful'},{s:'draft'}],2:[{s:'successful'},{s:'scheduled'}],
+      3:[{s:'successful'},{s:'draft'},{s:'successful'}],4:[{s:'successful'},{s:'draft'}],
+      5:[{s:'successful'},{s:'scheduled'}],6:[{s:'draft'}],
+      9:[{s:'scheduled'},{s:'failed'}],10:[{s:'successful'},{s:'draft'}],
+      11:[{s:'successful'},{s:'scheduled'}],12:[{s:'successful'}],
+      13:[{s:'failed'},{s:'successful'}],
+      16:[{s:'successful'},{s:'failed'},{s:'draft'}],
+      17:[{s:'scheduled'},{s:'successful'}],
+      18:[{s:'successful'},{s:'scheduled'},{s:'draft'}],
+      19:[{s:'draft'}],20:[{s:'successful'},{s:'failed'}],
+      21:[{s:'scheduled'},{s:'draft'},{s:'failed'}],
+      22:[{s:'draft'}],23:[{s:'successful'},{s:'draft'}],
+      24:[{s:'scheduled'}],25:[{s:'successful'}],
+      26:[{s:'scheduled'}],27:[{s:'failed'}],30:[{s:'draft'}],
+    };
+    var postCols = '';
+    for (var pd=1; pd<=N; pd++) {
+      var dots = (POSTS[pd]||[]).map(function(p){return '<div class="mt-dot mt-dot-'+p.s+'"></div>';}).join('');
+      postCols += '<div class="mt-post-col">'+dots+'</div>';
+    }
+
+    var el = document.getElementById('month-timeline');
+    el.innerHTML = '<div class="mt-wrap">'+
+      '<div class="mt-header-row"><div class="mt-spacer-cell"></div>'+dayHeaders+'</div>'+
+      '<div class="mt-camp-section">'+campRows+'</div>'+
+      '<div class="mt-post-section"><div class="mt-spacer-cell mt-post-spacer"></div>'+postCols+'</div>'+
+      '</div>';
+    el.style.display = 'flex';
+  }
+
+  // --- Main apply function ---
+  function applyView() {
+    var wd = WEEKS.find(function(w){return w.offset===state.weekOffset;});
+    // Update toolbar date label
+    document.getElementById('tb-date-btn').childNodes[0].textContent = wd.label + ' ';
+    // Update toolbar entries count (rough)
+    var countMap = {'-1':5, '0':24, '1':8};
+    document.querySelector('.tb-entries').textContent = countMap[String(state.weekOffset)] + ' Entries';
+    // Disable nav at boundaries
+    document.getElementById('tb-nav-prev').style.opacity = state.weekOffset<=-1 ? '0.35' : '';
+    document.getElementById('tb-nav-prev').style.pointerEvents = state.weekOffset<=-1 ? 'none' : '';
+    document.getElementById('tb-nav-next').style.opacity = state.weekOffset>=1 ? '0.35' : '';
+    document.getElementById('tb-nav-next').style.pointerEvents = state.weekOffset>=1 ? 'none' : '';
+
+    if (state.viewMode === 'month-timeline') {
+      renderMonthTimeline();
+    } else {
+      renderWeekView(wd, state.viewMode);
+    }
+  }
+
+  // --- Wire up nav buttons ---
+  document.getElementById('tb-nav-prev').addEventListener('click', function(){
+    if (state.weekOffset > -1) { state.weekOffset--; applyView(); }
   });
-});
+  document.getElementById('tb-nav-next').addEventListener('click', function(){
+    if (state.weekOffset < 1) { state.weekOffset++; applyView(); }
+  });
+  document.querySelector('.tb-today').addEventListener('click', function(){
+    state.weekOffset = 0;
+    applyView();
+  });
+
+  // --- Wire up view mode dropdown ---
+  document.querySelectorAll('#dd-week .dd-item').forEach(function(item) {
+    item.addEventListener('click', function() {
+      document.querySelectorAll('#dd-week .dd-item').forEach(function(i){i.classList.remove('is-checked');});
+      this.classList.add('is-checked');
+      var txt = this.textContent.trim();
+      document.getElementById('tb-week-btn').childNodes[0].textContent = txt + ' ';
+      closeAllDropdowns();
+      if (txt === 'Week') state.viewMode = 'week';
+      else if (txt === 'Month') state.viewMode = 'month';
+      else if (txt === 'Month (Timeline)') state.viewMode = 'month-timeline';
+      applyView();
+    });
+  });
+
+})();
 </script>
 </body>
 </html>
