@@ -337,3 +337,118 @@ To tint an inline SVG with a token colour, set `fill: currentColor` on the SVG p
 5. **Icon sizing.** Icons from this library are designed on a 20×20 or 24×24 grid. Default to 20px unless the surrounding component's HTML file shows a different size.
 
 6. **Re-export when the design changes.** Run `FIGMA_TOKEN=<token> node export.js` from the project root to refresh the `output/` folder. The script reads live data from all four Figma files (Foundation, Components library 1, Components library 2, Icons).
+
+---
+
+## export.js — Architecture & Coding Style
+
+`export.js` is the single source of truth for all generated output. It is an ES-module Node.js script (~860 lines). Key conventions:
+
+### CLI flags
+
+| Flag | What it does |
+|---|---|
+| *(none)* | Full export: tokens + both component libraries + icons |
+| `--export-components-only` | Re-export only component HTML (skips tokens and icons — much faster) |
+| `--fix-blanks-only` | Patch blank component HTML files without re-exporting everything |
+
+Run as: `FIGMA_TOKEN=<token> node export.js [--flag]`
+
+### Coding conventions
+
+- **No external dependencies** — only Node built-ins (`fs`, `path`, `url`) and the global `fetch`.
+- **All Figma calls go through `figmaGet(endpoint)`** — never call `fetch` directly for Figma.
+- **Helpers are pure functions** where possible: `nodeToStyle`, `nodeToHtml`, `paintToCss`, `sanitizeFilename`, etc.
+- **Batch everything** — Figma API limits. Node trees: batches of 50. SVG URL fetches: batches of 200. Never send unbounded ID lists.
+- **Progress with `\r` overwrite** — `process.stdout.write('…\r')` for in-progress lines, `console.log` for final lines. Keeps output clean.
+- **Phase comments in exportComponents** — the 8-phase pipeline is labelled `// ── Phase N: …` for navigability.
+
+### exportComponents — 8-phase pipeline
+
+1. **Fetch node trees** — batches of 50 nodes via `/v1/files/{key}/nodes?ids=…`
+2. **Generate HTML in memory** — `componentToHtml()` for every component; collect into `pending[]`
+3. **Collect VECTOR IDs** — regex `/data-vector-id="([^"]+)"/g` across all pending HTML
+4. **Fetch individual vector SVGs** — batches of 200 via `/v1/images/{key}?ids=…&format=svg`
+5. **Patch individual vectors** — replace `<div data-vector-id="ID"…></div>` with `<div…><svg…/></div>` in memory
+6. **Fallback: full-component SVG** — any `pending[i].html` still containing `data-vector-id=` gets the *entire* component rendered as SVG (handles instance-override node IDs that can't be individually rendered from the current file)
+7. **Write to disk** — all files written in one pass
+8. **patchWithSvg for blanks** — components that produced a single empty `<div>` (remote-library refs with no local node tree) are resolved via `/v1/components/{key}` → source file key → SVG render
+
+### VECTOR node handling
+
+Figma node types `VECTOR`, `BOOLEAN_OPERATION`, `STAR`, `POLYGON`, `LINE` cannot be CSS-rendered. `nodeToHtml()` emits a placeholder instead of an empty div:
+
+```js
+const VECTOR_TYPES = new Set(['VECTOR', 'BOOLEAN_OPERATION', 'STAR', 'POLYGON', 'LINE']);
+if (VECTOR_TYPES.has(node.type)) {
+  return `<div data-vector-id="${node.id}"${styleAttr}${dataAttr}></div>`;
+}
+```
+
+Phases 4–6 replace those placeholders with real SVG fetched from Figma.
+
+### Instance-override IDs
+
+Node IDs in the format `I11673:22479;11643:4889;3275:1346` are sub-nodes inside component instances. They reference paths in a library file, **not** the current file. The `/v1/images` API returns `null` for these. Phase 6 handles this by rendering the *top-level component node* as SVG instead, which captures the full visual including all overrides.
+
+### nodeToStyle — position logic
+
+Non-auto-layout containers that have children get `position:relative` so their `position:absolute` children (icon paths) stay correctly anchored:
+
+```js
+} else if ((node.children?.length ?? 0) > 0) {
+  r.position = r.position ?? 'relative';
+}
+```
+
+---
+
+## Styleguide — Architecture
+
+Seven HTML files in the project root form the styleguide:
+
+| File | Contents |
+|---|---|
+| `styleguide.html` | Summary / landing page |
+| `styleguide-colors.html` | Color token swatches |
+| `styleguide-typography.html` | Type scale |
+| `styleguide-shadows.html` | Shadow tokens |
+| `styleguide-components.html` | Library 1 component previews |
+| `styleguide-components2.html` | Library 2 component previews |
+| `styleguide-icons.html` | Icon grid |
+
+Shared CSS: `styleguide.css`. Shared token link: `output/tokens/tokens.css`.
+
+### Component card iframe pattern
+
+Component previews are `<iframe>` embeds of the exported HTML files. A JS snippet at the bottom of each styleguide components page:
+
+1. **Injects CSS** into the iframe via `iframe.contentDocument` (same-origin) to suppress the checkerboard transparency background and add `position:relative` on `.checker div` for any components that still need it.
+2. **Computes scroll offset** using `getBoundingClientRect()` on the `.checker` div inside the iframe to center the component in the 120px clip window.
+3. **Clamps to `preview.offsetTop`** — tiny components (like status badges) must never scroll the iframe far enough to expose the "Preview" `<h2>` heading above the `preview-wrap`.
+
+```js
+var offset = Math.max(preview.offsetTop, Math.max(0, centerY - 60));
+this.style.marginTop = '-' + offset + 'px';
+```
+
+The wide-frame variant (`.comp-frame--wide`, used for the navigation bar) uses a simpler `preview.offsetTop + 16` offset rather than centering.
+
+---
+
+## Project Status (as of 2026-05-12)
+
+### Completed
+- ✅ Tokens export (`output/tokens/tokens.css`) — 74 tokens
+- ✅ Icons export (`output/icons/`) — 429 SVG files
+- ✅ Library 1 components (`output/components/`) — 1,517 HTML files with inline SVG icons
+- ✅ Library 2 components (`output/components2/`) — 2,399 HTML files with inline SVG icons
+- ✅ All 7 styleguide pages with live iframe previews
+- ✅ VECTOR node rendering via two-tier SVG strategy (individual node first, full-component fallback)
+- ✅ Iframe centering / clamp fix — no "PREVIEW" heading visible in cards
+- ✅ Checkerboard suppression in styleguide context
+- ✅ GitHub Pages deployment at https://spelaanzeljc.github.io/facelift-design-system-experiment/
+
+### Known limitations
+- ~173 Library 2 components remain blank (remote library refs that couldn't be resolved via the component key API). These are typically deeply nested instance overrides.
+- Full re-export takes significant time (~20–30 min) due to the volume of Figma API calls. Use `--export-components-only` for component-only changes.
