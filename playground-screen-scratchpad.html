@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Screen Scratchpad</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: #111317;
+  color: #d0d4e0;
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
+  font-size: 13px;
+}
+
+/* ── CONTROLS PANEL ── */
+
+.panel {
+  width: 252px;
+  min-width: 252px;
+  display: flex;
+  flex-direction: column;
+  background: #181b22;
+  border-right: 1px solid #222630;
+  overflow: hidden;
+}
+
+.panel-title {
+  padding: 16px 18px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #e8eaf0;
+  border-bottom: 1px solid #222630;
+  letter-spacing: -0.01em;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.panel-title-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #1339ec;
+  flex-shrink: 0;
+}
+
+.panel-scroll {
+  overflow-y: auto;
+  flex: 1;
+  padding: 14px 16px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.panel-scroll::-webkit-scrollbar { width: 4px; }
+.panel-scroll::-webkit-scrollbar-track { background: transparent; }
+.panel-scroll::-webkit-scrollbar-thumb { background: #2e3240; border-radius: 2px; }
+
+.ctrl-section { display: flex; flex-direction: column; gap: 8px; }
+
+.ctrl-section-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: #4a5268;
+  padding-bottom: 2px;
+}
+
+/* Presets */
+.preset-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+}
+
+.preset-btn {
+  background: #222630;
+  border: 1px solid #2a2f3e;
+  color: #8a94ac;
+  padding: 9px 8px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 12px;
+  font-family: inherit;
+  text-align: center;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+}
+.preset-btn:hover { background: #2a2f3e; color: #c0c8dc; }
+.preset-btn.active {
+  background: rgba(19, 57, 236, 0.14);
+  border-color: rgba(83, 130, 255, 0.38);
+  color: #7aa4ff;
+}
+
+/* Toggle rows */
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3px 0;
+  cursor: default;
+}
+.toggle-label { font-size: 12px; color: #8a94ac; user-select: none; }
+
+.toggle {
+  position: relative;
+  width: 30px;
+  height: 17px;
+  flex-shrink: 0;
+}
+.toggle input { position: absolute; opacity: 0; width: 0; height: 0; }
+.toggle-track {
+  position: absolute;
+  inset: 0;
+  background: #2a2f3e;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.toggle input:checked + .toggle-track { background: #1339ec; }
+.toggle-track::after {
+  content: '';
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 13px; height: 13px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.18s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+.toggle input:checked + .toggle-track::after { transform: translateX(13px); }
+
+/* Sub-sections */
+.sub-section {
+  margin-top: 2px;
+  padding: 10px 12px;
+  background: #1a1e28;
+  border-radius: 7px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.sub-section.hidden { display: none; }
+
+/* Sliders */
+.slider-group { display: flex; flex-direction: column; gap: 5px; }
+.slider-header { display: flex; justify-content: space-between; align-items: center; }
+.slider-name { font-size: 11px; color: #6a7490; }
+.slider-val {
+  font-family: 'SF Mono', 'Fira Code', 'Menlo', monospace;
+  font-size: 11px;
+  color: #6a9af8;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 2px;
+  background: #2a2f3e;
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 13px;
+  height: 13px;
+  background: #5581f1;
+  border-radius: 50%;
+  border: 2px solid #1a1e28;
+  box-shadow: 0 0 0 1px rgba(85,129,241,0.3);
+}
+
+/* Chips */
+.chip-group { display: flex; gap: 4px; flex-wrap: wrap; }
+.chip {
+  padding: 4px 9px;
+  border-radius: 100px;
+  background: #222630;
+  border: 1px solid #2a2f3e;
+  color: #7a84a0;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.12s;
+  user-select: none;
+}
+.chip:hover { background: #2a2f3e; color: #c0c8dc; }
+.chip.active {
+  background: rgba(19,57,236,0.14);
+  border-color: rgba(83,130,255,0.38);
+  color: #7aa4ff;
+}
+
+/* ── MAIN AREA ── */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #0c0e14;
+}
+
+.preview-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px;
+  overflow: hidden;
+}
+
+.mockup-outer {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.mockup {
+  position: absolute;
+  top: 0; left: 0;
+  transform-origin: top left;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.06);
+  display: flex;
+  flex-direction: column;
+  background: #f2f4f8;
+  transition: background 0.2s;
+}
+.mockup.dark { background: #111317; }
+
+/* ── MOCKUP INTERNALS ── */
+
+.m-header {
+  flex-shrink: 0;
+  background: #1a2040;
+  display: flex;
+  align-items: center;
+  padding: 0 18px;
+  gap: 20px;
+}
+.m-header-logo { width: 72px; height: 18px; background: rgba(255,255,255,0.25); border-radius: 4px; flex-shrink: 0; }
+.m-header-nav { flex: 1; display: flex; gap: 14px; align-items: center; }
+.m-header-nav-item { height: 7px; width: 44px; background: rgba(255,255,255,0.18); border-radius: 3px; }
+.m-header-nav-item.hl { background: rgba(255,255,255,0.5); width: 54px; }
+.m-header-actions { display: flex; gap: 8px; align-items: center; }
+.m-header-avatar { width: 26px; height: 26px; border-radius: 50%; background: rgba(255,255,255,0.22); flex-shrink: 0; }
+.m-header-btn { width: 22px; height: 22px; border-radius: 4px; background: rgba(255,255,255,0.1); flex-shrink: 0; }
+
+.m-body { flex: 1; display: flex; overflow: hidden; }
+
+.m-sidebar {
+  flex-shrink: 0;
+  background: #f8f9fd;
+  border-right: 1px solid #e5e8ef;
+  display: flex;
+  flex-direction: column;
+  padding: 14px 8px 10px;
+  gap: 2px;
+  overflow: hidden;
+  transition: background 0.2s, border-color 0.2s;
+}
+.m-sidebar.right { border-right: none; border-left: 1px solid #e5e8ef; }
+
+.mockup.dark .m-sidebar { background: #1a1d23; border-color: #252830; }
+.mockup.dark .m-sidebar.right { border-color: #252830; }
+
+.m-sidebar-item {
+  height: 28px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 8px;
+  flex-shrink: 0;
+}
+.m-sidebar-item.sel { background: rgba(19,57,236,0.09); }
+.m-icon-dot { width: 14px; height: 14px; border-radius: 3px; background: #d3d8e4; flex-shrink: 0; transition: background 0.2s; }
+.m-sidebar-item.sel .m-icon-dot { background: rgba(19,57,236,0.4); }
+.m-text-stub { height: 6px; flex: 1; border-radius: 3px; background: #d3d8e4; transition: background 0.2s; }
+.m-sidebar-item.sel .m-text-stub { background: rgba(19,57,236,0.3); }
+.m-sidebar-divider { height: 1px; background: #e5e8ef; margin: 6px 0; transition: background 0.2s; }
+
+.mockup.dark .m-icon-dot { background: #2e3240; }
+.mockup.dark .m-sidebar-item.sel .m-icon-dot { background: rgba(85,129,241,0.5); }
+.mockup.dark .m-text-stub { background: #2e3240; }
+.mockup.dark .m-sidebar-item.sel .m-text-stub { background: rgba(85,129,241,0.3); }
+.mockup.dark .m-sidebar-divider { background: #252830; }
+
+.m-content {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: background 0.2s;
+}
+.mockup.dark .m-content { background: #111317; }
+
+.m-content-inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── CONTENT BLOCKS ── */
+.m-block { flex-shrink: 0; }
+
+/* Hero */
+.m-block-hero {
+  background: linear-gradient(135deg, #e8efff 0%, #f0eaff 100%);
+  border-bottom: 1px solid #dde4f5;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.mockup.dark .m-block-hero { background: linear-gradient(135deg, #161f40 0%, #1c1638 100%); border-color: #1e2640; }
+.h-title { height: 18px; width: 52%; background: rgba(19,57,236,0.3); border-radius: 5px; }
+.h-sub { height: 9px; width: 72%; background: rgba(19,57,236,0.13); border-radius: 3px; }
+.h-cta { height: 26px; width: 88px; background: rgba(19,57,236,0.5); border-radius: 5px; margin-top: 4px; }
+
+/* Stats */
+.m-block-stats { display: flex; gap: 8px; flex-shrink: 0; }
+.m-stat {
+  flex: 1;
+  background: #fff;
+  border: 1px solid #e5e8ef;
+  border-radius: 7px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px 12px;
+  gap: 5px;
+  transition: background 0.2s, border-color 0.2s;
+}
+.mockup.dark .m-stat { background: #1a1d23; border-color: #252830; }
+.s-val { height: 14px; width: 48%; background: rgba(19,57,236,0.3); border-radius: 4px; }
+.s-lbl { height: 7px; width: 68%; background: #e0e3ec; border-radius: 3px; }
+.s-dlt { height: 6px; width: 36px; background: rgba(46,136,27,0.3); border-radius: 3px; }
+.mockup.dark .s-val { background: rgba(85,129,241,0.4); }
+.mockup.dark .s-lbl, .mockup.dark .s-dlt { background: #252830; }
+
+/* Chart */
+.m-block-chart {
+  background: #fff;
+  border: 1px solid #e5e8ef;
+  border-radius: 7px;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  transition: background 0.2s, border-color 0.2s;
+}
+.mockup.dark .m-block-chart { background: #1a1d23; border-color: #252830; }
+.chart-hd { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.chart-hd-bar { height: 8px; width: 90px; background: #d3d8e4; border-radius: 3px; }
+.chart-leg { width: 8px; height: 8px; border-radius: 50%; background: rgba(19,57,236,0.45); flex-shrink: 0; }
+.mockup.dark .chart-hd-bar { background: #2e3240; }
+.chart-body { flex: 1; display: flex; align-items: flex-end; gap: 5px; }
+.cb { flex: 1; border-radius: 3px 3px 0 0; }
+.cb:nth-child(1) { background: rgba(19,57,236,0.22); }
+.cb:nth-child(2) { background: rgba(19,57,236,0.42); }
+.cb:nth-child(3) { background: rgba(19,57,236,0.18); }
+.cb:nth-child(4) { background: rgba(19,57,236,0.56); }
+.cb:nth-child(5) { background: rgba(19,57,236,0.32); }
+.cb:nth-child(6) { background: rgba(19,57,236,0.46); }
+.cb:nth-child(7) { background: rgba(19,57,236,0.28); }
+.chart-axis { height: 1px; background: #e0e3ec; flex-shrink: 0; }
+.mockup.dark .chart-axis { background: #252830; }
+
+/* Table */
+.m-block-table {
+  background: #fff;
+  border: 1px solid #e5e8ef;
+  border-radius: 7px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex: 1;
+  min-height: 80px;
+  transition: background 0.2s, border-color 0.2s;
+}
+.mockup.dark .m-block-table { background: #1a1d23; border-color: #252830; }
+.m-th {
+  height: 30px;
+  background: #f7f8fc;
+  border-bottom: 1px solid #e5e8ef;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  transition: background 0.2s, border-color 0.2s;
+}
+.mockup.dark .m-th { background: #111317; border-color: #252830; }
+.tc { height: 7px; flex: 1; background: #c8ccd8; border-radius: 3px; }
+.tc.sm { flex: 0.5; }
+.tc.lg { flex: 2; }
+.mockup.dark .tc { background: #2e3240; }
+.m-tr {
+  height: 26px;
+  border-bottom: 1px solid #f2f4f8;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  transition: border-color 0.2s;
+}
+.m-tr:nth-child(even) { background: rgba(0,0,0,0.015); }
+.mockup.dark .m-tr { border-color: #1e2128; }
+.mockup.dark .m-tr:nth-child(even) { background: rgba(255,255,255,0.015); }
+.td { height: 6px; flex: 1; background: #e5e8ef; border-radius: 3px; }
+.td.sm { flex: 0.5; }
+.td.lg { flex: 2; }
+.td.badge { height: 16px; flex: 0.7; border-radius: 100px; background: rgba(19,57,236,0.1); }
+.mockup.dark .td { background: #252830; }
+.mockup.dark .td.badge { background: rgba(85,129,241,0.15); }
+
+/* Cards */
+.m-block-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.m-card {
+  background: #fff;
+  border: 1px solid #e5e8ef;
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: background 0.2s, border-color 0.2s;
+}
+.mockup.dark .m-card { background: #1a1d23; border-color: #252830; }
+.m-card-img { background: #e5e8ef; flex-shrink: 0; transition: background 0.2s; }
+.mockup.dark .m-card-img { background: #252830; }
+.m-card-body { padding: 7px 9px; display: flex; flex-direction: column; gap: 5px; }
+.c-title { height: 7px; width: 68%; background: #c8ccd8; border-radius: 3px; }
+.c-desc { height: 5px; width: 88%; background: #dde0e8; border-radius: 2px; }
+.c-desc2 { height: 5px; width: 55%; background: #dde0e8; border-radius: 2px; }
+.mockup.dark .c-title, .mockup.dark .c-desc, .mockup.dark .c-desc2 { background: #2e3240; }
+
+/* Text / Article */
+.m-block-text {
+  background: #fff;
+  border: 1px solid #e5e8ef;
+  border-radius: 7px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  transition: background 0.2s, border-color 0.2s;
+}
+.mockup.dark .m-block-text { background: #1a1d23; border-color: #252830; }
+.tl-h { height: 12px; width: 58%; background: #c8ccd8; border-radius: 3px; margin-bottom: 2px; }
+.tl { height: 6px; border-radius: 3px; background: #dde0e8; }
+.tl.w100 { width: 100%; }
+.tl.w92 { width: 92%; }
+.tl.w80 { width: 80%; }
+.mockup.dark .tl-h, .mockup.dark .tl { background: #2e3240; }
+
+/* Form */
+.m-block-form {
+  background: #fff;
+  border: 1px solid #e5e8ef;
+  border-radius: 7px;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  transition: background 0.2s, border-color 0.2s;
+}
+.mockup.dark .m-block-form { background: #1a1d23; border-color: #252830; }
+.m-ff { display: flex; flex-direction: column; gap: 4px; }
+.ff-lbl { height: 6px; width: 33%; background: #c8ccd8; border-radius: 3px; }
+.ff-inp { height: 25px; border: 1px solid #e5e8ef; border-radius: 5px; background: #f7f8fc; transition: background 0.2s, border-color 0.2s; }
+.mockup.dark .ff-lbl { background: #2e3240; }
+.mockup.dark .ff-inp { background: #111317; border-color: #252830; }
+.m-form-row { display: flex; gap: 10px; }
+.m-form-row .m-ff { flex: 1; }
+.m-form-footer { display: flex; gap: 8px; padding-top: 2px; }
+.ff-submit { height: 27px; width: 72px; background: rgba(19,57,236,0.5); border-radius: 5px; }
+.ff-cancel { height: 27px; width: 60px; background: #e5e8ef; border-radius: 5px; }
+.mockup.dark .ff-cancel { background: #252830; }
+
+/* Footer */
+.m-footer {
+  flex-shrink: 0;
+  background: #f7f8fc;
+  border-top: 1px solid #e5e8ef;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px;
+  transition: background 0.2s, border-color 0.2s;
+}
+.mockup.dark .m-footer { background: #1a1d23; border-color: #252830; }
+.m-ftr-links { display: flex; gap: 14px; }
+.m-ftr-lnk { height: 6px; width: 40px; background: #c8ccd8; border-radius: 3px; }
+.m-ftr-copy { height: 6px; width: 80px; background: #dde0e8; border-radius: 3px; }
+.mockup.dark .m-ftr-lnk, .mockup.dark .m-ftr-copy { background: #2e3240; }
+
+/* Page inner header (inside content area) */
+.m-page-hd {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+.m-page-hd-title { height: 14px; width: 120px; background: #c8ccd8; border-radius: 4px; }
+.m-page-hd-actions { display: flex; gap: 7px; }
+.m-page-hd-btn { height: 24px; width: 70px; border: 1px solid #d3d7de; border-radius: 5px; background: #fff; }
+.m-page-hd-btn.primary { background: rgba(19,57,236,0.5); border-color: transparent; }
+.mockup.dark .m-page-hd-title { background: #2e3240; }
+.mockup.dark .m-page-hd-btn { background: #1a1d23; border-color: #252830; }
+
+/* ── PROMPT STRIP ── */
+.prompt-strip {
+  background: #181b22;
+  border-top: 1px solid #222630;
+  padding: 14px 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  min-height: 78px;
+  max-height: 120px;
+  flex-shrink: 0;
+}
+
+.prompt-out {
+  flex: 1;
+  font-family: 'SF Mono', 'Fira Code', 'Menlo', monospace;
+  font-size: 11.5px;
+  color: #9aa4bc;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-y: auto;
+}
+
+.copy-btn {
+  flex-shrink: 0;
+  padding: 7px 15px;
+  background: #222630;
+  border: 1px solid #2a2f3e;
+  color: #c0c8dc;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 12px;
+  font-family: inherit;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.copy-btn:hover { background: #2a2f3e; }
+.copy-btn.copied { background: #102818; border-color: #1e4030; color: #5aaa7a; }
+</style>
+</head>
+<body>
+
+<div class="panel">
+  <div class="panel-title">
+    <div class="panel-title-dot"></div>
+    Screen Scratchpad
+  </div>
+  <div class="panel-scroll">
+
+    <div class="ctrl-section">
+      <div class="ctrl-section-label">Presets</div>
+      <div class="preset-grid">
+        <button class="preset-btn active" data-preset="dashboard">Dashboard</button>
+        <button class="preset-btn" data-preset="landing">Landing page</button>
+        <button class="preset-btn" data-preset="article">Article</button>
+        <button class="preset-btn" data-preset="settings">Settings</button>
+      </div>
+    </div>
+
+    <div class="ctrl-section">
+      <div class="ctrl-section-label">Regions</div>
+
+      <div class="toggle-row">
+        <span class="toggle-label">Header / nav bar</span>
+        <label class="toggle">
+          <input type="checkbox" id="tog-header" checked>
+          <span class="toggle-track"></span>
+        </label>
+      </div>
+      <div class="sub-section" id="sub-header">
+        <div class="slider-group">
+          <div class="slider-header">
+            <span class="slider-name">Height</span>
+            <span class="slider-val" id="val-hh">52px</span>
+          </div>
+          <input type="range" id="rng-hh" min="40" max="80" value="52" step="4">
+        </div>
+      </div>
+
+      <div class="toggle-row">
+        <span class="toggle-label">Sidebar</span>
+        <label class="toggle">
+          <input type="checkbox" id="tog-sidebar" checked>
+          <span class="toggle-track"></span>
+        </label>
+      </div>
+      <div class="sub-section" id="sub-sidebar">
+        <div class="slider-group">
+          <div class="slider-header">
+            <span class="slider-name">Side</span>
+          </div>
+          <div class="chip-group">
+            <div class="chip active" data-side="left">Left</div>
+            <div class="chip" data-side="right">Right</div>
+          </div>
+        </div>
+        <div class="slider-group">
+          <div class="slider-header">
+            <span class="slider-name">Width</span>
+            <span class="slider-val" id="val-sw">200px</span>
+          </div>
+          <input type="range" id="rng-sw" min="140" max="280" value="200" step="10">
+        </div>
+      </div>
+
+      <div class="toggle-row">
+        <span class="toggle-label">Footer</span>
+        <label class="toggle">
+          <input type="checkbox" id="tog-footer">
+          <span class="toggle-track"></span>
+        </label>
+      </div>
+      <div class="sub-section hidden" id="sub-footer">
+        <div class="slider-group">
+          <div class="slider-header">
+            <span class="slider-name">Height</span>
+            <span class="slider-val" id="val-fh">44px</span>
+          </div>
+          <input type="range" id="rng-fh" min="36" max="72" value="44" step="4">
+        </div>
+      </div>
+    </div>
+
+    <div class="ctrl-section">
+      <div class="ctrl-section-label">Content Blocks</div>
+
+      <div class="toggle-row">
+        <span class="toggle-label">Hero / banner</span>
+        <label class="toggle"><input type="checkbox" id="blk-hero"><span class="toggle-track"></span></label>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-label">Metric stats</span>
+        <label class="toggle"><input type="checkbox" id="blk-stats" checked><span class="toggle-track"></span></label>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-label">Bar chart</span>
+        <label class="toggle"><input type="checkbox" id="blk-chart" checked><span class="toggle-track"></span></label>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-label">Data table</span>
+        <label class="toggle"><input type="checkbox" id="blk-table" checked><span class="toggle-track"></span></label>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-label">Cards grid</span>
+        <label class="toggle"><input type="checkbox" id="blk-cards"><span class="toggle-track"></span></label>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-label">Text / article</span>
+        <label class="toggle"><input type="checkbox" id="blk-text"><span class="toggle-track"></span></label>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-label">Form</span>
+        <label class="toggle"><input type="checkbox" id="blk-form"><span class="toggle-track"></span></label>
+      </div>
+    </div>
+
+    <div class="ctrl-section">
+      <div class="ctrl-section-label">Style</div>
+      <div class="slider-group">
+        <div class="slider-header"><span class="slider-name">Spacing density</span></div>
+        <div class="chip-group">
+          <div class="chip" data-density="compact">Compact</div>
+          <div class="chip active" data-density="default">Default</div>
+          <div class="chip" data-density="spacious">Spacious</div>
+        </div>
+      </div>
+      <div class="slider-group" style="margin-top:6px">
+        <div class="slider-header"><span class="slider-name">Background</span></div>
+        <div class="chip-group">
+          <div class="chip active" data-bg="light">Light</div>
+          <div class="chip" data-bg="dark">Dark</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="main">
+  <div class="preview-wrap" id="preview-wrap">
+    <div class="mockup-outer" id="mockup-outer">
+      <div class="mockup" id="mockup"></div>
+    </div>
+  </div>
+  <div class="prompt-strip">
+    <div class="prompt-out" id="prompt-out"></div>
+    <button class="copy-btn" id="copy-btn">Copy prompt</button>
+  </div>
+</div>
+
+<script>
+const MOCKUP_W = 960;
+const MOCKUP_H = 560;
+
+const DENSITY = {
+  compact:  { pad: 10, gap: 8,  heroH: 90,  chartH: 110 },
+  default:  { pad: 16, gap: 12, heroH: 108, chartH: 130 },
+  spacious: { pad: 24, gap: 18, heroH: 128, chartH: 148 },
+};
+
+const state = {
+  header: true,    headerHeight: 52,
+  sidebar: true,   sidebarSide: 'left', sidebarWidth: 200,
+  footer: false,   footerHeight: 44,
+  blocks: { hero: false, stats: true, chart: true, table: true, cards: false, text: false, form: false },
+  density: 'default',
+  background: 'light',
+};
+
+const PRESETS = {
+  dashboard: {
+    header: true, headerHeight: 52,
+    sidebar: true, sidebarSide: 'left', sidebarWidth: 200,
+    footer: false, footerHeight: 44,
+    blocks: { hero: false, stats: true, chart: true, table: true, cards: false, text: false, form: false },
+    density: 'default', background: 'light',
+  },
+  landing: {
+    header: true, headerHeight: 64,
+    sidebar: false, sidebarSide: 'left', sidebarWidth: 240,
+    footer: true, footerHeight: 52,
+    blocks: { hero: true, stats: false, chart: false, table: false, cards: true, text: false, form: false },
+    density: 'spacious', background: 'light',
+  },
+  article: {
+    header: true, headerHeight: 52,
+    sidebar: true, sidebarSide: 'right', sidebarWidth: 180,
+    footer: false, footerHeight: 44,
+    blocks: { hero: false, stats: false, chart: false, table: false, cards: false, text: true, form: false },
+    density: 'spacious', background: 'light',
+  },
+  settings: {
+    header: true, headerHeight: 52,
+    sidebar: true, sidebarSide: 'left', sidebarWidth: 210,
+    footer: false, footerHeight: 44,
+    blocks: { hero: false, stats: false, chart: false, table: false, cards: false, text: false, form: true },
+    density: 'default', background: 'light',
+  },
+};
+
+// ── Builders ──────────────────────────────────────────────────────────────────
+
+function buildHeader() {
+  return `<div class="m-header" style="height:${state.headerHeight}px">
+    <div class="m-header-logo"></div>
+    <div class="m-header-nav">
+      <div class="m-header-nav-item"></div>
+      <div class="m-header-nav-item hl"></div>
+      <div class="m-header-nav-item"></div>
+      <div class="m-header-nav-item"></div>
+    </div>
+    <div class="m-header-actions">
+      <div class="m-header-btn"></div>
+      <div class="m-header-avatar"></div>
+    </div>
+  </div>`;
+}
+
+function buildSidebar() {
+  const cls = state.sidebarSide === 'right' ? 'm-sidebar right' : 'm-sidebar';
+  const items = [false, true, false, false, false, false].map(sel =>
+    `<div class="m-sidebar-item${sel ? ' sel' : ''}">
+      <div class="m-icon-dot"></div>
+      <div class="m-text-stub"></div>
+    </div>`
+  ).join('');
+  return `<div class="${cls}" style="width:${state.sidebarWidth}px">
+    ${items}
+    <div class="m-sidebar-divider"></div>
+    <div class="m-sidebar-item"><div class="m-icon-dot"></div><div class="m-text-stub"></div></div>
+    <div class="m-sidebar-item"><div class="m-icon-dot"></div><div class="m-text-stub"></div></div>
+  </div>`;
+}
+
+function buildFooter() {
+  return `<div class="m-footer" style="height:${state.footerHeight}px">
+    <div class="m-ftr-links">
+      <div class="m-ftr-lnk"></div>
+      <div class="m-ftr-lnk"></div>
+      <div class="m-ftr-lnk"></div>
+    </div>
+    <div class="m-ftr-copy"></div>
+  </div>`;
+}
+
+function buildPageHeader(p, g) {
+  return `<div class="m-page-hd" style="margin-bottom:${g}px">
+    <div class="m-page-hd-title"></div>
+    <div class="m-page-hd-actions">
+      <div class="m-page-hd-btn"></div>
+      <div class="m-page-hd-btn primary"></div>
+    </div>
+  </div>`;
+}
+
+function buildHero(p, heroH) {
+  return `<div class="m-block m-block-hero" style="height:${heroH}px;padding:${p}px ${p+8}px">
+    <div class="h-title"></div>
+    <div class="h-sub"></div>
+    <div class="h-cta"></div>
+  </div>`;
+}
+
+function buildStats() {
+  const cards = [1,2,3,4].map(() =>
+    `<div class="m-stat">
+      <div class="s-val"></div>
+      <div class="s-lbl"></div>
+      <div class="s-dlt"></div>
+    </div>`
+  ).join('');
+  return `<div class="m-block m-block-stats">${cards}</div>`;
+}
+
+function buildChart(p, g, chartH) {
+  const barHeights = [55, 82, 44, 94, 66, 76, 58];
+  const innerH = chartH - p * 2 - 8 - 16; // subtract padding + header row + axis
+  const bars = barHeights.map(pct =>
+    `<div class="cb" style="height:${Math.round(pct / 100 * innerH)}px"></div>`
+  ).join('');
+  return `<div class="m-block m-block-chart" style="height:${chartH}px;padding:${p}px;gap:${g}px">
+    <div class="chart-hd">
+      <div class="chart-hd-bar"></div>
+      <div class="chart-leg"></div>
+    </div>
+    <div class="chart-body">${bars}</div>
+    <div class="chart-axis"></div>
+  </div>`;
+}
+
+function buildTable(p, g) {
+  const rows = Array.from({length: 7}, () =>
+    `<div class="m-tr" style="padding:0 ${p}px">
+      <div class="td sm"></div>
+      <div class="td lg"></div>
+      <div class="td"></div>
+      <div class="td badge"></div>
+      <div class="td sm"></div>
+    </div>`
+  ).join('');
+  return `<div class="m-block m-block-table">
+    <div class="m-th" style="padding:0 ${p}px">
+      <div class="tc sm"></div>
+      <div class="tc lg"></div>
+      <div class="tc"></div>
+      <div class="tc sm"></div>
+      <div class="tc sm"></div>
+    </div>
+    ${rows}
+  </div>`;
+}
+
+function buildCards(p, g) {
+  const cards = Array.from({length: 6}, () =>
+    `<div class="m-card">
+      <div class="m-card-img" style="height:55px"></div>
+      <div class="m-card-body">
+        <div class="c-title"></div>
+        <div class="c-desc"></div>
+        <div class="c-desc2"></div>
+      </div>
+    </div>`
+  ).join('');
+  return `<div class="m-block m-block-cards" style="gap:${g}px;height:170px">${cards}</div>`;
+}
+
+function buildText(p, g) {
+  return `<div class="m-block m-block-text" style="padding:${p}px">
+    <div class="tl-h"></div>
+    <div class="tl w100"></div>
+    <div class="tl w92"></div>
+    <div class="tl w80"></div>
+    <div class="tl w100"></div>
+    <div class="tl w92"></div>
+    <div class="tl w80"></div>
+  </div>`;
+}
+
+function buildForm(p, g) {
+  return `<div class="m-block m-block-form" style="padding:${p}px">
+    <div class="m-form-row">
+      <div class="m-ff"><div class="ff-lbl"></div><div class="ff-inp"></div></div>
+      <div class="m-ff"><div class="ff-lbl"></div><div class="ff-inp"></div></div>
+    </div>
+    <div class="m-ff"><div class="ff-lbl"></div><div class="ff-inp"></div></div>
+    <div class="m-ff"><div class="ff-lbl"></div><div class="ff-inp"></div></div>
+    <div class="m-ff"><div class="ff-lbl"></div><div class="ff-inp" style="height:52px"></div></div>
+    <div class="m-form-footer">
+      <div class="ff-submit"></div>
+      <div class="ff-cancel"></div>
+    </div>
+  </div>`;
+}
+
+// ── Render ────────────────────────────────────────────────────────────────────
+
+function renderMockup() {
+  const mockup = document.getElementById('mockup');
+  const isDark = state.background === 'dark';
+  const d = DENSITY[state.density];
+  const p = d.pad;
+  const g = d.gap;
+
+  mockup.className = 'mockup' + (isDark ? ' dark' : '');
+  mockup.style.width = MOCKUP_W + 'px';
+  mockup.style.height = MOCKUP_H + 'px';
+
+  const active = Object.entries(state.blocks).filter(([,v]) => v).map(([k]) => k);
+  const showPageHd = active.length > 0 && !active.includes('hero');
+
+  const blockBuilders = {
+    hero:  () => buildHero(p, d.heroH),
+    stats: () => buildStats(),
+    chart: () => buildChart(p, g, d.chartH),
+    table: () => buildTable(p, g),
+    cards: () => buildCards(p, g),
+    text:  () => buildText(p, g),
+    form:  () => buildForm(p, g),
+  };
+
+  const contentBlocksHTML = active.map(k => blockBuilders[k]()).join('');
+
+  const contentInner = `<div class="m-content-inner" style="padding:${p}px;gap:${g}px;display:flex;flex-direction:column;overflow:hidden;">
+    ${showPageHd ? buildPageHeader(p, g) : ''}
+    ${contentBlocksHTML}
+  </div>`;
+
+  let bodyHTML = '';
+  if (state.sidebar && state.sidebarSide === 'left')  bodyHTML += buildSidebar();
+  bodyHTML += `<div class="m-content">${contentInner}</div>`;
+  if (state.sidebar && state.sidebarSide === 'right') bodyHTML += buildSidebar();
+
+  mockup.innerHTML =
+    (state.header ? buildHeader() : '') +
+    `<div class="m-body">${bodyHTML}</div>` +
+    (state.footer ? buildFooter() : '');
+
+  scaleMockup();
+}
+
+function scaleMockup() {
+  const wrap  = document.getElementById('preview-wrap');
+  const outer = document.getElementById('mockup-outer');
+  const inner = document.getElementById('mockup');
+
+  const aw = wrap.clientWidth - 56;
+  const ah = wrap.clientHeight - 56;
+  if (aw <= 0 || ah <= 0) return;
+
+  const scale = Math.min(aw / MOCKUP_W, ah / MOCKUP_H, 1);
+  outer.style.width  = Math.round(MOCKUP_W * scale) + 'px';
+  outer.style.height = Math.round(MOCKUP_H * scale) + 'px';
+  inner.style.transform = `scale(${scale})`;
+  inner.style.transformOrigin = 'top left';
+}
+
+// ── Prompt ────────────────────────────────────────────────────────────────────
+
+function buildPrompt() {
+  const active = Object.entries(state.blocks).filter(([,v]) => v).map(([k]) => k);
+
+  let layoutType = 'screen';
+  if (active.some(b => ['stats','chart','table'].includes(b))) layoutType = 'analytics dashboard';
+  else if (active.includes('hero') && active.includes('cards')) layoutType = 'landing page';
+  else if (active.includes('hero')) layoutType = 'marketing page';
+  else if (active.includes('form')) layoutType = 'settings page';
+  else if (active.includes('text')) layoutType = 'article page';
+
+  const bg = state.background === 'dark' ? 'dark-themed' : 'light';
+  let out = `Build a ${bg} ${layoutType}`;
+
+  const structure = [];
+  if (state.header) structure.push(`a ${state.headerHeight}px top nav bar`);
+  if (state.sidebar) structure.push(`a ${state.sidebarWidth}px ${state.sidebarSide} sidebar`);
+  if (state.footer)  structure.push(`a ${state.footerHeight}px footer`);
+  if (structure.length) out += ` with ${structure.join(', ')}`;
+  out += '.';
+
+  const blockNames = {
+    hero:  'a full-width hero banner (headline, subtext, CTA button)',
+    stats: '4 metric stat cards (value, label, delta indicator)',
+    chart: 'a bar chart panel',
+    table: 'a sortable data table with status badge column',
+    cards: 'a 3-column card grid with image thumbnails',
+    text:  'a text/article content section',
+    form:  'a multi-field form (two-column name row, email, message, submit/cancel)',
+  };
+
+  if (active.length === 0) {
+    out += ' The main content area is empty.';
+  } else if (active.length === 1) {
+    out += ` Main content: ${blockNames[active[0]]}.`;
+  } else {
+    const last = blockNames[active[active.length - 1]];
+    const rest = active.slice(0, -1).map(k => blockNames[k]).join(', ');
+    out += ` Main content: ${rest}, and ${last}.`;
+  }
+
+  const densityText = {
+    compact:  'compact spacing (10px gutters)',
+    default:  'standard spacing (16px gutters)',
+    spacious: 'generous spacing (24px gutters)',
+  }[state.density];
+  out += ` Use ${densityText}.`;
+
+  return out;
+}
+
+// ── Controls sync ─────────────────────────────────────────────────────────────
+
+function syncControls() {
+  document.getElementById('tog-header').checked  = state.header;
+  document.getElementById('tog-sidebar').checked = state.sidebar;
+  document.getElementById('tog-footer').checked  = state.footer;
+
+  document.getElementById('sub-header').classList.toggle('hidden', !state.header);
+  document.getElementById('sub-sidebar').classList.toggle('hidden', !state.sidebar);
+  document.getElementById('sub-footer').classList.toggle('hidden', !state.footer);
+
+  document.getElementById('rng-hh').value = state.headerHeight;
+  document.getElementById('val-hh').textContent = state.headerHeight + 'px';
+  document.getElementById('rng-sw').value = state.sidebarWidth;
+  document.getElementById('val-sw').textContent = state.sidebarWidth + 'px';
+  document.getElementById('rng-fh').value = state.footerHeight;
+  document.getElementById('val-fh').textContent = state.footerHeight + 'px';
+
+  document.querySelectorAll('[data-side]').forEach(el =>
+    el.classList.toggle('active', el.dataset.side === state.sidebarSide));
+  document.querySelectorAll('[data-density]').forEach(el =>
+    el.classList.toggle('active', el.dataset.density === state.density));
+  document.querySelectorAll('[data-bg]').forEach(el =>
+    el.classList.toggle('active', el.dataset.bg === state.background));
+
+  Object.keys(state.blocks).forEach(k => {
+    const el = document.getElementById('blk-' + k);
+    if (el) el.checked = state.blocks[k];
+  });
+}
+
+function updateAll() {
+  renderMockup();
+  document.getElementById('prompt-out').textContent = buildPrompt();
+}
+
+// ── Events ────────────────────────────────────────────────────────────────────
+
+document.querySelectorAll('.preset-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const p = PRESETS[btn.dataset.preset];
+    if (!p) return;
+    Object.assign(state, { ...p, blocks: { ...p.blocks } });
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    syncControls();
+    updateAll();
+  });
+});
+
+document.getElementById('tog-header').addEventListener('change', e => {
+  state.header = e.target.checked;
+  document.getElementById('sub-header').classList.toggle('hidden', !state.header);
+  updateAll();
+});
+document.getElementById('tog-sidebar').addEventListener('change', e => {
+  state.sidebar = e.target.checked;
+  document.getElementById('sub-sidebar').classList.toggle('hidden', !state.sidebar);
+  updateAll();
+});
+document.getElementById('tog-footer').addEventListener('change', e => {
+  state.footer = e.target.checked;
+  document.getElementById('sub-footer').classList.toggle('hidden', !state.footer);
+  updateAll();
+});
+
+document.getElementById('rng-hh').addEventListener('input', e => {
+  state.headerHeight = +e.target.value;
+  document.getElementById('val-hh').textContent = state.headerHeight + 'px';
+  updateAll();
+});
+document.getElementById('rng-sw').addEventListener('input', e => {
+  state.sidebarWidth = +e.target.value;
+  document.getElementById('val-sw').textContent = state.sidebarWidth + 'px';
+  updateAll();
+});
+document.getElementById('rng-fh').addEventListener('input', e => {
+  state.footerHeight = +e.target.value;
+  document.getElementById('val-fh').textContent = state.footerHeight + 'px';
+  updateAll();
+});
+
+document.querySelectorAll('[data-side]').forEach(chip => {
+  chip.addEventListener('click', () => {
+    state.sidebarSide = chip.dataset.side;
+    document.querySelectorAll('[data-side]').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    updateAll();
+  });
+});
+document.querySelectorAll('[data-density]').forEach(chip => {
+  chip.addEventListener('click', () => {
+    state.density = chip.dataset.density;
+    document.querySelectorAll('[data-density]').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    updateAll();
+  });
+});
+document.querySelectorAll('[data-bg]').forEach(chip => {
+  chip.addEventListener('click', () => {
+    state.background = chip.dataset.bg;
+    document.querySelectorAll('[data-bg]').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    updateAll();
+  });
+});
+
+Object.keys(state.blocks).forEach(k => {
+  const el = document.getElementById('blk-' + k);
+  if (el) el.addEventListener('change', e => {
+    state.blocks[k] = e.target.checked;
+    updateAll();
+  });
+});
+
+document.getElementById('copy-btn').addEventListener('click', () => {
+  navigator.clipboard.writeText(document.getElementById('prompt-out').textContent).then(() => {
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy prompt'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+
+window.addEventListener('resize', scaleMockup);
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+syncControls();
+updateAll();
+</script>
+</body>
+</html>

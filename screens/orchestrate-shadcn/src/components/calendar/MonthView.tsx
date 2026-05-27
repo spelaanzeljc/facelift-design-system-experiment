@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { POSTS, STATUS_CFG, DAY_ABBR } from '@/data/mock'
-import { CAMPS } from '@/data/campaigns'
 import { WEEKS } from '@/data/weeks'
 import type { Post, Campaign } from '@/types'
 
 interface MonthViewProps {
   onCardClick: (card: Post) => void
   onCampaignClick?: (camp: Campaign) => void
+  campaigns: Campaign[]
 }
 
 // June 2025: June 1 = Sunday.
@@ -53,10 +53,7 @@ function buildDayPosts(): Record<number, Post[]> {
 
 const DAY_POSTS = buildDayPosts()
 
-// Which campaigns are visible this month?
-const MONTH_CAMPS = CAMPS // all campaigns span June
-
-export default function MonthView({ onCardClick, onCampaignClick }: MonthViewProps) {
+export default function MonthView({ onCardClick, onCampaignClick, campaigns }: MonthViewProps) {
   const [hoveredDay, setHoveredDay] = useState<number | null>(null)
 
   return (
@@ -69,7 +66,7 @@ export default function MonthView({ onCardClick, onCampaignClick }: MonthViewPro
         className="flex-shrink-0 px-2 pt-2 pb-1 flex flex-col gap-1"
         style={{ borderBottom: '1px solid #e7eaee' }}
       >
-        {MONTH_CAMPS.map((camp, i) => (
+        {campaigns.map((camp, i) => (
           <button
             key={i}
             className="flex items-center gap-1.5 rounded px-2 w-full text-left"

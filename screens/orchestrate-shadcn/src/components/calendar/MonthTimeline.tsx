@@ -1,9 +1,9 @@
-import { CAMPS } from '@/data/campaigns'
 import { POSTS, STATUS_CFG } from '@/data/mock'
-import type { Post } from '@/types'
+import type { Post, Campaign } from '@/types'
 
 interface MonthTimelineProps {
   onCardClick: (card: Post) => void
+  campaigns: Campaign[]
 }
 
 const DAYS = Array.from({ length: 30 }, (_, i) => i + 1)
@@ -15,7 +15,7 @@ const DOT_COLORS: Record<string, string> = {
   failed: '#cc0000',
 }
 
-export default function MonthTimeline({ onCardClick: _onCardClick }: MonthTimelineProps) {
+export default function MonthTimeline({ onCardClick: _onCardClick, campaigns }: MonthTimelineProps) {
   return (
     <div className="flex-1 overflow-auto rounded-xl border" style={{ borderColor: '#e7eaee', backgroundColor: '#fff' }}>
       {/* Header row with day numbers */}
@@ -46,7 +46,7 @@ export default function MonthTimeline({ onCardClick: _onCardClick }: MonthTimeli
       </div>
 
       {/* Campaign rows */}
-      {CAMPS.map((camp, ci) => (
+      {campaigns.map((camp, ci) => (
         <div
           key={ci}
           className="flex items-center"

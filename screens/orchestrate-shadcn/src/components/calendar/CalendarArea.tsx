@@ -16,15 +16,18 @@ interface CalendarAreaProps {
   activeFilters?: ActiveFilters
   selectedDay?: number
   onDayChange?: (day: number) => void
+  campaigns: Campaign[]
+  userPosts?: { date: number; post: Post }[]
+  onAddPost?: (date: number) => void
 }
 
 const EMPTY_FILTERS: ActiveFilters = { statuses: [], networks: [], tags: [] }
 
-export default function CalendarArea({ wd, viewMode, calView, onCardClick, viewOpts, onCampaignClick, activeFilters = EMPTY_FILTERS, selectedDay = 18, onDayChange: _onDayChange }: CalendarAreaProps) {
+export default function CalendarArea({ wd, viewMode, calView, onCardClick, viewOpts, onCampaignClick, activeFilters = EMPTY_FILTERS, selectedDay = 18, onDayChange: _onDayChange, campaigns, userPosts, onAddPost }: CalendarAreaProps) {
   if (viewMode === 'day') {
     return (
       <div className="flex-1 overflow-hidden flex flex-col p-3" style={{ minHeight: 0 }}>
-        <DayView selectedDay={selectedDay} onCardClick={onCardClick} viewOpts={viewOpts} onCampaignClick={onCampaignClick} activeFilters={activeFilters} />
+        <DayView selectedDay={selectedDay} onCardClick={onCardClick} viewOpts={viewOpts} onCampaignClick={onCampaignClick} activeFilters={activeFilters} campaigns={campaigns} userPosts={userPosts} onAddPost={onAddPost} />
       </div>
     )
   }
@@ -40,7 +43,7 @@ export default function CalendarArea({ wd, viewMode, calView, onCardClick, viewO
   if (viewMode === 'month') {
     return (
       <div className="flex-1 overflow-hidden flex flex-col p-3" style={{ minHeight: 0 }}>
-        <MonthView onCardClick={onCardClick} onCampaignClick={onCampaignClick} />
+        <MonthView onCardClick={onCardClick} onCampaignClick={onCampaignClick} campaigns={campaigns} />
       </div>
     )
   }
@@ -48,7 +51,7 @@ export default function CalendarArea({ wd, viewMode, calView, onCardClick, viewO
   if (viewMode === 'month-timeline') {
     return (
       <div className="flex-1 overflow-hidden flex flex-col p-3" style={{ minHeight: 0 }}>
-        <MonthTimeline onCardClick={onCardClick} />
+        <MonthTimeline onCardClick={onCardClick} campaigns={campaigns} />
       </div>
     )
   }
@@ -60,7 +63,7 @@ export default function CalendarArea({ wd, viewMode, calView, onCardClick, viewO
         style={{ border: '1px solid #e7eaee', backgroundColor: '#fff', minHeight: 0 }}
       >
         <ColHeaders wd={wd} viewMode={viewMode} />
-        <DayGrid wd={wd} viewMode={viewMode} onCardClick={onCardClick} viewOpts={viewOpts} onCampaignClick={onCampaignClick} activeFilters={activeFilters} />
+        <DayGrid wd={wd} viewMode={viewMode} onCardClick={onCardClick} viewOpts={viewOpts} onCampaignClick={onCampaignClick} activeFilters={activeFilters} campaigns={campaigns} userPosts={userPosts} onAddPost={onAddPost} />
       </div>
     </div>
   )

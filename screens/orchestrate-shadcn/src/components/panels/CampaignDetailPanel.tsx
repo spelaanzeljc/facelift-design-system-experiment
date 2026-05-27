@@ -103,11 +103,11 @@ export default function CampaignDetailPanel({ open, campaign, onClose, onEdit, o
               Edit
             </DropdownMenuItem>
             <DropdownMenuItem
-              disabled
+              onClick={() => onAction('Open Taskboard')}
               className="flex items-center gap-2.5"
-              style={{ fontSize: 13, color: '#a7aebe' }}
+              style={{ fontSize: 13, color: '#111317' }}
             >
-              <Kanban size={14} style={{ color: '#a7aebe' }} />
+              <Kanban size={14} style={{ color: '#5f6a82' }} />
               Open Taskboard
             </DropdownMenuItem>
             <DropdownMenuItem

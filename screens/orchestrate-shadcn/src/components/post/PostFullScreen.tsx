@@ -18,7 +18,8 @@ interface PostFullScreenProps {
   post: Post | null
   onBack: () => void
   onEdit: () => void
-  onSave: (status: string) => void
+  onSave: (status: string, meta?: { title?: string; nets?: string[] }) => void
+  initialStatus?: string
 }
 
 const PUB_OPTIONS = [
@@ -28,7 +29,7 @@ const PUB_OPTIONS = [
   { label: 'Submit for Approval',   status: 'approval' },
 ]
 
-export default function PostFullScreen({ mode, post, onBack, onEdit, onSave }: PostFullScreenProps) {
+export default function PostFullScreen({ mode, post, onBack, onEdit, onSave, initialStatus = 'draft' }: PostFullScreenProps) {
   const isCreate = mode === 'create'
   const [activeTab, setActiveTab] = useState(0)
   const [previewDevice, setPreviewDevice] = useState<'mobile' | 'desktop'>('mobile')
@@ -56,7 +57,7 @@ export default function PostFullScreen({ mode, post, onBack, onEdit, onSave }: P
   const updateNet = (tab: string, key: string, val: unknown) =>
     setNetContent(p => ({ ...p, [tab]: { ...p[tab], [key]: val } }))
 
-  const [pubStatus, setPubStatus] = useState('draft')
+  const [pubStatus, setPubStatus] = useState(initialStatus)
   const [pubDate, setPubDate] = useState('')
   const [pubTime, setPubTime] = useState('')
   const [timeZone, setTimeZone] = useState('Europe/Berlin (UTC+2)')
@@ -144,7 +145,7 @@ export default function PostFullScreen({ mode, post, onBack, onEdit, onSave }: P
         {/* Publish split button */}
         <div className="flex">
           <button
-            onClick={isCreate ? () => onSave('draft') : onEdit}
+            onClick={isCreate ? () => onSave('draft', { title: (netContent[activeTabName]?.text as string)?.split('\n')[0]?.slice(0, 80) || 'New Post', nets: [activeTabName.slice(0, 2).toLowerCase()] }) : onEdit}
             className="flex items-center gap-1.5 px-3 h-8 rounded-l-md"
             style={{
               fontSize: 13,
@@ -167,7 +168,7 @@ export default function PostFullScreen({ mode, post, onBack, onEdit, onSave }: P
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               {PUB_OPTIONS.map(opt => (
-                <DropdownMenuItem key={opt.label} style={{ fontSize: 13 }} onClick={() => onSave(opt.status)}>
+                <DropdownMenuItem key={opt.label} style={{ fontSize: 13 }} onClick={() => onSave(opt.status, { title: (netContent[activeTabName]?.text as string)?.split('\n')[0]?.slice(0, 80) || 'New Post', nets: [activeTabName.slice(0, 2).toLowerCase()] })}>
                   {opt.label}
                 </DropdownMenuItem>
               ))}

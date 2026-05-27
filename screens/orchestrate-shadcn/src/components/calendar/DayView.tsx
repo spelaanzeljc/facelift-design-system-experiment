@@ -1,15 +1,18 @@
-import { CAMPS } from '@/data/campaigns'
 import { WEEKS } from '@/data/weeks'
 import { filterPosts } from '@/lib/filterPosts'
 import PostCard from './PostCard'
-import type { Post, ViewOpts, ActiveFilters } from '@/types'
+import { Plus } from 'lucide-react'
+import type { Post, Campaign, ViewOpts, ActiveFilters } from '@/types'
 
 interface DayViewProps {
   selectedDay: number
   onCardClick: (card: Post) => void
   viewOpts: ViewOpts
-  onCampaignClick?: (camp: typeof CAMPS[0]) => void
+  onCampaignClick?: (camp: Campaign) => void
   activeFilters?: ActiveFilters
+  campaigns: Campaign[]
+  userPosts?: { date: number; post: Post }[]
+  onAddPost?: (date: number) => void
 }
 
 const EMPTY_FILTERS: ActiveFilters = { statuses: [], networks: [], tags: [] }
@@ -17,16 +20,18 @@ const EMPTY_FILTERS: ActiveFilters = { statuses: [], networks: [], tags: [] }
 const DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 const MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
-export default function DayView({ selectedDay, onCardClick, viewOpts, onCampaignClick, activeFilters = EMPTY_FILTERS }: DayViewProps) {
+export default function DayView({ selectedDay, onCardClick, viewOpts, onCampaignClick, activeFilters = EMPTY_FILTERS, campaigns, userPosts, onAddPost }: DayViewProps) {
   // Find posts for this day across all weeks
   let dayPosts: Post[] = []
   for (const week of WEEKS) {
     const idx = week.dates.indexOf(selectedDay)
     if (idx !== -1) {
-      dayPosts = filterPosts(week.cards[idx] ?? [], activeFilters)
+      dayPosts = week.cards[idx] ?? []
       break
     }
   }
+  const extra = (userPosts ?? []).filter(up => up.date === selectedDay).map(up => up.post)
+  dayPosts = filterPosts([...dayPosts, ...extra], activeFilters)
 
   // Sort posts by time
   const sorted = [...dayPosts].sort((a, b) => {
@@ -39,7 +44,7 @@ export default function DayView({ selectedDay, onCardClick, viewOpts, onCampaign
   })
 
   // Campaigns that span this day
-  const visibleCamps = CAMPS.filter(c => c.s <= selectedDay && c.e >= selectedDay)
+  const visibleCamps = campaigns.filter(c => c.s <= selectedDay && c.e >= selectedDay)
 
   // Day of week for June 2026: Jun 1 = Monday (weekday index 1)
   const DOW_JUNE_2026_START = 1 // Monday = index 1
@@ -104,6 +109,15 @@ export default function DayView({ selectedDay, onCardClick, viewOpts, onCampaign
               <span className="material-icons" style={{ fontSize: 26, color: '#a7aebe' }}>calendar_today</span>
             </div>
             <div style={{ fontSize: 14, color: '#848ea4', fontWeight: 500 }}>No post sets for this day</div>
+            {onAddPost && (
+              <button
+                onClick={() => onAddPost(selectedDay)}
+                className="flex items-center gap-1.5 px-4 h-8 rounded-md"
+                style={{ fontSize: 13, fontWeight: 500, backgroundColor: '#1339ec', color: '#fff' }}
+              >
+                <Plus size={14} /> Add post set
+              </button>
+            )}
           </div>
         ) : (
           <div className="flex flex-col gap-3">

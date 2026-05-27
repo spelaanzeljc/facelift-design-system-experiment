@@ -1,28 +1,29 @@
-import { CAMPS } from '@/data/campaigns'
 import PostCard from './PostCard'
 import { filterPosts } from '@/lib/filterPosts'
-import type { WeekData, ViewMode, ViewOpts, Post, ActiveFilters } from '@/types'
+import { Plus } from 'lucide-react'
+import type { WeekData, ViewMode, ViewOpts, Post, Campaign, ActiveFilters } from '@/types'
 
 interface DayGridProps {
   wd: WeekData
   viewMode: ViewMode
   onCardClick: (card: Post) => void
   viewOpts: ViewOpts
-  onCampaignClick?: (camp: typeof CAMPS[0]) => void
+  onCampaignClick?: (camp: Campaign) => void
   activeFilters?: ActiveFilters
+  campaigns: Campaign[]
+  userPosts?: { date: number; post: Post }[]
+  onAddPost?: (date: number) => void
 }
 
 const EMPTY_FILTERS: ActiveFilters = { statuses: [], networks: [], tags: [] }
 
-export default function DayGrid({ wd, viewMode: _viewMode, onCardClick, viewOpts, onCampaignClick, activeFilters = EMPTY_FILTERS }: DayGridProps) {
-  // Map campaign column spans based on week dates (16-22 June)
-  // Campaigns have s/e as day numbers in June
+export default function DayGrid({ wd, viewMode: _viewMode, onCardClick, viewOpts, onCampaignClick, activeFilters = EMPTY_FILTERS, campaigns, userPosts, onAddPost }: DayGridProps) {
   const weekStart = wd.dates[0]
   const weekEnd = wd.dates[6]
 
-  const visibleCamps = CAMPS.filter(c => c.e >= weekStart && c.s <= weekEnd)
+  const visibleCamps = campaigns.filter(c => c.e >= weekStart && c.s <= weekEnd)
 
-  const campColSpan = (camp: typeof CAMPS[0]) => {
+  const campColSpan = (camp: Campaign) => {
     const clampedStart = Math.max(camp.s, weekStart)
     const clampedEnd = Math.min(camp.e, weekEnd)
     const startIdx = clampedStart - weekStart
@@ -99,12 +100,13 @@ export default function DayGrid({ wd, viewMode: _viewMode, onCardClick, viewOpts
         {wd.dates.map((_, di) => {
           const isWknd = wd.isWknd[di]
           const isToday = wd.isToday[di]
-          const cards = filterPosts(wd.cards[di] ?? [], activeFilters)
+          const extra = (userPosts ?? []).filter(up => up.date === wd.dates[di]).map(up => up.post)
+          const cards = filterPosts([...(wd.cards[di] ?? []), ...extra], activeFilters)
 
           return (
             <div
               key={di}
-              className="flex-1 flex flex-col gap-2 p-2"
+              className="group flex-1 flex flex-col gap-2 p-2"
               style={{
                 borderRight: '1px solid #e7eaee',
                 backgroundColor: isWknd
@@ -118,6 +120,14 @@ export default function DayGrid({ wd, viewMode: _viewMode, onCardClick, viewOpts
               {cards.map((card, ci) => (
                 <PostCard key={ci} card={card} onClick={onCardClick} viewOpts={viewOpts} />
               ))}
+              <button
+                className="opacity-0 group-hover:opacity-100 w-full flex items-center justify-center gap-1 h-6 rounded mt-1 transition-opacity"
+                style={{ color: '#1339ec', fontSize: 12, fontWeight: 500 }}
+                onClick={e => { e.stopPropagation(); onAddPost?.(wd.dates[di]) }}
+                title={`Add post on Jun ${wd.dates[di]}`}
+              >
+                <Plus size={12} /> Add post
+              </button>
             </div>
           )
         })}

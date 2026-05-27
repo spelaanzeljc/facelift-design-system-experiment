@@ -12,13 +12,20 @@ import DraftsPanel from '@/components/panels/DraftsPanel'
 import FiltersPanel from '@/components/panels/FiltersPanel'
 import CampaignDetailPanel from '@/components/panels/CampaignDetailPanel'
 import CampaignEditModal from '@/components/panels/CampaignEditModal'
+import NewCampaignModal from '@/components/panels/NewCampaignModal'
+import TeamAssignmentModal from '@/components/panels/TeamAssignmentModal'
+import TaskboardPanel from '@/components/panels/TaskboardPanel'
+import KeyboardShortcutsModal from '@/components/panels/KeyboardShortcutsModal'
+import SaveTemplateDialog from '@/components/panels/SaveTemplateDialog'
+import ImportPostsModal from '@/components/panels/ImportPostsModal'
 import PostFullScreen from '@/components/post/PostFullScreen'
 import DateRangePicker from '@/components/toolbar/DateRangePicker'
 import ViewOptionsPopover from '@/components/toolbar/ViewOptionsPopover'
 import { WEEKS } from '@/data/weeks'
+import { CAMPS } from '@/data/campaigns'
 import { DRAFTS_DATA, BG_MAP } from '@/data/mock'
 import { hasActiveFilters } from '@/lib/filterPosts'
-import type { Post, Campaign, PanelId, ScreenMode, ViewMode, CalView, ViewOpts, ActiveFilters } from '@/types'
+import type { Post, PostStatus, Campaign, PanelId, ScreenMode, ViewMode, CalView, ViewOpts, ActiveFilters } from '@/types'
 
 // ── Toast ────────────────────────────────────────────────────────────────────
 
@@ -89,6 +96,33 @@ export default function App() {
   const [campaignEditOpen, setCampaignEditOpen] = useState(false)
   const [activeFilters, setActiveFilters] = useState<ActiveFilters>({ statuses: [], networks: [], tags: [] })
   const [selectedDay, setSelectedDay] = useState(18) // default: today (Jun 18)
+  const [campaigns, setCampaigns] = useState<Campaign[]>(CAMPS)
+
+  // Task B — New campaign / event modal
+  const [newCampaignOpen, setNewCampaignOpen] = useState(false)
+  const [newCampaignPreset, setNewCampaignPreset] = useState<'campaign' | 'event'>('campaign')
+
+  // Task C — user posts + createInitialStatus
+  const [userPosts, setUserPosts] = useState<{ date: number; post: Post }[]>([])
+  const [createInitialStatus, setCreateInitialStatus] = useState<string>('draft')
+
+  // Task D — team assignment modal
+  const [teamModalOpen, setTeamModalOpen] = useState(false)
+  const [teamModalContext, setTeamModalContext] = useState<'post' | 'campaign'>('post')
+
+  // Task F — taskboard panel
+  const [taskboardOpen, setTaskboardOpen] = useState(false)
+  const [taskboardContext, setTaskboardContext] = useState<'post' | 'campaign'>('post')
+
+  // Task G1 — keyboard shortcuts modal
+  const [keyboardShortcutsOpen, setKeyboardShortcutsOpen] = useState(false)
+
+  // Task G2 — save template dialog
+  const [saveTemplateOpen, setSaveTemplateOpen] = useState(false)
+  const [saveTemplateVariant, setSaveTemplateVariant] = useState<'standard' | 'amplify'>('standard')
+
+  // Task G3 — import posts modal
+  const [importPostsOpen, setImportPostsOpen] = useState(false)
 
   const datePickerBtnRef = useRef<HTMLButtonElement>(null)
   const datePickerPanelRef = useRef<HTMLDivElement>(null)
@@ -104,26 +138,43 @@ export default function App() {
   const wd = WEEKS.find(w => w.offset === weekOffset)!
   const handleCardClick = (card: Post) => { setSelectedPost(card); setOpenPanel('postDetail'); setCampaignPanelOpen(false) }
   const handleCampaignClick = (camp: Campaign) => { setSelectedCampaign(camp); setCampaignPanelOpen(true); setOpenPanel(null) }
+
   const handleCampaignAction = (action: string) => {
+    if (action === 'Team Assignment') { setTeamModalContext('campaign'); setTeamModalOpen(true); return }
+    if (action === 'Open Taskboard') { setTaskboardContext('campaign'); setTaskboardOpen(true); return }
     const msgs: Record<string, string> = {
-      'Team Assignment': '👥 Team assignment coming soon',
       'Delete': '🗑 Campaign deleted',
     }
     showToast(msgs[action] ?? action)
     if (action === 'Delete') setCampaignPanelOpen(false)
   }
+
   const handleCampaignSave = (updated: Campaign) => {
     setSelectedCampaign(updated)
+    setCampaigns(prev => prev.map(c => c.id === updated.id ? updated : c))
     setCampaignEditOpen(false)
     showToast('✓ Campaign saved')
   }
+
+  const handleNewCampaignSave = (camp: Campaign) => {
+    setCampaigns(prev => [...prev, camp])
+    setNewCampaignOpen(false)
+    showToast(`✓ ${camp.type === 'Event' ? 'Event' : 'Campaign'} "${camp.name}" created`)
+  }
+
   const togglePanel = (id: PanelId) => setOpenPanel(p => p === id ? null : id)
-  const openCreateScreen = () => { setScreenMode('create'); setScreenPost(null); setOpenPanel(null) }
+
+  const openCreateScreen = (date?: number) => {
+    if (date !== undefined) setSelectedDay(date)
+    setScreenMode('create'); setScreenPost(null); setOpenPanel(null)
+  }
   const openViewScreen = (post: Post) => { setScreenMode('view'); setScreenPost(post); setOpenPanel(null) }
   const closeScreen = () => { setScreenMode(null); setScreenPost(null) }
   const editScreen = () => setScreenMode('create')
 
-  const handleSave = (status: string) => {
+  const handleAddPost = (date: number) => { setCreateInitialStatus('draft'); openCreateScreen(date) }
+
+  const handleSave = (status: string, meta?: { title?: string; nets?: string[] }) => {
     const labels: Record<string, string> = {
       draft: '✓ Saved as draft',
       scheduled: '✓ Post scheduled',
@@ -131,38 +182,53 @@ export default function App() {
       approval: '✓ Submitted for approval',
     }
     showToast(labels[status] ?? '✓ Saved')
+    if (meta?.title) {
+      setUserPosts(prev => [...prev, {
+        date: selectedDay,
+        post: {
+          s: (status === 'published' ? 'scheduled' : status) as PostStatus,
+          t: '12:00 PM',
+          title: meta.title!,
+          bg: BG_MAP[status === 'published' ? 'scheduled' : status] ?? BG_MAP['draft'],
+          emoji: '📝',
+          tags: [],
+          nets: meta.nets ?? ['li'],
+        }
+      }])
+    }
     closeScreen()
+    setCreateInitialStatus('draft')
   }
 
   const handleDetailAction = (action: string) => {
     if (action === 'Details') { selectedPost && openViewScreen(selectedPost); return }
     if (action === 'Promote Post') { selectedPost && openViewScreen(selectedPost); return }
-    if (action === 'Team Assignment') { selectedPost && openViewScreen(selectedPost); return }
-    const toasts: Record<string, string> = {
-      'Open Taskboard': '📋 Opening Taskboard…',
-      'Save as Template': '✓ Saved as template',
-      'Save as Amplify Template': '✓ Saved as Amplify template',
-    }
-    showToast(toasts[action] ?? `${action}`)
+    if (action === 'Team Assignment') { setTeamModalContext('post'); setTeamModalOpen(true); return }
+    if (action === 'Open Taskboard') { setTaskboardContext('post'); setTaskboardOpen(true); return }
+    if (action === 'Save as Template') { setSaveTemplateVariant('standard'); setSaveTemplateOpen(true); return }
+    if (action === 'Save as Amplify Template') { setSaveTemplateVariant('amplify'); setSaveTemplateOpen(true); return }
+    showToast(`${action}`)
     setOpenPanel(null)
   }
 
   const handleTitleBarAction = (action: string) => {
+    if (action === 'New Campaign') { setNewCampaignPreset('campaign'); setNewCampaignOpen(true); return }
+    if (action === 'New Event') { setNewCampaignPreset('event'); setNewCampaignOpen(true); return }
+    if (action === 'Schedule Post') { setCreateInitialStatus('scheduled'); openCreateScreen(); return }
+    if (action === 'Keyboard shortcuts') { setKeyboardShortcutsOpen(true); return }
+    if (action === 'Import Posts') { setImportPostsOpen(true); return }
+    if (action === 'Schedule Export') { showToast("⏰ Export scheduled — you'll receive an email when it's ready"); return }
+    if (action === 'Export as CSV' || action === 'Export as PDF' || action === 'Export as Excel' || action === 'Export') {
+      const format = action.replace('Export as ', '').replace('Export', 'file')
+      showToast(`⬇ Exporting ${format}…`)
+      setTimeout(() => showToast(`✓ ${format} ready — check your downloads`), 2000)
+      return
+    }
     const msgs: Record<string, string> = {
-      'Export as CSV': '⬇ Exporting as CSV…',
-      'Export as PDF': '⬇ Exporting as PDF…',
-      'Export as Excel': '⬇ Exporting as Excel…',
-      'Schedule Export': '⏰ Export scheduled',
-      'Export': '⬇ Exporting…',
-      'New Campaign': '📣 Campaign creation coming soon',
-      'New Event': '📅 Event creation coming soon',
-      'Schedule Post': '⏰ Opening scheduler…',
-      'Import Posts': '⬆ Import feature coming soon',
       'Edit columns': '⚙ Column editor coming soon',
       'Manage tags': '🏷 Tag manager coming soon',
       'Settings': '⚙ Settings coming soon',
       'Help': '❓ Opening help center…',
-      'Keyboard shortcuts': '⌨ Keyboard shortcuts coming soon',
     }
     showToast(msgs[action] ?? action)
   }
@@ -173,6 +239,15 @@ export default function App() {
       showToast(`📍 ${label} coming soon`)
     }
   }
+
+  // Task G1 — keyboard shortcut for '?'
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === '?' && !e.ctrlKey && !e.metaKey) setKeyboardShortcutsOpen(true)
+    }
+    document.addEventListener('keydown', handler)
+    return () => document.removeEventListener('keydown', handler)
+  }, [])
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -206,6 +281,7 @@ export default function App() {
                 onBack={closeScreen}
                 onEdit={editScreen}
                 onSave={handleSave}
+                initialStatus={createInitialStatus}
               />
             ) : (
               <>
@@ -231,12 +307,50 @@ export default function App() {
                   datePickerBtnRef={datePickerBtnRef}
                   viewOptsBtnRef={viewOptsBtnRef}
                 />
-                <CalendarArea wd={wd} viewMode={viewMode} calView={calView} onCardClick={handleCardClick} viewOpts={viewOpts} onCampaignClick={handleCampaignClick} activeFilters={activeFilters} selectedDay={selectedDay} onDayChange={setSelectedDay} />
+                <CalendarArea wd={wd} viewMode={viewMode} calView={calView} onCardClick={handleCardClick} viewOpts={viewOpts} onCampaignClick={handleCampaignClick} activeFilters={activeFilters} selectedDay={selectedDay} onDayChange={setSelectedDay} campaigns={campaigns} userPosts={userPosts} onAddPost={handleAddPost} />
               </>
             )}
           </main>
         </div>
       </div>
+
+      {/* Modals always mounted (outside screenMode guard) */}
+      <NewCampaignModal
+        open={newCampaignOpen}
+        preset={newCampaignPreset}
+        onClose={() => setNewCampaignOpen(false)}
+        onSave={handleNewCampaignSave}
+      />
+      <TeamAssignmentModal
+        open={teamModalOpen}
+        context={teamModalContext}
+        target={teamModalContext === 'post' ? selectedPost?.title : selectedCampaign?.name}
+        onClose={() => setTeamModalOpen(false)}
+        onConfirm={(users) => { setTeamModalOpen(false); showToast(`✓ ${users.length} team member${users.length !== 1 ? 's' : ''} assigned`) }}
+      />
+      <TaskboardPanel
+        open={taskboardOpen}
+        context={taskboardContext}
+        target={taskboardContext === 'post' ? selectedPost?.title : selectedCampaign?.name}
+        onClose={() => setTaskboardOpen(false)}
+      />
+      <KeyboardShortcutsModal
+        open={keyboardShortcutsOpen}
+        onClose={() => setKeyboardShortcutsOpen(false)}
+      />
+      <SaveTemplateDialog
+        open={saveTemplateOpen}
+        variant={saveTemplateVariant}
+        defaultName={selectedPost?.title}
+        onClose={() => setSaveTemplateOpen(false)}
+        onSave={(name) => { setSaveTemplateOpen(false); showToast(`✓ Saved as ${saveTemplateVariant === 'amplify' ? 'Amplify ' : ''}template: "${name}"`) }}
+      />
+      <ImportPostsModal
+        open={importPostsOpen}
+        onClose={() => setImportPostsOpen(false)}
+        onImport={(count) => { setImportPostsOpen(false); showToast(`✓ ${count} posts imported successfully`) }}
+      />
+
       {screenMode === null && (
         <>
           <DateRangePicker anchorEl={datePickerBtnRef.current} open={datePickerOpen} onClose={() => setDatePickerOpen(false)} panelRef={datePickerPanelRef} />

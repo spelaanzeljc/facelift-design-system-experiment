@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { X, Pencil, Calendar, Info, Plus } from 'lucide-react'
+import { ALL_USERS } from '@/data/mock'
 import type { Campaign } from '@/types'
 
 interface CampaignEditModalProps {
@@ -71,6 +72,12 @@ export default function CampaignEditModal({ open, campaign, onClose, onSave }: C
   const [deptTags, setDeptTags] = useState<string[]>(['Packaging Test'])
   const [channelTags, setChannelTags] = useState<string[]>(['some thing here'])
   const [editingName, setEditingName] = useState(false)
+  const [addingCommon, setAddingCommon] = useState(false)
+  const [addingDept, setAddingDept] = useState(false)
+  const [addingChannel, setAddingChannel] = useState(false)
+  const [newTagVal, setNewTagVal] = useState('')
+  const [ownerOpen, setOwnerOpen] = useState(false)
+  const [owners, setOwners] = useState<string[]>(['Sarah A.'])
 
   useEffect(() => {
     if (campaign) {
@@ -86,12 +93,18 @@ export default function CampaignEditModal({ open, campaign, onClose, onSave }: C
   if (!open || !campaign) return null
 
   const handleSave = () => {
+    const parseDay = (str: string) => {
+      const parts = str.split('/')
+      return parseInt(parts[1] ?? '1', 10) || (campaign?.s ?? 1)
+    }
     onSave({
-      ...campaign,
+      ...campaign!,
       name,
       description,
-      type: selectedType?.label ?? campaign.type,
-      typeColor: selectedType?.color ?? campaign.typeColor,
+      type: selectedType?.label ?? campaign?.type,
+      typeColor: selectedType?.color ?? campaign?.typeColor,
+      s: parseDay(startDate),
+      e: parseDay(endDate),
     })
   }
 
@@ -280,19 +293,43 @@ export default function CampaignEditModal({ open, campaign, onClose, onSave }: C
               Responsible Person / Owner
             </label>
             <div className="flex items-center gap-2 flex-wrap">
-              <div className="flex items-center gap-2 rounded-full px-3 py-1" style={{ border: '1px solid #e7eaee', backgroundColor: '#fde9e9' }}>
-                <div
-                  className="flex items-center justify-center rounded-full flex-shrink-0"
-                  style={{ width: 20, height: 20, backgroundColor: '#fcd6e8' }}
-                >
-                  <span style={{ fontSize: 9 }}>👤</span>
+              {owners.map((owner, oi) => (
+                <div key={oi} className="flex items-center gap-2 rounded-full px-3 py-1" style={{ border: '1px solid #e7eaee', backgroundColor: '#fde9e9' }}>
+                  <div
+                    className="flex items-center justify-center rounded-full flex-shrink-0"
+                    style={{ width: 20, height: 20, backgroundColor: '#fcd6e8' }}
+                  >
+                    <span style={{ fontSize: 9 }}>👤</span>
+                  </div>
+                  <span style={{ fontSize: 13, color: '#111317' }}>{owner}</span>
+                  <button onClick={() => setOwners(prev => prev.filter((_, j) => j !== oi))} style={{ color: '#848ea4' }}>
+                    <X size={12} />
+                  </button>
                 </div>
-                <span style={{ fontSize: 13, color: '#111317' }}>Sarah A.</span>
-                <button style={{ color: '#848ea4' }}>
-                  <X size={12} />
-                </button>
+              ))}
+              <div style={{ position: 'relative' }}>
+                <AddChipButton onClick={() => setOwnerOpen(o => !o)} />
+                {ownerOpen && (
+                  <div style={{ position: 'absolute', top: '100%', left: 0, zIndex: 10, backgroundColor: '#fff', border: '1px solid #e7eaee', borderRadius: 8, boxShadow: '0 4px 16px rgba(0,0,0,0.12)', minWidth: 180 }}>
+                    {ALL_USERS.map(user => (
+                      <button
+                        key={user.i}
+                        className="flex items-center gap-2 w-full px-3 py-2 text-left"
+                        style={{ fontSize: 13, color: '#111317' }}
+                        onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#f3f5f7')}
+                        onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'transparent')}
+                        onClick={() => {
+                          if (!owners.includes(user.n)) setOwners(prev => [...prev, user.n])
+                          setOwnerOpen(false)
+                        }}
+                      >
+                        <div className="rounded-full flex items-center justify-center flex-shrink-0" style={{ width: 24, height: 24, backgroundColor: user.c, color: '#fff', fontSize: 10, fontWeight: 700 }}>{user.i}</div>
+                        {user.n}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
-              <AddChipButton onClick={() => {}} />
             </div>
           </div>
 
@@ -302,7 +339,30 @@ export default function CampaignEditModal({ open, campaign, onClose, onSave }: C
               Common
             </label>
             <div className="flex items-center gap-2 flex-wrap">
-              <AddChipButton onClick={() => {}} />
+              {addingCommon ? (
+                <input
+                  autoFocus
+                  value={newTagVal}
+                  onChange={e => setNewTagVal(e.target.value)}
+                  onKeyDown={e => {
+                    if (e.key === 'Enter' && newTagVal.trim()) {
+                      setCommonTags(prev => [...prev, newTagVal.trim()])
+                      setNewTagVal('')
+                      setAddingCommon(false)
+                    }
+                    if (e.key === 'Escape') { setNewTagVal(''); setAddingCommon(false) }
+                  }}
+                  onBlur={() => {
+                    if (newTagVal.trim()) setCommonTags(prev => [...prev, newTagVal.trim()])
+                    setNewTagVal('')
+                    setAddingCommon(false)
+                  }}
+                  placeholder="Tag name…"
+                  style={{ fontSize: 12, border: '1px solid #1339ec', borderRadius: 4, padding: '2px 6px', outline: 'none', width: 100 }}
+                />
+              ) : (
+                <AddChipButton onClick={() => setAddingCommon(true)} />
+              )}
               {commonTags.map((tag, i) => (
                 <span
                   key={i}
@@ -324,7 +384,30 @@ export default function CampaignEditModal({ open, campaign, onClose, onSave }: C
               Department
             </label>
             <div className="flex items-center gap-2 flex-wrap">
-              <AddChipButton onClick={() => {}} />
+              {addingDept ? (
+                <input
+                  autoFocus
+                  value={newTagVal}
+                  onChange={e => setNewTagVal(e.target.value)}
+                  onKeyDown={e => {
+                    if (e.key === 'Enter' && newTagVal.trim()) {
+                      setDeptTags(prev => [...prev, newTagVal.trim()])
+                      setNewTagVal('')
+                      setAddingDept(false)
+                    }
+                    if (e.key === 'Escape') { setNewTagVal(''); setAddingDept(false) }
+                  }}
+                  onBlur={() => {
+                    if (newTagVal.trim()) setDeptTags(prev => [...prev, newTagVal.trim()])
+                    setNewTagVal('')
+                    setAddingDept(false)
+                  }}
+                  placeholder="Tag name…"
+                  style={{ fontSize: 12, border: '1px solid #1339ec', borderRadius: 4, padding: '2px 6px', outline: 'none', width: 100 }}
+                />
+              ) : (
+                <AddChipButton onClick={() => setAddingDept(true)} />
+              )}
               {deptTags.map((tag, i) => (
                 <span
                   key={i}
@@ -346,7 +429,30 @@ export default function CampaignEditModal({ open, campaign, onClose, onSave }: C
               Distribution Channel
             </label>
             <div className="flex items-center gap-2 flex-wrap">
-              <AddChipButton onClick={() => {}} />
+              {addingChannel ? (
+                <input
+                  autoFocus
+                  value={newTagVal}
+                  onChange={e => setNewTagVal(e.target.value)}
+                  onKeyDown={e => {
+                    if (e.key === 'Enter' && newTagVal.trim()) {
+                      setChannelTags(prev => [...prev, newTagVal.trim()])
+                      setNewTagVal('')
+                      setAddingChannel(false)
+                    }
+                    if (e.key === 'Escape') { setNewTagVal(''); setAddingChannel(false) }
+                  }}
+                  onBlur={() => {
+                    if (newTagVal.trim()) setChannelTags(prev => [...prev, newTagVal.trim()])
+                    setNewTagVal('')
+                    setAddingChannel(false)
+                  }}
+                  placeholder="Tag name…"
+                  style={{ fontSize: 12, border: '1px solid #1339ec', borderRadius: 4, padding: '2px 6px', outline: 'none', width: 100 }}
+                />
+              ) : (
+                <AddChipButton onClick={() => setAddingChannel(true)} />
+              )}
               {channelTags.map((tag, i) => (
                 <span
                   key={i}
