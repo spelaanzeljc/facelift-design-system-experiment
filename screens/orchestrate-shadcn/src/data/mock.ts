@@ -48,13 +48,8 @@ export const POSTS: Record<number, { s: string }[]> = {
   30: [{ s: 'draft' }],
 };
 
-export const SEARCH_DATA = [
-  { name: 'Collaboration Guidelines', sub: 'Post', status: 'draft',      date: 'Jun 18, 2025' },
-  { name: 'Orchestrate Reinvented',   sub: 'Post', status: 'scheduled',  date: 'Jun 17, 2025' },
-  { name: 'Figma Process Review',     sub: 'Post', status: 'failed',     date: 'Jun 18, 2025' },
-  { name: 'BB Agency Campaigns',      sub: 'Post', status: 'draft',      date: 'Jun 16, 2025' },
-  { name: 'Nice Random Post',         sub: 'Post', status: 'successful', date: 'Jun 17, 2025' },
-];
+// Legacy — kept for type compatibility; real search uses SEARCH_INDEX below
+export const SEARCH_DATA: { name: string; sub: string; status: string; date: string }[] = [];
 
 export const DRAFTS_DATA = [
   { name: 'Draft: Q3 Strategy Overview', sub: 'Post', date: 'Jun 18, 2025', nets: ['li'] },

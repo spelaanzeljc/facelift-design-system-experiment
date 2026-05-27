@@ -16,7 +16,7 @@ import PostFullScreen from '@/components/post/PostFullScreen'
 import DateRangePicker from '@/components/toolbar/DateRangePicker'
 import ViewOptionsPopover from '@/components/toolbar/ViewOptionsPopover'
 import { WEEKS } from '@/data/weeks'
-import { SEARCH_DATA, DRAFTS_DATA, BG_MAP } from '@/data/mock'
+import { DRAFTS_DATA, BG_MAP } from '@/data/mock'
 import { hasActiveFilters } from '@/lib/filterPosts'
 import type { Post, Campaign, PanelId, ScreenMode, ViewMode, CalView, ViewOpts, ActiveFilters } from '@/types'
 
@@ -53,19 +53,7 @@ function Toast({ message, onDone }: { message: string; onDone: () => void }) {
   )
 }
 
-// ── Helpers to build a Post from search/draft data ───────────────────────────
-
-function postFromSearchItem(item: typeof SEARCH_DATA[0]): Post {
-  return {
-    s: item.status as Post['s'],
-    t: '10:00 AM',
-    title: item.name,
-    bg: BG_MAP[item.status] ?? BG_MAP['draft'],
-    emoji: '📝',
-    tags: [],
-    nets: ['li'],
-  }
-}
+// ── Helpers to build a Post from draft data ──────────────────────────────────
 
 function postFromDraft(draft: typeof DRAFTS_DATA[0]): Post {
   return {
@@ -268,8 +256,7 @@ export default function App() {
           <SearchPanel
             open={openPanel === 'search'}
             onClose={() => setOpenPanel(null)}
-            onSelect={item => {
-              const post = postFromSearchItem(item)
+            onSelect={post => {
               setSelectedPost(post)
               setOpenPanel('postDetail')
             }}

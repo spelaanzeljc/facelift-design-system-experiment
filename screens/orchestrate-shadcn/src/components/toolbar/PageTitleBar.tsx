@@ -70,7 +70,7 @@ export default function PageTitleBar({ onOpenDrafts, onNewPost, onAction }: Page
           onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#f3f5f7')}
           onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'transparent')}
         >
-          View Drafts
+          Unscheduled
         </button>
 
         {/* Export split button */}

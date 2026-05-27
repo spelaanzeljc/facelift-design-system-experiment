@@ -1,11 +1,14 @@
 import { useState } from 'react'
 import { X, Search } from 'lucide-react'
-import { STATUS_CFG, SEARCH_DATA } from '@/data/mock'
+import { STATUS_CFG } from '@/data/mock'
+import { SEARCH_INDEX } from '@/data/searchIndex'
+import { NET_ICONS } from '@/components/icons'
+import type { Post } from '@/types'
 
 interface SearchPanelProps {
   open: boolean
   onClose: () => void
-  onSelect: (item: typeof SEARCH_DATA[0]) => void
+  onSelect: (post: Post) => void
 }
 
 const PANEL_WIDTH = 380
@@ -13,9 +16,13 @@ const PANEL_WIDTH = 380
 export default function SearchPanel({ open, onClose, onSelect }: SearchPanelProps) {
   const [query, setQuery] = useState('')
 
-  const filtered = SEARCH_DATA.filter(item =>
-    item.name.toLowerCase().includes(query.toLowerCase())
-  )
+  const filtered = query.trim()
+    ? SEARCH_INDEX.filter(item =>
+        item.name.toLowerCase().includes(query.toLowerCase())
+      )
+    : []
+
+  const isEmpty = query.trim() === ''
 
   return (
     <div
@@ -58,7 +65,7 @@ export default function SearchPanel({ open, onClose, onSelect }: SearchPanelProp
           <input
             value={query}
             onChange={e => setQuery(e.target.value)}
-            placeholder="Search posts..."
+            placeholder="Search post sets..."
             className="flex-1 outline-none text-sm"
             style={{ fontSize: 13, color: '#111317', backgroundColor: 'transparent' }}
             autoFocus={open}
@@ -73,13 +80,17 @@ export default function SearchPanel({ open, onClose, onSelect }: SearchPanelProp
 
       {/* Results */}
       <div className="flex-1 overflow-y-auto">
-        {filtered.length === 0 ? (
+        {isEmpty ? (
           <div className="flex flex-col items-center justify-center h-full gap-3">
             <Search size={36} style={{ color: '#d3d7de' }} />
-            <span style={{ fontSize: 14, color: '#848ea4', fontWeight: 500 }}>No search results</span>
-            {query && (
-              <span style={{ fontSize: 12, color: '#a7aebe' }}>Try a different search term</span>
-            )}
+            <span style={{ fontSize: 14, color: '#848ea4', fontWeight: 500 }}>Search post sets</span>
+            <span style={{ fontSize: 12, color: '#a7aebe' }}>Type to search across all weeks</span>
+          </div>
+        ) : filtered.length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-full gap-3">
+            <Search size={36} style={{ color: '#d3d7de' }} />
+            <span style={{ fontSize: 14, color: '#848ea4', fontWeight: 500 }}>No results found</span>
+            <span style={{ fontSize: 12, color: '#a7aebe' }}>Try a different search term</span>
           </div>
         ) : (
           <div>
@@ -104,17 +115,28 @@ export default function SearchPanel({ open, onClose, onSelect }: SearchPanelProp
               return (
                 <div
                   key={i}
-                  className="flex items-center px-3 py-2.5 cursor-pointer"
+                  className="flex items-start px-3 py-2.5 cursor-pointer"
                   style={{ borderBottom: '1px solid #f3f5f7' }}
-                  onClick={() => onSelect(item)}
+                  onClick={() => onSelect(item.post)}
                   onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#f9fafc')}
                   onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'transparent')}
                 >
                   <div style={{ flex: 3 }}>
                     <div style={{ fontSize: 13, fontWeight: 500, color: '#111317' }}>{item.name}</div>
-                    <div style={{ fontSize: 11, color: '#848ea4' }}>{item.sub}</div>
+                    <div style={{ fontSize: 11, color: '#848ea4', marginBottom: 4 }}>{item.sub}</div>
+                    {/* Network icons */}
+                    <div className="flex items-center gap-1">
+                      {item.nets.map(net => {
+                        const Icon = NET_ICONS[net]
+                        return Icon ? (
+                          <span key={net} style={{ width: 14, height: 14, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <Icon />
+                          </span>
+                        ) : null
+                      })}
+                    </div>
                   </div>
-                  <div style={{ flex: 1.5 }}>
+                  <div style={{ flex: 1.5, paddingTop: 2 }}>
                     {cfg && (
                       <span
                         className="rounded-full px-2 py-0.5"
@@ -124,7 +146,7 @@ export default function SearchPanel({ open, onClose, onSelect }: SearchPanelProp
                       </span>
                     )}
                   </div>
-                  <div style={{ flex: 1.5, fontSize: 12, color: '#5f6a82' }}>{item.date}</div>
+                  <div style={{ flex: 1.5, fontSize: 12, color: '#5f6a82', paddingTop: 2 }}>{item.date}</div>
                 </div>
               )
             })}

@@ -37,17 +37,13 @@ export default function DraftsPanel({ open, onClose, onSelect }: DraftsPanelProp
     >
       {/* Header */}
       <div
-        className="flex items-center gap-2 px-3"
-        style={{ height: 48, borderBottom: '1px solid #e7eaee', flexShrink: 0 }}
+        className="flex items-start gap-2 px-3 py-2"
+        style={{ borderBottom: '1px solid #e7eaee', flexShrink: 0, minHeight: 56 }}
       >
-        <span style={{ fontSize: 14, fontWeight: 700, color: '#111317' }}>Drafts</span>
-        <span
-          className="rounded-full px-2"
-          style={{ fontSize: 11, fontWeight: 700, backgroundColor: '#e7eaee', color: '#5f6a82', lineHeight: '20px' }}
-        >
-          {DRAFTS_DATA.length}
-        </span>
-        <div className="flex-1" />
+        <div className="flex flex-col flex-1 justify-center">
+          <span style={{ fontSize: 14, fontWeight: 700, color: '#111317' }}>Unscheduled Post Sets</span>
+          <span style={{ fontSize: 11, color: '#848ea4', marginTop: 2 }}>Post sets without a publish date</span>
+        </div>
         <button
           onClick={onClose}
           className="flex items-center justify-center w-7 h-7 rounded"
@@ -110,7 +106,12 @@ export default function DraftsPanel({ open, onClose, onSelect }: DraftsPanelProp
                   {draft.name}
                 </div>
                 <div className="flex items-center gap-2 mt-0.5">
-                  <span style={{ fontSize: 11, color: '#848ea4' }}>{draft.date}</span>
+                  <span
+                    className="rounded-full px-2 py-0.5"
+                    style={{ fontSize: 10, fontWeight: 500, backgroundColor: '#e7eaee', color: '#5f6a82', whiteSpace: 'nowrap' }}
+                  >
+                    No date set
+                  </span>
                   <div className="flex gap-1">
                     {draft.nets.map(net => {
                       const Icon = NET_ICONS[net]
