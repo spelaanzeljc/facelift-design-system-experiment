@@ -7,9 +7,10 @@ interface DayGridProps {
   viewMode: ViewMode
   onCardClick: (card: Post) => void
   viewOpts: ViewOpts
+  onCampaignClick?: (camp: typeof CAMPS[0]) => void
 }
 
-export default function DayGrid({ wd, viewMode: _viewMode, onCardClick, viewOpts }: DayGridProps) {
+export default function DayGrid({ wd, viewMode: _viewMode, onCardClick, viewOpts, onCampaignClick }: DayGridProps) {
   // Map campaign column spans based on week dates (16-22 June)
   // Campaigns have s/e as day numbers in June
   const weekStart = wd.dates[0]
@@ -43,16 +44,20 @@ export default function DayGrid({ wd, viewMode: _viewMode, onCardClick, viewOpts
                 {wd.dates.map((_, di) => {
                   if (di === startIdx) {
                     return (
-                      <div
+                      <button
                         key={di}
-                        className="flex items-center gap-1.5 rounded overflow-hidden px-2"
+                        className="flex items-center gap-1.5 rounded overflow-hidden px-2 text-left"
                         style={{
                           flex: span,
                           height: 24,
                           backgroundColor: camp.color,
                           border: `1px solid ${camp.color === '#e9eaec' ? '#d3d7de' : camp.color}`,
                           marginRight: 2,
+                          cursor: 'pointer',
                         }}
+                        onClick={() => onCampaignClick?.(camp)}
+                        onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
+                        onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
                       >
                         <span style={{ fontSize: 12 }}>{camp.emoji}</span>
                         <span
@@ -67,7 +72,7 @@ export default function DayGrid({ wd, viewMode: _viewMode, onCardClick, viewOpts
                         >
                           {camp.name}
                         </span>
-                      </div>
+                      </button>
                     )
                   } else if (di > startIdx && di < startIdx + span) {
                     return null

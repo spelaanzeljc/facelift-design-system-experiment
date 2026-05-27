@@ -10,12 +10,13 @@ import PostDetailPanel from '@/components/panels/PostDetailPanel'
 import SearchPanel from '@/components/panels/SearchPanel'
 import DraftsPanel from '@/components/panels/DraftsPanel'
 import FiltersPanel from '@/components/panels/FiltersPanel'
+import CampaignDetailPanel from '@/components/panels/CampaignDetailPanel'
 import PostFullScreen from '@/components/post/PostFullScreen'
 import DateRangePicker from '@/components/toolbar/DateRangePicker'
 import ViewOptionsPopover from '@/components/toolbar/ViewOptionsPopover'
 import { WEEKS } from '@/data/weeks'
 import { SEARCH_DATA, DRAFTS_DATA, BG_MAP } from '@/data/mock'
-import type { Post, PanelId, ScreenMode, ViewMode, CalView, ViewOpts } from '@/types'
+import type { Post, Campaign, PanelId, ScreenMode, ViewMode, CalView, ViewOpts } from '@/types'
 
 // ── Toast ────────────────────────────────────────────────────────────────────
 
@@ -93,6 +94,8 @@ export default function App() {
   const [screenPost, setScreenPost] = useState<Post | null>(null)
   const [activeNavItem, setActiveNavItem] = useState('Calendar')
   const [toasts, setToasts] = useState<ToastMsg[]>([])
+  const [selectedCampaign, setSelectedCampaign] = useState<Campaign | null>(null)
+  const [campaignPanelOpen, setCampaignPanelOpen] = useState(false)
 
   const datePickerBtnRef = useRef<HTMLButtonElement>(null)
   const datePickerPanelRef = useRef<HTMLDivElement>(null)
@@ -106,7 +109,8 @@ export default function App() {
   const dismissToast = (id: number) => setToasts(t => t.filter(x => x.id !== id))
 
   const wd = WEEKS.find(w => w.offset === weekOffset)!
-  const handleCardClick = (card: Post) => { setSelectedPost(card); setOpenPanel('postDetail') }
+  const handleCardClick = (card: Post) => { setSelectedPost(card); setOpenPanel('postDetail'); setCampaignPanelOpen(false) }
+  const handleCampaignClick = (camp: Campaign) => { setSelectedCampaign(camp); setCampaignPanelOpen(true); setOpenPanel(null) }
   const togglePanel = (id: PanelId) => setOpenPanel(p => p === id ? null : id)
   const openCreateScreen = () => { setScreenMode('create'); setScreenPost(null); setOpenPanel(null) }
   const openViewScreen = (post: Post) => { setScreenMode('view'); setScreenPost(post); setOpenPanel(null) }
@@ -218,7 +222,7 @@ export default function App() {
                   datePickerBtnRef={datePickerBtnRef}
                   viewOptsBtnRef={viewOptsBtnRef}
                 />
-                <CalendarArea wd={wd} viewMode={viewMode} calView={calView} onCardClick={handleCardClick} viewOpts={viewOpts} />
+                <CalendarArea wd={wd} viewMode={viewMode} calView={calView} onCardClick={handleCardClick} viewOpts={viewOpts} onCampaignClick={handleCampaignClick} />
               </>
             )}
           </main>
@@ -260,6 +264,11 @@ export default function App() {
             }}
           />
           <FiltersPanel open={openPanel === 'filters'} onClose={() => setOpenPanel(null)} />
+          <CampaignDetailPanel
+            open={campaignPanelOpen}
+            campaign={selectedCampaign}
+            onClose={() => setCampaignPanelOpen(false)}
+          />
         </>
       )}
       {toasts.map(t => (

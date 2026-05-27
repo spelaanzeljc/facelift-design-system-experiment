@@ -26,6 +26,13 @@ export interface Campaign {
   emoji: string;
   s: number;
   e: number;
+  description?: string;
+  status?: 'active' | 'draft' | 'ended';
+  timing?: string;
+  type?: string;
+  typeColor?: string;
+  createdBy?: string;
+  createdAt?: string;
 }
 
 export interface ViewOpts {

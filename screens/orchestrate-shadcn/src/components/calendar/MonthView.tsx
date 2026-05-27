@@ -2,10 +2,11 @@ import { useState } from 'react'
 import { POSTS, STATUS_CFG, DAY_ABBR } from '@/data/mock'
 import { CAMPS } from '@/data/campaigns'
 import { WEEKS } from '@/data/weeks'
-import type { Post } from '@/types'
+import type { Post, Campaign } from '@/types'
 
 interface MonthViewProps {
   onCardClick: (card: Post) => void
+  onCampaignClick?: (camp: Campaign) => void
 }
 
 // June 2025: June 1 = Sunday.
@@ -50,7 +51,7 @@ const DAY_POSTS = buildDayPosts()
 // Which campaigns are visible this month?
 const MONTH_CAMPS = CAMPS // all campaigns span June
 
-export default function MonthView({ onCardClick }: MonthViewProps) {
+export default function MonthView({ onCardClick, onCampaignClick }: MonthViewProps) {
   const [hoveredDay, setHoveredDay] = useState<number | null>(null)
 
   return (
@@ -64,19 +65,22 @@ export default function MonthView({ onCardClick }: MonthViewProps) {
         style={{ borderBottom: '1px solid #e7eaee' }}
       >
         {MONTH_CAMPS.map((camp, i) => (
-          <div
+          <button
             key={i}
-            className="flex items-center gap-1.5 rounded px-2"
-            style={{ height: 22, backgroundColor: camp.color, border: `1px solid ${camp.color === '#e9eaec' ? '#d3d7de' : camp.color}` }}
+            className="flex items-center gap-1.5 rounded px-2 w-full text-left"
+            style={{ height: 22, backgroundColor: camp.color, border: `1px solid ${camp.color === '#e9eaec' ? '#d3d7de' : camp.color}`, cursor: 'pointer' }}
+            onClick={() => onCampaignClick?.(camp)}
+            onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
+            onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
           >
             <span style={{ fontSize: 11 }}>{camp.emoji}</span>
-            <span style={{ fontSize: 11, fontWeight: 500, color: camp.text, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            <span style={{ fontSize: 11, fontWeight: 500, color: camp.text, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', flex: 1 }}>
               {camp.name}
             </span>
             <span style={{ fontSize: 10, color: camp.text, opacity: 0.7, marginLeft: 'auto', whiteSpace: 'nowrap' }}>
               Jun {camp.s}–{camp.e}
             </span>
-          </div>
+          </button>
         ))}
       </div>
 

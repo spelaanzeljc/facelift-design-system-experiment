@@ -3,7 +3,7 @@ import DayGrid from './DayGrid'
 import MonthView from './MonthView'
 import MonthTimeline from './MonthTimeline'
 import ListView from './ListView'
-import type { WeekData, ViewMode, CalView, ViewOpts, Post } from '@/types'
+import type { WeekData, ViewMode, CalView, ViewOpts, Post, Campaign } from '@/types'
 
 interface CalendarAreaProps {
   wd: WeekData
@@ -11,9 +11,10 @@ interface CalendarAreaProps {
   calView: CalView
   onCardClick: (card: Post) => void
   viewOpts: ViewOpts
+  onCampaignClick?: (camp: Campaign) => void
 }
 
-export default function CalendarArea({ wd, viewMode, calView, onCardClick, viewOpts }: CalendarAreaProps) {
+export default function CalendarArea({ wd, viewMode, calView, onCardClick, viewOpts, onCampaignClick }: CalendarAreaProps) {
   if (calView === 'list') {
     return (
       <div className="flex-1 overflow-hidden flex flex-col p-3" style={{ minHeight: 0 }}>
@@ -25,7 +26,7 @@ export default function CalendarArea({ wd, viewMode, calView, onCardClick, viewO
   if (viewMode === 'month') {
     return (
       <div className="flex-1 overflow-hidden flex flex-col p-3" style={{ minHeight: 0 }}>
-        <MonthView onCardClick={onCardClick} />
+        <MonthView onCardClick={onCardClick} onCampaignClick={onCampaignClick} />
       </div>
     )
   }
@@ -45,7 +46,7 @@ export default function CalendarArea({ wd, viewMode, calView, onCardClick, viewO
         style={{ border: '1px solid #e7eaee', backgroundColor: '#fff', minHeight: 0 }}
       >
         <ColHeaders wd={wd} viewMode={viewMode} />
-        <DayGrid wd={wd} viewMode={viewMode} onCardClick={onCardClick} viewOpts={viewOpts} />
+        <DayGrid wd={wd} viewMode={viewMode} onCardClick={onCardClick} viewOpts={viewOpts} onCampaignClick={onCampaignClick} />
       </div>
     </div>
   )
