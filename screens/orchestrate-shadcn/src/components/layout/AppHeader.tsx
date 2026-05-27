@@ -3,9 +3,10 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 
 interface AppHeaderProps {
   onOpenMainNav: () => void
+  onAction: (label: string) => void
 }
 
-export default function AppHeader({ onOpenMainNav }: AppHeaderProps) {
+export default function AppHeader({ onOpenMainNav, onAction }: AppHeaderProps) {
   return (
     <header
       className="flex items-center justify-between px-3 flex-shrink-0"
@@ -49,6 +50,7 @@ export default function AppHeader({ onOpenMainNav }: AppHeaderProps) {
         ].map(({ icon, label }) => (
           <button
             key={label}
+            onClick={() => onAction(label)}
             className="flex items-center justify-center w-8 h-8 rounded"
             style={{ color: '#5f6a82' }}
             title={label}
@@ -58,7 +60,7 @@ export default function AppHeader({ onOpenMainNav }: AppHeaderProps) {
             {icon}
           </button>
         ))}
-        <Avatar className="w-8 h-8 ml-1" style={{ backgroundColor: '#0c228d' } as React.CSSProperties}>
+        <Avatar className="w-8 h-8 ml-1 cursor-pointer" style={{ backgroundColor: '#0c228d' } as React.CSSProperties}>
           <AvatarFallback
             style={{ backgroundColor: '#0c228d', color: '#fff', fontSize: 11, fontWeight: 700 }}
           >

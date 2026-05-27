@@ -9,13 +9,14 @@ import {
 interface PageTitleBarProps {
   onOpenDrafts: () => void
   onNewPost: () => void
+  onAction: (label: string) => void
 }
 
 const EXPORT_OPTIONS = ['Export as CSV', 'Export as PDF', 'Export as Excel', 'Schedule Export']
 const CREATE_OPTIONS = ['New Post', 'New Campaign', 'New Event', 'Schedule Post', 'Import Posts']
 const MORE_OPTIONS = ['Edit columns', 'Manage tags', 'Settings', 'Help', 'Keyboard shortcuts']
 
-export default function PageTitleBar({ onOpenDrafts, onNewPost }: PageTitleBarProps) {
+export default function PageTitleBar({ onOpenDrafts, onNewPost, onAction }: PageTitleBarProps) {
   return (
     <div
       className="flex items-center gap-2 px-3 flex-shrink-0"
@@ -54,7 +55,7 @@ export default function PageTitleBar({ onOpenDrafts, onNewPost }: PageTitleBarPr
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           {MORE_OPTIONS.map(opt => (
-            <DropdownMenuItem key={opt} style={{ fontSize: 13 }}>{opt}</DropdownMenuItem>
+            <DropdownMenuItem key={opt} style={{ fontSize: 13 }} onClick={() => onAction(opt)}>{opt}</DropdownMenuItem>
           ))}
         </DropdownMenuContent>
       </DropdownMenu>
@@ -75,6 +76,7 @@ export default function PageTitleBar({ onOpenDrafts, onNewPost }: PageTitleBarPr
         {/* Export split button */}
         <div className="flex">
           <button
+            onClick={() => onAction('Export')}
             className="flex items-center gap-1.5 px-3 h-8 rounded-l-md border border-r-0"
             style={{ fontSize: 13, fontWeight: 500, color: '#5f6a82', borderColor: '#e7eaee' }}
             onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#f3f5f7')}
@@ -91,7 +93,7 @@ export default function PageTitleBar({ onOpenDrafts, onNewPost }: PageTitleBarPr
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               {EXPORT_OPTIONS.map(opt => (
-                <DropdownMenuItem key={opt} style={{ fontSize: 13 }}>{opt}</DropdownMenuItem>
+                <DropdownMenuItem key={opt} style={{ fontSize: 13 }} onClick={() => onAction(opt)}>{opt}</DropdownMenuItem>
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
@@ -120,7 +122,7 @@ export default function PageTitleBar({ onOpenDrafts, onNewPost }: PageTitleBarPr
                 <DropdownMenuItem
                   key={opt}
                   style={{ fontSize: 13 }}
-                  onClick={opt === 'New Post' ? onNewPost : undefined}
+                  onClick={opt === 'New Post' ? onNewPost : () => onAction(opt)}
                 >
                   {opt}
                 </DropdownMenuItem>

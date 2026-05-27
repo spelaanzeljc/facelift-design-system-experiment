@@ -6,11 +6,12 @@ import { NET_ICONS } from '@/components/icons'
 interface DraftsPanelProps {
   open: boolean
   onClose: () => void
+  onSelect: (draft: typeof DRAFTS_DATA[0]) => void
 }
 
 const PANEL_WIDTH = 380
 
-export default function DraftsPanel({ open, onClose }: DraftsPanelProps) {
+export default function DraftsPanel({ open, onClose, onSelect }: DraftsPanelProps) {
   const [query, setQuery] = useState('')
 
   const filtered = DRAFTS_DATA.filter(d =>
@@ -89,6 +90,7 @@ export default function DraftsPanel({ open, onClose }: DraftsPanelProps) {
               key={i}
               className="flex items-center gap-3 px-3 py-3 cursor-pointer"
               style={{ borderBottom: '1px solid #f3f5f7' }}
+              onClick={() => onSelect(draft)}
               onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#f9fafc')}
               onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'transparent')}
             >

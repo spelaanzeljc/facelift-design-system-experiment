@@ -17,11 +17,18 @@ interface PostFullScreenProps {
   mode: ScreenMode
   post: Post | null
   onBack: () => void
+  onEdit: () => void
+  onSave: (status: string) => void
 }
 
-const PUB_OPTIONS = ['Save Draft', 'Schedule', 'Publish Now', 'Submit for Approval']
+const PUB_OPTIONS = [
+  { label: 'Save Draft',            status: 'draft' },
+  { label: 'Schedule',              status: 'scheduled' },
+  { label: 'Publish Now',           status: 'published' },
+  { label: 'Submit for Approval',   status: 'approval' },
+]
 
-export default function PostFullScreen({ mode, post, onBack }: PostFullScreenProps) {
+export default function PostFullScreen({ mode, post, onBack, onEdit, onSave }: PostFullScreenProps) {
   const isCreate = mode === 'create'
   const [activeTab, setActiveTab] = useState(0)
   const [previewDevice, setPreviewDevice] = useState<'mobile' | 'desktop'>('mobile')
@@ -137,6 +144,7 @@ export default function PostFullScreen({ mode, post, onBack }: PostFullScreenPro
         {/* Publish split button */}
         <div className="flex">
           <button
+            onClick={isCreate ? () => onSave('draft') : onEdit}
             className="flex items-center gap-1.5 px-3 h-8 rounded-l-md"
             style={{
               fontSize: 13,
@@ -159,7 +167,9 @@ export default function PostFullScreen({ mode, post, onBack }: PostFullScreenPro
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               {PUB_OPTIONS.map(opt => (
-                <DropdownMenuItem key={opt} style={{ fontSize: 13 }}>{opt}</DropdownMenuItem>
+                <DropdownMenuItem key={opt.label} style={{ fontSize: 13 }} onClick={() => onSave(opt.status)}>
+                  {opt.label}
+                </DropdownMenuItem>
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
@@ -176,14 +186,19 @@ export default function PostFullScreen({ mode, post, onBack }: PostFullScreenPro
           <DropdownMenu>
             <DropdownMenuTrigger
               className="flex items-center gap-1.5 rounded-full px-3 h-7 text-xs font-semibold"
-              style={{ backgroundColor: '#e7eaee', color: '#5f6a82' }}
+              style={{
+                backgroundColor: pubStatus === 'draft' ? '#e7eaee' : pubStatus === 'scheduled' ? '#eef3fd' : '#e9ffcf',
+                color: pubStatus === 'draft' ? '#5f6a82' : pubStatus === 'scheduled' ? '#1339ec' : '#2e881b',
+              }}
             >
-              Draft
+              {pubStatus.charAt(0).toUpperCase() + pubStatus.slice(1)}
               <ChevronDown size={12} />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              {['Draft', 'Scheduled', 'Published'].map(s => (
-                <DropdownMenuItem key={s} style={{ fontSize: 13 }}>{s}</DropdownMenuItem>
+              {['draft', 'scheduled', 'published'].map(s => (
+                <DropdownMenuItem key={s} style={{ fontSize: 13 }} onClick={() => setPubStatus(s)}>
+                  {s.charAt(0).toUpperCase() + s.slice(1)}
+                </DropdownMenuItem>
               ))}
             </DropdownMenuContent>
           </DropdownMenu>

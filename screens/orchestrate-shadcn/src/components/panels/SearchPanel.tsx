@@ -5,11 +5,12 @@ import { STATUS_CFG, SEARCH_DATA } from '@/data/mock'
 interface SearchPanelProps {
   open: boolean
   onClose: () => void
+  onSelect: (item: typeof SEARCH_DATA[0]) => void
 }
 
 const PANEL_WIDTH = 380
 
-export default function SearchPanel({ open, onClose }: SearchPanelProps) {
+export default function SearchPanel({ open, onClose, onSelect }: SearchPanelProps) {
   const [query, setQuery] = useState('')
 
   const filtered = SEARCH_DATA.filter(item =>
@@ -105,6 +106,7 @@ export default function SearchPanel({ open, onClose }: SearchPanelProps) {
                   key={i}
                   className="flex items-center px-3 py-2.5 cursor-pointer"
                   style={{ borderBottom: '1px solid #f3f5f7' }}
+                  onClick={() => onSelect(item)}
                   onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#f9fafc')}
                   onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'transparent')}
                 >

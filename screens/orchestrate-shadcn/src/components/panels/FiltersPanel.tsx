@@ -136,6 +136,7 @@ export default function FiltersPanel({ open, onClose }: FiltersPanelProps) {
             Discard
           </button>
           <button
+            onClick={onClose}
             className="flex-1 h-8 rounded-md text-xs font-semibold"
             style={{ backgroundColor: '#1339ec', color: '#fff' }}
           >

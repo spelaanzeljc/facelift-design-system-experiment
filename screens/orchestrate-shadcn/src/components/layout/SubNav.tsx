@@ -3,9 +3,11 @@ import { SUBNAV_ITEMS } from '@/data/mock'
 interface SubNavProps {
   open: boolean
   onToggle: () => void
+  activeItem: string
+  onSelect: (label: string) => void
 }
 
-export default function SubNav({ open, onToggle }: SubNavProps) {
+export default function SubNav({ open, onToggle, activeItem, onSelect }: SubNavProps) {
   return (
     <nav
       className="flex flex-col flex-shrink-0 overflow-hidden"
@@ -44,10 +46,11 @@ export default function SubNav({ open, onToggle }: SubNavProps) {
       {/* Nav items */}
       <div className="flex flex-col py-1 overflow-hidden">
         {SUBNAV_ITEMS.map(item => {
-          const isActive = item.active
+          const isActive = item.label === activeItem
           return (
             <button
               key={item.label}
+              onClick={() => onSelect(item.label)}
               className="flex items-center gap-3 px-3 h-9 w-full text-left flex-shrink-0 rounded-sm mx-1"
               style={{
                 width: 'calc(100% - 8px)',
