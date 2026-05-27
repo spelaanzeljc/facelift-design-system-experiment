@@ -219,6 +219,28 @@ const LIIcon = () => (
     <path fillRule="evenodd" clipRule="evenodd" d="M19.5754 2H4.42606C3.08587 2 2 3.08714 2 4.42857V19.5743C2 20.9157 3.0873 22 4.42606 22H19.5739C20.9155 22 22 20.9129 22 19.5743V4.42857C22.0028 3.08714 20.9155 2 19.5754 2ZM6.2606 9.33718C5.36333 9.33718 4.63751 8.60433 4.63751 7.70147C4.63751 6.79861 5.36476 6.06576 6.2606 6.06576C7.15787 6.06576 7.88369 6.79861 7.88369 7.70147C7.88369 8.60433 7.15787 9.33718 6.2606 9.33718ZM19.0496 19.1414H16.3178V14.4871C16.3178 13.21 15.8334 12.4986 14.8247 12.4986C13.726 12.4986 13.153 13.2414 13.153 14.4871V19.1414H10.5184V10.2757H13.1502V11.47C13.9431 10.0057 15.822 10.0057 15.822 10.0057C17.7008 10.0057 19.0482 11.1529 19.0482 13.5286L19.0496 19.1414Z" fill="#0A66C2"/>
   </svg>
 );
+const YTIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+    <path d="M21.593 7.203a2.506 2.506 0 0 0-1.762-1.766C18.265 5.007 12 5 12 5s-6.264-.007-7.831.404a2.56 2.56 0 0 0-1.766 1.778c-.413 1.566-.417 4.814-.417 4.814s-.004 3.264.406 4.814c.23.857.905 1.534 1.763 1.765 1.582.43 7.83.437 7.83.437s6.265.007 7.831-.403a2.515 2.515 0 0 0 1.767-1.763c.414-1.565.417-4.812.417-4.812s.02-3.265-.407-4.831zM9.996 15.005l.005-6 5.207 3.005-5.212 2.995z" fill="#FF0000"/>
+  </svg>
+);
+const TikTokIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V9a8.19 8.19 0 0 0 4.78 1.52V7.07a4.85 4.85 0 0 1-1.01-.38z" fill="#111317"/>
+  </svg>
+);
+const XIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.74l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" fill="#111317"/>
+  </svg>
+);
+const XINGIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+    <rect width="24" height="24" rx="4" fill="#026466"/>
+    <path d="M7.5 8.5l2.5 4.5-4 7h3l4-7-2.5-4.5H7.5zm5-5.5l6 11-3.5 6.5h3l3.5-6.5-6-11H12.5z" fill="#fff"/>
+  </svg>
+);
+
 const NET_ICONS = { fb: FBIcon, ig: IGIcon, li: LIIcon };
 
 // ── Status indicator shape ────────────────────────────────────────────────────
@@ -565,86 +587,968 @@ const PanelHeader = ({ title, badge, onClose }) => (
   </Box>
 );
 
-// ── Post Detail Panel ─────────────────────────────────────────────────────────
+// ── Post Detail Panel (refined) ───────────────────────────────────────────────
 const BG_MAP   = { successful:'linear-gradient(135deg,#d9c8b8,#c4a882)', scheduled:'linear-gradient(135deg,#2a1a8e,#4060c8)', draft:'linear-gradient(135deg,#e8e4f0,#d4cfe8)', failed:'linear-gradient(135deg,#2a1a3e,#4a1a6a)' };
 const EMOJI_MAP = { successful:'🤝', scheduled:'🎯', draft:'💜', failed:'📱' };
-const PostDetailPanel = ({ open, post, onClose }) => {
+const DETAIL_MENU_ITEMS = ['Promote Post','Details','Open Taskboard','Save as Template','Save as Amplify Template','Team Assignment'];
+
+const PostDetailPanel = ({ open, post, onClose, onViewDetails }) => {
+  const [menuAnchor, setMenuAnchor] = useState(null);
+  const [previewDevice, setPreviewDevice] = useState('mobile');
   if (!post) return null;
   const cfg = STATUS_CFG[post.s] || STATUS_CFG.draft;
+  const netIcon = post.nets?.[0];
   return (
     <Slide direction="left" in={open} mountOnEnter unmountOnExit>
       <Box sx={{ position:'fixed', top:56, right:0, bottom:0, width:300, bgcolor:'#fff', borderLeft:'1px solid #e7eaee', boxShadow:'-4px 0 16px rgba(0,0,0,.08)', zIndex:160, display:'flex', flexDirection:'column', overflow:'hidden' }}>
         {/* Header */}
         <Box sx={{ height:48, flexShrink:0, display:'flex', alignItems:'center', gap:'6px', px:'12px', borderBottom:'1px solid #e7eaee' }}>
+          <Box sx={{ width:18, height:18, flexShrink:0, display:'flex', alignItems:'center' }}>
+            {netIcon === 'ig' ? <IGIcon /> : netIcon === 'fb' ? <FBIcon /> : <LIIcon />}
+          </Box>
           <Typography sx={{ fontSize:13, fontWeight:600, color:'#111317', flex:1, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{post.title}</Typography>
+          <IconButton size="small" onClick={e => setMenuAnchor(e.currentTarget)} sx={{ width:26, height:26, borderRadius:'5px', color:'#5f6a82', '&:hover':{bgcolor:'#f3f5f7'} }}>
+            <span className="material-icons" style={{fontSize:16}}>more_vert</span>
+          </IconButton>
           <IconButton size="small" onClick={onClose} sx={{ width:26, height:26, borderRadius:'5px', color:'#5f6a82', '&:hover':{bgcolor:'#f3f5f7'} }}>
             <span className="material-icons" style={{fontSize:14}}>close</span>
           </IconButton>
         </Box>
-        {/* Status row */}
-        <Box sx={{ display:'flex', alignItems:'center', gap:1, px:'12px', py:'10px', borderBottom:'1px solid #e7eaee' }}>
+        <Menu anchorEl={menuAnchor} open={Boolean(menuAnchor)} onClose={() => setMenuAnchor(null)}>
+          {DETAIL_MENU_ITEMS.map(item => (
+            <MenuItem key={item} onClick={() => { setMenuAnchor(null); if (item === 'Details' && onViewDetails) onViewDetails(); }} sx={{ fontSize:13 }}>{item}</MenuItem>
+          ))}
+        </Menu>
+        {/* Status + date row */}
+        <Box sx={{ display:'flex', alignItems:'center', gap:'8px', px:'12px', py:'10px', borderBottom:'1px solid #e7eaee', flexWrap:'wrap' }}>
           <Box sx={{ display:'inline-flex', alignItems:'center', height:20, px:'7px', borderRadius:'3px', fontSize:10, fontWeight:700, letterSpacing:'.04em', bgcolor: cfg.chipBg, color: cfg.chipText }}>
             {cfg.label.toUpperCase()}
           </Box>
-          <Box sx={{ width:5, height:5, borderRadius:'50%', bgcolor:'#a7aebe' }} />
-          <Typography sx={{ fontSize:12, color:'#5f6a82' }}>Jun 18, 2025 · {post.t}</Typography>
+          <Box sx={{ display:'flex', alignItems:'center', gap:'4px' }}>
+            <span className="material-icons" style={{fontSize:13, color:'#848ea4'}}>calendar_today</span>
+            <Typography sx={{ fontSize:12, color:'#5f6a82' }}>Jun 18, 2025 · {post.t}</Typography>
+          </Box>
         </Box>
         {/* Body */}
         <Box sx={{ flex:1, overflowY:'auto', p:'12px' }}>
-          <Typography sx={{ fontSize:11, fontWeight:600, color:'#111317', mb:1 }}>Preview</Typography>
-          <Box sx={{ display:'flex', alignItems:'center', justifyContent:'space-between', mb:'12px' }}>
-            <Typography sx={{ fontSize:12, color:'#5f6a82' }}>Instagram Feed</Typography>
+          {/* Preview header + device toggle */}
+          <Box sx={{ display:'flex', alignItems:'flex-start', justifyContent:'space-between', mb:'10px' }}>
+            <Box>
+              <Typography sx={{ fontSize:11, fontWeight:600, color:'#111317', lineHeight:1.4 }}>Preview</Typography>
+              <Typography sx={{ fontSize:11, color:'#848ea4' }}>Instagram Feed</Typography>
+            </Box>
+            <Box sx={{ display:'flex', gap:'2px' }}>
+              {[['desktop_windows','desktop'],['smartphone','mobile']].map(([icon,key]) => (
+                <IconButton key={key} size="small" onClick={() => setPreviewDevice(key)} sx={{ width:26, height:26, borderRadius:'5px', bgcolor: previewDevice===key ? '#eef3fd' : 'transparent', color: previewDevice===key ? '#1339ec' : '#848ea4', '&:hover':{bgcolor:'#f3f5f7'} }}>
+                  <span className="material-icons" style={{fontSize:15}}>{icon}</span>
+                </IconButton>
+              ))}
+            </Box>
           </Box>
           {/* Phone mockup */}
-          <Box sx={{ width:'100%', bgcolor:'linear-gradient(160deg,#f0f2f5,#e8ecf0)', borderRadius:'10px', display:'flex', alignItems:'center', justifyContent:'center', py:2, background:'linear-gradient(160deg,#f0f2f5 0%,#e8ecf0 100%)' }}>
-            <Box sx={{ width:180, bgcolor:'#111317', borderRadius:'28px', p:'3px', boxShadow:'0 8px 32px rgba(0,0,0,.3)' }}>
-              <Box sx={{ bgcolor:'#fff', borderRadius:'25px', overflow:'hidden' }}>
-                {/* Status bar */}
-                <Box sx={{ height:28, bgcolor:'#fff', display:'flex', alignItems:'center', justifyContent:'space-between', px:2 }}>
-                  <Typography sx={{ fontSize:10, fontWeight:700, color:'#111' }}>9:41</Typography>
-                  <Box sx={{ display:'flex', gap:'3px', alignItems:'center' }}>
-                    <span style={{fontSize:8}}>●●●</span>
-                  </Box>
+          <Box sx={{ display:'flex', justifyContent:'center' }}>
+            <Box sx={{ border:'3px solid #ccd0d8', borderRadius:'28px', width:180, overflow:'hidden', bgcolor:'#fff' }}>
+              <Box sx={{ width:60, height:14, bgcolor:'#ccd0d8', borderRadius:'0 0 10px 10px', mx:'auto' }} />
+              <Box sx={{ height:22, bgcolor:'#fff', display:'flex', alignItems:'center', justifyContent:'space-between', px:'10px' }}>
+                <Typography sx={{ fontSize:9, fontWeight:700, color:'#111' }}>9:41</Typography>
+                <span style={{fontSize:7, color:'#111'}}>●●●</span>
+              </Box>
+              <Box sx={{ height:32, bgcolor:'#fff', display:'flex', alignItems:'center', justifyContent:'space-between', px:'8px', borderBottom:'1px solid #f0f0f0' }}>
+                <Typography sx={{ fontSize:13, fontWeight:700, fontFamily:'Georgia,serif', color:'#000' }}>Instagram</Typography>
+                <Box sx={{ display:'flex', gap:'6px' }}>
+                  <span className="material-icons" style={{fontSize:14, color:'#000'}}>favorite_border</span>
+                  <span className="material-icons" style={{fontSize:14, color:'#000'}}>send</span>
                 </Box>
-                {/* IG header */}
-                <Box sx={{ height:36, bgcolor:'#fff', display:'flex', alignItems:'center', justifyContent:'space-between', px:'10px', borderBottom:'1px solid #f0f0f0' }}>
-                  <Typography sx={{ fontSize:15, fontWeight:700, fontFamily:'Georgia,serif', color:'#000', letterSpacing:'-.3px' }}>Instagram</Typography>
-                  <Box sx={{ display:'flex', gap:'8px' }}>
-                    <span className="material-icons" style={{fontSize:16, color:'#000'}}>favorite_border</span>
-                    <span className="material-icons" style={{fontSize:16, color:'#000'}}>send</span>
-                  </Box>
+              </Box>
+              <Box sx={{ display:'flex', alignItems:'center', gap:'6px', p:'6px 8px' }}>
+                <Box sx={{ width:22, height:22, borderRadius:'50%', background:'linear-gradient(135deg,#fd5949,#d6249f,#285aeb)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:9, color:'#fff', fontWeight:600, flexShrink:0 }}>f</Box>
+                <Typography sx={{ fontSize:9, fontWeight:600, color:'#000', flex:1 }}>facelift_brand</Typography>
+                <Typography sx={{ fontSize:13, color:'#555' }}>···</Typography>
+              </Box>
+              <Box sx={{ width:'100%', aspectRatio:'1', background: BG_MAP[post.s] || '#eee', display:'flex', alignItems:'center', justifyContent:'center', fontSize:24 }}>
+                {EMOJI_MAP[post.s] || '📄'}
+              </Box>
+              <Box sx={{ display:'flex', alignItems:'center', justifyContent:'space-between', px:'8px', py:'6px' }}>
+                <Box sx={{ display:'flex', gap:'8px' }}>
+                  {['favorite_border','chat_bubble_outline','send'].map(ic => <span key={ic} className="material-icons" style={{fontSize:16}}>{ic}</span>)}
                 </Box>
-                {/* Post header */}
-                <Box sx={{ display:'flex', alignItems:'center', gap:'7px', p:'7px 10px' }}>
-                  <Box sx={{ width:24, height:24, borderRadius:'50%', background:'linear-gradient(135deg,#fd5949,#d6249f,#285aeb)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:10, color:'#fff', fontWeight:600, flexShrink:0 }}>f</Box>
-                  <Typography sx={{ fontSize:10, fontWeight:600, color:'#000', flex:1 }}>facelift_brand</Typography>
-                  <Typography sx={{ fontSize:14, color:'#555' }}>···</Typography>
-                </Box>
-                {/* Image */}
-                <Box sx={{ width:'100%', aspectRatio:'1', background: BG_MAP[post.s] || '#eee', display:'flex', alignItems:'center', justifyContent:'center', fontSize:28 }}>
-                  {EMOJI_MAP[post.s] || '📄'}
-                </Box>
-                {/* Actions */}
-                <Box sx={{ display:'flex', alignItems:'center', justifyContent:'space-between', px:'10px', py:'7px' }}>
-                  <Box sx={{ display:'flex', gap:'10px' }}>
-                    <span className="material-icons" style={{fontSize:18}}>favorite_border</span>
-                    <span className="material-icons" style={{fontSize:18}}>chat_bubble_outline</span>
-                    <span className="material-icons" style={{fontSize:18}}>send</span>
-                  </Box>
-                  <span className="material-icons" style={{fontSize:18}}>bookmark_border</span>
-                </Box>
-                {/* Caption */}
-                <Box sx={{ px:'10px', pb:'10px' }}>
-                  <Typography sx={{ fontSize:'8.5px', color:'#000', lineHeight:1.4 }}>
-                    <strong>facelift_brand</strong> {post.title} — check out our latest content! ✨ <span style={{color:'#00376b'}}>more</span>
-                  </Typography>
-                </Box>
+                <span className="material-icons" style={{fontSize:16}}>bookmark_border</span>
+              </Box>
+              <Box sx={{ px:'8px', pb:'10px' }}>
+                <Typography sx={{ fontSize:7.5, color:'#000', lineHeight:1.4 }}>
+                  <strong>facelift_brand</strong> {post.title.slice(0,50)}...
+                </Typography>
               </Box>
             </Box>
           </Box>
         </Box>
       </Box>
     </Slide>
+  );
+};
+
+// ── Post Full Screen (Create / View) ─────────────────────────────────────────
+const FAKE_MEDIA = [
+  { label:'broccoli.jpeg',      bg:'linear-gradient(135deg,#a5d6a7,#66bb6a)' },
+  { label:'cat-sunglasses.jpeg',bg:'linear-gradient(135deg,#b0bec5,#78909c)' },
+  { label:'strawberry.jpeg',    bg:'linear-gradient(135deg,#ef9a9a,#e53935)' },
+  { label:'kittens.jpeg',       bg:'linear-gradient(135deg,#80deea,#26c6da)' },
+];
+const SCREEN_NETWORK_TABS = ['Instagram','Facebook','YouTube','TikTok','LinkedIn','X','XING','Quickfill'];
+const NET_TAB_DOTS = { Instagram:'#e2007a', Facebook:'#1877f2', YouTube:'#ff0000' };
+const NET_ICONS_SCREEN = { Instagram: IGIcon, Facebook: FBIcon, YouTube: YTIcon, TikTok: TikTokIcon, LinkedIn: LIIcon, X: XIcon, XING: XINGIcon };
+
+const PostFullScreen = ({ mode, post, onBack }) => {
+  const [activeTab, setActiveTab]         = useState(0);
+  const [previewDevice, setPreviewDevice] = useState('mobile');
+  const [openSecs, setOpenSecs]           = useState({ 'Network Information': true, Assignments: true, 'Network Information_view': true, 'Publication Details': true, Info: true, Engagement: false, Activity: false });
+  const [moreAnchor, setMoreAnchor]       = useState(null);
+  const [pubBtnAnchor, setPubBtnAnchor]   = useState(null);
+  const [statusAnchor, setStatusAnchor]   = useState(null);
+
+  // Per-network content
+  const [netContent, setNetContent] = useState({
+    Instagram: { postType:'Feed',       text:'', hashtags:'' },
+    Facebook:  { postType:'Photo Post', text:'', cta:'None' },
+    YouTube:   { title:'', description:'', tags:'', visibility:'Public' },
+    TikTok:    { caption:'', privacy:'Public', allowComments:true, allowDuet:true, allowStitch:false },
+    LinkedIn:  { postType:'Image Post', text:'' },
+    X:         { text:'', thread:false, sensitive:false },
+    XING:      { postType:'News', text:'' },
+  });
+  const updateNet = (tab, key, val) => setNetContent(p => ({ ...p, [tab]: { ...p[tab], [key]: val } }));
+
+  // Publication
+  const [pubStatus, setPubStatus] = useState('draft');
+  const [pubDate,   setPubDate]   = useState('');
+  const [pubTime,   setPubTime]   = useState('');
+  const [timeZone,  setTimeZone]  = useState('Europe/Berlin (UTC+2)');
+
+  // Settings
+  const [allowComments, setAllowComments] = useState(true);
+  const [firstComment,  setFirstComment]  = useState('');
+  const [shortLink,     setShortLink]     = useState(false);
+  const [boostPost,     setBoostPost]     = useState(false);
+
+  // Newsfeed targeting
+  const [targetAge,     setTargetAge]     = useState('All ages');
+  const [targetLocs,    setTargetLocs]    = useState(['Germany','Switzerland']);
+  const [targetInts,    setTargetInts]    = useState(['Technology','Marketing']);
+
+  // Audience restriction
+  const [restrictAge,     setRestrictAge]     = useState(false);
+  const [minAge,          setMinAge]          = useState('18');
+  const [restrictCountry, setRestrictCountry] = useState(false);
+  const [countryTags,     setCountryTags]     = useState(['Germany']);
+
+  // Media items (shared across tabs for prototype)
+  const [mediaItems, setMediaItems] = useState(FAKE_MEDIA.map((m,i) => ({ ...m, id:i })));
+  const addMedia = () => {
+    const EXTRA = [
+      { label:'landscape.jpeg', bg:'linear-gradient(135deg,#b3e5fc,#0288d1)' },
+      { label:'portrait.jpeg',  bg:'linear-gradient(135deg,#f8bbd0,#c2185b)' },
+      { label:'square.jpeg',    bg:'linear-gradient(135deg,#dcedc8,#558b2f)' },
+      { label:'banner.jpeg',    bg:'linear-gradient(135deg,#ffe082,#f57f17)' },
+    ];
+    const m = EXTRA[mediaItems.length % EXTRA.length];
+    setMediaItems(p => [...p, { ...m, id: Date.now() }]);
+  };
+  const removeMedia = id => setMediaItems(p => p.filter(m => m.id !== id));
+
+  // Assignments
+  const [priority,       setPriority]       = useState('Normal');
+  const [postTags,       setPostTags]        = useState(['social-media','marketing']);
+  const [assignedUsers,  setAssignedUsers]   = useState([{i:'ET',n:'Elly Tan',c:'#0c228d'},{i:'MK',n:'Max Krauss',c:'#2e881b'}]);
+  const [userPickerAnchor, setUserPickerAnchor] = useState(null);
+  const ALL_USERS = [
+    {i:'ET',n:'Elly Tan',     c:'#0c228d'}, {i:'MK',n:'Max Krauss',   c:'#2e881b'},
+    {i:'SR',n:'Sara Reeves',  c:'#8d1a1a'}, {i:'JP',n:'Jonas Petra',  c:'#5f6a82'},
+    {i:'AL',n:'Anna Lim',     c:'#6b3fa0'}, {i:'TW',n:'Tom Weber',    c:'#0c5566'},
+  ];
+
+  const isCreate     = mode === 'create';
+  const title        = isCreate ? 'New Post' : (post?.title || 'Post Details');
+  const cfg          = post ? (STATUS_CFG[post.s] || STATUS_CFG.draft) : STATUS_CFG.draft;
+  const activeTabName = SCREEN_NETWORK_TABS[activeTab];
+
+  // ── Shared helpers ────────────────────────────────────────────────────────
+  const secOpen  = (k, dflt=false) => openSecs[k] !== undefined ? openSecs[k] : dflt;
+  const togSec   = (k) => setOpenSecs(s => ({ ...s, [k]: !secOpen(k) }));
+
+  const CollapsibleSection = ({ label, defaultOpen=false, stateKey, children }) => {
+    const k    = stateKey || label;
+    const open = secOpen(k, defaultOpen);
+    return (
+      <Paper elevation={0} sx={{ border:'1px solid #e7eaee', borderRadius:'10px', overflow:'hidden' }}>
+        <Box component="button" onClick={() => togSec(k)} sx={{ width:'100%', display:'flex', alignItems:'center', justifyContent:'space-between', px:2, py:'14px', border:'none', bgcolor:'transparent', cursor:'pointer', '&:hover':{bgcolor:'#f9f9fa'} }}>
+          <Typography sx={{ fontSize:15, fontWeight:700, color:'#111317' }}>{label}</Typography>
+          <span className="material-icons" style={{fontSize:18, color:'#848ea4', transform: open?'rotate(180deg)':'none', transition:'transform .15s'}}>keyboard_arrow_down</span>
+        </Box>
+        {open && children}
+      </Paper>
+    );
+  };
+
+  const SwitchField = ({ label, subtitle, checked, onChange }) => (
+    <Box sx={{ display:'flex', alignItems:'center', justifyContent:'space-between', py:'10px', borderBottom:'1px solid #f3f5f7' }}>
+      <Box>
+        <Typography sx={{ fontSize:13, fontWeight:500, color:'#111317' }}>{label}</Typography>
+        {subtitle && <Typography sx={{ fontSize:11, color:'#848ea4' }}>{subtitle}</Typography>}
+      </Box>
+      <Switch size="small" checked={!!checked} onChange={e => onChange(e.target.checked)}
+        sx={{ '& .MuiSwitch-switchBase.Mui-checked':{ color:'#1339ec' }, '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track':{ bgcolor:'#1339ec' } }} />
+    </Box>
+  );
+
+  const FieldLabel = ({ children, hint }) => (
+    <Box sx={{ display:'flex', alignItems:'center', gap:'4px', mb:'6px' }}>
+      <Typography sx={{ fontSize:11, fontWeight:600, color:'#5f6a82' }}>{children}</Typography>
+      {hint && <span className="material-icons" style={{fontSize:14, color:'#d3d7de'}}>info_outline</span>}
+    </Box>
+  );
+
+  const NativeSelect = ({ value, onChange, options, sx={} }) => (
+    <Box component="select" value={value} onChange={e => onChange(e.target.value)}
+      sx={{ width:'100%', height:36, px:'10px', border:'1px solid #d3d7de', borderRadius:'6px', fontSize:13, color:'#111317', bgcolor:'#fff', cursor:'pointer', fontFamily:'inherit', ...sx }}>
+      {options.map(o => <option key={o}>{o}</option>)}
+    </Box>
+  );
+
+  const Textarea = ({ value, onChange, placeholder, rows=4, maxChars }) => (
+    <Box sx={{ position:'relative' }}>
+      <Box component="textarea" value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder} rows={rows}
+        sx={{ width:'100%', p:'8px 10px', pb: maxChars ? '22px' : '8px', border:'1px solid #d3d7de', borderRadius:'6px', fontSize:13, color:'#111317', bgcolor:'#fff', resize:'vertical', fontFamily:'inherit', lineHeight:1.5, '&:focus':{outline:'2px solid #1339ec', outlineOffset:'-1px'} }} />
+      {maxChars && (
+        <Typography sx={{ position:'absolute', bottom:'8px', right:'10px', fontSize:10, pointerEvents:'none',
+          color: value.length >= maxChars ? '#cc0000' : value.length > maxChars*.85 ? '#e05a00' : '#a7aebe' }}>
+          {value.length}/{maxChars}
+        </Typography>
+      )}
+    </Box>
+  );
+
+  const TextInput = ({ value, onChange, placeholder, sx={} }) => (
+    <Box component="input" type="text" value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder}
+      sx={{ width:'100%', height:36, px:'10px', border:'1px solid #d3d7de', borderRadius:'6px', fontSize:13, color:'#111317', bgcolor:'#fff', fontFamily:'inherit', '&:focus':{outline:'2px solid #1339ec', outlineOffset:'-1px'}, ...sx }} />
+  );
+
+  const RemovableChips = ({ tags, onRemove, bg='#eef3fd', color='#1339ec' }) => (
+    <Box sx={{ display:'flex', flexWrap:'wrap', gap:'5px', mt:'6px' }}>
+      {tags.map((t,i) => (
+        <Box key={i} sx={{ display:'inline-flex', alignItems:'center', gap:'3px', height:24, px:'8px', borderRadius:'4px', fontSize:12, fontWeight:500, bgcolor:bg, color }}>
+          {t}
+          <Box component="span" onClick={() => onRemove(i)} sx={{ display:'inline-flex', alignItems:'center', cursor:'pointer', ml:'2px', opacity:.6, '&:hover':{opacity:1} }}>
+            <span className="material-icons" style={{fontSize:12}}>close</span>
+          </Box>
+        </Box>
+      ))}
+    </Box>
+  );
+
+  const AddTagRow = ({ onAdd }) => {
+    const [val, setVal] = useState('');
+    return (
+      <Box sx={{ display:'flex', gap:'6px', mt:'8px' }}>
+        <Box component="input" value={val} onChange={e => setVal(e.target.value)} placeholder="Add…"
+          onKeyDown={e => { if (e.key==='Enter' && val.trim()) { onAdd(val.trim()); setVal(''); }}}
+          sx={{ flex:1, height:28, px:'8px', border:'1px solid #d3d7de', borderRadius:'5px', fontSize:12, color:'#111317', bgcolor:'#fff', fontFamily:'inherit' }} />
+        <Box component="button" onClick={() => { if(val.trim()) { onAdd(val.trim()); setVal(''); }}}
+          sx={{ height:28, px:'10px', border:'1px solid #d3d7de', borderRadius:'5px', fontSize:12, color:'#5f6a82', bgcolor:'#fff', cursor:'pointer', display:'inline-flex', alignItems:'center', gap:'3px', '&:hover':{bgcolor:'#f3f5f7'} }}>
+          <span className="material-icons" style={{fontSize:14}}>add</span>Add
+        </Box>
+      </Box>
+    );
+  };
+
+  const MediaGrid = () => (
+    <Box>
+      <FieldLabel hint>Images / Video *</FieldLabel>
+      <Box sx={{ display:'flex', gap:'6px', mb:'10px', flexWrap:'wrap' }}>
+        <Box component="button" onClick={addMedia} sx={{ height:32, px:'10px', border:'1px solid #d3d7de', borderRadius:'6px', fontSize:13, fontWeight:500, color:'#5f6a82', bgcolor:'#fff', cursor:'pointer', display:'inline-flex', alignItems:'center', gap:'5px', '&:hover':{bgcolor:'#f3f5f7'} }}>
+          <span className="material-icons" style={{fontSize:14}}>add</span>Add Media
+        </Box>
+        <Box component="button" sx={{ height:32, px:'10px', border:'1px solid #d3d7de', borderRadius:'6px', fontSize:13, fontWeight:500, color:'#5f6a82', bgcolor:'#fff', cursor:'pointer', display:'inline-flex', alignItems:'center', gap:'5px', '&:hover':{bgcolor:'#f3f5f7'} }}>
+          <span className="material-icons" style={{fontSize:14}}>link</span>Add URL
+        </Box>
+      </Box>
+      {mediaItems.length === 0 ? (
+        <Box sx={{ border:'2px dashed #d3d7de', borderRadius:'8px', p:'20px', textAlign:'center', color:'#848ea4' }}>
+          <span className="material-icons" style={{fontSize:28, display:'block', marginBottom:6, opacity:.4}}>image</span>
+          <Typography sx={{ fontSize:12, color:'#848ea4' }}>No media added yet</Typography>
+        </Box>
+      ) : (
+        <Box sx={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:'8px' }}>
+          {mediaItems.map((m) => (
+            <Box key={m.id} sx={{ border:'1px solid #e7eaee', borderRadius:'6px', overflow:'hidden', '&:hover .media-actions':{ opacity:1 } }}>
+              <Box sx={{ position:'relative', height:80, background:m.bg }}>
+                <Box sx={{ position:'absolute', top:'5px', left:'5px', bgcolor:'rgba(0,0,0,.55)', color:'#fff', fontSize:9, fontWeight:700, px:'4px', py:'1px', borderRadius:'3px' }}>IMAGE</Box>
+                <Box onClick={() => removeMedia(m.id)} sx={{ position:'absolute', top:'4px', right:'4px', width:18, height:18, borderRadius:'50%', bgcolor:'rgba(0,0,0,.55)', display:'flex', alignItems:'center', justifyContent:'center', color:'#fff', fontSize:13, cursor:'pointer', '&:hover':{bgcolor:'rgba(0,0,0,.8)'} }}>×</Box>
+              </Box>
+              <Box sx={{ p:'5px 6px' }}>
+                <Typography sx={{ fontSize:9, fontWeight:500, color:'#111317', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{m.label}</Typography>
+                <Typography sx={{ fontSize:9, color:'#848ea4' }}>JPEG · 925 × 925</Typography>
+                <Box sx={{ display:'flex', gap:'5px', mt:'4px' }}>
+                  {['visibility','edit','more_horiz'].map(ic => (
+                    <span key={ic} className="material-icons" style={{fontSize:13, color:'#848ea4', cursor:'pointer'}}>{ic}</span>
+                  ))}
+                </Box>
+              </Box>
+            </Box>
+          ))}
+          <Box component="button" onClick={addMedia} sx={{ height:100, border:'2px dashed #d3d7de', borderRadius:'6px', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:'4px', bgcolor:'transparent', cursor:'pointer', color:'#848ea4', '&:hover':{borderColor:'#1339ec', color:'#1339ec', bgcolor:'#f8faff'} }}>
+            <span className="material-icons" style={{fontSize:20}}>add</span>
+            <Typography sx={{ fontSize:9, fontWeight:500 }}>Add</Typography>
+          </Box>
+        </Box>
+      )}
+    </Box>
+  );
+
+  const VideoUploadZone = ({ label='Upload a video or drag & drop', hint='MP4, MOV, AVI up to 128GB' }) => (
+    <Box sx={{ border:'2px dashed #d3d7de', borderRadius:'8px', p:'20px', textAlign:'center', cursor:'pointer', '&:hover':{bgcolor:'#f3f5f7', borderColor:'#1339ec'} }}>
+      <span className="material-icons" style={{fontSize:32, color:'#848ea4', display:'block', margin:'0 auto 8px'}}>video_library</span>
+      <Typography sx={{ fontSize:13, fontWeight:500, color:'#5f6a82' }}>{label}</Typography>
+      <Typography sx={{ fontSize:11, color:'#a7aebe' }}>{hint}</Typography>
+    </Box>
+  );
+
+  // ── Per-network form ──────────────────────────────────────────────────────
+  const renderNetworkForm = () => {
+    const nc  = netContent[activeTabName] || {};
+    const upd = (k,v) => updateNet(activeTabName, k, v);
+
+    if (activeTabName === 'Instagram') return (
+      <Box sx={{ display:'flex', flexDirection:'column', gap:'12px' }}>
+        <Box><FieldLabel>Post Type</FieldLabel><NativeSelect value={nc.postType} onChange={v=>upd('postType',v)} options={['Feed','Story','Reel','Carousel']} /></Box>
+        <Box><FieldLabel hint>Caption</FieldLabel><Textarea value={nc.text} onChange={v=>upd('text',v)} placeholder="Write your caption…" rows={4} maxChars={2200} /></Box>
+        <Box><FieldLabel>Hashtags</FieldLabel><TextInput value={nc.hashtags} onChange={v=>upd('hashtags',v)} placeholder="#socialmedia #marketing" /></Box>
+        <MediaGrid />
+      </Box>
+    );
+
+    if (activeTabName === 'Facebook') return (
+      <Box sx={{ display:'flex', flexDirection:'column', gap:'12px' }}>
+        <Box><FieldLabel>Post Type</FieldLabel><NativeSelect value={nc.postType} onChange={v=>upd('postType',v)} options={['Photo Post','Video Post','Story','Reel','Link Post']} /></Box>
+        <Box><FieldLabel hint>Text</FieldLabel><Textarea value={nc.text} onChange={v=>upd('text',v)} placeholder="Write something…" rows={4} /></Box>
+        <Box><FieldLabel>Call to Action</FieldLabel><NativeSelect value={nc.cta} onChange={v=>upd('cta',v)} options={['None','Book Now','Contact Us','Learn More','Shop Now','Sign Up','Download']} /></Box>
+        <MediaGrid />
+      </Box>
+    );
+
+    if (activeTabName === 'YouTube') return (
+      <Box sx={{ display:'flex', flexDirection:'column', gap:'12px' }}>
+        <VideoUploadZone />
+        <Box><FieldLabel>Title *</FieldLabel><TextInput value={nc.title} onChange={v=>upd('title',v)} placeholder="Add a title that describes your video" /></Box>
+        <Box><FieldLabel hint>Description</FieldLabel><Textarea value={nc.description} onChange={v=>upd('description',v)} placeholder="Tell viewers about your video…" rows={4} maxChars={5000} /></Box>
+        <Box><FieldLabel hint>Tags</FieldLabel><TextInput value={nc.tags} onChange={v=>upd('tags',v)} placeholder="technology, tutorial, marketing" /></Box>
+        <Box><FieldLabel>Visibility</FieldLabel><NativeSelect value={nc.visibility} onChange={v=>upd('visibility',v)} options={['Public','Unlisted','Private']} /></Box>
+      </Box>
+    );
+
+    if (activeTabName === 'TikTok') return (
+      <Box sx={{ display:'flex', flexDirection:'column', gap:'12px' }}>
+        <VideoUploadZone label="Upload a video" hint="MP4 or MOV, up to 10 min" />
+        <Box><FieldLabel hint>Caption</FieldLabel><Textarea value={nc.caption} onChange={v=>upd('caption',v)} placeholder="Write your caption…" rows={3} maxChars={2200} /></Box>
+        <Box><FieldLabel>Privacy</FieldLabel><NativeSelect value={nc.privacy} onChange={v=>upd('privacy',v)} options={['Public','Friends','Private']} /></Box>
+        <SwitchField label="Allow comments"  checked={nc.allowComments} onChange={v=>upd('allowComments',v)} />
+        <SwitchField label="Allow duet"      checked={nc.allowDuet}     onChange={v=>upd('allowDuet',v)} />
+        <SwitchField label="Allow stitch"    checked={nc.allowStitch}   onChange={v=>upd('allowStitch',v)} />
+      </Box>
+    );
+
+    if (activeTabName === 'LinkedIn') return (
+      <Box sx={{ display:'flex', flexDirection:'column', gap:'12px' }}>
+        <Box><FieldLabel>Post Type</FieldLabel><NativeSelect value={nc.postType} onChange={v=>upd('postType',v)} options={['Text Post','Image Post','Video Post','Article','Document','Poll']} /></Box>
+        <Box><FieldLabel hint>Text</FieldLabel><Textarea value={nc.text} onChange={v=>upd('text',v)} placeholder="Share an article, photo, or update…" rows={4} maxChars={3000} /></Box>
+        <MediaGrid />
+      </Box>
+    );
+
+    if (activeTabName === 'XING') return (
+      <Box sx={{ display:'flex', flexDirection:'column', gap:'12px' }}>
+        <Box><FieldLabel>Post Type</FieldLabel><NativeSelect value={nc.postType||'News'} onChange={v=>upd('postType',v)} options={['News','Activity','Share']} /></Box>
+        <Box><FieldLabel hint>Text</FieldLabel><Textarea value={nc.text||''} onChange={v=>upd('text',v)} placeholder="Share news or updates with your XING network…" rows={4} maxChars={1000} /></Box>
+        <MediaGrid />
+      </Box>
+    );
+
+    if (activeTabName === 'Quickfill') return (
+      <Box sx={{ display:'flex', flexDirection:'column', gap:'16px' }}>
+        <Box sx={{ display:'flex', alignItems:'flex-start', gap:'10px', p:'12px', bgcolor:'#eef3fd', borderRadius:'8px', border:'1px solid #dfe7fd' }}>
+          <span className="material-icons" style={{fontSize:18, color:'#1339ec', flexShrink:0, mt:1}}>flash_on</span>
+          <Box>
+            <Typography sx={{ fontSize:13, fontWeight:600, color:'#1339ec', mb:'2px' }}>Quickfill</Typography>
+            <Typography sx={{ fontSize:12, color:'#5f6a82', lineHeight:1.5 }}>Write once and automatically populate all connected networks. You can still refine content per network in the individual tabs.</Typography>
+          </Box>
+        </Box>
+        <Box><FieldLabel hint>Universal Caption / Text</FieldLabel><Textarea value={netContent.Instagram?.text||''} onChange={v => SCREEN_NETWORK_TABS.filter(t=>t!=='Quickfill').forEach(t => updateNet(t,'text',v))} placeholder="Write your post text here — it will be applied to all networks…" rows={5} /></Box>
+        <Box>
+          <FieldLabel>Apply to networks</FieldLabel>
+          <Box sx={{ display:'flex', flexWrap:'wrap', gap:'6px' }}>
+            {['Instagram','Facebook','LinkedIn','X','TikTok','XING'].map(n => {
+              const Icon = NET_ICONS_SCREEN[n];
+              return (
+                <Box key={n} sx={{ display:'inline-flex', alignItems:'center', gap:'5px', height:28, px:'10px', border:'1px solid #1339ec', borderRadius:'6px', fontSize:12, fontWeight:500, color:'#1339ec', bgcolor:'#eef3fd', cursor:'pointer' }}>
+                  {Icon && <Icon />}{n}
+                  <span className="material-icons" style={{fontSize:13}}>check</span>
+                </Box>
+              );
+            })}
+          </Box>
+        </Box>
+        <Box>
+          <FieldLabel hint>Media (shared across all networks)</FieldLabel>
+          <MediaGrid />
+        </Box>
+        <Box component="button" onClick={() => setActiveTab(0)} sx={{ alignSelf:'flex-start', height:34, px:'14px', border:'1px solid #1339ec', borderRadius:'7px', fontSize:13, fontWeight:600, color:'#fff', bgcolor:'#1339ec', cursor:'pointer', display:'inline-flex', alignItems:'center', gap:'6px', '&:hover':{bgcolor:'#0f2ebd'} }}>
+          <span className="material-icons" style={{fontSize:15}}>check</span>Apply to all networks
+        </Box>
+      </Box>
+    );
+
+    if (activeTabName === 'X') return (
+      <Box sx={{ display:'flex', flexDirection:'column', gap:'12px' }}>
+        <Box><FieldLabel hint>Tweet</FieldLabel><Textarea value={nc.text} onChange={v=>upd('text',v)} placeholder="What's happening?" rows={3} maxChars={280} /></Box>
+        <Box>
+          <FieldLabel>Images / GIF</FieldLabel>
+          <Box component="button" sx={{ height:32, px:'10px', border:'1px solid #d3d7de', borderRadius:'6px', fontSize:13, fontWeight:500, color:'#5f6a82', bgcolor:'#fff', cursor:'pointer', display:'inline-flex', alignItems:'center', gap:'5px', '&:hover':{bgcolor:'#f3f5f7'} }}>
+            <span className="material-icons" style={{fontSize:14}}>image</span>Add Media
+          </Box>
+        </Box>
+        <SwitchField label="Thread"                     subtitle="Add follow-up tweets"            checked={nc.thread}    onChange={v=>upd('thread',v)} />
+        <SwitchField label="Sensitive content warning"  checked={nc.sensitive} onChange={v=>upd('sensitive',v)} />
+      </Box>
+    );
+
+    return null;
+  };
+
+  return (
+    <Box sx={{ display:'flex', flexDirection:'column', height:'100%', bgcolor:'#f3f5f7' }}>
+
+      {/* ── Top bar ── */}
+      <Box sx={{ height:52, flexShrink:0, display:'flex', alignItems:'center', px:2, gap:'8px', bgcolor:'#fff', borderBottom:'1px solid #e7eaee' }}>
+        <IconButton size="small" onClick={onBack} sx={{ width:28, height:28, color:'#5f6a82', borderRadius:'6px', '&:hover':{bgcolor:'#f3f5f7'} }}>
+          <span className="material-icons" style={{fontSize:18}}>arrow_back</span>
+        </IconButton>
+        <Typography sx={{ fontSize:17, fontWeight:700, color:'#111317', flex:1 }}>{title}</Typography>
+        {isCreate && <IconButton size="small" sx={{ width:24, height:24, color:'#848ea4' }}><span className="material-icons" style={{fontSize:16}}>edit</span></IconButton>}
+        {!isCreate && (
+          <IconButton size="small" onClick={e => setMoreAnchor(e.currentTarget)} sx={{ width:28, height:28, color:'#5f6a82', borderRadius:'6px', '&:hover':{bgcolor:'#f3f5f7'} }}>
+            <span className="material-icons" style={{fontSize:18}}>more_horiz</span>
+          </IconButton>
+        )}
+        <Menu anchorEl={moreAnchor} open={Boolean(moreAnchor)} onClose={() => setMoreAnchor(null)}>
+          {['Promote Post','Details','Open Taskboard','Save as Template','Save as Amplify Template','Team Assignment'].map(item => (
+            <MenuItem key={item} onClick={() => setMoreAnchor(null)} sx={{ fontSize:13 }}>{item}</MenuItem>
+          ))}
+        </Menu>
+        <Box sx={{ display:'flex', alignItems:'center', gap:'6px' }}>
+          <Box component="button" sx={{ height:32, px:'12px', border:'1px solid #d3d7de', borderRadius:'7px', fontSize:13, fontWeight:500, color:'#5f6a82', bgcolor:'#fff', cursor:'pointer', display:'inline-flex', alignItems:'center', gap:'6px', '&:hover':{bgcolor:'#f3f5f7'} }}>
+            <span className="material-icons" style={{fontSize:14}}>help_outline</span>Help
+          </Box>
+          {!isCreate && (
+            <Box component="button" sx={{ height:32, px:'12px', border:'1px solid #d3d7de', borderRadius:'7px', fontSize:13, fontWeight:500, color:'#5f6a82', bgcolor:'#fff', cursor:'pointer', display:'inline-flex', alignItems:'center', gap:'6px', '&:hover':{bgcolor:'#f3f5f7'} }}>
+              <span className="material-icons" style={{fontSize:14}}>campaign</span>Promote Post
+            </Box>
+          )}
+          <Box sx={{ display:'inline-flex', height:32 }}>
+            <Box component="button" sx={{ px:'14px', border:'1px solid #1339ec', borderRight:'none', borderRadius:'7px 0 0 7px', fontSize:13, fontWeight:600, color:'#fff', bgcolor:'#1339ec', cursor:'pointer', display:'inline-flex', alignItems:'center', gap:'6px', '&:hover':{bgcolor:'#0f2ebd'} }}>
+              <span className="material-icons" style={{fontSize:14}}>{isCreate ? 'publish' : 'content_copy'}</span>
+              {isCreate ? 'Publish Directly' : 'Duplicate'}
+            </Box>
+            <Box component="button" onClick={e => setPubBtnAnchor(e.currentTarget)} sx={{ width:28, border:'1px solid #1339ec', borderRadius:'0 7px 7px 0', color:'#fff', bgcolor:'#1339ec', cursor:'pointer', display:'inline-flex', alignItems:'center', justifyContent:'center', '&:hover':{bgcolor:'#0f2ebd'} }}>
+              <span className="material-icons" style={{fontSize:14}}>keyboard_arrow_down</span>
+            </Box>
+          </Box>
+          <Menu anchorEl={pubBtnAnchor} open={Boolean(pubBtnAnchor)} onClose={() => setPubBtnAnchor(null)}>
+            {(isCreate
+              ? [['publish','Publish Directly'],['schedule','Schedule…'],['save','Save as Draft'],['campaign','Add to Campaign'],['content_copy','Duplicate & Edit']]
+              : [['content_copy','Duplicate'],['edit','Edit Post'],['campaign','Promote Post'],['save','Save as Template']]
+            ).map(([icon, label]) => (
+              <MenuItem key={label} onClick={() => setPubBtnAnchor(null)} sx={{ fontSize:13, gap:'8px' }}>
+                <span className="material-icons" style={{fontSize:16, color:'#848ea4'}}>{icon}</span>{label}
+              </MenuItem>
+            ))}
+          </Menu>
+        </Box>
+      </Box>
+
+      {/* ── Status row ── */}
+      <Box sx={{ height:44, flexShrink:0, display:'flex', alignItems:'center', gap:'10px', px:2, bgcolor:'#fff', borderBottom:'1px solid #e7eaee' }}>
+        <Box component="button" onClick={isCreate ? e => setStatusAnchor(e.currentTarget) : undefined}
+          sx={{ display:'inline-flex', alignItems:'center', gap:'4px', height:22, px:'10px', borderRadius:'4px', fontSize:11, fontWeight:700, letterSpacing:'.05em', cursor: isCreate ? 'pointer' : 'default', border:'none',
+            bgcolor: isCreate ? (STATUS_CFG[pubStatus]?.chipBg||'#e7eaee') : cfg.chipBg,
+            color:   isCreate ? (STATUS_CFG[pubStatus]?.chipText||'#515a6e') : cfg.chipText,
+            '&:hover': isCreate ? { filter:'brightness(.95)' } : {},
+          }}>
+          {isCreate ? (STATUS_CFG[pubStatus]?.label||'Draft').toUpperCase() : cfg.label.toUpperCase()}
+          {isCreate && <span className="material-icons" style={{fontSize:12}}>arrow_drop_down</span>}
+        </Box>
+        <Menu anchorEl={statusAnchor} open={Boolean(statusAnchor)} onClose={() => setStatusAnchor(null)}>
+          {[['draft','Draft'],['scheduled','Scheduled']].map(([k,lbl]) => (
+            <MenuItem key={k} selected={pubStatus===k} onClick={() => { setPubStatus(k); setStatusAnchor(null); }} sx={{ fontSize:13 }}>
+              <Box sx={{ display:'inline-flex', alignItems:'center', height:18, px:'7px', borderRadius:'3px', fontSize:10, fontWeight:700, mr:'8px', bgcolor: STATUS_CFG[k]?.chipBg, color: STATUS_CFG[k]?.chipText }}>{lbl.toUpperCase()}</Box>
+              {lbl}
+            </MenuItem>
+          ))}
+        </Menu>
+        {isCreate ? (
+          <>
+            <Box sx={{ position:'relative', display:'inline-flex', alignItems:'center', height:28, px:'10px', border:'1px solid #d3d7de', borderRadius:'6px', gap:'5px', bgcolor:'#fff', cursor:'pointer', '&:hover':{bgcolor:'#f3f5f7'} }}>
+              <span className="material-icons" style={{fontSize:14, color:'#848ea4', pointerEvents:'none'}}>calendar_today</span>
+              <Typography sx={{ fontSize:12, fontWeight:500, color: pubDate ? '#111317' : '#848ea4', pointerEvents:'none' }}>{pubDate || 'dd.mm.yyyy'}</Typography>
+              <Box component="input" type="date" value={pubDate} onChange={e => setPubDate(e.target.value)}
+                sx={{ position:'absolute', inset:0, opacity:0, cursor:'pointer', width:'100%' }} />
+            </Box>
+            <Box sx={{ position:'relative', display:'inline-flex', alignItems:'center', height:28, px:'10px', border:'1px solid #d3d7de', borderRadius:'6px', gap:'5px', bgcolor:'#fff', cursor:'pointer', '&:hover':{bgcolor:'#f3f5f7'} }}>
+              <span className="material-icons" style={{fontSize:14, color:'#848ea4', pointerEvents:'none'}}>schedule</span>
+              <Typography sx={{ fontSize:12, fontWeight:500, color: pubTime ? '#111317' : '#848ea4', pointerEvents:'none' }}>{pubTime || 'HH:MM'}</Typography>
+              <Box component="input" type="time" value={pubTime} onChange={e => setPubTime(e.target.value)}
+                sx={{ position:'absolute', inset:0, opacity:0, cursor:'pointer', width:'100%' }} />
+            </Box>
+          </>
+        ) : (
+          <Box sx={{ display:'inline-flex', alignItems:'center', height:28, px:'10px', border:'1px solid #d3d7de', borderRadius:'6px', fontSize:12, fontWeight:500, color:'#5f6a82', bgcolor:'#fff', gap:'5px' }}>
+            <span className="material-icons" style={{fontSize:14, color:'#848ea4'}}>calendar_today</span>
+            Sep 27, 2024
+          </Box>
+        )}
+        <Box sx={{ display:'flex', alignItems:'center', gap:'6px' }}>
+          <Avatar sx={{ width:22, height:22, fontSize:9, fontWeight:700, bgcolor:'#0c228d' }}>ET</Avatar>
+          <Typography sx={{ fontSize:13, color:'#111317' }}>Elly Tan</Typography>
+        </Box>
+      </Box>
+
+      {/* ── Network tabs ── */}
+      <Box sx={{ flexShrink:0, bgcolor:'#fff', borderBottom:'1px solid #e7eaee', px:2, display:'flex', overflowX:'auto' }}>
+        {SCREEN_NETWORK_TABS.map((tab, i) => {
+          const TabIcon = NET_ICONS_SCREEN[tab];
+          const isQF = tab === 'Quickfill';
+          return (
+            <Box key={tab} component="button" onClick={() => setActiveTab(i)} sx={{
+              height:42, px:'14px', border:'none', whiteSpace:'nowrap',
+              borderBottom: activeTab===i ? '2px solid #1339ec' : '2px solid transparent',
+              bgcolor:'transparent', cursor:'pointer', display:'inline-flex', alignItems:'center', gap:'5px',
+              color: activeTab===i ? '#1339ec' : '#5f6a82',
+              fontSize:13, fontWeight: activeTab===i ? 600 : 400,
+              '&:hover':{ bgcolor:'#f3f5f7' },
+              ...(isQF ? { borderLeft:'1px solid #e7eaee', ml:'4px' } : {}),
+            }}>
+              {TabIcon && <TabIcon />}
+              {isQF && <span className="material-icons" style={{fontSize:14}}>flash_on</span>}
+              {tab}
+              {NET_TAB_DOTS[tab] && <Box sx={{ width:8, height:8, borderRadius:'50%', bgcolor: NET_TAB_DOTS[tab], flexShrink:0 }} />}
+            </Box>
+          );
+        })}
+      </Box>
+
+      {/* ── Two-column body ── */}
+      <Box sx={{ flex:1, display:'flex', overflow:'hidden' }}>
+
+        {/* Left column */}
+        <Box sx={{ flex:1, overflowY:'auto', p:'16px', display:'flex', flexDirection:'column', gap:'12px' }}>
+          {isCreate ? (
+            <>
+              {/* Network Information */}
+              <CollapsibleSection label="Network Information" defaultOpen={true}>
+                <Box sx={{ px:2, pb:2 }}>
+                  <Box sx={{ border:'1px solid #e7eaee', borderRadius:'8px', overflow:'hidden' }}>
+                    <Box sx={{ display:'flex', alignItems:'center', gap:'8px', px:'14px', py:'10px', bgcolor:'#f9f9fa', borderBottom:'1px solid #f3f5f7' }}>
+                      <Box sx={{ width:20, height:20, display:'flex', alignItems:'center' }}>
+                        {NET_ICONS_SCREEN[activeTabName] ? React.createElement(NET_ICONS_SCREEN[activeTabName]) : <span className="material-icons" style={{fontSize:18, color:'#848ea4'}}>flash_on</span>}
+                      </Box>
+                      <Typography sx={{ fontSize:14, fontWeight:600, color:'#111317' }}>{activeTabName} Post Content</Typography>
+                    </Box>
+                    <Box sx={{ px:'14px', py:'14px' }}>{renderNetworkForm()}</Box>
+                  </Box>
+                </Box>
+              </CollapsibleSection>
+
+              {/* Publication */}
+              <CollapsibleSection label="Publication">
+                <Box sx={{ px:2, pb:'16px', display:'flex', flexDirection:'column', gap:'14px' }}>
+                  <Box>
+                    <FieldLabel>Status</FieldLabel>
+                    <Box sx={{ display:'flex', gap:'6px' }}>
+                      {[['draft','Draft'],['scheduled','Scheduled'],['publish-now','Publish Now']].map(([k,lbl]) => (
+                        <Box key={k} component="button" onClick={() => setPubStatus(k)}
+                          sx={{ height:30, px:'12px', border:`1px solid ${pubStatus===k?'#1339ec':'#d3d7de'}`, borderRadius:'6px', fontSize:12, fontWeight:500, cursor:'pointer',
+                            bgcolor: pubStatus===k ? '#eef3fd' : '#fff', color: pubStatus===k ? '#1339ec' : '#5f6a82', '&:hover':{bgcolor:'#f3f5f7'} }}>
+                          {lbl}
+                        </Box>
+                      ))}
+                    </Box>
+                  </Box>
+                  {pubStatus !== 'publish-now' && (
+                    <Box sx={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'10px' }}>
+                      <Box>
+                        <FieldLabel>Date</FieldLabel>
+                        <Box component="input" type="date" value={pubDate} onChange={e => setPubDate(e.target.value)}
+                          sx={{ width:'100%', height:36, px:'10px', border:'1px solid #d3d7de', borderRadius:'6px', fontSize:13, color:'#111317', bgcolor:'#fff', fontFamily:'inherit', cursor:'pointer' }} />
+                      </Box>
+                      <Box>
+                        <FieldLabel>Time</FieldLabel>
+                        <Box component="input" type="time" value={pubTime} onChange={e => setPubTime(e.target.value)}
+                          sx={{ width:'100%', height:36, px:'10px', border:'1px solid #d3d7de', borderRadius:'6px', fontSize:13, color:'#111317', bgcolor:'#fff', fontFamily:'inherit', cursor:'pointer' }} />
+                      </Box>
+                    </Box>
+                  )}
+                  <Box>
+                    <FieldLabel>Time Zone</FieldLabel>
+                    <NativeSelect value={timeZone} onChange={setTimeZone} options={['Europe/Berlin (UTC+2)','Europe/London (UTC+1)','UTC','America/New_York (UTC-4)','America/Los_Angeles (UTC-7)','Asia/Tokyo (UTC+9)']} />
+                  </Box>
+                </Box>
+              </CollapsibleSection>
+
+              {/* Settings */}
+              <CollapsibleSection label="Settings">
+                <Box sx={{ px:2, pb:'16px' }}>
+                  <SwitchField label="Allow comments" checked={allowComments} onChange={setAllowComments} />
+                  {allowComments && (
+                    <Box sx={{ py:'10px', borderBottom:'1px solid #f3f5f7' }}>
+                      <FieldLabel>First comment</FieldLabel>
+                      <Textarea value={firstComment} onChange={setFirstComment} placeholder="Add a first comment after publishing…" rows={2} maxChars={2200} />
+                    </Box>
+                  )}
+                  <SwitchField label="Shorten link" subtitle="Automatically shorten URLs in the post" checked={shortLink} onChange={setShortLink} />
+                  {(activeTabName==='Facebook'||activeTabName==='Instagram') && (
+                    <SwitchField label="Boost post" subtitle="Promote with paid advertising" checked={boostPost} onChange={setBoostPost} />
+                  )}
+                  <Box sx={{ display:'flex', alignItems:'center', justifyContent:'space-between', py:'10px' }}>
+                    <Box>
+                      <Typography sx={{ fontSize:13, fontWeight:500, color:'#111317' }}>Approval required</Typography>
+                      <Typography sx={{ fontSize:11, color:'#848ea4' }}>Post must be approved before publishing</Typography>
+                    </Box>
+                    <Box sx={{ display:'inline-flex', alignItems:'center', height:20, px:'7px', borderRadius:'3px', fontSize:10, fontWeight:700, bgcolor:'#e7eaee', color:'#515a6e' }}>OFF</Box>
+                  </Box>
+                </Box>
+              </CollapsibleSection>
+
+              {/* Newsfeed Targeting — FB/LinkedIn */}
+              {(activeTabName==='Facebook'||activeTabName==='LinkedIn') && (
+                <CollapsibleSection label="Newsfeed Targeting">
+                  <Box sx={{ px:2, pb:'16px', display:'flex', flexDirection:'column', gap:'12px' }}>
+                    <Box>
+                      <FieldLabel>Age Range</FieldLabel>
+                      <NativeSelect value={targetAge} onChange={setTargetAge} options={['All ages','13+','18+','21+','25+','35+','45+']} />
+                    </Box>
+                    <Box>
+                      <FieldLabel>Target Locations</FieldLabel>
+                      <RemovableChips tags={targetLocs} onRemove={i => setTargetLocs(t => t.filter((_,j)=>j!==i))} />
+                      <AddTagRow onAdd={v => setTargetLocs(t => [...t, v])} />
+                    </Box>
+                    <Box>
+                      <FieldLabel>Target Interests</FieldLabel>
+                      <RemovableChips tags={targetInts} onRemove={i => setTargetInts(t => t.filter((_,j)=>j!==i))} bg="#fde9b0" color="#8c631c" />
+                      <AddTagRow onAdd={v => setTargetInts(t => [...t, v])} />
+                    </Box>
+                  </Box>
+                </CollapsibleSection>
+              )}
+
+              {/* Audience Restriction — FB */}
+              {activeTabName==='Facebook' && (
+                <CollapsibleSection label="Audience Restriction">
+                  <Box sx={{ px:2, pb:'16px' }}>
+                    <SwitchField label="Minimum age restriction" checked={restrictAge} onChange={setRestrictAge} />
+                    {restrictAge && (
+                      <Box sx={{ pl:2, py:'8px', borderBottom:'1px solid #f3f5f7' }}>
+                        <FieldLabel>Minimum Age</FieldLabel>
+                        <NativeSelect value={minAge} onChange={setMinAge} options={['13','16','18','21','25']} sx={{ width:120 }} />
+                      </Box>
+                    )}
+                    <SwitchField label="Country restriction" checked={restrictCountry} onChange={setRestrictCountry} />
+                    {restrictCountry && (
+                      <Box sx={{ pl:2, py:'8px' }}>
+                        <FieldLabel>Allowed Countries</FieldLabel>
+                        <RemovableChips tags={countryTags} onRemove={i => setCountryTags(t => t.filter((_,j)=>j!==i))} />
+                        <AddTagRow onAdd={v => setCountryTags(t => [...t, v])} />
+                      </Box>
+                    )}
+                  </Box>
+                </CollapsibleSection>
+              )}
+
+              {/* Assignments */}
+              <CollapsibleSection label="Assignments" defaultOpen={true}>
+                <Box sx={{ px:2, pb:'16px', display:'flex', flexDirection:'column', gap:'14px' }}>
+                  <Box>
+                    <FieldLabel>Assigned to</FieldLabel>
+                    <Box sx={{ display:'flex', flexWrap:'wrap', gap:'6px', alignItems:'center' }}>
+                      {assignedUsers.map(u => (
+                        <Box key={u.n} sx={{ display:'inline-flex', alignItems:'center', gap:'5px', height:26, px:'8px', border:'1px solid #d3d7de', borderRadius:'20px', fontSize:12, color:'#111317', bgcolor:'#fff' }}>
+                          <Avatar sx={{ width:16, height:16, fontSize:7, fontWeight:700, bgcolor:u.c }}>{u.i}</Avatar>
+                          {u.n}
+                          <Box component="span" onClick={() => setAssignedUsers(p => p.filter(x => x.n !== u.n))} sx={{ display:'inline-flex', alignItems:'center', cursor:'pointer', ml:'1px', opacity:.5, '&:hover':{opacity:1} }}>
+                            <span className="material-icons" style={{fontSize:12}}>close</span>
+                          </Box>
+                        </Box>
+                      ))}
+                      <Box component="button" onClick={e => setUserPickerAnchor(e.currentTarget)} sx={{ height:26, width:26, border:'1px dashed #d3d7de', borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center', bgcolor:'transparent', cursor:'pointer', color:'#5f6a82', '&:hover':{bgcolor:'#f3f5f7'} }}>
+                        <span className="material-icons" style={{fontSize:14}}>add</span>
+                      </Box>
+                    </Box>
+                    <Menu anchorEl={userPickerAnchor} open={Boolean(userPickerAnchor)} onClose={() => setUserPickerAnchor(null)}>
+                      {ALL_USERS.filter(u => !assignedUsers.find(a => a.n === u.n)).map(u => (
+                        <MenuItem key={u.n} onClick={() => { setAssignedUsers(p => [...p, u]); setUserPickerAnchor(null); }} sx={{ fontSize:13, gap:'8px' }}>
+                          <Avatar sx={{ width:22, height:22, fontSize:9, fontWeight:700, bgcolor:u.c }}>{u.i}</Avatar>{u.n}
+                        </MenuItem>
+                      ))}
+                      {ALL_USERS.filter(u => !assignedUsers.find(a => a.n === u.n)).length === 0 && (
+                        <MenuItem disabled sx={{ fontSize:13 }}>All users assigned</MenuItem>
+                      )}
+                    </Menu>
+                  </Box>
+                  <Box>
+                    <FieldLabel>Tags</FieldLabel>
+                    <RemovableChips tags={postTags} onRemove={i => setPostTags(t => t.filter((_,j)=>j!==i))} bg="#e7eaee" color="#414858" />
+                    <AddTagRow onAdd={v => setPostTags(t => [...t, v])} />
+                  </Box>
+                  <Box>
+                    <FieldLabel>Priority</FieldLabel>
+                    <Box sx={{ display:'flex', gap:'6px' }}>
+                      {['Low','Normal','High','Urgent'].map(p => (
+                        <Box key={p} component="button" onClick={() => setPriority(p)}
+                          sx={{ height:30, px:'12px', border:`1px solid ${priority===p?'#1339ec':'#d3d7de'}`, borderRadius:'6px', fontSize:12, fontWeight:500, cursor:'pointer',
+                            bgcolor: priority===p ? '#eef3fd' : '#fff',
+                            color: priority===p ? '#1339ec' : p==='Urgent'?'#cc0000' : p==='High'?'#e05a00' : '#5f6a82',
+                            '&:hover':{bgcolor:'#f3f5f7'} }}>
+                          {p}
+                        </Box>
+                      ))}
+                    </Box>
+                  </Box>
+                </Box>
+              </CollapsibleSection>
+            </>
+          ) : (
+            /* View mode */
+            <>
+              <CollapsibleSection label="Network Information" defaultOpen={true} stateKey="Network Information_view">
+                <Box sx={{ px:2, pb:2 }}>
+                  <Box sx={{ display:'flex', alignItems:'center', gap:'6px', py:'8px', px:'4px', borderRadius:'6px', cursor:'pointer', '&:hover':{bgcolor:'#f3f5f7'} }}>
+                    <span className="material-icons" style={{fontSize:16, color:'#848ea4'}}>chevron_right</span>
+                    <Typography sx={{ fontSize:13, color:'#1339ec', fontWeight:500 }}>Facelift BBT</Typography>
+                    <span className="material-icons" style={{fontSize:14, color:'#1339ec'}}>open_in_new</span>
+                  </Box>
+                  <Box sx={{ mt:'8px' }}>
+                    <Box component="button" onClick={() => togSec('Info')} sx={{ width:'100%', display:'flex', alignItems:'center', gap:'6px', mb: secOpen('Info',true) ? '10px' : 0, border:'none', bgcolor:'transparent', cursor:'pointer', p:'4px 0', borderRadius:'5px', '&:hover':{bgcolor:'#f3f5f7'} }}>
+                      <span className="material-icons" style={{fontSize:16, color:'#848ea4', transform: secOpen('Info',true) ? 'none' : 'rotate(-90deg)', transition:'transform .15s'}}>expand_less</span>
+                      <Typography sx={{ fontSize:13, fontWeight:600, color:'#111317' }}>Info</Typography>
+                    </Box>
+                    {secOpen('Info',true) && (
+                      <Box sx={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'14px', pl:'22px' }}>
+                        {[
+                          ['Post Type', activeTabName==='Instagram' ? 'Feed' : activeTabName==='YouTube' ? 'Video' : 'Image'],
+                          ['Publishing Type','Directly Published'],
+                          ['Network', activeTabName],
+                          ['Channel','Facelift BBT'],
+                        ].map(([lbl,val]) => (
+                          <Box key={lbl}>
+                            <Typography sx={{ fontSize:11, color:'#848ea4', mb:'2px' }}>{lbl}</Typography>
+                            <Typography sx={{ fontSize:13, color:'#111317', fontWeight:500 }}>{val}</Typography>
+                          </Box>
+                        ))}
+                      </Box>
+                    )}
+                  </Box>
+                </Box>
+              </CollapsibleSection>
+              <CollapsibleSection label="Publication Details" defaultOpen={true}>
+                <Box sx={{ px:2, pb:'18px', display:'flex', flexDirection:'column', gap:'14px' }}>
+                  <Box>
+                    <Typography sx={{ fontSize:11, color:'#848ea4', mb:'5px' }}>Post Set Owner</Typography>
+                    <Box sx={{ display:'flex', alignItems:'center', gap:'7px' }}>
+                      <Avatar sx={{ width:24, height:24, fontSize:9, fontWeight:700, bgcolor:'#0c228d' }}>ET</Avatar>
+                      <Typography sx={{ fontSize:13, color:'#111317' }}>Elly Tan</Typography>
+                    </Box>
+                  </Box>
+                  <Box>
+                    <Typography sx={{ fontSize:11, color:'#848ea4', mb:'5px' }}>Used Template</Typography>
+                    <Typography sx={{ fontSize:13, color:'#1339ec', cursor:'pointer' }}>Title of the used Template</Typography>
+                  </Box>
+                  <Box>
+                    <Typography sx={{ fontSize:11, color:'#848ea4', mb:'5px' }}>Creation Date</Typography>
+                    <Typography sx={{ fontSize:13, color:'#111317' }}>Sep 27, 2024, 4:34:02 PM</Typography>
+                  </Box>
+                  <Box>
+                    <Typography sx={{ fontSize:11, color:'#848ea4', mb:'5px' }}>Status</Typography>
+                    <Box sx={{ display:'inline-flex', alignItems:'center', height:20, px:'7px', borderRadius:'3px', fontSize:10, fontWeight:700, letterSpacing:'.04em', bgcolor: cfg.chipBg, color: cfg.chipText }}>
+                      {cfg.label.toUpperCase()}
+                    </Box>
+                  </Box>
+                  <Box>
+                    <Typography sx={{ fontSize:11, color:'#848ea4', mb:'5px' }}>Tags</Typography>
+                    <Box sx={{ display:'flex', gap:'5px', flexWrap:'wrap' }}>
+                      {(post?.tags || [['teal','Community']]).map(([c,l],i) => {
+                        const tc = TAG_CFG[c] || TAG_CFG.grey;
+                        return <Box key={i} sx={{ display:'inline-flex', px:'6px', py:'2px', borderRadius:'3px', fontSize:11, fontWeight:500, bgcolor:tc.bg, color:tc.color }}>{l}</Box>;
+                      })}
+                    </Box>
+                  </Box>
+                </Box>
+              </CollapsibleSection>
+
+              {/* Engagement & Performance */}
+              <CollapsibleSection label="Engagement & Performance" stateKey="Engagement">
+                <Box sx={{ px:2, pb:'16px' }}>
+                  <Box sx={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'10px', mb:'14px' }}>
+                    {[
+                      { label:'Reach',        value:'12,847', icon:'people',         color:'#1339ec' },
+                      { label:'Impressions',  value:'31,203', icon:'visibility',      color:'#5f6a82' },
+                      { label:'Engagements',  value:'1,429',  icon:'favorite_border', color:'#e05a00' },
+                      { label:'Likes',        value:'1,201',  icon:'thumb_up',        color:'#2e881b' },
+                      { label:'Comments',     value:'148',    icon:'chat_bubble_outline', color:'#8c631c' },
+                      { label:'Shares',       value:'80',     icon:'share',           color:'#0c228d' },
+                    ].map(m => (
+                      <Box key={m.label} sx={{ border:'1px solid #e7eaee', borderRadius:'8px', p:'10px', textAlign:'center' }}>
+                        <span className="material-icons" style={{fontSize:18, color:m.color, display:'block', marginBottom:4}}>{m.icon}</span>
+                        <Typography sx={{ fontSize:16, fontWeight:700, color:'#111317', lineHeight:1 }}>{m.value}</Typography>
+                        <Typography sx={{ fontSize:10, color:'#848ea4', mt:'2px' }}>{m.label}</Typography>
+                      </Box>
+                    ))}
+                  </Box>
+                  <Box sx={{ border:'1px solid #e7eaee', borderRadius:'8px', p:'12px' }}>
+                    <Typography sx={{ fontSize:11, fontWeight:600, color:'#5f6a82', textTransform:'uppercase', letterSpacing:'.04em', mb:'8px' }}>Engagement Rate</Typography>
+                    <Box sx={{ display:'flex', alignItems:'center', gap:'10px' }}>
+                      <Box sx={{ flex:1, height:8, bgcolor:'#e7eaee', borderRadius:4, overflow:'hidden' }}>
+                        <Box sx={{ width:'11.1%', height:'100%', bgcolor:'#1339ec', borderRadius:4 }} />
+                      </Box>
+                      <Typography sx={{ fontSize:13, fontWeight:700, color:'#1339ec', flexShrink:0 }}>11.1%</Typography>
+                    </Box>
+                    <Typography sx={{ fontSize:11, color:'#848ea4', mt:'4px' }}>Above average for this network (avg 3.2%)</Typography>
+                  </Box>
+                </Box>
+              </CollapsibleSection>
+
+              {/* Activity */}
+              <CollapsibleSection label="Activity" stateKey="Activity">
+                <Box sx={{ px:2, pb:'16px' }}>
+                  {[
+                    { icon:'publish',            color:'#2e881b', label:'Post published',               sub:'Elly Tan',  time:'Sep 27, 2024 · 4:34 PM' },
+                    { icon:'check_circle_outline',color:'#1339ec', label:'Approved by reviewer',         sub:'Max Krauss',time:'Sep 26, 2024 · 11:12 AM' },
+                    { icon:'rate_review',         color:'#e05a00', label:'Submitted for approval',       sub:'Elly Tan',  time:'Sep 25, 2024 · 3:07 PM' },
+                    { icon:'edit',                color:'#848ea4', label:'Content edited',               sub:'Elly Tan',  time:'Sep 25, 2024 · 2:44 PM' },
+                    { icon:'add_circle_outline',  color:'#848ea4', label:'Post created',                 sub:'Elly Tan',  time:'Sep 24, 2024 · 9:00 AM' },
+                  ].map((ev, i) => (
+                    <Box key={i} sx={{ display:'flex', gap:'10px', pb:'12px', position:'relative',
+                      '&:not(:last-child)::after':{ content:'""', position:'absolute', left:'9px', top:'20px', bottom:0, width:'1px', bgcolor:'#e7eaee' } }}>
+                      <Box sx={{ width:20, height:20, borderRadius:'50%', bgcolor:'#f3f5f7', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, zIndex:1 }}>
+                        <span className="material-icons" style={{fontSize:13, color:ev.color}}>{ev.icon}</span>
+                      </Box>
+                      <Box>
+                        <Typography sx={{ fontSize:12, fontWeight:500, color:'#111317' }}>{ev.label}</Typography>
+                        <Typography sx={{ fontSize:11, color:'#848ea4' }}>{ev.sub} · {ev.time}</Typography>
+                      </Box>
+                    </Box>
+                  ))}
+                </Box>
+              </CollapsibleSection>
+            </>
+          )}
+        </Box>
+
+        {/* Right column — Preview */}
+        <Box sx={{ width:320, flexShrink:0, bgcolor:'#fff', borderLeft:'1px solid #e7eaee', display:'flex', flexDirection:'column', p:'16px' }}>
+          <Box sx={{ display:'flex', alignItems:'center', justifyContent:'space-between', mb:'6px' }}>
+            <Box>
+              <Typography sx={{ fontSize:14, fontWeight:700, color:'#111317' }}>Preview</Typography>
+              <Typography sx={{ fontSize:11, color:'#848ea4' }}>
+                {activeTabName === 'Quickfill' ? 'All networks' : activeTabName}{activeTabName !== 'Quickfill' && netContent[activeTabName]?.postType ? ` · ${netContent[activeTabName].postType}` : ''}
+              </Typography>
+            </Box>
+            <Box sx={{ display:'flex', gap:'2px' }}>
+              {[['desktop_windows','desktop'],['smartphone','mobile']].map(([icon,key]) => (
+                <IconButton key={key} size="small" onClick={() => setPreviewDevice(key)} sx={{ width:28, height:28, borderRadius:'6px', bgcolor: previewDevice===key?'#eef3fd':'transparent', color: previewDevice===key?'#1339ec':'#848ea4', '&:hover':{bgcolor:'#f3f5f7'} }}>
+                  <span className="material-icons" style={{fontSize:16}}>{icon}</span>
+                </IconButton>
+              ))}
+            </Box>
+          </Box>
+          <Box sx={{ flex:1, display:'flex', alignItems:'center', justifyContent:'center' }}>
+            {(() => {
+              const nc = netContent[activeTabName] || {};
+              const captionText = nc.text || nc.caption || nc.description || '';
+              const hasMedia = true; // fake media always present
+              const postBg = !isCreate && post ? (post.bg || BG_MAP[post.s] || '#f0f0f0') : 'linear-gradient(135deg,#e8eaec,#cdd1d8)';
+              const postEmoji = !isCreate && post ? (post.emoji || '📄') : '🖼';
+              return previewDevice === 'mobile' ? (
+                <Box sx={{ border:'3px solid #ccd0d8', borderRadius:'32px', width:210, overflow:'hidden', bgcolor:'#fff', display:'flex', flexDirection:'column' }}>
+                  <Box sx={{ width:70, height:18, bgcolor:'#ccd0d8', borderRadius:'0 0 14px 14px', mx:'auto', flexShrink:0 }} />
+                  {/* Status bar */}
+                  <Box sx={{ height:20, bgcolor:'#fff', display:'flex', alignItems:'center', justifyContent:'space-between', px:'10px' }}>
+                    <Typography sx={{ fontSize:9, fontWeight:700, color:'#111' }}>9:41</Typography>
+                    <Box sx={{ display:'flex', gap:'3px', alignItems:'center' }}>
+                      <span style={{fontSize:7, color:'#111'}}>▲▲▲</span>
+                      <span style={{fontSize:7, color:'#111'}}>WiFi</span>
+                    </Box>
+                  </Box>
+                  {/* IG-style header */}
+                  {(activeTabName==='Instagram'||activeTabName==='Quickfill') && (
+                    <>
+                      <Box sx={{ height:28, bgcolor:'#fff', display:'flex', alignItems:'center', justifyContent:'space-between', px:'8px', borderBottom:'1px solid #f0f0f0' }}>
+                        <Typography sx={{ fontSize:12, fontWeight:700, fontFamily:'Georgia,serif', color:'#000' }}>Instagram</Typography>
+                        <Box sx={{ display:'flex', gap:'6px' }}>
+                          <span className="material-icons" style={{fontSize:14, color:'#000'}}>favorite_border</span>
+                          <span className="material-icons" style={{fontSize:14, color:'#000'}}>send</span>
+                        </Box>
+                      </Box>
+                      <Box sx={{ display:'flex', alignItems:'center', gap:'6px', p:'5px 8px' }}>
+                        <Box sx={{ width:20, height:20, borderRadius:'50%', background:'linear-gradient(135deg,#fd5949,#d6249f,#285aeb)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:8, color:'#fff', fontWeight:700 }}>f</Box>
+                        <Typography sx={{ fontSize:9, fontWeight:600, color:'#000', flex:1 }}>facelift_brand</Typography>
+                        <Typography sx={{ fontSize:12, color:'#555' }}>···</Typography>
+                      </Box>
+                    </>
+                  )}
+                  {/* Media area */}
+                  <Box sx={{ width:'100%', aspectRatio:'1', background: postBg, display:'flex', alignItems:'center', justifyContent:'center', fontSize: isCreate ? 32 : 40, flexShrink:0 }}>
+                    {isCreate ? <span style={{opacity:.4, fontSize:32}}>🖼</span> : postEmoji}
+                  </Box>
+                  {/* Actions */}
+                  {(activeTabName==='Instagram'||activeTabName==='Quickfill') && (
+                    <Box sx={{ display:'flex', alignItems:'center', justifyContent:'space-between', px:'8px', py:'5px' }}>
+                      <Box sx={{ display:'flex', gap:'7px' }}>
+                        {['favorite_border','chat_bubble_outline','send'].map(ic => <span key={ic} className="material-icons" style={{fontSize:14}}>{ic}</span>)}
+                      </Box>
+                      <span className="material-icons" style={{fontSize:14}}>bookmark_border</span>
+                    </Box>
+                  )}
+                  {/* Caption */}
+                  <Box sx={{ px:'8px', pb:'10px', maxHeight:60, overflow:'hidden' }}>
+                    {captionText ? (
+                      <Typography sx={{ fontSize:7.5, color:'#000', lineHeight:1.4 }}>
+                        <strong>facelift_brand</strong> {captionText.slice(0,80)}{captionText.length>80?'…':''}
+                      </Typography>
+                    ) : (
+                      <Box sx={{ height:8, bgcolor:'#e7eaee', borderRadius:2, mb:'4px', width:'80%' }} />
+                    )}
+                  </Box>
+                </Box>
+              ) : (
+                <Box sx={{ border:'2px solid #ccd0d8', borderRadius:'10px', width:'100%', overflow:'hidden' }}>
+                  <Box sx={{ height:28, bgcolor:'#f3f5f7', borderBottom:'1px solid #e7eaee', display:'flex', alignItems:'center', px:'10px', gap:'5px' }}>
+                    {['#ef4444','#f59e0b','#22c55e'].map(c => <Box key={c} sx={{ width:8, height:8, borderRadius:'50%', bgcolor:c }} />)}
+                    <Box sx={{ flex:1, height:15, bgcolor:'#e7eaee', borderRadius:'3px', mx:'6px' }} />
+                    <span className="material-icons" style={{fontSize:12, color:'#848ea4'}}>refresh</span>
+                  </Box>
+                  <Box sx={{ height:200, background: postBg, display:'flex', alignItems:'center', justifyContent:'center', fontSize: isCreate ? 28 : 40, flexDirection:'column', gap:'8px' }}>
+                    {isCreate ? (
+                      <>
+                        <span style={{opacity:.3, fontSize:32}}>🖼</span>
+                        {captionText && <Typography sx={{ fontSize:10, color:'#5f6a82', px:'16px', textAlign:'center', maxWidth:220 }}>{captionText.slice(0,60)}{captionText.length>60?'…':''}</Typography>}
+                      </>
+                    ) : postEmoji}
+                  </Box>
+                </Box>
+              );
+            })()}
+          </Box>
+        </Box>
+
+      </Box>
+    </Box>
   );
 };
 
@@ -920,7 +1824,7 @@ const ToolbarRow = ({ wd, weekOffset, viewMode, calView, onPrev, onNext, onToday
 };
 
 // ── Page title bar (with menus) ───────────────────────────────────────────────
-const PageTitleBar = ({ onOpenDrafts }) => {
+const PageTitleBar = ({ onOpenDrafts, onNewPost }) => {
   const [moreAnchor,   setMoreAnchor]   = useState(null);
   const [exportAnchor, setExportAnchor] = useState(null);
   const [createAnchor, setCreateAnchor] = useState(null);
@@ -967,7 +1871,7 @@ const PageTitleBar = ({ onOpenDrafts }) => {
         </Box>
         {/* Create split (primary) */}
         <Box sx={{ display:'inline-flex', height:32 }}>
-          <Box component="button" sx={{ px:'14px', border:'1px solid #1339ec', borderRight:'none', borderRadius:'7px 0 0 7px', fontSize:13, fontWeight:600, color:'#fff', bgcolor:'#1339ec', cursor:'pointer', display:'inline-flex', alignItems:'center', gap:'6px', '&:hover':{bgcolor:'#0f2ebd'} }}>
+          <Box component="button" onClick={onNewPost} sx={{ px:'14px', border:'1px solid #1339ec', borderRight:'none', borderRadius:'7px 0 0 7px', fontSize:13, fontWeight:600, color:'#fff', bgcolor:'#1339ec', cursor:'pointer', display:'inline-flex', alignItems:'center', gap:'6px', '&:hover':{bgcolor:'#0f2ebd'} }}>
             <span className="material-icons" style={{fontSize:14}}>add</span>
             Create
           </Box>
@@ -976,7 +1880,7 @@ const PageTitleBar = ({ onOpenDrafts }) => {
           </Box>
           <Menu anchorEl={createAnchor} open={Boolean(createAnchor)} onClose={() => setCreateAnchor(null)}>
             {['New Post','New Campaign','New Event','Schedule post','Import posts'].map(item => (
-              <MenuItem key={item} onClick={() => setCreateAnchor(null)} sx={{ fontSize:13 }}>{item}</MenuItem>
+              <MenuItem key={item} onClick={() => { setCreateAnchor(null); if (item === 'New Post' && onNewPost) onNewPost(); }} sx={{ fontSize:13 }}>{item}</MenuItem>
             ))}
           </Menu>
         </Box>
@@ -1149,6 +2053,8 @@ const App = () => {
   const [datePickerOpen, setDatePickerOpen] = useState(false);
   const [viewOptsOpen,   setViewOptsOpen]   = useState(false);
   const [viewOpts,       setViewOpts]       = useState({ images:true, tags:true, slim:false, colored:false });
+  const [screenMode,     setScreenMode]     = useState(null); // null | 'create' | 'view'
+  const [screenPost,     setScreenPost]     = useState(null);
   const datePickerBtnRef   = useRef(null);
   const datePickerPanelRef = useRef(null);
   const viewOptsBtnRef     = useRef(null);
@@ -1157,6 +2063,10 @@ const App = () => {
   const wd = WEEKS.find(w => w.offset === weekOffset);
   const handleCardClick = card => { setSelectedPost(card); setOpenPanel('postDetail'); };
   const togglePanel = id => setOpenPanel(p => p === id ? null : id);
+
+  const openCreateScreen = () => { setScreenMode('create'); setScreenPost(null); setOpenPanel(null); };
+  const openViewScreen   = (post) => { setScreenMode('view'); setScreenPost(post); setOpenPanel(null); };
+  const closeScreen      = () => { setScreenMode(null); setScreenPost(null); };
 
   // Close popovers on outside click — exclude both the button AND the panel
   React.useEffect(() => {
@@ -1181,35 +2091,49 @@ const App = () => {
         <Box sx={{ display:'flex', flex:1, overflow:'hidden' }}>
           <SubNav open={subNavOpen} onToggle={() => setSubNavOpen(o => !o)} />
           <Box component="main" sx={{ flex:1, display:'flex', flexDirection:'column', overflow:'hidden', bgcolor:'#f3f5f7' }}>
-            <PageTitleBar onOpenDrafts={() => togglePanel('drafts')} />
-            <ToolbarRow
-              wd={wd} weekOffset={weekOffset} viewMode={viewMode} calView={calView}
-              onPrev={() => setWeekOffset(o => Math.max(-1, o - 1))}
-              onNext={() => setWeekOffset(o => Math.min(1,  o + 1))}
-              onToday={() => setWeekOffset(0)}
-              onViewMode={setViewMode} onCalView={setCalView}
-              onOpenSearch={() => togglePanel('search')}
-              onOpenDrafts={() => togglePanel('drafts')}
-              onOpenFilters={() => togglePanel('filters')}
-              onToggleDatePicker={() => { setDatePickerOpen(o => !o); setViewOptsOpen(false); }}
-              onToggleViewOptions={() => { setViewOptsOpen(o => !o); setDatePickerOpen(false); }}
-              datePickerBtnRef={datePickerBtnRef}
-              viewOptsBtnRef={viewOptsBtnRef}
-            />
-            <CalendarArea wd={wd} viewMode={viewMode} calView={calView} onCardClick={handleCardClick} viewOpts={viewOpts} />
+            {screenMode !== null ? (
+              <PostFullScreen mode={screenMode} post={screenPost} onBack={closeScreen} />
+            ) : (
+              <>
+                <PageTitleBar onOpenDrafts={() => togglePanel('drafts')} onNewPost={openCreateScreen} />
+                <ToolbarRow
+                  wd={wd} weekOffset={weekOffset} viewMode={viewMode} calView={calView}
+                  onPrev={() => setWeekOffset(o => Math.max(-1, o - 1))}
+                  onNext={() => setWeekOffset(o => Math.min(1,  o + 1))}
+                  onToday={() => setWeekOffset(0)}
+                  onViewMode={setViewMode} onCalView={setCalView}
+                  onOpenSearch={() => togglePanel('search')}
+                  onOpenDrafts={() => togglePanel('drafts')}
+                  onOpenFilters={() => togglePanel('filters')}
+                  onToggleDatePicker={() => { setDatePickerOpen(o => !o); setViewOptsOpen(false); }}
+                  onToggleViewOptions={() => { setViewOptsOpen(o => !o); setDatePickerOpen(false); }}
+                  datePickerBtnRef={datePickerBtnRef}
+                  viewOptsBtnRef={viewOptsBtnRef}
+                />
+                <CalendarArea wd={wd} viewMode={viewMode} calView={calView} onCardClick={handleCardClick} viewOpts={viewOpts} />
+              </>
+            )}
           </Box>
         </Box>
       </Box>
-      {/* Popovers */}
-      <DateRangePicker anchorEl={datePickerBtnRef.current} open={datePickerOpen} onClose={() => setDatePickerOpen(false)} panelRef={datePickerPanelRef} />
-      <ViewOptionsPopover anchorEl={viewOptsBtnRef.current} open={viewOptsOpen} onClose={() => setViewOptsOpen(false)} opts={viewOpts} onChange={setViewOpts} panelRef={viewOptsPanelRef} />
+      {/* Popovers — only when on calendar */}
+      {screenMode === null && (
+        <>
+          <DateRangePicker anchorEl={datePickerBtnRef.current} open={datePickerOpen} onClose={() => setDatePickerOpen(false)} panelRef={datePickerPanelRef} />
+          <ViewOptionsPopover anchorEl={viewOptsBtnRef.current} open={viewOptsOpen} onClose={() => setViewOptsOpen(false)} opts={viewOpts} onChange={setViewOpts} panelRef={viewOptsPanelRef} />
+        </>
+      )}
       {/* Main nav overlay */}
       <MainNavDrawer open={mainNavOpen} onClose={() => setMainNavOpen(false)} />
-      {/* Side panels */}
-      <PostDetailPanel open={openPanel === 'postDetail'} post={selectedPost} onClose={() => setOpenPanel(null)} />
-      <SearchPanel  open={openPanel === 'search'}  onClose={() => setOpenPanel(null)} />
-      <DraftsPanel  open={openPanel === 'drafts'}  onClose={() => setOpenPanel(null)} />
-      <FiltersPanel open={openPanel === 'filters'} onClose={() => setOpenPanel(null)} />
+      {/* Side panels — only when on calendar */}
+      {screenMode === null && (
+        <>
+          <PostDetailPanel open={openPanel === 'postDetail'} post={selectedPost} onClose={() => setOpenPanel(null)} onViewDetails={() => openViewScreen(selectedPost)} />
+          <SearchPanel  open={openPanel === 'search'}  onClose={() => setOpenPanel(null)} />
+          <DraftsPanel  open={openPanel === 'drafts'}  onClose={() => setOpenPanel(null)} />
+          <FiltersPanel open={openPanel === 'filters'} onClose={() => setOpenPanel(null)} />
+        </>
+      )}
     </ThemeProvider>
   );
 };
