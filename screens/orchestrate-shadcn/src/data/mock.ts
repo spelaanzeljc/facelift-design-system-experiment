@@ -1,10 +1,11 @@
 export const DAY_ABBR = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 export const STATUS_CFG = {
-  successful: { label: 'Successful', border: '#2e881b', chipBg: '#e9ffcf', chipText: '#2e881b' },
-  scheduled:  { label: 'Scheduled',  border: '#1339ec', chipBg: '#eef3fd', chipText: '#1339ec' },
-  draft:      { label: 'Draft',      border: '#a7aebe', chipBg: '#e7eaee', chipText: '#515a6e' },
-  failed:     { label: 'Failed',     border: '#cc0000', chipBg: '#ffebeb', chipText: '#cc0000' },
+  successful:     { label: 'Successful',     border: '#2e881b', chipBg: '#e9ffcf', chipText: '#2e881b' },
+  scheduled:      { label: 'Scheduled',      border: '#1339ec', chipBg: '#eef3fd', chipText: '#1339ec' },
+  draft:          { label: 'Draft',          border: '#a7aebe', chipBg: '#e7eaee', chipText: '#515a6e' },
+  failed:         { label: 'Failed',         border: '#cc0000', chipBg: '#ffebeb', chipText: '#cc0000' },
+  to_be_approved: { label: 'To Be Approved', border: '#e05a00', chipBg: '#ffede2', chipText: '#e05a00' },
 } as const;
 
 export const TAG_CFG: Record<string, { bg: string; color: string }> = {
@@ -69,10 +70,11 @@ export const FAKE_MEDIA = [
 ];
 
 export const BG_MAP: Record<string, string> = {
-  successful: 'linear-gradient(135deg,#d9c8b8,#c4a882)',
-  scheduled:  'linear-gradient(135deg,#2a1a8e,#4060c8)',
-  draft:      'linear-gradient(135deg,#e8e4f0,#d4cfe8)',
-  failed:     'linear-gradient(135deg,#2a1a3e,#4a1a6a)',
+  successful:     'linear-gradient(135deg,#d9c8b8,#c4a882)',
+  scheduled:      'linear-gradient(135deg,#2a1a8e,#4060c8)',
+  draft:          'linear-gradient(135deg,#e8e4f0,#d4cfe8)',
+  failed:         'linear-gradient(135deg,#2a1a3e,#4a1a6a)',
+  to_be_approved: 'linear-gradient(135deg,#fde9b0,#f9b55a)',
 };
 
 export const SCREEN_NETWORK_TABS = ['Instagram', 'Facebook', 'YouTube', 'TikTok', 'LinkedIn', 'X', 'XING', 'Quickfill'] as const;

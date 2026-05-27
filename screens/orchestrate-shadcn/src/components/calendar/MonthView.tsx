@@ -21,14 +21,19 @@ const MONTH_ROWS: (number | null)[][] = [
   [30, null, null, null, null, null, null],
 ]
 
-const TODAY = 18
+// Derive today's date from the WEEKS data instead of hardcoding
+const _todayWeek = WEEKS.find(w => w.isToday.some(Boolean))
+const _todayIdx = _todayWeek?.isToday.findIndex(Boolean) ?? -1
+const TODAY = _todayIdx >= 0 ? (_todayWeek!.dates[_todayIdx]) : -1
+
 const WEEKEND_COLS = new Set([5, 6]) // Sat, Sun (0-indexed)
 
 const STATUS_DOT: Record<string, string> = {
-  successful: '#2e881b',
-  scheduled:  '#1339ec',
-  draft:      '#a7aebe',
-  failed:     '#cc0000',
+  successful:     '#2e881b',
+  scheduled:      '#1339ec',
+  draft:          '#a7aebe',
+  failed:         '#cc0000',
+  to_be_approved: '#e05a00',
 }
 
 // Gather all posts across all weeks keyed by June day number

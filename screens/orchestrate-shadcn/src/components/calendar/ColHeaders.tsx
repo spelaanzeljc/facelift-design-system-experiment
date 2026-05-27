@@ -6,7 +6,11 @@ interface ColHeadersProps {
   viewMode: ViewMode
 }
 
+// Base week (offset=0) is ISO week 25 of 2026 (Jun 16–22)
+const BASE_WEEK = 25
+
 export default function ColHeaders({ wd, viewMode: _viewMode }: ColHeadersProps) {
+  const weekNum = BASE_WEEK + wd.offset
   return (
     <div
       className="flex flex-shrink-0"
@@ -31,7 +35,7 @@ export default function ColHeaders({ wd, viewMode: _viewMode }: ColHeadersProps)
             color: '#5f6a82',
           }}
         >
-          25
+          {weekNum}
         </div>
       </div>
 

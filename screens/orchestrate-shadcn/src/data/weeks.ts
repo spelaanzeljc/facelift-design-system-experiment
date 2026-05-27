@@ -5,7 +5,7 @@ export const WEEK0_CARDS: Post[][] = [
   [
     { s: 'successful', t: '09:30 AM', title: 'Facelift Support for Small Businesses', bg: 'linear-gradient(135deg,#d9c8b8,#c4a882)', emoji: '🤝', tags: [['teal', 'Community'], ['blue', 'Support']], nets: ['fb'] },
     { s: 'scheduled',  t: '12:00 PM', title: 'Product Update: New Features',          bg: 'linear-gradient(135deg,#cce5ff,#99caff)', emoji: '🚀', tags: [['blue', 'Product']],                    nets: ['li'] },
-    { s: 'draft',      t: '3:00 PM',  title: 'Draft: Q3 Strategy Overview',           bg: 'linear-gradient(135deg,#e8eaec,#cdd1d8)', emoji: '📋', tags: [['grey', 'Strategy']],                   nets: ['fb', 'li'] },
+    { s: 'to_be_approved', t: '3:00 PM', title: 'Q3 Strategy Overview',                bg: 'linear-gradient(135deg,#fde9b0,#f9b55a)', emoji: '📋', tags: [['orange', 'Strategy']],                nets: ['fb', 'li'] },
   ],
   // Tue 17
   [
@@ -28,7 +28,7 @@ export const WEEK0_CARDS: Post[][] = [
   [
     { s: 'successful', t: '09:00 AM', title: 'Nice Random Post for Friday',     bg: 'linear-gradient(135deg,#c8e6c9,#a5d6a7)', emoji: '🌟', tags: [['green', 'Engagement']], nets: ['ig'] },
     { s: 'scheduled',  t: '11:00 AM', title: 'LinkedIn Article Drop',           bg: 'linear-gradient(135deg,#c7e9f7,#89d4f0)', emoji: '✍️',  tags: [['teal', 'Content']],    nets: ['li'] },
-    { s: 'draft',      t: '2:00 PM',  title: 'Design System Update Notes',      bg: 'linear-gradient(135deg,#e8e4f0,#d4cfe8)', emoji: '🎨', tags: [['purple', 'Design']],   nets: ['li'] },
+    { s: 'to_be_approved', t: '2:00 PM', title: 'Design System Update Notes',     bg: 'linear-gradient(135deg,#fde9b0,#f9b55a)', emoji: '🎨', tags: [['orange', 'Design']],   nets: ['li'] },
   ],
   // Sat 21
   [],

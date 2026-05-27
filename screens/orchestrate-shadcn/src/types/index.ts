@@ -1,4 +1,4 @@
-export type PostStatus = 'successful' | 'scheduled' | 'draft' | 'failed';
+export type PostStatus = 'successful' | 'scheduled' | 'draft' | 'failed' | 'to_be_approved';
 
 export interface Post {
   s: PostStatus;
