@@ -101,7 +101,7 @@ export default function ToolbarRow({
         onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#f3f5f7')}
         onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'transparent')}
       >
-        {wd.label}
+        {viewMode === 'month' || viewMode === 'month-timeline' ? 'June 2025' : wd.label}
       </button>
 
       {/* View mode dropdown */}

@@ -1,5 +1,6 @@
 import ColHeaders from './ColHeaders'
 import DayGrid from './DayGrid'
+import MonthView from './MonthView'
 import MonthTimeline from './MonthTimeline'
 import ListView from './ListView'
 import type { WeekData, ViewMode, CalView, ViewOpts, Post } from '@/types'
@@ -17,6 +18,14 @@ export default function CalendarArea({ wd, viewMode, calView, onCardClick, viewO
     return (
       <div className="flex-1 overflow-hidden flex flex-col p-3" style={{ minHeight: 0 }}>
         <ListView wd={wd} onCardClick={onCardClick} />
+      </div>
+    )
+  }
+
+  if (viewMode === 'month') {
+    return (
+      <div className="flex-1 overflow-hidden flex flex-col p-3" style={{ minHeight: 0 }}>
+        <MonthView onCardClick={onCardClick} />
       </div>
     )
   }
