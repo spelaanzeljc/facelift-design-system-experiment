@@ -26,12 +26,22 @@ interface ToolbarRowProps {
   datePickerBtnRef: React.RefObject<HTMLButtonElement | null>
   viewOptsBtnRef: React.RefObject<HTMLButtonElement | null>
   hasActiveFilters?: boolean
+  selectedDay?: number
+  onDayChange?: (day: number) => void
 }
 
 const VIEW_MODE_LABELS: Record<ViewMode, string> = {
+  day: 'Day',
   week: 'Week',
   month: 'Month',
   'month-timeline': 'Month Timeline',
+}
+
+const DAY_NAMES_SHORT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+// June 2026 starts on a Monday (dow=1)
+function dayLabel(day: number) {
+  const dowIdx = (1 + day - 1) % 7
+  return `${DAY_NAMES_SHORT[dowIdx]}, Jun ${day}`
 }
 
 export default function ToolbarRow({
@@ -42,7 +52,12 @@ export default function ToolbarRow({
   onToggleDatePicker, onToggleViewOptions,
   datePickerBtnRef, viewOptsBtnRef,
   hasActiveFilters = false,
+  selectedDay = 18,
+  onDayChange,
 }: ToolbarRowProps) {
+  const handlePrev = () => viewMode === 'day' && onDayChange ? onDayChange(Math.max(1, selectedDay - 1)) : onPrev()
+  const handleNext = () => viewMode === 'day' && onDayChange ? onDayChange(Math.min(30, selectedDay + 1)) : onNext()
+  const handleToday = () => { if (viewMode === 'day' && onDayChange) onDayChange(18); else onToday() }
   const totalCards = wd.cards.reduce((sum, day) => sum + day.length, 0)
 
   return (
@@ -63,7 +78,7 @@ export default function ToolbarRow({
 
       {/* Today button */}
       <button
-        onClick={onToday}
+        onClick={handleToday}
         className="px-3 h-7 rounded-md border text-xs font-medium"
         style={{
           borderColor: weekOffset === 0 ? '#1339ec' : '#e7eaee',
@@ -76,7 +91,7 @@ export default function ToolbarRow({
 
       {/* Prev / Next */}
       <button
-        onClick={onPrev}
+        onClick={handlePrev}
         className="flex items-center justify-center w-7 h-7 rounded"
         style={{ color: '#5f6a82' }}
         onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#f3f5f7')}
@@ -85,7 +100,7 @@ export default function ToolbarRow({
         <ChevronLeft size={16} />
       </button>
       <button
-        onClick={onNext}
+        onClick={handleNext}
         className="flex items-center justify-center w-7 h-7 rounded"
         style={{ color: '#5f6a82' }}
         onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#f3f5f7')}
@@ -103,7 +118,7 @@ export default function ToolbarRow({
         onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#f3f5f7')}
         onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'transparent')}
       >
-        {viewMode === 'month' || viewMode === 'month-timeline' ? 'June 2025' : wd.label}
+        {viewMode === 'day' ? dayLabel(selectedDay) : viewMode === 'month' || viewMode === 'month-timeline' ? 'June 2026' : wd.label}
       </button>
 
       {/* View mode dropdown */}
@@ -116,7 +131,7 @@ export default function ToolbarRow({
           <ChevronRight size={12} style={{ transform: 'rotate(90deg)' }} />
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          {(['week', 'month', 'month-timeline'] as ViewMode[]).map(vm => (
+          {(['day', 'week', 'month', 'month-timeline'] as ViewMode[]).map(vm => (
             <DropdownMenuItem
               key={vm}
               onClick={() => onViewMode(vm)}

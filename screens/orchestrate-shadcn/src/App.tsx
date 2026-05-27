@@ -100,6 +100,7 @@ export default function App() {
   const [campaignPanelOpen, setCampaignPanelOpen] = useState(false)
   const [campaignEditOpen, setCampaignEditOpen] = useState(false)
   const [activeFilters, setActiveFilters] = useState<ActiveFilters>({ statuses: [], networks: [], tags: [] })
+  const [selectedDay, setSelectedDay] = useState(18) // default: today (Jun 18)
 
   const datePickerBtnRef = useRef<HTMLButtonElement>(null)
   const datePickerPanelRef = useRef<HTMLDivElement>(null)
@@ -235,12 +236,14 @@ export default function App() {
                   onOpenDrafts={() => togglePanel('drafts')}
                   onOpenFilters={() => togglePanel('filters')}
                   hasActiveFilters={hasActiveFilters(activeFilters)}
+                  selectedDay={selectedDay}
+                  onDayChange={setSelectedDay}
                   onToggleDatePicker={() => { setDatePickerOpen(o => !o); setViewOptsOpen(false) }}
                   onToggleViewOptions={() => { setViewOptsOpen(o => !o); setDatePickerOpen(false) }}
                   datePickerBtnRef={datePickerBtnRef}
                   viewOptsBtnRef={viewOptsBtnRef}
                 />
-                <CalendarArea wd={wd} viewMode={viewMode} calView={calView} onCardClick={handleCardClick} viewOpts={viewOpts} onCampaignClick={handleCampaignClick} activeFilters={activeFilters} />
+                <CalendarArea wd={wd} viewMode={viewMode} calView={calView} onCardClick={handleCardClick} viewOpts={viewOpts} onCampaignClick={handleCampaignClick} activeFilters={activeFilters} selectedDay={selectedDay} onDayChange={setSelectedDay} />
               </>
             )}
           </main>

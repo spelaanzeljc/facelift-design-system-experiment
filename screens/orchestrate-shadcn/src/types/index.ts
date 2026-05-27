@@ -80,5 +80,5 @@ export interface ActiveFilters {
 
 export type PanelId = 'postDetail' | 'search' | 'drafts' | 'filters' | null;
 export type ScreenMode = 'create' | 'view' | null;
-export type ViewMode = 'week' | 'month' | 'month-timeline';
+export type ViewMode = 'day' | 'week' | 'month' | 'month-timeline';
 export type CalView = 'calendar' | 'list';

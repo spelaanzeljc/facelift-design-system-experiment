@@ -1,5 +1,6 @@
 import ColHeaders from './ColHeaders'
 import DayGrid from './DayGrid'
+import DayView from './DayView'
 import MonthView from './MonthView'
 import MonthTimeline from './MonthTimeline'
 import ListView from './ListView'
@@ -13,11 +14,21 @@ interface CalendarAreaProps {
   viewOpts: ViewOpts
   onCampaignClick?: (camp: Campaign) => void
   activeFilters?: ActiveFilters
+  selectedDay?: number
+  onDayChange?: (day: number) => void
 }
 
 const EMPTY_FILTERS: ActiveFilters = { statuses: [], networks: [], tags: [] }
 
-export default function CalendarArea({ wd, viewMode, calView, onCardClick, viewOpts, onCampaignClick, activeFilters = EMPTY_FILTERS }: CalendarAreaProps) {
+export default function CalendarArea({ wd, viewMode, calView, onCardClick, viewOpts, onCampaignClick, activeFilters = EMPTY_FILTERS, selectedDay = 18, onDayChange: _onDayChange }: CalendarAreaProps) {
+  if (viewMode === 'day') {
+    return (
+      <div className="flex-1 overflow-hidden flex flex-col p-3" style={{ minHeight: 0 }}>
+        <DayView selectedDay={selectedDay} onCardClick={onCardClick} viewOpts={viewOpts} onCampaignClick={onCampaignClick} activeFilters={activeFilters} />
+      </div>
+    )
+  }
+
   if (calView === 'list') {
     return (
       <div className="flex-1 overflow-hidden flex flex-col p-3" style={{ minHeight: 0 }}>
