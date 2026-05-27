@@ -779,7 +779,7 @@ const PostFullScreen = ({ mode, post, onBack }) => {
     const k    = stateKey || label;
     const open = secOpen(k, defaultOpen);
     return (
-      <Paper elevation={0} sx={{ border:'1px solid #e7eaee', borderRadius:'10px', overflow:'hidden' }}>
+      <Paper elevation={0} sx={{ border:'1px solid #e7eaee', borderRadius:'10px', overflow:'hidden', flexShrink:0 }}>
         <Box component="button" onClick={() => togSec(k)} sx={{ width:'100%', display:'flex', alignItems:'center', justifyContent:'space-between', px:2, py:'14px', border:'none', bgcolor:'transparent', cursor:'pointer', '&:hover':{bgcolor:'#f9f9fa'} }}>
           <Typography sx={{ fontSize:15, fontWeight:700, color:'#111317' }}>{label}</Typography>
           <span className="material-icons" style={{fontSize:18, color:'#848ea4', transform: open?'rotate(180deg)':'none', transition:'transform .15s'}}>keyboard_arrow_down</span>
@@ -1148,7 +1148,7 @@ const PostFullScreen = ({ mode, post, onBack }) => {
       <Box sx={{ flex:1, display:'flex', overflow:'hidden' }}>
 
         {/* Left column */}
-        <Box sx={{ flex:1, overflowY:'auto', p:'16px', display:'flex', flexDirection:'column', gap:'12px' }}>
+        <Box sx={{ flex:1, overflowY:'auto', minHeight:0, p:'16px', display:'flex', flexDirection:'column', gap:'12px' }}>
           {isCreate ? (
             <>
               {/* Network Information */}
@@ -1447,7 +1447,7 @@ const PostFullScreen = ({ mode, post, onBack }) => {
         </Box>
 
         {/* Right column — Preview */}
-        <Box sx={{ width:320, flexShrink:0, bgcolor:'#fff', borderLeft:'1px solid #e7eaee', display:'flex', flexDirection:'column', p:'16px' }}>
+        <Box sx={{ width:320, flexShrink:0, bgcolor:'#fff', borderLeft:'1px solid #e7eaee', display:'flex', flexDirection:'column', p:'16px', overflowY:'auto', minHeight:0 }}>
           <Box sx={{ display:'flex', alignItems:'center', justifyContent:'space-between', mb:'6px' }}>
             <Box>
               <Typography sx={{ fontSize:14, fontWeight:700, color:'#111317' }}>Preview</Typography>
