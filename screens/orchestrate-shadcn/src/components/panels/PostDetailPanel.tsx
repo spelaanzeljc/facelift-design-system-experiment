@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { X, MoreVertical } from 'lucide-react'
+import { X, MoreHorizontal } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -72,7 +72,7 @@ export default function PostDetailPanel({ open, post, onClose, onViewDetails, on
                 className="flex items-center justify-center w-7 h-7 rounded hover:bg-[#f3f5f7] flex-shrink-0"
                 style={{ color: '#5f6a82' }}
               >
-                <MoreVertical size={16} />
+                <MoreHorizontal size={16} />
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 {DETAIL_MENU_ITEMS.map(item => (
