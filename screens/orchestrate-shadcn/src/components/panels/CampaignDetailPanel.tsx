@@ -1,11 +1,20 @@
-import { X, MoreHorizontal, Calendar, FileText, Tag, Clock, ChevronDown, ChevronRight } from 'lucide-react'
+import { X, MoreHorizontal, Calendar, FileText, Tag, Clock, ChevronDown, ChevronRight, Pencil, Kanban, Users, Trash2 } from 'lucide-react'
 import { useState } from 'react'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from '@/components/ui/dropdown-menu'
 import type { Campaign } from '@/types'
 
 interface CampaignDetailPanelProps {
   open: boolean
   campaign: Campaign | null
   onClose: () => void
+  onEdit: () => void
+  onAction: (action: string) => void
 }
 
 const PANEL_WIDTH = 380
@@ -35,7 +44,7 @@ function Section({ title, children, defaultOpen = true }: { title: string; child
   )
 }
 
-export default function CampaignDetailPanel({ open, campaign, onClose }: CampaignDetailPanelProps) {
+export default function CampaignDetailPanel({ open, campaign, onClose, onEdit, onAction }: CampaignDetailPanelProps) {
   return (
     <div
       style={{
@@ -72,15 +81,55 @@ export default function CampaignDetailPanel({ open, campaign, onClose }: Campaig
         >
           {campaign?.name ?? 'Campaign'}
         </span>
-        <button
-          className="flex items-center justify-center w-7 h-7 rounded"
-          style={{ color: '#5f6a82' }}
-          title="More options"
-          onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#f3f5f7')}
-          onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'transparent')}
-        >
-          <MoreHorizontal size={16} />
-        </button>
+
+        {/* ⋯ dropdown */}
+        <DropdownMenu>
+          <DropdownMenuTrigger
+            className="flex items-center justify-center w-7 h-7 rounded"
+            style={{ color: '#5f6a82' }}
+            title="More options"
+            onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#eef3fd')}
+            onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'transparent')}
+          >
+            <MoreHorizontal size={16} />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" style={{ minWidth: 180 }}>
+            <DropdownMenuItem
+              onClick={onEdit}
+              className="flex items-center gap-2.5"
+              style={{ fontSize: 13, color: '#111317' }}
+            >
+              <Pencil size={14} style={{ color: '#5f6a82' }} />
+              Edit
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              disabled
+              className="flex items-center gap-2.5"
+              style={{ fontSize: 13, color: '#a7aebe' }}
+            >
+              <Kanban size={14} style={{ color: '#a7aebe' }} />
+              Open Taskboard
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => onAction('Team Assignment')}
+              className="flex items-center gap-2.5"
+              style={{ fontSize: 13, color: '#111317' }}
+            >
+              <Users size={14} style={{ color: '#5f6a82' }} />
+              Team Assignment
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onClick={() => onAction('Delete')}
+              className="flex items-center gap-2.5"
+              style={{ fontSize: 13, color: '#cc0000' }}
+            >
+              <Trash2 size={14} style={{ color: '#cc0000' }} />
+              Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
         <button
           onClick={onClose}
           className="flex items-center justify-center w-7 h-7 rounded"
@@ -99,7 +148,6 @@ export default function CampaignDetailPanel({ open, campaign, onClose }: Campaig
             className="flex items-center gap-3 px-4 py-3 flex-wrap"
             style={{ borderBottom: '1px solid #f3f5f7' }}
           >
-            {/* Status badge */}
             <span
               className="rounded-full px-2.5 py-0.5"
               style={{
@@ -114,41 +162,22 @@ export default function CampaignDetailPanel({ open, campaign, onClose }: Campaig
               {campaign.status?.toUpperCase() ?? 'ACTIVE'}
             </span>
 
-            {/* Campaign color swatch */}
-            <span
-              className="flex items-center gap-1.5 rounded-full px-2.5 py-0.5"
-              style={{
-                fontSize: 11,
-                fontWeight: 500,
-                backgroundColor: campaign.color,
-                color: campaign.text,
-                border: `1px solid ${campaign.color === '#e9eaec' ? '#d3d7de' : 'transparent'}`,
-              }}
-            >
-              <span>{campaign.emoji}</span>
-              <span style={{ maxWidth: 140, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                {campaign.name}
-              </span>
-            </span>
-
-            {/* Date range */}
             <div className="flex items-center gap-1.5" style={{ color: '#5f6a82' }}>
               <Calendar size={13} />
               <span style={{ fontSize: 12 }}>Jun {campaign.s} – Jun {campaign.e}, 2026</span>
             </div>
           </div>
 
-          {/* Description section */}
+          {/* Description */}
           <Section title="Description">
             <p style={{ fontSize: 13, color: '#5f6a82', lineHeight: 1.6 }}>
               {campaign.description ?? 'No description provided.'}
             </p>
           </Section>
 
-          {/* Settings section */}
+          {/* Settings */}
           <Section title="Settings">
             <div className="flex flex-col gap-3">
-              {/* Campaign type */}
               <div className="flex items-start gap-3">
                 <div
                   className="flex items-center justify-center flex-shrink-0 rounded"
@@ -157,13 +186,13 @@ export default function CampaignDetailPanel({ open, campaign, onClose }: Campaig
                   <Tag size={13} style={{ color: '#848ea4' }} />
                 </div>
                 <div>
-                  <div style={{ fontSize: 11, fontWeight: 600, color: '#848ea4', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 2 }}>
+                  <div style={{ fontSize: 11, fontWeight: 600, color: '#848ea4', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 4 }}>
                     Campaign type
                   </div>
                   <div className="flex items-center gap-1.5">
                     <div
-                      className="rounded-full"
-                      style={{ width: 8, height: 8, backgroundColor: campaign.typeColor ?? '#a7aebe', flexShrink: 0 }}
+                      className="rounded-full flex-shrink-0"
+                      style={{ width: 10, height: 10, backgroundColor: campaign.typeColor ?? '#a7aebe' }}
                     />
                     <span style={{ fontSize: 13, color: '#111317', fontWeight: 500 }}>
                       {campaign.type ?? 'General'}
@@ -172,7 +201,6 @@ export default function CampaignDetailPanel({ open, campaign, onClose }: Campaig
                 </div>
               </div>
 
-              {/* Timing */}
               <div className="flex items-start gap-3">
                 <div
                   className="flex items-center justify-center flex-shrink-0 rounded"
@@ -181,7 +209,7 @@ export default function CampaignDetailPanel({ open, campaign, onClose }: Campaig
                   <Clock size={13} style={{ color: '#848ea4' }} />
                 </div>
                 <div>
-                  <div style={{ fontSize: 11, fontWeight: 600, color: '#848ea4', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 2 }}>
+                  <div style={{ fontSize: 11, fontWeight: 600, color: '#848ea4', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 4 }}>
                     Timing
                   </div>
                   <span style={{ fontSize: 13, color: '#111317' }}>
@@ -192,10 +220,9 @@ export default function CampaignDetailPanel({ open, campaign, onClose }: Campaig
             </div>
           </Section>
 
-          {/* Activity section */}
+          {/* Activity */}
           <Section title="Activity">
             <div className="flex items-start gap-3">
-              {/* Avatar */}
               <div
                 className="flex items-center justify-center rounded-full flex-shrink-0"
                 style={{ width: 28, height: 28, backgroundColor: '#0c228d', color: '#fff', fontSize: 10, fontWeight: 700 }}
@@ -203,8 +230,8 @@ export default function CampaignDetailPanel({ open, campaign, onClose }: Campaig
                 SA
               </div>
               <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 13, color: '#111317' }}>
-                  <span style={{ fontWeight: 500 }}>Created by {campaign.createdBy ?? 'Sarah A.'}</span>
+                <div style={{ fontSize: 13, color: '#111317', fontWeight: 500 }}>
+                  Created by {campaign.createdBy ?? 'Sarah A.'}
                 </div>
                 <div style={{ fontSize: 11, color: '#848ea4', marginTop: 2 }}>
                   {campaign.createdAt ?? 'May 2026'}

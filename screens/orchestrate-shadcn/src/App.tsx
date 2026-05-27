@@ -11,6 +11,7 @@ import SearchPanel from '@/components/panels/SearchPanel'
 import DraftsPanel from '@/components/panels/DraftsPanel'
 import FiltersPanel from '@/components/panels/FiltersPanel'
 import CampaignDetailPanel from '@/components/panels/CampaignDetailPanel'
+import CampaignEditModal from '@/components/panels/CampaignEditModal'
 import PostFullScreen from '@/components/post/PostFullScreen'
 import DateRangePicker from '@/components/toolbar/DateRangePicker'
 import ViewOptionsPopover from '@/components/toolbar/ViewOptionsPopover'
@@ -96,6 +97,7 @@ export default function App() {
   const [toasts, setToasts] = useState<ToastMsg[]>([])
   const [selectedCampaign, setSelectedCampaign] = useState<Campaign | null>(null)
   const [campaignPanelOpen, setCampaignPanelOpen] = useState(false)
+  const [campaignEditOpen, setCampaignEditOpen] = useState(false)
 
   const datePickerBtnRef = useRef<HTMLButtonElement>(null)
   const datePickerPanelRef = useRef<HTMLDivElement>(null)
@@ -111,6 +113,19 @@ export default function App() {
   const wd = WEEKS.find(w => w.offset === weekOffset)!
   const handleCardClick = (card: Post) => { setSelectedPost(card); setOpenPanel('postDetail'); setCampaignPanelOpen(false) }
   const handleCampaignClick = (camp: Campaign) => { setSelectedCampaign(camp); setCampaignPanelOpen(true); setOpenPanel(null) }
+  const handleCampaignAction = (action: string) => {
+    const msgs: Record<string, string> = {
+      'Team Assignment': '👥 Team assignment coming soon',
+      'Delete': '🗑 Campaign deleted',
+    }
+    showToast(msgs[action] ?? action)
+    if (action === 'Delete') setCampaignPanelOpen(false)
+  }
+  const handleCampaignSave = (updated: Campaign) => {
+    setSelectedCampaign(updated)
+    setCampaignEditOpen(false)
+    showToast('✓ Campaign saved')
+  }
   const togglePanel = (id: PanelId) => setOpenPanel(p => p === id ? null : id)
   const openCreateScreen = () => { setScreenMode('create'); setScreenPost(null); setOpenPanel(null) }
   const openViewScreen = (post: Post) => { setScreenMode('view'); setScreenPost(post); setOpenPanel(null) }
@@ -268,6 +283,14 @@ export default function App() {
             open={campaignPanelOpen}
             campaign={selectedCampaign}
             onClose={() => setCampaignPanelOpen(false)}
+            onEdit={() => setCampaignEditOpen(true)}
+            onAction={handleCampaignAction}
+          />
+          <CampaignEditModal
+            open={campaignEditOpen}
+            campaign={selectedCampaign}
+            onClose={() => setCampaignEditOpen(false)}
+            onSave={handleCampaignSave}
           />
         </>
       )}
