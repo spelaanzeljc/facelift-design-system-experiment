@@ -132,6 +132,23 @@ export const MAIN_NAV = [
   ]},
 ] as const;
 
-export const FILTER_CHIPS = ['Instagram', 'Facebook', 'LinkedIn', 'Scheduled', 'Draft', 'Successful', 'Failed', 'This week'];
+// Keep for any legacy references
+export const FILTER_CHIPS = ['Instagram', 'Facebook', 'LinkedIn', 'Scheduled', 'Draft', 'Successful', 'Failed'];
+
+// Structured filter options for the real FiltersPanel
+import type { PostStatus } from '@/types'
+export const FILTER_STATUS_OPTIONS: PostStatus[] = ['draft', 'to_be_approved', 'scheduled', 'successful', 'failed']
+export const FILTER_NETWORK_OPTIONS = [
+  { id: 'fb', label: 'Facebook' },
+  { id: 'ig', label: 'Instagram' },
+  { id: 'li', label: 'LinkedIn' },
+]
+// All unique tag labels from the WEEKS mock data
+export const FILTER_TAG_OPTIONS = [
+  'Community', 'Support', 'Product', 'Strategy', 'Guidelines',
+  'Webinar', 'Content', 'Culture', 'Design', 'Agency', 'Analytics',
+  'Engagement', 'Partner', 'Trends', 'Launch', 'Weekly', 'Updates',
+  'Migration', 'Orchestrate', 'Planning',
+]
 
 export const DETAIL_MENU_ITEMS = ['Promote Post', 'Details', 'Open Taskboard', 'Save as Template', 'Save as Amplify Template', 'Team Assignment'];

@@ -1,6 +1,7 @@
 import { CAMPS } from '@/data/campaigns'
 import PostCard from './PostCard'
-import type { WeekData, ViewMode, ViewOpts, Post } from '@/types'
+import { filterPosts } from '@/lib/filterPosts'
+import type { WeekData, ViewMode, ViewOpts, Post, ActiveFilters } from '@/types'
 
 interface DayGridProps {
   wd: WeekData
@@ -8,9 +9,12 @@ interface DayGridProps {
   onCardClick: (card: Post) => void
   viewOpts: ViewOpts
   onCampaignClick?: (camp: typeof CAMPS[0]) => void
+  activeFilters?: ActiveFilters
 }
 
-export default function DayGrid({ wd, viewMode: _viewMode, onCardClick, viewOpts, onCampaignClick }: DayGridProps) {
+const EMPTY_FILTERS: ActiveFilters = { statuses: [], networks: [], tags: [] }
+
+export default function DayGrid({ wd, viewMode: _viewMode, onCardClick, viewOpts, onCampaignClick, activeFilters = EMPTY_FILTERS }: DayGridProps) {
   // Map campaign column spans based on week dates (16-22 June)
   // Campaigns have s/e as day numbers in June
   const weekStart = wd.dates[0]
@@ -95,7 +99,7 @@ export default function DayGrid({ wd, viewMode: _viewMode, onCardClick, viewOpts
         {wd.dates.map((_, di) => {
           const isWknd = wd.isWknd[di]
           const isToday = wd.isToday[di]
-          const cards = wd.cards[di] ?? []
+          const cards = filterPosts(wd.cards[di] ?? [], activeFilters)
 
           return (
             <div

@@ -1,15 +1,20 @@
 import { STATUS_CFG, TAG_CFG } from '@/data/mock'
 import { NET_ICONS } from '@/components/icons'
-import type { WeekData, Post } from '@/types'
+import { filterPosts } from '@/lib/filterPosts'
+import type { WeekData, Post, ActiveFilters } from '@/types'
 
 interface ListViewProps {
   wd: WeekData
   onCardClick: (card: Post) => void
+  activeFilters?: ActiveFilters
 }
 
-export default function ListView({ wd, onCardClick }: ListViewProps) {
-  const allCards = wd.cards.flatMap((daycards, di) =>
-    daycards.map(card => ({ ...card, dateIdx: di }))
+const EMPTY_FILTERS: ActiveFilters = { statuses: [], networks: [], tags: [] }
+
+export default function ListView({ wd, onCardClick, activeFilters = EMPTY_FILTERS }: ListViewProps) {
+  const allCards = filterPosts(
+    wd.cards.flatMap((daycards, di) => daycards.map(card => ({ ...card, dateIdx: di }))),
+    activeFilters
   )
 
   return (

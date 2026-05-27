@@ -72,6 +72,12 @@ export interface User {
   c: string;
 }
 
+export interface ActiveFilters {
+  statuses: PostStatus[];
+  networks: string[];
+  tags: string[];
+}
+
 export type PanelId = 'postDetail' | 'search' | 'drafts' | 'filters' | null;
 export type ScreenMode = 'create' | 'view' | null;
 export type ViewMode = 'week' | 'month' | 'month-timeline';

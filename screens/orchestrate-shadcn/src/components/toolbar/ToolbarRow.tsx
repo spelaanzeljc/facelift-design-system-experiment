@@ -25,6 +25,7 @@ interface ToolbarRowProps {
   onToggleViewOptions: () => void
   datePickerBtnRef: React.RefObject<HTMLButtonElement | null>
   viewOptsBtnRef: React.RefObject<HTMLButtonElement | null>
+  hasActiveFilters?: boolean
 }
 
 const VIEW_MODE_LABELS: Record<ViewMode, string> = {
@@ -40,6 +41,7 @@ export default function ToolbarRow({
   onOpenSearch, onOpenDrafts: _onOpenDrafts, onOpenFilters,
   onToggleDatePicker, onToggleViewOptions,
   datePickerBtnRef, viewOptsBtnRef,
+  hasActiveFilters = false,
 }: ToolbarRowProps) {
   const totalCards = wd.cards.reduce((sum, day) => sum + day.length, 0)
 
@@ -176,13 +178,19 @@ export default function ToolbarRow({
       {/* Filters */}
       <button
         onClick={onOpenFilters}
-        className="flex items-center justify-center w-7 h-7 rounded"
-        style={{ color: '#5f6a82' }}
+        className="flex items-center justify-center w-7 h-7 rounded relative"
+        style={{ color: hasActiveFilters ? '#1339ec' : '#5f6a82', backgroundColor: hasActiveFilters ? '#eef3fd' : 'transparent' }}
         title="Filters"
-        onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#f3f5f7')}
-        onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'transparent')}
+        onMouseEnter={e => (e.currentTarget.style.backgroundColor = hasActiveFilters ? '#dfe7fd' : '#f3f5f7')}
+        onMouseLeave={e => (e.currentTarget.style.backgroundColor = hasActiveFilters ? '#eef3fd' : 'transparent')}
       >
         <SlidersHorizontal size={16} />
+        {hasActiveFilters && (
+          <span
+            className="absolute rounded-full"
+            style={{ width: 6, height: 6, backgroundColor: '#1339ec', top: 2, right: 2 }}
+          />
+        )}
       </button>
     </div>
   )

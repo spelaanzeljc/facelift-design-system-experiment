@@ -17,7 +17,8 @@ import DateRangePicker from '@/components/toolbar/DateRangePicker'
 import ViewOptionsPopover from '@/components/toolbar/ViewOptionsPopover'
 import { WEEKS } from '@/data/weeks'
 import { SEARCH_DATA, DRAFTS_DATA, BG_MAP } from '@/data/mock'
-import type { Post, Campaign, PanelId, ScreenMode, ViewMode, CalView, ViewOpts } from '@/types'
+import { hasActiveFilters } from '@/lib/filterPosts'
+import type { Post, Campaign, PanelId, ScreenMode, ViewMode, CalView, ViewOpts, ActiveFilters } from '@/types'
 
 // ── Toast ────────────────────────────────────────────────────────────────────
 
@@ -98,6 +99,7 @@ export default function App() {
   const [selectedCampaign, setSelectedCampaign] = useState<Campaign | null>(null)
   const [campaignPanelOpen, setCampaignPanelOpen] = useState(false)
   const [campaignEditOpen, setCampaignEditOpen] = useState(false)
+  const [activeFilters, setActiveFilters] = useState<ActiveFilters>({ statuses: [], networks: [], tags: [] })
 
   const datePickerBtnRef = useRef<HTMLButtonElement>(null)
   const datePickerPanelRef = useRef<HTMLDivElement>(null)
@@ -232,12 +234,13 @@ export default function App() {
                   onOpenSearch={() => togglePanel('search')}
                   onOpenDrafts={() => togglePanel('drafts')}
                   onOpenFilters={() => togglePanel('filters')}
+                  hasActiveFilters={hasActiveFilters(activeFilters)}
                   onToggleDatePicker={() => { setDatePickerOpen(o => !o); setViewOptsOpen(false) }}
                   onToggleViewOptions={() => { setViewOptsOpen(o => !o); setDatePickerOpen(false) }}
                   datePickerBtnRef={datePickerBtnRef}
                   viewOptsBtnRef={viewOptsBtnRef}
                 />
-                <CalendarArea wd={wd} viewMode={viewMode} calView={calView} onCardClick={handleCardClick} viewOpts={viewOpts} onCampaignClick={handleCampaignClick} />
+                <CalendarArea wd={wd} viewMode={viewMode} calView={calView} onCardClick={handleCardClick} viewOpts={viewOpts} onCampaignClick={handleCampaignClick} activeFilters={activeFilters} />
               </>
             )}
           </main>
@@ -278,7 +281,12 @@ export default function App() {
               setOpenPanel(null)
             }}
           />
-          <FiltersPanel open={openPanel === 'filters'} onClose={() => setOpenPanel(null)} />
+          <FiltersPanel
+            open={openPanel === 'filters'}
+            activeFilters={activeFilters}
+            onClose={() => setOpenPanel(null)}
+            onApply={setActiveFilters}
+          />
           <CampaignDetailPanel
             open={campaignPanelOpen}
             campaign={selectedCampaign}
