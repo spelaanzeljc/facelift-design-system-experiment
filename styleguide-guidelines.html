@@ -7,99 +7,221 @@
 <link rel="stylesheet" href="output/tokens/tokens.css">
 <link rel="stylesheet" href="styleguide.css">
 <style>
-  .rule-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px; margin-bottom:32px; }
-  .rule-card { background:var(--surface); border:1.5px solid var(--border); border-radius:var(--radius); padding:20px; }
-  .rule-label { font-size:11px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; color:var(--sys-primary-default); margin-bottom:8px; }
-  .rule-body { font-size:13px; line-height:1.6; color:var(--text); margin:0; }
-  .rule-body code { background:#f0ede8; border-radius:3px; padding:1px 4px; font-size:11px; }
-  .tbl { width:100%; border-collapse:collapse; font-size:13px; }
-  .tbl thead tr { background:var(--bg); }
-  .tbl th { text-align:left; padding:10px 20px; border-bottom:1.5px solid var(--border); font-size:10px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; color:var(--text-faint); }
-  .tbl td { padding:10px 20px; border-bottom:1px solid var(--border); vertical-align:top; }
-  .tbl tr:last-child td { border-bottom:none; }
-  .tbl td code { background:#f0ede8; border-radius:3px; padding:1px 4px; font-size:11px; }
-  .tbl-wrap { background:var(--surface); border:1.5px solid var(--border); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow-card); margin-bottom:32px; }
-  .rule-list { display:grid; gap:10px; margin-bottom:32px; }
-  .rule-row { background:var(--surface); border:1.5px solid var(--border); border-radius:var(--radius); padding:14px 20px; font-size:13px; line-height:1.6; }
-  .rule-row strong { color:var(--text); }
-  .rule-row span { color:var(--text-muted); margin-left:6px; }
-  .rule-row code { background:#f0ede8; border-radius:3px; padding:1px 4px; font-size:11px; }
-  /* DO/DON'T */
-  .do-dont { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:32px; }
-  .do { background:#f4fbf0; border:1.5px solid #c3e6b0; border-radius:var(--radius); overflow:hidden; }
-  .dont { background:#fff3f3; border:1.5px solid #f5c0c0; border-radius:var(--radius); overflow:hidden; }
-  .do-inner, .dont-inner { padding:16px 20px; }
-  .do-label { font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#2e881b; margin-bottom:8px; }
-  .dont-label { font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#cc0000; margin-bottom:8px; }
-  .do p, .dont p { font-size:13px; line-height:1.6; margin:0; color:var(--text); }
-  .do p code, .dont p code { background:rgba(0,0,0,.07); border-radius:3px; padding:1px 4px; font-size:11px; }
-  /* Visual preview areas inside DO/DON'T cards */
-  .vp { display:flex; align-items:center; justify-content:center; padding:20px 16px; min-height:80px; gap:12px; flex-wrap:wrap; }
-  .do .vp { background:#e6f5df; border-bottom:1px solid #c3e6b0; }
-  .dont .vp { background:#fde8e8; border-bottom:1px solid #f5c0c0; }
-  /* Standalone visual block */
-  .visual { background:var(--surface); border:1.5px solid var(--border); border-radius:var(--radius); overflow:hidden; margin-bottom:32px; box-shadow:var(--shadow-card); }
-  .visual-title { font-size:10px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; color:var(--text-faint); padding:12px 20px; background:var(--bg); border-bottom:1.5px solid var(--border); }
-  .visual-body { padding:20px; display:flex; align-items:center; justify-content:center; gap:24px; flex-wrap:wrap; }
-  /* Anatomy */
-  .anatomy { background:var(--surface); border:1.5px solid var(--border); border-radius:var(--radius); padding:20px; margin-bottom:32px; }
-  .anatomy-title { font-size:11px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; color:var(--text-faint); margin-bottom:12px; }
-  .anatomy-row { display:flex; align-items:baseline; gap:12px; padding:6px 0; border-bottom:1px solid var(--border); font-size:13px; }
-  .anatomy-row:last-child { border-bottom:none; }
-  .anatomy-pos { min-width:120px; font-weight:600; color:var(--text); }
-  .anatomy-desc { color:var(--text-muted); }
-  .anatomy-desc code { background:#f0ede8; border-radius:3px; padding:1px 4px; font-size:11px; }
-  /* Mini UI components used in visuals */
-  .mv-sidebar { width:132px; background:white; border:1px solid #e7eaee; border-radius:8px; padding:5px; font-family:system-ui,sans-serif; box-shadow:0 1px 4px rgba(0,0,0,.06); }
-  .mv-sidebar-item { display:flex; align-items:center; gap:7px; padding:6px 8px; border-radius:5px; }
-  .mv-sidebar-item.active-chip { background:#1339ec; }
-  .mv-sidebar-item.active-chip span { color:white; font-weight:500; }
-  .mv-sidebar-item.active-underline { border-bottom:2px solid #1339ec; border-radius:0; }
-  .mv-sidebar-item.active-underline span { color:#1339ec; font-weight:600; }
-  .mv-icon { width:14px; height:14px; border-radius:3px; background:#d3d7de; flex-shrink:0; }
-  .mv-icon.blue { background:rgba(255,255,255,.5); }
-  .mv-sidebar-item span { font-size:11px; color:#5f6a82; }
-  .mv-menu { width:196px; background:white; border:1px solid #e7eaee; border-radius:8px; padding:4px; box-shadow:0 4px 16px rgba(0,0,0,.10); font-family:system-ui,sans-serif; }
-  .mv-menu-item { display:flex; align-items:center; gap:10px; padding:7px 10px; border-radius:5px; }
-  .mv-menu-item:hover { background:#f3f5f7; }
-  .mv-menu-icon { width:16px; height:16px; flex-shrink:0; }
-  .mv-menu-item span { font-size:12px; color:#111317; }
-  .mv-menu-item.disabled span { color:#a7aebe; }
-  .mv-card { width:96px; border-radius:8px; padding:8px; font-family:system-ui,sans-serif; overflow:hidden; }
-  .mv-card.selected-border { background:white; border:2px solid #1339ec; }
-  .mv-card.selected-bg { background:#eef3fd; border:1px solid #e7eaee; }
-  .mv-card-status { font-size:9px; font-weight:600; color:#2e881b; margin-bottom:5px; }
-  .mv-card-thumb { background:#f3f5f7; border-radius:4px; height:44px; margin-bottom:5px; position:relative; }
-  .mv-card-thumb .net { position:absolute; bottom:3px; left:3px; width:14px; height:14px; background:#0a66c2; border-radius:50%; }
-  .mv-card-title { font-size:9px; color:#5f6a82; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .mv-compose { width:216px; font-family:system-ui,sans-serif; }
-  .mv-compose-box { border:2px solid #5581f1; border-radius:6px; padding:8px 10px 7px; }
-  .mv-compose-box.unfocused { border-color:#d3d7de; }
-  .mv-compose-placeholder { font-size:11px; color:#848ea4; margin-bottom:10px; }
-  .mv-compose-toolbar { display:flex; gap:5px; align-items:center; }
-  .mv-compose-toolbar span { font-size:11px; color:#5f6a82; }
-  .mv-compose-toolbar .b { font-weight:700; }
-  .mv-compose-toolbar .i { font-style:italic; }
-  .mv-compose-toolbar .u { text-decoration:underline; }
-  .mv-compose-toolbar .s { text-decoration:line-through; }
-  .mv-compose-toolbar .sep { width:1px; height:12px; background:#d3d7de; margin:0 2px; }
-  .mv-send-outside { display:flex; justify-content:flex-end; margin-top:8px; }
-  .mv-send-btn { background:#1339ec; color:white; border-radius:6px; padding:5px 12px; font-size:11px; font-weight:500; font-family:system-ui,sans-serif; }
-  .mv-banner { width:100%; max-width:420px; background:#ffede2; border:1px solid #f9c8a0; border-radius:6px; padding:10px 14px; display:flex; align-items:center; gap:10px; font-family:system-ui,sans-serif; box-sizing:border-box; }
-  .mv-banner-warn { font-size:13px; color:#e05a00; flex:1; font-size:11px; }
-  .mv-banner-btn { background:#e05a00; color:white; border-radius:5px; padding:4px 10px; font-size:10px; font-weight:600; white-space:nowrap; }
-  .mv-banner-x { color:#e05a00; font-size:13px; margin-left:4px; cursor:pointer; }
-  .mv-wireframe { font-family:system-ui,sans-serif; display:flex; flex-direction:column; gap:2px; }
-  .mv-wf-topbar { background:#111317; border-radius:4px 4px 0 0; height:14px; width:100%; }
-  .mv-wf-body { display:flex; gap:2px; }
-  .mv-wf-sidebar { background:#e7eaee; border-radius:0; width:20%; height:60px; }
-  .mv-wf-main { background:#f3f5f7; flex:1; height:60px; border-radius:0 0 4px 0; }
-  .mv-wf-panel { background:#e7eaee; width:24%; height:60px; }
-  .mv-wf-label { font-size:9px; color:#5f6a82; text-align:center; margin-top:4px; }
-  .mv-badge-row { display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
-  .mv-badge-diamond { display:flex; align-items:center; gap:5px; font-size:11px; font-family:system-ui,sans-serif; }
-  .mv-badge-pill { display:inline-flex; align-items:center; gap:5px; border-radius:20px; padding:2px 8px; font-size:10px; font-weight:600; letter-spacing:.04em; font-family:system-ui,sans-serif; }
-  .mv-badge-record { display:flex; align-items:center; gap:5px; font-size:11px; font-family:system-ui,sans-serif; }
+
+/* ── Export button ──────────────────────────────────────── */
+.export-btn {
+  display:inline-flex; align-items:center; gap:7px;
+  background:var(--surface); border:1.5px solid var(--border-mid);
+  border-radius:var(--radius-sm); padding:8px 14px;
+  font-size:12px; font-weight:500; color:var(--text-muted);
+  cursor:pointer; transition:border-color .15s, color .15s;
+  text-decoration:none; margin-top:16px;
+}
+.export-btn:hover { border-color:var(--text-muted); color:var(--text); }
+.export-btn svg { flex-shrink:0; }
+
+/* ── Level 1: Section header (h2) ───────────────────────── */
+.section { margin-bottom: 56px; }
+.section-header {
+  display: flex; align-items: baseline; gap: 12px;
+  margin-bottom: 28px;
+  padding-bottom: 14px;
+  border-bottom: 2px solid var(--border);
+}
+.section-header h2 {
+  font-size: 20px;
+  color: var(--text);
+  flex: 1;
+}
+.section-num {
+  font-size: 11px; font-weight: 700; letter-spacing: .06em;
+  color: var(--text-faint);
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 2px 9px;
+  white-space: nowrap;
+  align-self: center;
+}
+
+/* ── Level 2: Sub-section label ─────────────────────────── */
+.sub-label {
+  font-size: 10px; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  display: flex; align-items: center; gap: 10px;
+  margin: 24px 0 12px;
+}
+.sub-label:first-child { margin-top: 0; }
+.sub-label::after {
+  content: ''; flex: 1; height: 1px; background: var(--border);
+}
+.sub-label.anatomy::before  { content:''; width:8px; height:8px; border-radius:2px; background:var(--oat); flex-shrink:0; }
+.sub-label.rules::before    { content:''; width:8px; height:8px; border-radius:2px; background:var(--clay); opacity:.5; flex-shrink:0; }
+.sub-label.visual::before   { content:''; width:8px; height:8px; border-radius:2px; background:var(--olive); opacity:.5; flex-shrink:0; }
+.sub-label.decision::before { content:''; width:8px; height:8px; border-radius:50%; background:var(--text-faint); flex-shrink:0; }
+
+/* ── Level 3a: Reference / Anatomy block ────────────────── */
+.anatomy {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-top: 3px solid var(--oat);
+  border-radius: 0 0 var(--radius) var(--radius);
+  padding: 16px 20px;
+  margin-bottom: 4px;
+}
+.anatomy-title {
+  font-size: 11px; font-weight: 600; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--text-faint);
+  margin-bottom: 12px;
+}
+.anatomy-row {
+  display: flex; align-items: baseline; gap: 12px;
+  padding: 7px 0; border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.anatomy-row:last-child { border-bottom: none; }
+.anatomy-pos { min-width: 130px; font-weight: 600; color: var(--text); flex-shrink: 0; }
+.anatomy-desc { color: var(--text-muted); line-height: 1.5; }
+.anatomy-desc code { background: #f0ede8; border-radius: 3px; padding: 1px 4px; font-size: 11px; }
+
+/* ── Level 3b: Reference table ──────────────────────────── */
+.tbl-wrap {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-top: 3px solid var(--oat);
+  border-radius: 0 0 var(--radius) var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  margin-bottom: 4px;
+}
+.tbl { width: 100%; border-collapse: collapse; font-size: 13px; }
+.tbl thead tr { background: var(--bg); }
+.tbl th {
+  text-align: left; padding: 10px 20px;
+  border-bottom: 1.5px solid var(--border);
+  font-size: 10px; font-weight: 600; letter-spacing: .07em;
+  text-transform: uppercase; color: var(--text-faint);
+}
+.tbl td { padding: 10px 20px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.tbl tr:last-child td { border-bottom: none; }
+.tbl td code { background: #f0ede8; border-radius: 3px; padding: 1px 4px; font-size: 11px; }
+
+/* ── Level 3c: Rule list ────────────────────────────────── */
+.rule-list { display: grid; gap: 6px; margin-bottom: 4px; }
+.rule-row {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--clay);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 11px 16px;
+  font-size: 13px; line-height: 1.6;
+}
+.rule-row strong { color: var(--text); }
+.rule-row span { color: var(--text-muted); margin-left: 4px; }
+.rule-row code { background: #f0ede8; border-radius: 3px; padding: 1px 4px; font-size: 11px; }
+
+/* ── Level 3d: Visual reference block ───────────────────── */
+.visual {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-top: 3px solid var(--olive);
+  border-radius: 0 0 var(--radius) var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  margin-bottom: 4px;
+}
+.visual-title {
+  font-size: 10px; font-weight: 700; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--text-faint);
+  padding: 10px 20px;
+  background: var(--bg);
+  border-bottom: 1.5px solid var(--border);
+}
+.visual-body {
+  padding: 20px;
+  display: flex; align-items: center; justify-content: center;
+  gap: 24px; flex-wrap: wrap;
+}
+
+/* ── Level 3e: Decision / DO DON'T ─────────────────────── */
+.do-dont { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 4px; }
+.do   { background: #f4fbf0; border: 1.5px solid #c3e6b0; border-radius: var(--radius); overflow: hidden; }
+.dont { background: #fff3f3; border: 1.5px solid #f5c0c0; border-radius: var(--radius); overflow: hidden; }
+.do-inner, .dont-inner { padding: 14px 18px; }
+.do-label   { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #2e881b; margin-bottom: 6px; }
+.dont-label { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #cc0000; margin-bottom: 6px; }
+.do p, .dont p { font-size: 13px; line-height: 1.6; margin: 0; color: var(--text); }
+.do p code, .dont p code { background: rgba(0,0,0,.07); border-radius: 3px; padding: 1px 4px; font-size: 11px; }
+/* Visual preview inside DO/DON'T */
+.vp { display: flex; align-items: center; justify-content: center; padding: 18px 16px; min-height: 80px; gap: 12px; flex-wrap: wrap; }
+.do   .vp { background: #e6f5df; border-bottom: 1px solid #c3e6b0; }
+.dont .vp { background: #fde8e8; border-bottom: 1px solid #f5c0c0; }
+
+/* ── Spacing after sub-label content blocks ─────────────── */
+.rule-list + .sub-label,
+.tbl-wrap  + .sub-label,
+.anatomy   + .sub-label,
+.visual    + .sub-label,
+.do-dont   + .sub-label { margin-top: 28px; }
+
+/* ── Core principles grid ───────────────────────────────── */
+.rule-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(260px,1fr)); gap: 14px; margin-bottom: 4px; }
+.rule-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 18px 20px; }
+.rule-label { font-size: 11px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--sys-primary-default); margin-bottom: 7px; }
+.rule-body  { font-size: 13px; line-height: 1.6; color: var(--text); margin: 0; }
+.rule-body code { background: #f0ede8; border-radius: 3px; padding: 1px 4px; font-size: 11px; }
+
+/* ── Mini UI components used in visuals ─────────────────── */
+.mv-sidebar { width:132px; background:white; border:1px solid #e7eaee; border-radius:8px; padding:5px; font-family:system-ui,sans-serif; box-shadow:0 1px 4px rgba(0,0,0,.06); }
+.mv-sidebar-item { display:flex; align-items:center; gap:7px; padding:6px 8px; border-radius:5px; }
+.mv-sidebar-item.active-chip { background:#1339ec; }
+.mv-sidebar-item.active-chip span { color:white; font-weight:500; }
+.mv-sidebar-item.active-underline { border-bottom:2px solid #1339ec; border-radius:0; }
+.mv-sidebar-item.active-underline span { color:#1339ec; font-weight:600; }
+.mv-icon { width:14px; height:14px; border-radius:3px; background:#d3d7de; flex-shrink:0; }
+.mv-icon.blue { background:rgba(255,255,255,.5); }
+.mv-sidebar-item span { font-size:11px; color:#5f6a82; }
+.mv-menu { width:196px; background:white; border:1px solid #e7eaee; border-radius:8px; padding:4px; box-shadow:0 4px 16px rgba(0,0,0,.10); font-family:system-ui,sans-serif; }
+.mv-menu-item { display:flex; align-items:center; gap:10px; padding:7px 10px; border-radius:5px; }
+.mv-menu-icon { width:16px; height:16px; flex-shrink:0; }
+.mv-menu-item span { font-size:12px; color:#111317; }
+.mv-menu-item.disabled span { color:#a7aebe; }
+.mv-card { width:96px; border-radius:8px; padding:8px; font-family:system-ui,sans-serif; overflow:hidden; }
+.mv-card.selected-border { background:white; border:2px solid #1339ec; }
+.mv-card.selected-bg { background:#eef3fd; border:1px solid #e7eaee; }
+.mv-card-status { font-size:9px; font-weight:600; color:#2e881b; margin-bottom:5px; }
+.mv-card-thumb { background:#f3f5f7; border-radius:4px; height:44px; margin-bottom:5px; position:relative; }
+.mv-card-thumb .net { position:absolute; bottom:3px; left:3px; width:14px; height:14px; background:#0a66c2; border-radius:50%; }
+.mv-card-title { font-size:9px; color:#5f6a82; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.mv-compose { width:216px; font-family:system-ui,sans-serif; }
+.mv-compose-box { border:2px solid #5581f1; border-radius:6px; padding:8px 10px 7px; }
+.mv-compose-box.unfocused { border-color:#d3d7de; }
+.mv-compose-placeholder { font-size:11px; color:#848ea4; margin-bottom:10px; }
+.mv-compose-toolbar { display:flex; gap:5px; align-items:center; }
+.mv-compose-toolbar span { font-size:11px; color:#5f6a82; }
+.mv-compose-toolbar .b  { font-weight:700; }
+.mv-compose-toolbar .i  { font-style:italic; }
+.mv-compose-toolbar .u  { text-decoration:underline; }
+.mv-compose-toolbar .s  { text-decoration:line-through; }
+.mv-compose-toolbar .sep { width:1px; height:12px; background:#d3d7de; margin:0 2px; }
+.mv-send-outside { display:flex; justify-content:flex-end; margin-top:8px; }
+.mv-send-btn { background:#1339ec; color:white; border-radius:6px; padding:5px 12px; font-size:11px; font-weight:500; font-family:system-ui,sans-serif; }
+.mv-banner { width:100%; max-width:420px; background:#ffede2; border:1px solid #f9c8a0; border-radius:6px; padding:10px 14px; display:flex; align-items:center; gap:10px; font-family:system-ui,sans-serif; box-sizing:border-box; }
+.mv-banner-warn { flex:1; color:#e05a00; font-size:11px; }
+.mv-banner-btn { background:#e05a00; color:white; border-radius:5px; padding:4px 10px; font-size:10px; font-weight:600; white-space:nowrap; }
+.mv-banner-x { color:#e05a00; font-size:13px; margin-left:4px; }
+.mv-wireframe { font-family:system-ui,sans-serif; display:flex; flex-direction:column; gap:2px; }
+.mv-wf-topbar { background:#111317; border-radius:4px 4px 0 0; height:14px; width:100%; }
+.mv-wf-body { display:flex; gap:2px; }
+.mv-wf-sidebar { background:#e7eaee; width:20%; height:60px; }
+.mv-wf-main { background:#f3f5f7; flex:1; height:60px; border-radius:0 0 4px 0; }
+.mv-wf-panel { background:#e7eaee; width:24%; height:60px; }
+.mv-wf-label { font-size:9px; color:#5f6a82; text-align:center; margin-top:4px; }
+.mv-badge-row { display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+.mv-badge-diamond { display:flex; align-items:center; gap:5px; font-size:11px; font-family:system-ui,sans-serif; }
+.mv-badge-pill { display:inline-flex; align-items:center; gap:5px; border-radius:20px; padding:2px 8px; font-size:10px; font-weight:600; letter-spacing:.04em; font-family:system-ui,sans-serif; }
+.mv-badge-record { display:flex; align-items:center; gap:5px; font-size:11px; font-family:system-ui,sans-serif; }
 </style>
 </head>
 <body>
@@ -139,139 +261,100 @@
     <div class="page-header-eyebrow">Guidelines</div>
     <h1>Guidelines</h1>
     <p class="page-header-desc">Prescriptive rules for building new screens or modifying existing ones. Every rule maps directly to tokens, components, or patterns found in the design system. When in doubt, check <code>output/components/</code> before writing any custom markup.</p>
+    <button class="export-btn" onclick="exportMarkdown()">
+      <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M10 3v10M6 9l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 15h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      Export as .md
+    </button>
   </div>
 
 
-  <!-- ─── CORE PRINCIPLES ──────────────────────────────────── -->
-  <section class="section">
-    <div class="section-header"><h2>Core Principles</h2></div>
+  <!-- ══════════════════════════════════════════════════════
+       01  CORE PRINCIPLES
+  ═══════════════════════════════════════════════════════ -->
+  <section class="section" id="core-principles">
+    <div class="section-header">
+      <h2>Core Principles</h2>
+      <span class="section-num">01</span>
+    </div>
+
+    <div class="sub-label rules">Rules</div>
     <div class="rule-grid">
-      <div class="rule-card">
-        <div class="rule-label">Tokens First</div>
-        <p class="rule-body">Every colour, font, shadow, and spacing value must come from <code>tokens.css</code>. Never write a raw hex, <code>rgba()</code>, or hardcoded <code>px</code> value for any design property.</p>
-      </div>
-      <div class="rule-card">
-        <div class="rule-label">Components Before Custom</div>
-        <p class="rule-body">Before writing any UI element, search <code>output/components/</code> and <code>output/components2/</code> by family name. If a matching family exists, mirror its exact HTML structure and dimensions.</p>
-      </div>
-      <div class="rule-card">
-        <div class="rule-label">Semantic Tokens</div>
-        <p class="rule-body">Always use semantic tokens (<code>--sys-primary-default</code>, <code>--sys-text-primary</code>) over reference palette tokens (<code>--blue-500</code>, <code>--grey-900</code>). Use reference tokens only when no semantic alias exists.</p>
-      </div>
-      <div class="rule-card">
-        <div class="rule-label">State Defaults</div>
-        <p class="rule-body">Use the <code>state-default</code> variant as the base. Layer hover, focus, active, and disabled states via CSS on top — don't load separate component files per state at runtime.</p>
-      </div>
-      <div class="rule-card">
-        <div class="rule-label">Type Scale</div>
-        <p class="rule-body">Use the BB Update body/heading scale (Helvetica Neue) for all in-app UI. Reserve Lota Grotesque exclusively for marketing or hero sections. Never mix the two within the same UI context.</p>
-      </div>
-      <div class="rule-card">
-        <div class="rule-label">Icon Sizing</div>
-        <p class="rule-body">All icons are designed on a 20×20 or 24×24 grid. Default to 20px. Check the surrounding component's HTML file to confirm the intended size before placing an icon.</p>
-      </div>
+      <div class="rule-card"><div class="rule-label">Tokens First</div><p class="rule-body">Every colour, font, shadow, and spacing value must come from <code>tokens.css</code>. Never write a raw hex, <code>rgba()</code>, or hardcoded <code>px</code> value for any design property.</p></div>
+      <div class="rule-card"><div class="rule-label">Components Before Custom</div><p class="rule-body">Before writing any UI element, search <code>output/components/</code> and <code>output/components2/</code> by family name. If a matching family exists, mirror its exact HTML structure and dimensions.</p></div>
+      <div class="rule-card"><div class="rule-label">Semantic Tokens</div><p class="rule-body">Always use semantic tokens (<code>--sys-primary-default</code>, <code>--sys-text-primary</code>) over reference palette tokens (<code>--blue-500</code>, <code>--grey-900</code>). Use reference tokens only when no semantic alias exists.</p></div>
+      <div class="rule-card"><div class="rule-label">State Defaults</div><p class="rule-body">Use the <code>state-default</code> variant as the base. Layer hover, focus, active, and disabled states via CSS on top — don't load separate component files per state at runtime.</p></div>
+      <div class="rule-card"><div class="rule-label">Type Scale</div><p class="rule-body">Use the BB Update body/heading scale (Helvetica Neue) for all in-app UI. Reserve Lota Grotesque exclusively for marketing or hero sections. Never mix the two within the same UI context.</p></div>
+      <div class="rule-card"><div class="rule-label">Icon Sizing</div><p class="rule-body">All icons are designed on a 20×20 or 24×24 grid. Default to 20px. Check the surrounding component's HTML file to confirm the intended size before placing an icon.</p></div>
     </div>
   </section>
 
 
-  <!-- ─── LAYOUT PATTERNS ──────────────────────────────────── -->
-  <section class="section">
-    <div class="section-header"><h2>Layout Patterns</h2></div>
+  <!-- ══════════════════════════════════════════════════════
+       02  LAYOUT PATTERNS
+  ═══════════════════════════════════════════════════════ -->
+  <section class="section" id="layout-patterns">
+    <div class="section-header">
+      <h2>Layout Patterns</h2>
+      <span class="section-num">02</span>
+    </div>
 
-    <p style="font-size:13px;color:var(--text-muted);margin-bottom:20px;">Three layout archetypes cover all screens. Pick the one that matches the screen's information density and task flow.</p>
-
-    <!-- Wireframe diagrams -->
-    <div class="visual" style="margin-bottom:20px;">
+    <div class="sub-label visual">Visual Reference</div>
+    <div class="visual">
       <div class="visual-title">Layout archetypes — wireframe overview</div>
       <div class="visual-body">
         <div style="text-align:center;">
-          <div class="mv-wireframe" style="width:110px;">
-            <div class="mv-wf-topbar"></div>
-            <div class="mv-wf-body">
-              <div class="mv-wf-sidebar"></div>
-              <div class="mv-wf-main" style="border-radius:0 0 4px 0;"></div>
-            </div>
-          </div>
+          <div class="mv-wireframe" style="width:110px;"><div class="mv-wf-topbar"></div><div class="mv-wf-body"><div class="mv-wf-sidebar"></div><div class="mv-wf-main" style="border-radius:0 0 4px 0;"></div></div></div>
           <div class="mv-wf-label"><strong>Standard</strong><br>Sidebar + content</div>
         </div>
         <div style="text-align:center;">
-          <div class="mv-wireframe" style="width:160px;">
-            <div class="mv-wf-topbar" style="width:160px;"></div>
-            <div class="mv-wf-body">
-              <div class="mv-wf-sidebar" style="width:18%;"></div>
-              <div style="background:#dfe7fd;width:28%;height:60px;"></div>
-              <div class="mv-wf-main" style="flex:1;border-radius:0;"></div>
-              <div class="mv-wf-panel" style="width:22%;border-radius:0 0 4px 0;"></div>
-            </div>
-          </div>
+          <div class="mv-wireframe" style="width:160px;"><div class="mv-wf-topbar" style="width:160px;"></div><div class="mv-wf-body"><div class="mv-wf-sidebar" style="width:18%;"></div><div style="background:#dfe7fd;width:28%;height:60px;"></div><div class="mv-wf-main" style="flex:1;border-radius:0;"></div><div class="mv-wf-panel" style="width:22%;border-radius:0 0 4px 0;"></div></div></div>
           <div class="mv-wf-label"><strong>Three-panel</strong><br>Feed · Context · Details</div>
         </div>
         <div style="text-align:center;">
-          <div class="mv-wireframe" style="width:190px;">
-            <div class="mv-wf-topbar" style="width:190px;"></div>
-            <div class="mv-wf-body">
-              <div style="background:#e7eaee;width:14%;height:60px;"></div>
-              <div style="background:#dfe7fd;width:22%;height:60px;"></div>
-              <div class="mv-wf-main" style="flex:1;border-radius:0;"></div>
-              <div class="mv-wf-panel" style="width:20%;border-radius:0 0 4px 0;"></div>
-            </div>
-          </div>
+          <div class="mv-wireframe" style="width:190px;"><div class="mv-wf-topbar" style="width:190px;"></div><div class="mv-wf-body"><div style="background:#e7eaee;width:14%;height:60px;"></div><div style="background:#dfe7fd;width:22%;height:60px;"></div><div class="mv-wf-main" style="flex:1;border-radius:0;"></div><div class="mv-wf-panel" style="width:20%;border-radius:0 0 4px 0;"></div></div></div>
           <div class="mv-wf-label"><strong>Four-panel</strong><br>Inboxes · Feed · Context · Details</div>
         </div>
       </div>
     </div>
 
+    <div class="sub-label anatomy">Structure</div>
     <div class="tbl-wrap">
       <table class="tbl">
-        <thead><tr>
-          <th>Archetype</th>
-          <th>Structure</th>
-          <th>When to use</th>
-        </tr></thead>
+        <thead><tr><th>Archetype</th><th>Panel structure</th><th>When to use</th></tr></thead>
         <tbody>
-          <tr>
-            <td><strong>Standard</strong></td>
-            <td>Top nav bar + left sidebar + main content area</td>
-            <td>Settings pages, dashboards, single-focus views (Frames list, Users list)</td>
-          </tr>
-          <tr>
-            <td><strong>Three-panel</strong></td>
-            <td>Top nav bar + Feed panel (fixed ~300px) + Context panel (flex) + Details panel (fixed ~280px)</td>
-            <td>Inbox/feed workflows where selecting an item shows both context and metadata (Engage)</td>
-          </tr>
-          <tr>
-            <td><strong>Four-panel</strong></td>
-            <td>Top nav bar + Inboxes panel (fixed ~240px) + Feed + Context + Details</td>
-            <td>Feed workflows that also need secondary inbox/filter navigation</td>
-          </tr>
+          <tr><td><strong>Standard</strong></td><td>Top nav bar + left sidebar + main content area</td><td>Settings pages, dashboards, single-focus views (Frames list, Users list)</td></tr>
+          <tr><td><strong>Three-panel</strong></td><td>Top nav bar + Feed panel (fixed ~300px) + Context panel (flex) + Details panel (fixed ~280px)</td><td>Inbox/feed workflows where selecting an item shows both context and metadata (Engage)</td></tr>
+          <tr><td><strong>Four-panel</strong></td><td>Top nav bar + Inboxes panel (fixed ~240px) + Feed + Context + Details</td><td>Feed workflows that also need secondary inbox/filter navigation</td></tr>
         </tbody>
       </table>
     </div>
 
+    <div class="sub-label rules">Rules</div>
     <div class="rule-list">
       <div class="rule-row"><strong>Panel collapse.</strong><span>Every panel except the main content area must include a <code>◀</code> collapse button in its header. Collapsed state hides the panel; the icon-only sidebar remains visible.</span></div>
       <div class="rule-row"><strong>Panel scroll.</strong><span>Each panel scrolls independently. Never let one panel's scroll affect another.</span></div>
-      <div class="rule-row"><strong>Detail panel open.</strong><span>The details panel slides in from the right and overlays the calendar/grid area. It does not push or resize adjacent panels.</span></div>
-      <div class="rule-row"><strong>Page background.</strong><span>Use <code>--sys-background-neutral</code> (<code>#f3f5f7</code>) as the page background for dashboard and settings layouts. Use <code>--sys-background-base</code> (<code>#ffffff</code>) for panel interiors and card surfaces.</span></div>
+      <div class="rule-row"><strong>Detail panel.</strong><span>The details panel slides in from the right and overlays the calendar/grid area. It does not push or resize adjacent panels.</span></div>
+      <div class="rule-row"><strong>Page background.</strong><span>Use <code>--sys-background-neutral</code> for dashboard and settings layouts. Use <code>--sys-background-base</code> for panel interiors and card surfaces.</span></div>
     </div>
   </section>
 
 
-  <!-- ─── TOP APP BAR ──────────────────────────────────────── -->
-  <section class="section">
-    <div class="section-header"><h2>Top App Bar</h2></div>
+  <!-- ══════════════════════════════════════════════════════
+       03  TOP APP BAR
+  ═══════════════════════════════════════════════════════ -->
+  <section class="section" id="top-app-bar">
+    <div class="section-header">
+      <h2>Top App Bar</h2>
+      <span class="section-num">03</span>
+    </div>
 
-    <!-- Visual: top bar anatomy -->
-    <div class="visual" style="margin-bottom:20px;">
-      <div class="visual-title">Top app bar — slot order</div>
+    <div class="sub-label visual">Visual Reference</div>
+    <div class="visual">
+      <div class="visual-title">Slot order — left to right</div>
       <div class="visual-body" style="padding:14px 20px;">
         <div style="width:100%;max-width:560px;background:#111317;border-radius:8px;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;font-family:system-ui,sans-serif;box-sizing:border-box;">
           <div style="display:flex;align-items:center;gap:10px;">
-            <div style="width:18px;height:14px;display:flex;flex-direction:column;gap:3px;justify-content:center;">
-              <div style="height:2px;background:rgba(255,255,255,.6);border-radius:1px;"></div>
-              <div style="height:2px;background:rgba(255,255,255,.6);border-radius:1px;"></div>
-              <div style="height:2px;background:rgba(255,255,255,.6);border-radius:1px;"></div>
-            </div>
+            <div style="width:18px;height:14px;display:flex;flex-direction:column;gap:3px;justify-content:center;"><div style="height:2px;background:rgba(255,255,255,.6);border-radius:1px;"></div><div style="height:2px;background:rgba(255,255,255,.6);border-radius:1px;"></div><div style="height:2px;background:rgba(255,255,255,.6);border-radius:1px;"></div></div>
             <div style="width:20px;height:20px;background:#e05a00;border-radius:4px;"></div>
             <span style="color:white;font-size:13px;font-weight:600;">Orchestrate</span>
             <div style="width:1px;height:14px;background:rgba(255,255,255,.2);margin:0 4px;"></div>
@@ -279,10 +362,7 @@
             <div style="width:18px;height:18px;background:rgba(255,255,255,.12);border-radius:4px;"></div>
           </div>
           <div style="display:flex;align-items:center;gap:8px;">
-            <div style="background:rgba(255,255,255,.12);border-radius:20px;padding:4px 10px;display:flex;align-items:center;gap:6px;">
-              <span style="color:rgba(255,255,255,.8);font-size:10px;">Today's Tasks</span>
-              <div style="width:16px;height:16px;background:#e05a00;border-radius:50%;display:flex;align-items:center;justify-content:center;"><span style="color:white;font-size:9px;font-weight:700;">0</span></div>
-            </div>
+            <div style="background:rgba(255,255,255,.12);border-radius:20px;padding:4px 10px;display:flex;align-items:center;gap:6px;"><span style="color:rgba(255,255,255,.8);font-size:10px;">Today's Tasks</span><div style="width:16px;height:16px;background:#e05a00;border-radius:50%;display:flex;align-items:center;justify-content:center;"><span style="color:white;font-size:9px;font-weight:700;">0</span></div></div>
             <div style="width:20px;height:20px;background:rgba(255,255,255,.12);border-radius:4px;"></div>
             <div style="width:20px;height:20px;background:rgba(255,255,255,.12);border-radius:4px;"></div>
             <div style="width:20px;height:20px;background:rgba(255,255,255,.12);border-radius:4px;"></div>
@@ -292,347 +372,245 @@
       </div>
     </div>
 
+    <div class="sub-label anatomy">Structure</div>
     <div class="anatomy">
-      <div class="anatomy-title">Slot order — left to right</div>
-      <div class="anatomy-row"><span class="anatomy-pos">Left</span><span class="anatomy-desc">Hamburger menu icon → logo (20px) → app/section name (heading-sm, white) → optional vertical divider → module icon shortcuts</span></div>
-      <div class="anatomy-row"><span class="anatomy-pos">Right</span><span class="anatomy-desc">"Today's Tasks" pill button with count badge → settings gear icon → chat icon → bell icon → user avatar circle</span></div>
+      <div class="anatomy-row"><span class="anatomy-pos">Left</span><span class="anatomy-desc">Hamburger menu → logo (20px) → app name (heading-sm, white) → optional divider → module icon shortcuts</span></div>
+      <div class="anatomy-row"><span class="anatomy-pos">Right</span><span class="anatomy-desc">"Today's Tasks" pill with orange count badge → gear icon → chat icon → bell icon → user avatar circle (32px)</span></div>
     </div>
+
+    <div class="sub-label rules">Rules</div>
     <div class="rule-list">
       <div class="rule-row"><strong>Background.</strong><span>Always near-black — use <code>--grey-900</code> (<code>#111317</code>). All icons and text use <code>--sys-text-on-color</code> (white).</span></div>
-      <div class="rule-row"><strong>Today's Tasks badge.</strong><span>A small filled circle badge sits top-right of the pill button at all times, even when count is 0. Use brand orange (<code>--orange-500</code>) fill.</span></div>
-      <div class="rule-row"><strong>Icon buttons.</strong><span>Right-cluster icons (gear, chat, bell) are 20px, white. They have no label. Always include <code>aria-label</code>.</span></div>
-      <div class="rule-row"><strong>User avatar.</strong><span>Circular crop, 32px. Show photo if available; fall back to initials with a consistent per-user background color.</span></div>
+      <div class="rule-row"><strong>Tasks badge.</strong><span>A small filled orange circle badge (<code>--orange-500</code>) sits top-right of the pill button at all times, even when count is 0.</span></div>
+      <div class="rule-row"><strong>Icon buttons.</strong><span>Right-cluster icons (gear, chat, bell) are 20px, white. No label. Always include <code>aria-label</code>.</span></div>
+      <div class="rule-row"><strong>User avatar.</strong><span>Circular crop, 32px. Photo if available; fall back to initials with a consistent per-user background color.</span></div>
     </div>
   </section>
 
 
-  <!-- ─── LEFT SIDEBAR ─────────────────────────────────────── -->
-  <section class="section">
-    <div class="section-header"><h2>Left Sidebar</h2></div>
+  <!-- ══════════════════════════════════════════════════════
+       04  LEFT SIDEBAR
+  ═══════════════════════════════════════════════════════ -->
+  <section class="section" id="left-sidebar">
+    <div class="section-header">
+      <h2>Left Sidebar</h2>
+      <span class="section-num">04</span>
+    </div>
 
-    <div class="tbl-wrap" style="margin-bottom:20px;">
+    <div class="sub-label anatomy">Structure</div>
+    <div class="tbl-wrap">
       <table class="tbl">
         <thead><tr><th>Variant</th><th>When to use</th><th>Item structure</th></tr></thead>
         <tbody>
-          <tr>
-            <td><strong>Full (expanded)</strong></td>
-            <td>Main app navigation — Orchestrate, Engage, Settings</td>
-            <td>20px icon + label text; active item = filled chip, brand blue bg + white text</td>
-          </tr>
-          <tr>
-            <td><strong>Icon-only (collapsed)</strong></td>
-            <td>After user collapses the sidebar</td>
-            <td>20px icon only, centered; no tooltip required at rest</td>
-          </tr>
-          <tr>
-            <td><strong>Settings hierarchy</strong></td>
-            <td>Settings pages with section groups</td>
-            <td>Section header (bold + <code>›</code> chevron) → child items indented ~16px; active child = light grey filled pill, not brand blue</td>
-          </tr>
+          <tr><td><strong>Full (expanded)</strong></td><td>Main app navigation — Orchestrate, Engage, Settings</td><td>20px icon + label text; active item = filled chip, brand blue bg + white text</td></tr>
+          <tr><td><strong>Icon-only (collapsed)</strong></td><td>After user collapses the sidebar</td><td>20px icon only, centered; no tooltip required at rest</td></tr>
+          <tr><td><strong>Settings hierarchy</strong></td><td>Settings pages with section groups</td><td>Section header (bold + <code>›</code> chevron) → child items indented ~16px; active child = light grey filled pill, not brand blue</td></tr>
         </tbody>
       </table>
     </div>
 
-    <div class="do-dont">
-      <div class="do">
-        <div class="vp">
-          <div class="mv-sidebar">
-            <div class="mv-sidebar-item active-chip"><div class="mv-icon blue"></div><span>Calendar</span></div>
-            <div class="mv-sidebar-item"><div class="mv-icon"></div><span>Frames</span></div>
-            <div class="mv-sidebar-item"><div class="mv-icon"></div><span>Contents</span></div>
-          </div>
-        </div>
-        <div class="do-inner">
-          <div class="do-label">Do</div>
-          <p>Use a filled background chip for the active sidebar item — brand blue (<code>--sys-primary-default</code>) in the main app nav, light grey (<code>--sys-background-neutral</code>) in Settings hierarchy.</p>
-        </div>
-      </div>
-      <div class="dont">
-        <div class="vp">
-          <div class="mv-sidebar">
-            <div class="mv-sidebar-item active-underline"><div class="mv-icon"></div><span>Calendar</span></div>
-            <div class="mv-sidebar-item"><div class="mv-icon"></div><span>Frames</span></div>
-            <div class="mv-sidebar-item"><div class="mv-icon"></div><span>Contents</span></div>
-          </div>
-        </div>
-        <div class="dont-inner">
-          <div class="dont-label">Don't</div>
-          <p>Don't use an underline, left border accent, or bold text alone to indicate the active item. The filled chip is the only sanctioned active indicator in sidebars.</p>
-        </div>
-      </div>
-    </div>
-
+    <div class="sub-label rules">Rules</div>
     <div class="rule-list">
       <div class="rule-row"><strong>Expandable items.</strong><span>Items with sub-navigation append a <code>›</code> or chevron-right icon. The chevron flips to point down when expanded.</span></div>
-      <div class="rule-row"><strong>Sidebar background.</strong><span>Always <code>--sys-background-base</code> (white). The sidebar is visually separated from the page by a <code>--sys-border-soft</code> right border.</span></div>
+      <div class="rule-row"><strong>Background.</strong><span>Always <code>--sys-background-base</code> (white). Separated from the page by a <code>--sys-border-soft</code> right border.</span></div>
     </div>
-  </section>
 
-
-  <!-- ─── PAGE HEADER ──────────────────────────────────────── -->
-  <section class="section">
-    <div class="section-header"><h2>Page Header Anatomy</h2></div>
-    <div class="anatomy">
-      <div class="anatomy-title">Slot order — standard page header</div>
-      <div class="anatomy-row"><span class="anatomy-pos">Title row</span><span class="anatomy-desc">Page title (heading-xl or heading-lg) left-aligned + optional dropdown chevron for context switching + optional <code>⋯</code> overflow menu — all left. CTA buttons right-aligned.</span></div>
-      <div class="anatomy-row"><span class="anatomy-pos">Subtitle / quota row</span><span class="anatomy-desc">One line of plain <code>--sys-text-secondary</code> text: counts, quota ("Users: 102 / 500 • Admin users: 86 / 290"), or filter summary. Sits directly below the title.</span></div>
-      <div class="anatomy-row"><span class="anatomy-pos">CTA buttons</span><span class="anatomy-desc">Secondary ghost buttons first (leftmost) → primary filled button last (rightmost). Each button may carry a 20px icon that clarifies the action.</span></div>
-    </div>
-    <div class="rule-list">
-      <div class="rule-row"><strong>Split CTA.</strong><span>When a primary action has sub-actions, use a split button: primary label segment + a hairline divider + a separate chevron-down segment. Both share the same <code>--sys-primary-default</code> background. The divider is a semi-transparent white stroke.</span></div>
-    </div>
+    <div class="sub-label decision">Decision Guide</div>
     <div class="do-dont">
       <div class="do">
-        <div class="vp">
-          <div style="font-family:system-ui,sans-serif;">
-            <div style="font-size:18px;font-weight:700;color:#111317;margin-bottom:3px;">Labels</div>
-            <div style="font-size:11px;color:#5f6a82;">75 labels</div>
-          </div>
-        </div>
-        <div class="do-inner">
-          <div class="do-label">Do</div>
-          <p>Render item counts as plain secondary text directly below the page title: "75 labels" or "Entries 1–50 of 1714".</p>
-        </div>
+        <div class="vp"><div class="mv-sidebar"><div class="mv-sidebar-item active-chip"><div class="mv-icon blue"></div><span>Calendar</span></div><div class="mv-sidebar-item"><div class="mv-icon"></div><span>Frames</span></div><div class="mv-sidebar-item"><div class="mv-icon"></div><span>Contents</span></div></div></div>
+        <div class="do-inner"><div class="do-label">Do</div><p>Use a filled background chip — brand blue (<code>--sys-primary-default</code>) in the main app nav, light grey (<code>--sys-background-neutral</code>) in Settings.</p></div>
       </div>
       <div class="dont">
-        <div class="vp">
-          <div style="font-family:system-ui,sans-serif;">
-            <div style="display:flex;align-items:center;gap:8px;">
-              <span style="font-size:18px;font-weight:700;color:#111317;">Labels</span>
-              <span style="background:#dfe7fd;color:#1339ec;border-radius:20px;padding:2px 8px;font-size:11px;font-weight:600;">75</span>
-            </div>
-          </div>
-        </div>
-        <div class="dont-inner">
-          <div class="dont-label">Don't</div>
-          <p>Don't wrap the count in a badge chip or place it inside the title heading. Chips in the header area are reserved for status or filter indicators, not totals.</p>
-        </div>
+        <div class="vp"><div class="mv-sidebar"><div class="mv-sidebar-item active-underline"><div class="mv-icon"></div><span>Calendar</span></div><div class="mv-sidebar-item"><div class="mv-icon"></div><span>Frames</span></div><div class="mv-sidebar-item"><div class="mv-icon"></div><span>Contents</span></div></div></div>
+        <div class="dont-inner"><div class="dont-label">Don't</div><p>Don't use an underline, left border accent, or bold text alone to indicate the active item. The filled chip is the only sanctioned active indicator.</p></div>
       </div>
     </div>
   </section>
 
 
-  <!-- ─── DATA TABLES ──────────────────────────────────────── -->
-  <section class="section">
-    <div class="section-header"><h2>Data Tables</h2></div>
+  <!-- ══════════════════════════════════════════════════════
+       05  PAGE HEADER
+  ═══════════════════════════════════════════════════════ -->
+  <section class="section" id="page-header">
+    <div class="section-header">
+      <h2>Page Header Anatomy</h2>
+      <span class="section-num">05</span>
+    </div>
 
-    <div class="anatomy" style="margin-bottom:20px;">
-      <div class="anatomy-title">Standard row anatomy</div>
-      <div class="anatomy-row"><span class="anatomy-pos">Col 1</span><span class="anatomy-desc">Optional expand chevron (▶/▼) for parent rows — only present when the row has children</span></div>
-      <div class="anatomy-row"><span class="anatomy-pos">Col 2 — Name</span><span class="anatomy-desc">16–20px colored icon + primary title (body-md-medium) stacked above secondary sub-label (body-sm-regular, <code>--sys-text-secondary</code>)</span></div>
+    <div class="sub-label anatomy">Structure</div>
+    <div class="anatomy">
+      <div class="anatomy-row"><span class="anatomy-pos">Title row</span><span class="anatomy-desc">Page title (heading-xl or heading-lg) left-aligned + optional dropdown chevron + optional <code>⋯</code> overflow menu. CTA buttons right-aligned.</span></div>
+      <div class="anatomy-row"><span class="anatomy-pos">Subtitle / quota</span><span class="anatomy-desc">One line of plain <code>--sys-text-secondary</code> text: counts, quota ("Users: 102 / 500 • Admin users: 86 / 290"), or filter summary.</span></div>
+      <div class="anatomy-row"><span class="anatomy-pos">CTA buttons</span><span class="anatomy-desc">Secondary ghost buttons first (leftmost) → primary filled button last (rightmost). Each button may carry a 20px icon clarifying the action.</span></div>
+    </div>
+
+    <div class="sub-label rules">Rules</div>
+    <div class="rule-list">
+      <div class="rule-row"><strong>Split CTA.</strong><span>When a primary action has sub-actions, use a split button: primary label segment + hairline divider + chevron-down segment. Both share <code>--sys-primary-default</code> background. Divider is a semi-transparent white stroke.</span></div>
+    </div>
+
+    <div class="sub-label decision">Decision Guide</div>
+    <div class="do-dont">
+      <div class="do">
+        <div class="vp"><div style="font-family:system-ui,sans-serif;"><div style="font-size:18px;font-weight:700;color:#111317;margin-bottom:3px;">Labels</div><div style="font-size:11px;color:#5f6a82;">75 labels</div></div></div>
+        <div class="do-inner"><div class="do-label">Do</div><p>Render item counts as plain secondary text directly below the page title: "75 labels" or "Entries 1–50 of 1714".</p></div>
+      </div>
+      <div class="dont">
+        <div class="vp"><div style="font-family:system-ui,sans-serif;"><div style="display:flex;align-items:center;gap:8px;"><span style="font-size:18px;font-weight:700;color:#111317;">Labels</span><span style="background:#dfe7fd;color:#1339ec;border-radius:20px;padding:2px 8px;font-size:11px;font-weight:600;">75</span></div></div></div>
+        <div class="dont-inner"><div class="dont-label">Don't</div><p>Don't wrap the count in a badge chip. Chips in the header are reserved for status or filter indicators, not totals.</p></div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════
+       06  DATA TABLES
+  ═══════════════════════════════════════════════════════ -->
+  <section class="section" id="data-tables">
+    <div class="section-header">
+      <h2>Data Tables</h2>
+      <span class="section-num">06</span>
+    </div>
+
+    <div class="sub-label anatomy">Row Anatomy</div>
+    <div class="anatomy">
+      <div class="anatomy-row"><span class="anatomy-pos">Col 1</span><span class="anatomy-desc">Optional expand chevron (▶/▼) — only present when the row has children</span></div>
+      <div class="anatomy-row"><span class="anatomy-pos">Col 2 — Name</span><span class="anatomy-desc">16–20px colored icon + primary title (body-md-medium) + secondary sub-label (body-sm-regular, <code>--sys-text-secondary</code>)</span></div>
       <div class="anatomy-row"><span class="anatomy-pos">Col 3 — ⋯</span><span class="anatomy-desc">Overflow action button — appears on row hover only, hidden at rest</span></div>
-      <div class="anatomy-row"><span class="anatomy-pos">Data columns</span><span class="anatomy-desc">Publication date (calendar icon prefix), Status (colored circle + label + inline dropdown chevron), Tags (colored pill chips + <code>+N</code> overflow), Assignees (stacked avatar circles)</span></div>
+      <div class="anatomy-row"><span class="anatomy-pos">Data columns</span><span class="anatomy-desc">Date (calendar icon prefix) · Status (colored circle + label + ▾ chevron) · Tags (colored pill chips + <code>+N</code> overflow) · Assignees (stacked avatar circles)</span></div>
       <div class="anatomy-row"><span class="anatomy-pos">Last columns</span><span class="anatomy-desc">Timestamps, IDs — plain text, right-aligned, <code>--sys-text-secondary</code></span></div>
     </div>
 
+    <div class="sub-label rules">Rules</div>
     <div class="rule-list">
-      <div class="rule-row"><strong>Sort indicator.</strong><span>Show ↑ or ↓ inline in the active sort column header label. Only one column sorted at a time. No sort indicator on inactive columns.</span></div>
-      <div class="rule-row"><strong>Inline toggle.</strong><span>When a row has an on/off state (e.g., enabled strategy), render a toggle switch as the first element inside the name column, before the label. Blue = on, grey = off.</span></div>
-      <div class="rule-row"><strong>Inline status edit.</strong><span>Status cells that are editable show a dropdown chevron (▼) directly after the status label. Clicking opens a popover — not a full modal.</span></div>
-      <div class="rule-row"><strong>Tag chips in rows.</strong><span>Render each tag as a colored pill (<code>appearance_colored</code> family). When more than 2–3 tags exist, show the first two and a grey <code>+N</code> overflow chip. Never wrap to a second line.</span></div>
-      <div class="rule-row"><strong>Assignee avatars.</strong><span>Stack avatar circles with a small negative margin overlap. Show up to 3; use a <code>+N</code> grey circle for overflow. No names in the cell.</span></div>
-      <div class="rule-row"><strong>Label color dot.</strong><span>In label/tag list tables, prefix the row name with a filled circle (~8px) in the label's assigned color. This is the only place a raw color value may appear outside of a token — it is data, not a design decision.</span></div>
-      <div class="rule-row"><strong>Warning row state.</strong><span>Rows with a configuration error show a warning triangle icon (amber) in place of the normal content icon. Do not change the row background.</span></div>
-      <div class="rule-row"><strong>Row borders.</strong><span>Use <code>--sys-border-subtle</code> horizontal dividers between rows. No vertical column dividers. Header row uses <code>--sys-border-soft</code> bottom border.</span></div>
+      <div class="rule-row"><strong>Sort indicator.</strong><span>Show ↑ or ↓ inline in the active sort column header. Only one column sorted at a time. No indicator on inactive columns.</span></div>
+      <div class="rule-row"><strong>Inline toggle.</strong><span>On/off state rows (e.g., enabled strategy): render a toggle switch as the first element in the name column, before the label. Blue = on, grey = off.</span></div>
+      <div class="rule-row"><strong>Inline status edit.</strong><span>Editable status cells show a ▼ chevron after the label. Clicking opens a popover — not a full modal.</span></div>
+      <div class="rule-row"><strong>Tag chips.</strong><span>Render each tag as a colored pill (<code>appearance_colored</code> family). Show first two then a grey <code>+N</code> overflow chip. Never wrap to a second line.</span></div>
+      <div class="rule-row"><strong>Assignee avatars.</strong><span>Stack avatar circles with negative margin overlap. Show up to 3; use a <code>+N</code> grey circle for overflow. No names in the cell.</span></div>
+      <div class="rule-row"><strong>Label color dot.</strong><span>In label/tag list tables, prefix the row name with a filled circle (~8px) in the label's own color. This is the only place a raw color value may appear — it is data, not a design decision.</span></div>
+      <div class="rule-row"><strong>Warning state.</strong><span>Rows with a configuration error show a warning triangle icon (amber) in place of the content icon. Do not change the row background.</span></div>
+      <div class="rule-row"><strong>Row borders.</strong><span>Use <code>--sys-border-subtle</code> horizontal dividers. No vertical column dividers. Header row uses <code>--sys-border-soft</code> bottom border.</span></div>
     </div>
   </section>
 
 
-  <!-- ─── CONTEXT MENUS & DROPDOWNS ───────────────────────── -->
-  <section class="section">
-    <div class="section-header"><h2>Context Menus &amp; Dropdowns</h2></div>
-
-    <div class="rule-list" style="margin-bottom:20px;">
-      <div class="rule-row"><strong>Container.</strong><span>White card (<code>--sys-background-base</code>), rounded corners (8px), <code>--shadows-shadow-md</code> elevation, no internal dividers between items. Min-width 200px.</span></div>
-      <div class="rule-row"><strong>Trigger.</strong><span>Context menus are always triggered by a <code>⋯</code> (three-dot) icon button. The button has no visible border at rest; it gains a <code>--sys-secondary-hover</code> background on hover.</span></div>
+  <!-- ══════════════════════════════════════════════════════
+       07  CONTEXT MENUS
+  ═══════════════════════════════════════════════════════ -->
+  <section class="section" id="context-menus">
+    <div class="section-header">
+      <h2>Context Menus &amp; Dropdowns</h2>
+      <span class="section-num">07</span>
     </div>
 
+    <div class="sub-label rules">Rules</div>
+    <div class="rule-list">
+      <div class="rule-row"><strong>Container.</strong><span>White card (<code>--sys-background-base</code>), 8px rounded corners, <code>--shadows-shadow-md</code> elevation, no internal dividers. Min-width 200px.</span></div>
+      <div class="rule-row"><strong>Trigger.</strong><span>Always a <code>⋯</code> icon button. No visible border at rest; gains <code>--sys-secondary-hover</code> background on hover.</span></div>
+    </div>
+
+    <div class="sub-label decision">Decision Guide</div>
     <div class="do-dont">
       <div class="do">
         <div class="vp">
-          <!-- Correct: outlined icons, disabled item greyed at natural position -->
           <div class="mv-menu">
-            <div class="mv-menu-item">
-              <svg class="mv-menu-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="6.5" stroke="#414858" stroke-width="1.4"/><path d="M10 8v5M10 6.5v.5" stroke="#414858" stroke-width="1.4" stroke-linecap="round"/></svg>
-              <span>Details</span>
-            </div>
-            <div class="mv-menu-item disabled">
-              <svg class="mv-menu-icon" viewBox="0 0 20 20" fill="none"><path d="M4 10a6 6 0 1 0 12 0A6 6 0 0 0 4 10z" stroke="#a7aebe" stroke-width="1.4"/><path d="M8 10l1.5 1.5L12.5 8" stroke="#a7aebe" stroke-width="1.4" stroke-linecap="round"/></svg>
-              <span>Promote Post</span>
-            </div>
-            <div class="mv-menu-item">
-              <svg class="mv-menu-icon" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="4.5" width="13" height="11" rx="1.5" stroke="#414858" stroke-width="1.4"/><path d="M7 9h6M7 12h4" stroke="#414858" stroke-width="1.4" stroke-linecap="round"/></svg>
-              <span>Save as Template</span>
-            </div>
+            <div class="mv-menu-item"><svg class="mv-menu-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="6.5" stroke="#414858" stroke-width="1.4"/><path d="M10 8v5M10 6.5v.5" stroke="#414858" stroke-width="1.4" stroke-linecap="round"/></svg><span>Details</span></div>
+            <div class="mv-menu-item disabled"><svg class="mv-menu-icon" viewBox="0 0 20 20" fill="none"><path d="M4 10a6 6 0 1 0 12 0A6 6 0 0 0 4 10z" stroke="#a7aebe" stroke-width="1.4"/></svg><span>Promote Post</span></div>
+            <div class="mv-menu-item"><svg class="mv-menu-icon" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="4.5" width="13" height="11" rx="1.5" stroke="#414858" stroke-width="1.4"/><path d="M7 9h6M7 12h4" stroke="#414858" stroke-width="1.4" stroke-linecap="round"/></svg><span>Save as Template</span></div>
           </div>
         </div>
-        <div class="do-inner">
-          <div class="do-label">Do</div>
-          <p>Use 20px <strong>outlined</strong> icons in menu items. Keep disabled items in their natural list position, setting both icon and label to <code>--sys-text-disabled</code>.</p>
-        </div>
+        <div class="do-inner"><div class="do-label">Do</div><p>Use 20px <strong>outlined</strong> icons. Keep disabled items at their natural list position, styled with <code>--sys-text-disabled</code>.</p></div>
       </div>
       <div class="dont">
         <div class="vp">
-          <!-- Wrong: filled icons, disabled item hidden -->
           <div class="mv-menu">
-            <div class="mv-menu-item">
-              <svg class="mv-menu-icon" viewBox="0 0 20 20"><circle cx="10" cy="10" r="6.5" fill="#414858"/></svg>
-              <span>Details</span>
-            </div>
-            <!-- Promote Post hidden -->
-            <div class="mv-menu-item">
-              <svg class="mv-menu-icon" viewBox="0 0 20 20"><rect x="3.5" y="4.5" width="13" height="11" rx="1.5" fill="#414858"/></svg>
-              <span>Save as Template</span>
-            </div>
+            <div class="mv-menu-item"><svg class="mv-menu-icon" viewBox="0 0 20 20"><circle cx="10" cy="10" r="6.5" fill="#414858"/></svg><span>Details</span></div>
+            <div class="mv-menu-item"><svg class="mv-menu-icon" viewBox="0 0 20 20"><rect x="3.5" y="4.5" width="13" height="11" rx="1.5" fill="#414858"/></svg><span>Save as Template</span></div>
             <div style="padding:5px 12px;font-size:10px;font-style:italic;color:#a7aebe;">(Promote Post hidden)</div>
           </div>
         </div>
-        <div class="dont-inner">
-          <div class="dont-label">Don't</div>
-          <p>Don't use filled icons in menus, and don't hide disabled items — removing them breaks the user's mental model of what actions exist.</p>
-        </div>
+        <div class="dont-inner"><div class="dont-label">Don't</div><p>Don't use filled icons, and don't hide disabled items — removing them breaks the user's mental model of what actions exist.</p></div>
       </div>
     </div>
 
     <div class="do-dont">
       <div class="do">
         <div class="vp" style="flex-direction:column;gap:6px;">
-          <div style="width:220px;background:#f3f5f7;border-radius:6px;padding:8px 12px;font-size:11px;color:#5f6a82;font-family:system-ui,sans-serif;position:relative;overflow:visible;">
-            Panel content
-            <div class="mv-menu" style="position:absolute;top:28px;right:8px;width:160px;z-index:10;">
-              <div class="mv-menu-item"><svg class="mv-menu-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="6.5" stroke="#414858" stroke-width="1.4"/></svg><span>Action</span></div>
-            </div>
-          </div>
-          <div style="font-size:10px;color:#2e881b;font-family:system-ui,sans-serif;">Menu escapes panel boundary ✓</div>
+          <div style="width:220px;background:#f3f5f7;border-radius:6px;padding:8px 12px;font-size:11px;color:#5f6a82;font-family:system-ui,sans-serif;position:relative;overflow:visible;">Panel content<div class="mv-menu" style="position:absolute;top:28px;right:8px;width:140px;z-index:10;"><div class="mv-menu-item"><svg class="mv-menu-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="6.5" stroke="#414858" stroke-width="1.4"/></svg><span>Action</span></div></div></div>
+          <div style="font-size:10px;color:#2e881b;font-family:system-ui,sans-serif;">Menu escapes panel ✓</div>
         </div>
-        <div class="do-inner">
-          <div class="do-label">Do</div>
-          <p>Render open menus with a high <code>z-index</code> so they appear above all panels. Use a portal or fixed positioning to escape any parent <code>overflow:hidden</code>.</p>
-        </div>
+        <div class="do-inner"><div class="do-label">Do</div><p>Use a high <code>z-index</code> and portal/fixed positioning so menus appear above all panels and escape any <code>overflow:hidden</code>.</p></div>
       </div>
       <div class="dont">
         <div class="vp" style="flex-direction:column;gap:6px;">
-          <div style="width:220px;background:#f3f5f7;border-radius:6px;padding:8px 12px;font-size:11px;color:#5f6a82;font-family:system-ui,sans-serif;overflow:hidden;position:relative;">
-            Panel content
-            <div class="mv-menu" style="position:absolute;top:28px;right:8px;width:160px;">
-              <div class="mv-menu-item"><svg class="mv-menu-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="6.5" stroke="#414858" stroke-width="1.4"/></svg><span>Action</span></div>
-              <div class="mv-menu-item"><svg class="mv-menu-icon" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="4.5" width="13" height="11" rx="1.5" stroke="#414858" stroke-width="1.4"/></svg><span>Template</span></div>
-            </div>
-          </div>
+          <div style="width:220px;background:#f3f5f7;border-radius:6px;padding:8px 12px;font-size:11px;color:#5f6a82;font-family:system-ui,sans-serif;overflow:hidden;position:relative;">Panel content<div class="mv-menu" style="position:absolute;top:28px;right:8px;width:140px;"><div class="mv-menu-item"><svg class="mv-menu-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="6.5" stroke="#414858" stroke-width="1.4"/></svg><span>Action</span></div><div class="mv-menu-item"><svg class="mv-menu-icon" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="4.5" width="13" height="11" rx="1.5" stroke="#414858" stroke-width="1.4"/></svg><span>Template</span></div></div></div>
           <div style="font-size:10px;color:#cc0000;font-family:system-ui,sans-serif;">Clipped by overflow:hidden ✗</div>
         </div>
-        <div class="dont-inner">
-          <div class="dont-label">Don't</div>
-          <p>Don't let a menu get clipped by a panel's <code>overflow:hidden</code>. A partially visible menu is a broken interaction.</p>
-        </div>
+        <div class="dont-inner"><div class="dont-label">Don't</div><p>Don't let a menu get clipped by a panel's <code>overflow:hidden</code>. A partially visible menu is a broken interaction.</p></div>
       </div>
     </div>
   </section>
 
 
-  <!-- ─── STATUS & SENTIMENT INDICATORS ───────────────────── -->
-  <section class="section">
-    <div class="section-header"><h2>Status &amp; Sentiment Indicators</h2></div>
+  <!-- ══════════════════════════════════════════════════════
+       08  STATUS & SENTIMENT INDICATORS
+  ═══════════════════════════════════════════════════════ -->
+  <section class="section" id="status-indicators">
+    <div class="section-header">
+      <h2>Status &amp; Sentiment Indicators</h2>
+      <span class="section-num">08</span>
+    </div>
 
-    <!-- Visual: all three badge types -->
-    <div class="visual" style="margin-bottom:20px;">
+    <div class="sub-label visual">Visual Reference</div>
+    <div class="visual">
       <div class="visual-title">All indicator types — rendered side by side</div>
       <div class="visual-body" style="flex-direction:column;align-items:flex-start;gap:18px;">
-        <div>
-          <div style="font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-faint);margin-bottom:8px;">Post status badge — diamond ◆ + label, no pill</div>
-          <div class="mv-badge-row">
-            <div class="mv-badge-diamond"><span style="color:#2e881b;font-size:13px;">◆</span><span style="font-size:12px;font-weight:600;color:#111317;font-family:system-ui,sans-serif;">Successful</span></div>
-            <div class="mv-badge-diamond"><span style="color:#e05a00;font-size:13px;">◆</span><span style="font-size:12px;font-weight:600;color:#111317;font-family:system-ui,sans-serif;">Draft</span></div>
-            <div class="mv-badge-diamond"><span style="color:#cc0000;font-size:13px;">▲</span><span style="font-size:12px;font-weight:600;color:#111317;font-family:system-ui,sans-serif;">Failed</span></div>
-            <div class="mv-badge-diamond"><span style="color:#1339ec;font-size:13px;">◆</span><span style="font-size:12px;font-weight:600;color:#111317;font-family:system-ui,sans-serif;">Scheduled</span></div>
-          </div>
-        </div>
-        <div>
-          <div style="font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-faint);margin-bottom:8px;">Sentiment badge — pill with dot, all-caps</div>
-          <div class="mv-badge-row">
-            <div class="mv-badge-pill" style="background:#ffebeb;color:#cc0000;"><span style="width:6px;height:6px;background:#cc0000;border-radius:50%;display:inline-block;"></span>NEGATIVE</div>
-            <div class="mv-badge-pill" style="background:#f3f5f7;color:#5f6a82;"><span style="width:6px;height:6px;background:#5f6a82;border-radius:50%;display:inline-block;"></span>NEUTRAL</div>
-            <div class="mv-badge-pill" style="background:#e9ffcf;color:#2e881b;"><span style="width:6px;height:6px;background:#2e881b;border-radius:50%;display:inline-block;"></span>POSITIVE</div>
-          </div>
-        </div>
-        <div>
-          <div style="font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-faint);margin-bottom:8px;">Record status — colored circle ● + label + chevron</div>
-          <div class="mv-badge-row">
-            <div class="mv-badge-record"><span style="color:#5f6a82;font-size:14px;">●</span><span style="font-size:12px;color:#111317;font-family:system-ui,sans-serif;">Draft</span><span style="font-size:10px;color:#5f6a82;font-family:system-ui,sans-serif;">▾</span></div>
-            <div class="mv-badge-record"><span style="color:#1339ec;font-size:14px;">●</span><span style="font-size:12px;color:#111317;font-family:system-ui,sans-serif;">Scheduled</span><span style="font-size:10px;color:#5f6a82;font-family:system-ui,sans-serif;">▾</span></div>
-            <div class="mv-badge-record"><span style="color:#2e881b;font-size:14px;">●</span><span style="font-size:12px;color:#111317;font-family:system-ui,sans-serif;">Published</span><span style="font-size:10px;color:#5f6a82;font-family:system-ui,sans-serif;">▾</span></div>
-          </div>
-        </div>
+        <div><div style="font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-faint);margin-bottom:8px;">Post status badge — diamond ◆ + label, no pill</div><div class="mv-badge-row"><div class="mv-badge-diamond"><span style="color:#2e881b;font-size:13px;">◆</span><span style="font-size:12px;font-weight:600;color:#111317;font-family:system-ui,sans-serif;">Successful</span></div><div class="mv-badge-diamond"><span style="color:#e05a00;font-size:13px;">◆</span><span style="font-size:12px;font-weight:600;color:#111317;font-family:system-ui,sans-serif;">Draft</span></div><div class="mv-badge-diamond"><span style="color:#cc0000;font-size:13px;">▲</span><span style="font-size:12px;font-weight:600;color:#111317;font-family:system-ui,sans-serif;">Failed</span></div><div class="mv-badge-diamond"><span style="color:#1339ec;font-size:13px;">◆</span><span style="font-size:12px;font-weight:600;color:#111317;font-family:system-ui,sans-serif;">Scheduled</span></div></div></div>
+        <div><div style="font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-faint);margin-bottom:8px;">Sentiment badge — pill with dot, all-caps</div><div class="mv-badge-row"><div class="mv-badge-pill" style="background:#ffebeb;color:#cc0000;"><span style="width:6px;height:6px;background:#cc0000;border-radius:50%;display:inline-block;"></span>NEGATIVE</div><div class="mv-badge-pill" style="background:#f3f5f7;color:#5f6a82;"><span style="width:6px;height:6px;background:#5f6a82;border-radius:50%;display:inline-block;"></span>NEUTRAL</div><div class="mv-badge-pill" style="background:#e9ffcf;color:#2e881b;"><span style="width:6px;height:6px;background:#2e881b;border-radius:50%;display:inline-block;"></span>POSITIVE</div></div></div>
+        <div><div style="font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-faint);margin-bottom:8px;">Record status — colored circle ● + label + ▾ chevron</div><div class="mv-badge-row"><div class="mv-badge-record"><span style="color:#5f6a82;font-size:14px;">●</span><span style="font-size:12px;color:#111317;font-family:system-ui,sans-serif;">Draft</span><span style="font-size:10px;color:#5f6a82;font-family:system-ui,sans-serif;">▾</span></div><div class="mv-badge-record"><span style="color:#1339ec;font-size:14px;">●</span><span style="font-size:12px;color:#111317;font-family:system-ui,sans-serif;">Scheduled</span><span style="font-size:10px;color:#5f6a82;font-family:system-ui,sans-serif;">▾</span></div><div class="mv-badge-record"><span style="color:#2e881b;font-size:14px;">●</span><span style="font-size:12px;color:#111317;font-family:system-ui,sans-serif;">Published</span><span style="font-size:10px;color:#5f6a82;font-family:system-ui,sans-serif;">▾</span></div></div></div>
       </div>
     </div>
 
-    <div class="tbl-wrap" style="margin-bottom:20px;">
+    <div class="sub-label anatomy">Structure</div>
+    <div class="tbl-wrap">
       <table class="tbl">
         <thead><tr><th>Indicator type</th><th>Shape</th><th>Icon</th><th>Values</th></tr></thead>
         <tbody>
-          <tr>
-            <td><strong>Post status badge</strong><br><span style="font-size:12px;color:var(--text-faint);">Calendar cards, detail panel header</span></td>
-            <td>Inline label, no pill background</td>
-            <td>Filled diamond ◆ (colored)</td>
-            <td>Successful = green, Draft = orange, Failed = red, Scheduled = blue</td>
-          </tr>
-          <tr>
-            <td><strong>Sentiment badge</strong><br><span style="font-size:12px;color:var(--text-faint);">Feed list items (Engage)</span></td>
-            <td>Pill with colored background</td>
-            <td>Small filled dot</td>
-            <td>Negative = red pill, Neutral = grey pill, Positive = green pill. All-caps label text.</td>
-          </tr>
-          <tr>
-            <td><strong>Record status</strong><br><span style="font-size:12px;color:var(--text-faint);">Table status column</span></td>
-            <td>Inline label + dropdown chevron</td>
-            <td>Colored circle (●)</td>
-            <td>Draft = grey, Scheduled = blue, Published/Successful = green, Failed/Rejected = red</td>
-          </tr>
-          <tr>
-            <td><strong>Toggle (active/inactive)</strong><br><span style="font-size:12px;color:var(--text-faint);">Settings table rows</span></td>
-            <td>Toggle switch</td>
-            <td>None</td>
-            <td>On = <code>--sys-primary-default</code> blue track, Off = grey track</td>
-          </tr>
+          <tr><td><strong>Post status badge</strong><br><span style="font-size:12px;color:var(--text-faint);">Calendar cards, detail panel header</span></td><td>Inline label, no pill background</td><td>Filled diamond ◆</td><td>Successful = green, Draft = orange, Failed = red, Scheduled = blue</td></tr>
+          <tr><td><strong>Sentiment badge</strong><br><span style="font-size:12px;color:var(--text-faint);">Engage feed items</span></td><td>Pill with colored background</td><td>Small filled dot</td><td>Negative = red, Neutral = grey, Positive = green. All-caps label.</td></tr>
+          <tr><td><strong>Record status</strong><br><span style="font-size:12px;color:var(--text-faint);">Table status column</span></td><td>Inline label + ▾ chevron</td><td>Colored circle ●</td><td>Draft = grey, Scheduled = blue, Published = green, Failed = red</td></tr>
+          <tr><td><strong>Toggle</strong><br><span style="font-size:12px;color:var(--text-faint);">Settings table rows</span></td><td>Toggle switch</td><td>None</td><td>On = <code>--sys-primary-default</code> blue track, Off = grey track</td></tr>
         </tbody>
       </table>
     </div>
 
+    <div class="sub-label decision">Decision Guide</div>
     <div class="do-dont">
       <div class="do">
-        <div class="vp">
-          <div style="display:flex;align-items:center;gap:6px;font-family:system-ui,sans-serif;">
-            <span style="color:#2e881b;font-size:16px;">◆</span>
-            <span style="font-size:13px;font-weight:600;color:#111317;">Successful</span>
-          </div>
-        </div>
-        <div class="do-inner">
-          <div class="do-label">Do</div>
-          <p>Use <code>◆ Successful</code> (diamond icon + label, no pill) for post status on calendar cards and in panel headers. Use the <code>status_*</code> component family from <code>output/components/</code>.</p>
-        </div>
+        <div class="vp"><div style="display:flex;align-items:center;gap:6px;font-family:system-ui,sans-serif;"><span style="color:#2e881b;font-size:16px;">◆</span><span style="font-size:13px;font-weight:600;color:#111317;">Successful</span></div></div>
+        <div class="do-inner"><div class="do-label">Do</div><p>Use <code>◆ Successful</code> (diamond + label, no pill) for post status on calendar cards and panel headers. Use the <code>status_*</code> component family.</p></div>
       </div>
       <div class="dont">
-        <div class="vp">
-          <div class="mv-badge-pill" style="background:#e9ffcf;color:#2e881b;font-size:11px;padding:4px 10px;">
-            <span style="width:6px;height:6px;background:#2e881b;border-radius:50%;display:inline-block;"></span>
-            SUCCESSFUL
-          </div>
-        </div>
-        <div class="dont-inner">
-          <div class="dont-label">Don't</div>
-          <p>Don't use a solid pill chip for post status — that pattern is reserved for sentiment badges (Engage) and appearance chips (colored labels). Mixing the two makes status semantics ambiguous.</p>
-        </div>
+        <div class="vp"><div class="mv-badge-pill" style="background:#e9ffcf;color:#2e881b;font-size:11px;padding:4px 10px;"><span style="width:6px;height:6px;background:#2e881b;border-radius:50%;display:inline-block;"></span>SUCCESSFUL</div></div>
+        <div class="dont-inner"><div class="dont-label">Don't</div><p>Don't use a solid pill chip for post status — that's reserved for sentiment badges and appearance chips. Mixing makes status semantics ambiguous.</p></div>
       </div>
     </div>
   </section>
 
 
-  <!-- ─── EMPTY STATES ─────────────────────────────────────── -->
-  <section class="section">
-    <div class="section-header"><h2>Empty States</h2></div>
+  <!-- ══════════════════════════════════════════════════════
+       09  EMPTY STATES
+  ═══════════════════════════════════════════════════════ -->
+  <section class="section" id="empty-states">
+    <div class="section-header">
+      <h2>Empty States</h2>
+      <span class="section-num">09</span>
+    </div>
 
-    <!-- Visual: empty state structure -->
-    <div class="visual" style="margin-bottom:20px;">
+    <div class="sub-label visual">Visual Reference</div>
+    <div class="visual">
       <div class="visual-title">Empty state — structure reference</div>
       <div class="visual-body">
         <div style="width:260px;border:1px solid #e7eaee;border-radius:8px;padding:32px 24px;display:flex;flex-direction:column;align-items:center;text-align:center;font-family:system-ui,sans-serif;background:white;">
@@ -650,282 +628,199 @@
       </div>
     </div>
 
-    <div class="anatomy" style="margin-bottom:20px;">
-      <div class="anatomy-title">Structure — all empty state contexts</div>
-      <div class="anatomy-row"><span class="anatomy-pos">Icon / illustration</span><span class="anatomy-desc">64px, centered horizontally. Use a muted grey icon (<code>--sys-text-disabled</code>) or a branded illustration. Never a color icon.</span></div>
-      <div class="anatomy-row"><span class="anatomy-pos">Heading</span><span class="anatomy-desc">Bold, heading-sm or heading-md. Directly states what's missing ("No messages yet", "There are no comments available.").</span></div>
+    <div class="sub-label anatomy">Structure</div>
+    <div class="anatomy">
+      <div class="anatomy-row"><span class="anatomy-pos">Icon / illustration</span><span class="anatomy-desc">64px, centered. Use a muted grey icon (<code>--sys-text-disabled</code>) or branded illustration. Never a color icon.</span></div>
+      <div class="anatomy-row"><span class="anatomy-pos">Heading</span><span class="anatomy-desc">Bold, heading-sm or heading-md. Directly states what's missing ("No messages yet").</span></div>
       <div class="anatomy-row"><span class="anatomy-pos">Supporting text</span><span class="anatomy-desc">1–2 lines, body-sm-regular, <code>--sys-text-secondary</code>. Explains why or what to do next.</span></div>
-      <div class="anatomy-row"><span class="anatomy-pos">CTA (optional)</span><span class="anatomy-desc">Primary or secondary button below the text. Only include when there is a direct action the user can take from this state.</span></div>
+      <div class="anatomy-row"><span class="anatomy-pos">CTA (optional)</span><span class="anatomy-desc">Primary or secondary button. Only include when there is a direct action the user can take.</span></div>
     </div>
 
+    <div class="sub-label rules">Rules</div>
     <div class="rule-list">
-      <div class="rule-row"><strong>Centering.</strong><span>Center the empty state both vertically and horizontally within its container. For tall panels, use <code>display:flex; flex-direction:column; align-items:center; justify-content:center</code>.</span></div>
-      <div class="rule-row"><strong>Accordion section empty state.</strong><span>When a collapsible sidebar section has no items, show two stacked lines inside the section body: bold "No data existing" + secondary "There are no entries". No icon needed at this small scale.</span></div>
-      <div class="rule-row"><strong>Widget card empty state.</strong><span>Dashboard widget cards that have no data use the same icon + heading + body pattern scaled to fit the card. No full-page empty state treatment needed.</span></div>
+      <div class="rule-row"><strong>Centering.</strong><span>Center vertically and horizontally within the container. Use <code>display:flex; flex-direction:column; align-items:center; justify-content:center</code>.</span></div>
+      <div class="rule-row"><strong>Accordion section.</strong><span>When a collapsible sidebar section has no items: bold "No data existing" + secondary "There are no entries". No icon needed at this scale.</span></div>
+      <div class="rule-row"><strong>Widget card.</strong><span>Dashboard widget cards use the same icon + heading + body pattern scaled to the card. No full-page treatment.</span></div>
     </div>
   </section>
 
 
-  <!-- ─── ALERTS & BANNERS ─────────────────────────────────── -->
-  <section class="section">
-    <div class="section-header"><h2>Alerts &amp; Banners</h2></div>
+  <!-- ══════════════════════════════════════════════════════
+       10  ALERTS & BANNERS
+  ═══════════════════════════════════════════════════════ -->
+  <section class="section" id="alerts">
+    <div class="section-header">
+      <h2>Alerts &amp; Banners</h2>
+      <span class="section-num">10</span>
+    </div>
 
-    <div class="tbl-wrap" style="margin-bottom:20px;">
+    <div class="sub-label anatomy">Structure</div>
+    <div class="tbl-wrap">
       <table class="tbl">
         <thead><tr><th>Type</th><th>Placement</th><th>Structure</th><th>Dismissible</th></tr></thead>
         <tbody>
-          <tr>
-            <td><strong>System banner</strong></td>
-            <td>Full content-area width, above the page title, below the top nav</td>
-            <td>Warning icon + message text (left) + action button (right) + ✕ close</td>
-            <td>Yes — ✕ in far right</td>
-          </tr>
-          <tr>
-            <td><strong>Inline alert</strong></td>
-            <td>Inside a form section or card</td>
-            <td>Use <code>appearance_inline_*</code> component. Icon + short message. No close button.</td>
-            <td>No</td>
-          </tr>
-          <tr>
-            <td><strong>Toast</strong></td>
-            <td>Bottom-right corner, stacked</td>
-            <td>Use <code>appearance_floating_*</code> component. Auto-dismiss after ~4s.</td>
-            <td>Optional</td>
-          </tr>
+          <tr><td><strong>System banner</strong></td><td>Full content-area width, above page title, below top nav</td><td>Warning icon + message (left) + action button (right) + ✕ close</td><td>Yes — ✕ far right</td></tr>
+          <tr><td><strong>Inline alert</strong></td><td>Inside a form section or card</td><td>Use <code>appearance_inline_*</code> component. Icon + short message. No close button.</td><td>No</td></tr>
+          <tr><td><strong>Toast</strong></td><td>Bottom-right corner, stacked</td><td>Use <code>appearance_floating_*</code> component. Auto-dismiss after ~4s.</td><td>Optional</td></tr>
         </tbody>
       </table>
     </div>
 
-    <div class="rule-list" style="margin-bottom:20px;">
-      <div class="rule-row"><strong>System banner colors.</strong><span>Warning = <code>--sys-warning-default</code> background + <code>--sys-warning-content</code> icon/text. Danger = <code>--sys-danger-default</code> + <code>--sys-danger-content</code>. Success = <code>--sys-success-default</code> + <code>--sys-success-content</code>.</span></div>
-      <div class="rule-row"><strong>Banner action button.</strong><span>The CTA inside a system banner uses the matching semantic color as its background (e.g., orange button on orange banner). It is not a standard primary blue button.</span></div>
+    <div class="sub-label rules">Rules</div>
+    <div class="rule-list">
+      <div class="rule-row"><strong>Banner colors.</strong><span>Warning = <code>--sys-warning-default</code> bg + <code>--sys-warning-content</code> icon/text. Danger = <code>--sys-danger-default</code> + <code>--sys-danger-content</code>. Success = <code>--sys-success-default</code> + <code>--sys-success-content</code>.</span></div>
+      <div class="rule-row"><strong>Banner CTA.</strong><span>The action button inside a system banner uses the matching semantic color as its background (e.g., orange button on orange banner). Not a standard primary blue button.</span></div>
     </div>
 
+    <div class="sub-label decision">Decision Guide</div>
     <div class="do-dont">
       <div class="do">
         <div class="vp" style="flex-direction:column;gap:0;align-items:stretch;padding:12px 16px;">
-          <div class="mv-banner">
-            <svg width="16" height="16" viewBox="0 0 20 20" fill="none" style="flex-shrink:0;"><path d="M10 3L2 17h16L10 3z" stroke="#e05a00" stroke-width="1.5" stroke-linejoin="round"/><path d="M10 9v4M10 14.5v.5" stroke="#e05a00" stroke-width="1.5" stroke-linecap="round"/></svg>
-            <span class="mv-banner-warn">1 approval strategy was altered. Please check.</span>
-            <div class="mv-banner-btn">Show affected</div>
-            <span class="mv-banner-x">✕</span>
-          </div>
+          <div class="mv-banner"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" style="flex-shrink:0;"><path d="M10 3L2 17h16L10 3z" stroke="#e05a00" stroke-width="1.5" stroke-linejoin="round"/><path d="M10 9v4M10 14.5v.5" stroke="#e05a00" stroke-width="1.5" stroke-linecap="round"/></svg><span class="mv-banner-warn">1 approval strategy was altered.</span><div class="mv-banner-btn">Show affected</div><span class="mv-banner-x">✕</span></div>
           <div style="font-size:10px;color:#2e881b;font-family:system-ui,sans-serif;margin-top:6px;text-align:center;">One banner, matched color CTA ✓</div>
         </div>
-        <div class="do-inner">
-          <div class="do-label">Do</div>
-          <p>Show one system banner at a time. If multiple conditions exist, combine messages or prioritize by severity: danger &gt; warning &gt; info.</p>
-        </div>
+        <div class="do-inner"><div class="do-label">Do</div><p>Show one system banner at a time. Combine messages or prioritize by severity: danger &gt; warning &gt; info.</p></div>
       </div>
       <div class="dont">
         <div class="vp" style="flex-direction:column;gap:4px;align-items:stretch;padding:12px 16px;">
-          <div class="mv-banner">
-            <span class="mv-banner-warn">⚠ Approval strategy altered.</span>
-            <div class="mv-banner-btn">Show</div>
-            <span class="mv-banner-x">✕</span>
-          </div>
-          <div class="mv-banner" style="background:#ffebeb;border-color:#f5c0c0;">
-            <span class="mv-banner-warn" style="color:#cc0000;">⛔ Post failed to publish.</span>
-            <div class="mv-banner-btn" style="background:#cc0000;">Retry</div>
-            <span class="mv-banner-x" style="color:#cc0000;">✕</span>
-          </div>
+          <div class="mv-banner"><span class="mv-banner-warn">⚠ Approval strategy altered.</span><div class="mv-banner-btn">Show</div><span class="mv-banner-x">✕</span></div>
+          <div class="mv-banner" style="background:#ffebeb;border-color:#f5c0c0;"><span class="mv-banner-warn" style="color:#cc0000;">⛔ Post failed to publish.</span><div class="mv-banner-btn" style="background:#cc0000;">Retry</div><span class="mv-banner-x" style="color:#cc0000;">✕</span></div>
           <div style="font-size:10px;color:#cc0000;font-family:system-ui,sans-serif;margin-top:2px;text-align:center;">Stacked banners push content down ✗</div>
         </div>
-        <div class="dont-inner">
-          <div class="dont-label">Don't</div>
-          <p>Don't stack multiple system banners. Stacked banners push the page content down and compete for attention — only the highest-severity message should be visible.</p>
-        </div>
+        <div class="dont-inner"><div class="dont-label">Don't</div><p>Don't stack multiple system banners — they push content down and compete for attention.</p></div>
       </div>
     </div>
   </section>
 
 
-  <!-- ─── FEED LIST ITEMS ──────────────────────────────────── -->
-  <section class="section">
-    <div class="section-header"><h2>Feed List Items (Engage)</h2></div>
+  <!-- ══════════════════════════════════════════════════════
+       11  FEED LIST ITEMS
+  ═══════════════════════════════════════════════════════ -->
+  <section class="section" id="feed-items">
+    <div class="section-header">
+      <h2>Feed List Items</h2>
+      <span class="section-num">11</span>
+    </div>
 
-    <!-- Visual: feed item anatomy -->
-    <div class="visual" style="margin-bottom:20px;">
+    <div class="sub-label visual">Visual Reference</div>
+    <div class="visual">
       <div class="visual-title">Feed item row — rendered example</div>
       <div class="visual-body">
         <div style="width:320px;background:white;border:1px solid #e7eaee;border-radius:8px;overflow:hidden;font-family:system-ui,sans-serif;">
-          <!-- Selected item -->
           <div style="background:#eef3fd;padding:10px 14px;border-left:3px solid #1339ec;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-              <input type="checkbox" checked style="width:14px;height:14px;flex-shrink:0;" disabled>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="#0a66c2"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zM9 17H6.5v-7H9v7zm-1.25-8a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5zm10.25 8h-2.5v-3.5c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5V17h-2.5v-7h2.5v1.1c.5-.84 1.5-1.4 2.5-1.4 1.93 0 3 1.57 3 3.5V17z"/></svg>
-              <span style="font-size:12px;font-weight:500;color:#111317;flex:1;">Update published</span>
-              <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M3 5h14M8 5V3h4v2" stroke="#5f6a82" stroke-width="1.4" stroke-linecap="round"/></svg>
-              <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M5 10l3.5 3.5L15 7" stroke="#2e881b" stroke-width="1.5" stroke-linecap="round"/></svg>
-            </div>
-            <div style="display:flex;align-items:center;gap:8px;">
-              <span style="font-size:10px;color:#5f6a82;">May 20, 2026, 10:59 AM</span>
-              <div class="mv-badge-pill" style="background:#ffebeb;color:#cc0000;font-size:9px;padding:1px 6px;">
-                <span style="width:5px;height:5px;background:#cc0000;border-radius:50%;display:inline-block;"></span>NEGATIVE
-              </div>
-              <div style="margin-left:auto;width:20px;height:20px;background:#e05a00;border-radius:50%;display:flex;align-items:center;justify-content:center;"><span style="color:white;font-size:9px;font-weight:700;">RG</span></div>
-            </div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;"><input type="checkbox" checked style="width:14px;height:14px;flex-shrink:0;" disabled><svg width="16" height="16" viewBox="0 0 24 24" fill="#0a66c2"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zM9 17H6.5v-7H9v7zm-1.25-8a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5zm10.25 8h-2.5v-3.5c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5V17h-2.5v-7h2.5v1.1c.5-.84 1.5-1.4 2.5-1.4 1.93 0 3 1.57 3 3.5V17z"/></svg><span style="font-size:12px;font-weight:500;color:#111317;flex:1;">Update published</span><svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M5 10l3.5 3.5L15 7" stroke="#2e881b" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+            <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:10px;color:#5f6a82;">May 20, 2026</span><div class="mv-badge-pill" style="background:#ffebeb;color:#cc0000;font-size:9px;padding:1px 6px;"><span style="width:5px;height:5px;background:#cc0000;border-radius:50%;display:inline-block;"></span>NEGATIVE</div><div style="margin-left:auto;width:20px;height:20px;background:#e05a00;border-radius:50%;display:flex;align-items:center;justify-content:center;"><span style="color:white;font-size:9px;font-weight:700;">RG</span></div></div>
           </div>
-          <!-- Unselected item -->
           <div style="padding:10px 14px;border-top:1px solid #f3f5f7;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-              <input type="checkbox" style="width:14px;height:14px;flex-shrink:0;" disabled>
-              <svg width="16" height="16" viewBox="0 0 24 24"><path d="M12.53.02C13.84 0 15.14.08 16.44.25c4.38.59 7.42 3.54 7.55 8.24.06 2.2-.22 4.5-1.17 6.5-1.85 3.86-5.15 5.7-9.18 5.96-2.8.18-5.52-.37-7.8-1.98C3.45 17.3 2.1 14.4 2.1 11.4c0-2.67.84-5.14 2.59-7.06C6.6 2.24 9.44 1.04 12.53.02z" fill="#000"/></svg>
-              <span style="font-size:12px;color:#111317;flex:1;">Video published</span>
-              <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M3 5h14M8 5V3h4v2" stroke="#5f6a82" stroke-width="1.4" stroke-linecap="round"/></svg>
-              <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M5 10l3.5 3.5L15 7" stroke="#2e881b" stroke-width="1.5" stroke-linecap="round"/></svg>
-            </div>
-            <div style="display:flex;align-items:center;gap:8px;">
-              <span style="font-size:10px;color:#5f6a82;">Apr 20, 2026, 4:43 PM</span>
-              <div class="mv-badge-pill" style="background:#f3f5f7;color:#5f6a82;font-size:9px;padding:1px 6px;">
-                <span style="width:5px;height:5px;background:#5f6a82;border-radius:50%;display:inline-block;"></span>NEUTRAL
-              </div>
-              <div style="margin-left:auto;width:20px;height:20px;background:#5c8adb;border-radius:50%;display:flex;align-items:center;justify-content:center;"><span style="color:white;font-size:9px;font-weight:700;">RG</span></div>
-            </div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;"><input type="checkbox" style="width:14px;height:14px;flex-shrink:0;" disabled><svg width="16" height="16" viewBox="0 0 24 24"><path d="M12.53.02C13.84 0 15.14.08 16.44.25c4.38.59 7.42 3.54 7.55 8.24.06 2.2-.22 4.5-1.17 6.5-1.85 3.86-5.15 5.7-9.18 5.96-2.8.18-5.52-.37-7.8-1.98C3.45 17.3 2.1 14.4 2.1 11.4c0-2.67.84-5.14 2.59-7.06C6.6 2.24 9.44 1.04 12.53.02z" fill="#000"/></svg><span style="font-size:12px;color:#111317;flex:1;">Video published</span><svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M5 10l3.5 3.5L15 7" stroke="#2e881b" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+            <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:10px;color:#5f6a82;">Apr 20, 2026</span><div class="mv-badge-pill" style="background:#f3f5f7;color:#5f6a82;font-size:9px;padding:1px 6px;"><span style="width:5px;height:5px;background:#5f6a82;border-radius:50%;display:inline-block;"></span>NEUTRAL</div><div style="margin-left:auto;width:20px;height:20px;background:#5c8adb;border-radius:50%;display:flex;align-items:center;justify-content:center;"><span style="color:white;font-size:9px;font-weight:700;">RG</span></div></div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="anatomy" style="margin-bottom:20px;">
-      <div class="anatomy-title">Feed item row anatomy</div>
+    <div class="sub-label anatomy">Row Anatomy</div>
+    <div class="anatomy">
       <div class="anatomy-row"><span class="anatomy-pos">Left</span><span class="anatomy-desc">Checkbox (16px) — always present for bulk-select support</span></div>
-      <div class="anatomy-row"><span class="anatomy-pos">Icon</span><span class="anatomy-desc">16–20px platform/network icon (TikTok, LinkedIn, Facebook, etc.)</span></div>
+      <div class="anatomy-row"><span class="anatomy-pos">Icon</span><span class="anatomy-desc">16–20px platform/network icon (TikTok, LinkedIn, Facebook…)</span></div>
       <div class="anatomy-row"><span class="anatomy-pos">Title</span><span class="anatomy-desc">Primary text — truncated to 1 line, body-md-medium</span></div>
-      <div class="anatomy-row"><span class="anatomy-pos">Row actions (right)</span><span class="anatomy-desc">Flag icon + checkmark icon — always visible (not hover-only)</span></div>
+      <div class="anatomy-row"><span class="anatomy-pos">Row actions (right)</span><span class="anatomy-desc">Flag icon + checkmark icon — always visible, not hover-only</span></div>
       <div class="anatomy-row"><span class="anatomy-pos">Second line</span><span class="anatomy-desc">Timestamp (body-sm-regular, <code>--sys-text-secondary</code>) + sentiment badge pill</span></div>
       <div class="anatomy-row"><span class="anatomy-pos">Bottom-right</span><span class="anatomy-desc">Assignee initials avatar (24px circle, colored background)</span></div>
     </div>
 
+    <div class="sub-label rules">Rules</div>
     <div class="rule-list">
-      <div class="rule-row"><strong>Selected state.</strong><span>Active/selected feed item gets a light blue tinted background (<code>--sys-primary-subtle-hover</code>). No border change on the item itself.</span></div>
-      <div class="rule-row"><strong>Unassigned label.</strong><span>If the item is unassigned, show a small dark chip tooltip "Unassigned" on hover — not as persistent text in the row.</span></div>
+      <div class="rule-row"><strong>Selected state.</strong><span>Active/selected item gets <code>--sys-primary-subtle-hover</code> background tint + left border accent. No border change on the item card itself.</span></div>
+      <div class="rule-row"><strong>Unassigned label.</strong><span>Show a small dark chip "Unassigned" on hover only — not as persistent row text.</span></div>
     </div>
   </section>
 
 
-  <!-- ─── COMPOSE AREAS ────────────────────────────────────── -->
-  <section class="section">
-    <div class="section-header"><h2>Compose &amp; Input Areas</h2></div>
-
-    <div class="anatomy" style="margin-bottom:20px;">
-      <div class="anatomy-title">Rich text compose area anatomy</div>
-      <div class="anatomy-row"><span class="anatomy-pos">Container</span><span class="anatomy-desc">Bordered box, <code>--sys-border-base</code> at rest, <code>--sys-border-focus</code> ring on focus</span></div>
-      <div class="anatomy-row"><span class="anatomy-pos">Text area</span><span class="anatomy-desc">Grows vertically with content. Placeholder text uses <code>--sys-text-placeholder</code>.</span></div>
-      <div class="anatomy-row"><span class="anatomy-pos">Toolbar (inside box, bottom)</span><span class="anatomy-desc">B I U S formatting buttons + list buttons + emoji + ⋯ overflow. Left-aligned within the box.</span></div>
-      <div class="anatomy-row"><span class="anatomy-pos">Send button</span><span class="anatomy-desc">Primary blue button, anchored to the bottom-right corner of the panel — <strong>outside</strong> the input box, not inside it.</span></div>
+  <!-- ══════════════════════════════════════════════════════
+       12  COMPOSE & INPUT AREAS
+  ═══════════════════════════════════════════════════════ -->
+  <section class="section" id="compose">
+    <div class="section-header">
+      <h2>Compose &amp; Input Areas</h2>
+      <span class="section-num">12</span>
     </div>
 
+    <div class="sub-label anatomy">Structure</div>
+    <div class="anatomy">
+      <div class="anatomy-row"><span class="anatomy-pos">Container</span><span class="anatomy-desc">Bordered box — <code>--sys-border-base</code> at rest, <code>--sys-border-focus</code> ring on focus</span></div>
+      <div class="anatomy-row"><span class="anatomy-pos">Text area</span><span class="anatomy-desc">Grows vertically with content. Placeholder uses <code>--sys-text-placeholder</code>.</span></div>
+      <div class="anatomy-row"><span class="anatomy-pos">Toolbar</span><span class="anatomy-desc"><strong>Inside the box, bottom row:</strong> B I U S formatting + list + emoji + ⋯ overflow. Left-aligned.</span></div>
+      <div class="anatomy-row"><span class="anatomy-pos">Send button</span><span class="anatomy-desc">Primary blue button, anchored to bottom-right corner of the panel — <strong>outside</strong> the input box.</span></div>
+    </div>
+
+    <div class="sub-label decision">Decision Guide</div>
     <div class="do-dont">
       <div class="do">
-        <div class="vp">
-          <div class="mv-compose">
-            <div class="mv-compose-box">
-              <div class="mv-compose-placeholder">Your message</div>
-              <div class="mv-compose-toolbar">
-                <span class="b">B</span><span class="i">I</span><span class="u">U</span><span class="s">S</span>
-                <span class="sep"></span>
-                <span>≡</span><span>⋯</span>
-              </div>
-            </div>
-            <div class="mv-send-outside"><div class="mv-send-btn">➤ Send</div></div>
-          </div>
-        </div>
-        <div class="do-inner">
-          <div class="do-label">Do</div>
-          <p>Put the formatting toolbar <strong>inside</strong> the bordered textarea box, at the bottom. Place the Send button <strong>outside</strong> the box, anchored to the bottom-right corner of the panel.</p>
-        </div>
+        <div class="vp"><div class="mv-compose"><div class="mv-compose-box"><div class="mv-compose-placeholder">Your message</div><div class="mv-compose-toolbar"><span class="b">B</span><span class="i">I</span><span class="u">U</span><span class="s">S</span><span class="sep"></span><span>≡</span><span>⋯</span></div></div><div class="mv-send-outside"><div class="mv-send-btn">➤ Send</div></div></div></div>
+        <div class="do-inner"><div class="do-label">Do</div><p>Toolbar <strong>inside</strong> the textarea box at the bottom. Send button <strong>outside</strong> the box, anchored to the panel's bottom-right corner.</p></div>
       </div>
       <div class="dont">
-        <div class="vp">
-          <div class="mv-compose">
-            <!-- Toolbar outside/above -->
-            <div style="display:flex;gap:5px;align-items:center;padding:5px 8px;background:#f3f5f7;border:1.5px solid #d3d7de;border-radius:6px 6px 0 0;border-bottom:none;">
-              <span style="font-size:11px;font-weight:700;color:#5f6a82;">B</span>
-              <span style="font-size:11px;font-style:italic;color:#5f6a82;">I</span>
-              <span style="font-size:11px;text-decoration:underline;color:#5f6a82;">U</span>
-              <span style="font-size:11px;text-decoration:line-through;color:#5f6a82;">S</span>
-            </div>
-            <div class="mv-compose-box unfocused" style="border-radius:0 0 6px 6px;">
-              <div class="mv-compose-placeholder" style="margin-bottom:16px;">Your message</div>
-              <!-- Send button inside the box -->
-              <div style="display:flex;justify-content:flex-end;">
-                <div class="mv-send-btn">➤ Send</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="dont-inner">
-          <div class="dont-label">Don't</div>
-          <p>Don't float the toolbar above/below the input as a separate row, and don't place the Send button inside the textarea border. Both patterns break the expected input boundary.</p>
-        </div>
+        <div class="vp"><div class="mv-compose"><div style="display:flex;gap:5px;align-items:center;padding:5px 8px;background:#f3f5f7;border:1.5px solid #d3d7de;border-radius:6px 6px 0 0;border-bottom:none;"><span style="font-size:11px;font-weight:700;color:#5f6a82;">B</span><span style="font-size:11px;font-style:italic;color:#5f6a82;">I</span><span style="font-size:11px;text-decoration:underline;color:#5f6a82;">U</span></div><div class="mv-compose-box unfocused" style="border-radius:0 0 6px 6px;"><div class="mv-compose-placeholder" style="margin-bottom:16px;">Your message</div><div style="display:flex;justify-content:flex-end;"><div class="mv-send-btn">➤ Send</div></div></div></div></div>
+        <div class="dont-inner"><div class="dont-label">Don't</div><p>Don't float the toolbar as a separate row above/below the input, and don't place the Send button inside the textarea border.</p></div>
       </div>
     </div>
   </section>
 
 
-  <!-- ─── CARDS & MEDIA GRID ───────────────────────────────── -->
-  <section class="section">
-    <div class="section-header"><h2>Calendar Post Cards &amp; Media Grid</h2></div>
+  <!-- ══════════════════════════════════════════════════════
+       13  CALENDAR CARDS & MEDIA GRID
+  ═══════════════════════════════════════════════════════ -->
+  <section class="section" id="cards-media">
+    <div class="section-header">
+      <h2>Calendar Post Cards &amp; Media Grid</h2>
+      <span class="section-num">13</span>
+    </div>
 
-    <div class="anatomy" style="margin-bottom:20px;">
-      <div class="anatomy-title">Calendar post card anatomy</div>
-      <div class="anatomy-row"><span class="anatomy-pos">Top</span><span class="anatomy-desc">Status badge: ◆ icon (colored by status) + status label text (body-sm-medium)</span></div>
+    <div class="sub-label anatomy">Card Anatomy</div>
+    <div class="anatomy">
+      <div class="anatomy-row"><span class="anatomy-pos">Top</span><span class="anatomy-desc">Status badge: ◆ icon (colored by status) + status label (body-sm-medium)</span></div>
       <div class="anatomy-row"><span class="anatomy-pos">Middle</span><span class="anatomy-desc">Media thumbnail (grey placeholder if no image). Fills most of the card height.</span></div>
-      <div class="anatomy-row"><span class="anatomy-pos">Thumbnail overlay</span><span class="anatomy-desc">Social network icon — small circle badge, bottom-left corner of the thumbnail</span></div>
+      <div class="anatomy-row"><span class="anatomy-pos">Thumbnail overlay</span><span class="anatomy-desc">Social network icon — small circle badge, bottom-left of the thumbnail</span></div>
       <div class="anatomy-row"><span class="anatomy-pos">Bottom</span><span class="anatomy-desc">Title text, truncated to 1 line, body-sm-regular. Optional tag chips below if tags exist.</span></div>
     </div>
 
+    <div class="sub-label decision">Decision Guide</div>
     <div class="do-dont">
       <div class="do">
-        <div class="vp">
-          <div class="mv-card selected-border">
-            <div class="mv-card-status">◆ Successful</div>
-            <div class="mv-card-thumb"><div class="net"></div></div>
-            <div class="mv-card-title">Hello simple tex...</div>
-          </div>
-          <div style="font-size:10px;color:#2e881b;font-family:system-ui,sans-serif;text-align:center;max-width:80px;">2px primary border, white card bg ✓</div>
-        </div>
-        <div class="do-inner">
-          <div class="do-label">Do</div>
-          <p>Indicate a selected post card with a solid 2px <code>--sys-primary-default</code> border. The card's interior background stays white.</p>
-        </div>
+        <div class="vp"><div class="mv-card selected-border"><div class="mv-card-status">◆ Successful</div><div class="mv-card-thumb"><div class="net"></div></div><div class="mv-card-title">Hello simple tex...</div></div><div style="font-size:10px;color:#2e881b;font-family:system-ui,sans-serif;text-align:center;max-width:80px;">2px primary border ✓</div></div>
+        <div class="do-inner"><div class="do-label">Do</div><p>Indicate a selected card with a solid 2px <code>--sys-primary-default</code> border. The card's background stays white.</p></div>
       </div>
       <div class="dont">
-        <div class="vp">
-          <div class="mv-card selected-bg">
-            <div class="mv-card-status">◆ Successful</div>
-            <div class="mv-card-thumb" style="background:#d3d7de;"><div class="net"></div></div>
-            <div class="mv-card-title">Hello simple tex...</div>
-          </div>
-          <div style="font-size:10px;color:#cc0000;font-family:system-ui,sans-serif;text-align:center;max-width:80px;">Blue bg tint, no clear border ✗</div>
-        </div>
-        <div class="dont-inner">
-          <div class="dont-label">Don't</div>
-          <p>Don't use a background tint to indicate selection on calendar cards — that pattern conflicts with hover states and makes the selected item harder to distinguish at a glance.</p>
-        </div>
+        <div class="vp"><div class="mv-card selected-bg"><div class="mv-card-status">◆ Successful</div><div class="mv-card-thumb" style="background:#d3d7de;"><div class="net"></div></div><div class="mv-card-title">Hello simple tex...</div></div><div style="font-size:10px;color:#cc0000;font-family:system-ui,sans-serif;text-align:center;max-width:80px;">Blue tint bg ✗</div></div>
+        <div class="dont-inner"><div class="dont-label">Don't</div><p>Don't use a background tint for selection — it conflicts with hover states and is harder to distinguish at a glance.</p></div>
       </div>
     </div>
 
+    <div class="sub-label rules">Rules</div>
     <div class="rule-list">
-      <div class="rule-row"><strong>Calendar timeline rows.</strong><span>Year row: amber/orange fill (<code>--amber-400</code> or similar) + calendar icon + year label, full grid width. Campaign rows: <code>--sys-background-neutral</code> grey fill + calendar icon + name. These rows sit above the day cells and never collapse into them.</span></div>
-      <div class="rule-row"><strong>Media grid hover.</strong><span>On hover, show a semi-transparent dark overlay on the thumbnail with centered action icons (view eye, pencil edit, trash delete). The overlay must not shift the card dimensions.</span></div>
-      <div class="rule-row"><strong>Video indicator.</strong><span>Video thumbnails always show a semi-transparent play button (▶) overlay at rest — not only on hover.</span></div>
-      <div class="rule-row"><strong>View toggle.</strong><span>Grid/list toggle is a two-button group. Active view has a filled or bordered active state. Place it in the top-right of the content area, left of the filter icon.</span></div>
-      <div class="rule-row"><strong>Pagination.</strong><span>Rows-per-page: chip group (25 / 50 / 100), active chip highlighted with <code>--sys-primary-default</code> background. Page navigation: <code>|◀ ◀ 1 2 3 ▶ ▶|</code>. Always place pagination at the bottom of the list/grid.</span></div>
+      <div class="rule-row"><strong>Timeline rows.</strong><span>Year row: amber/orange fill + calendar icon + year label, full grid width. Campaign rows: <code>--sys-background-neutral</code> grey + calendar icon + name. These rows sit above day cells and never collapse into them.</span></div>
+      <div class="rule-row"><strong>Media grid hover.</strong><span>On hover, show a semi-transparent dark overlay with centered action icons (view, edit, delete). Overlay must not shift card dimensions.</span></div>
+      <div class="rule-row"><strong>Video indicator.</strong><span>Video thumbnails always show a semi-transparent play button (▶) at rest — not only on hover.</span></div>
+      <div class="rule-row"><strong>View toggle.</strong><span>Grid/list toggle is a two-button group. Active view has a filled or bordered active state. Place top-right of the content area, left of the filter icon.</span></div>
+      <div class="rule-row"><strong>Pagination.</strong><span>Rows-per-page chip group (25 / 50 / 100), active chip highlighted with <code>--sys-primary-default</code>. Page navigation: <code>|◀ ◀ 1 2 3 ▶ ▶|</code>. Always at the bottom of the list/grid.</span></div>
     </div>
   </section>
 
 
-  <!-- ─── COLOUR USAGE ─────────────────────────────────────── -->
-  <section class="section">
-    <div class="section-header"><h2>Colour Usage Quick Reference</h2></div>
+  <!-- ══════════════════════════════════════════════════════
+       14  COLOUR USAGE
+  ═══════════════════════════════════════════════════════ -->
+  <section class="section" id="colour-usage">
+    <div class="section-header">
+      <h2>Colour Usage Quick Reference</h2>
+      <span class="section-num">14</span>
+    </div>
+
+    <div class="sub-label anatomy">Token Map</div>
     <div class="tbl-wrap">
       <table class="tbl">
-        <thead><tr>
-          <th>Situation</th>
-          <th>Token to use</th>
-        </tr></thead>
+        <thead><tr><th>Situation</th><th>Token to use</th></tr></thead>
         <tbody>
           <tr><td>Primary CTA, links, active states</td><td><code>--sys-primary-default</code></td></tr>
           <tr><td>Default body text</td><td><code>--sys-text-primary</code></td></tr>
@@ -947,19 +842,101 @@
   </section>
 
 
-  <!-- ─── ACCESSIBILITY ────────────────────────────────────── -->
-  <section class="section">
-    <div class="section-header"><h2>Accessibility</h2></div>
+  <!-- ══════════════════════════════════════════════════════
+       15  ACCESSIBILITY
+  ═══════════════════════════════════════════════════════ -->
+  <section class="section" id="accessibility">
+    <div class="section-header">
+      <h2>Accessibility</h2>
+      <span class="section-num">15</span>
+    </div>
+
+    <div class="sub-label rules">Rules</div>
     <div class="rule-list">
       <div class="rule-row"><strong>Colour contrast.</strong><span>All text on light backgrounds must meet WCAG AA (4.5:1 for normal text, 3:1 for large text). Default pairing: <code>--sys-text-primary</code> on <code>--sys-background-base</code>.</span></div>
       <div class="rule-row"><strong>Focus states.</strong><span>Every interactive element must have a visible focus ring using <code>--sys-border-focus</code>. Never suppress <code>outline</code> without a CSS-based replacement.</span></div>
-      <div class="rule-row"><strong>Icon-only buttons.</strong><span>Always include <code>aria-label</code> or a visually hidden label. Never rely on a tooltip as the only accessible label for an action.</span></div>
-      <div class="rule-row"><strong>Disabled menu items.</strong><span>Render disabled menu items with <code>aria-disabled="true"</code>. Do not use <code>disabled</code> on <code>&lt;button&gt;</code> inside menus — it removes focus and prevents tooltip/explanation delivery.</span></div>
-      <div class="rule-row"><strong>Motion.</strong><span>Wrap non-essential transitions and animations in <code>@media (prefers-reduced-motion: reduce)</code> and disable them when the user has requested reduced motion.</span></div>
+      <div class="rule-row"><strong>Icon-only buttons.</strong><span>Always include <code>aria-label</code> or a visually hidden label. Never rely on a tooltip as the only accessible label.</span></div>
+      <div class="rule-row"><strong>Disabled menu items.</strong><span>Use <code>aria-disabled="true"</code>. Do not use <code>disabled</code> on <code>&lt;button&gt;</code> inside menus — it removes focus and prevents tooltip delivery.</span></div>
+      <div class="rule-row"><strong>Motion.</strong><span>Wrap non-essential transitions in <code>@media (prefers-reduced-motion: reduce)</code> and disable them when the user has requested reduced motion.</span></div>
     </div>
   </section>
 
 </main>
 </div>
+
+<script>
+function exportMarkdown() {
+  let md = '# Design System Guidelines\n\n';
+  md += '> Prescriptive rules for building new screens or modifying existing ones.\n> Every rule maps directly to tokens, components, or patterns in the design system.\n\n---\n\n';
+
+  document.querySelectorAll('section.section').forEach(section => {
+    const h2 = section.querySelector('.section-header h2');
+    const num = section.querySelector('.section-num');
+    if (!h2) return;
+
+    md += `## ${num ? num.textContent.trim() + ' — ' : ''}${h2.textContent.trim()}\n\n`;
+
+    // Rule cards (core principles)
+    section.querySelectorAll('.rule-card').forEach(card => {
+      const label = card.querySelector('.rule-label')?.textContent.trim();
+      const body  = card.querySelector('.rule-body')?.textContent.trim();
+      if (label && body) md += `**${label}** — ${body}\n\n`;
+    });
+
+    // Reference tables
+    section.querySelectorAll('.tbl').forEach(tbl => {
+      const heads = [...tbl.querySelectorAll('thead th')].map(th => th.textContent.trim());
+      if (!heads.length) return;
+      md += '| ' + heads.join(' | ') + ' |\n';
+      md += '| ' + heads.map(() => '---').join(' | ') + ' |\n';
+      tbl.querySelectorAll('tbody tr').forEach(row => {
+        const cells = [...row.querySelectorAll('td')].map(td => td.textContent.trim().replace(/\s+/g, ' '));
+        md += '| ' + cells.join(' | ') + ' |\n';
+      });
+      md += '\n';
+    });
+
+    // Anatomy blocks
+    section.querySelectorAll('.anatomy').forEach(anatomy => {
+      anatomy.querySelectorAll('.anatomy-row').forEach(row => {
+        const pos  = row.querySelector('.anatomy-pos')?.textContent.trim();
+        const desc = row.querySelector('.anatomy-desc')?.textContent.trim();
+        if (pos && desc) md += `- **${pos}**: ${desc}\n`;
+      });
+      md += '\n';
+    });
+
+    // Rule rows
+    const rows = section.querySelectorAll('.rule-row');
+    if (rows.length) {
+      rows.forEach(row => {
+        const strong = row.querySelector('strong')?.textContent.trim();
+        const span   = row.querySelector('span')?.textContent.trim();
+        if (strong) md += `- **${strong}**${span ? ' ' + span : ''}\n`;
+      });
+      md += '\n';
+    }
+
+    // DO / DON'T pairs
+    section.querySelectorAll('.do-dont').forEach(pair => {
+      const doTxt   = pair.querySelector('.do-inner p')?.textContent.trim();
+      const dontTxt = pair.querySelector('.dont-inner p')?.textContent.trim();
+      if (doTxt)   md += `✅ **DO:** ${doTxt}\n\n`;
+      if (dontTxt) md += `❌ **DON'T:** ${dontTxt}\n\n`;
+    });
+
+    md += '---\n\n';
+  });
+
+  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'design-system-guidelines.md';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(a.href);
+}
+</script>
 </body>
 </html>
