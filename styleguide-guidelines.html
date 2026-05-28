@@ -273,7 +273,7 @@
       <span class="section-num">01</span>
     </div>
 
-    <div class="sub-label rules">Rules</div>
+    <div class="sub-label">Rules</div>
     <div class="rule-grid">
       <div class="rule-card"><div class="rule-label">Tokens First</div><p class="rule-body">Every colour, font, shadow, and spacing value must come from <code>tokens.css</code>. Never write a raw hex, <code>rgba()</code>, or hardcoded <code>px</code> value for any design property.</p></div>
       <div class="rule-card"><div class="rule-label">Components Before Custom</div><p class="rule-body">Before writing any UI element, search <code>output/components/</code> and <code>output/components2/</code> by family name. If a matching family exists, mirror its exact HTML structure and dimensions.</p></div>
@@ -294,7 +294,7 @@
       <span class="section-num">02</span>
     </div>
 
-    <div class="sub-label visual">Visual Reference</div>
+    <div class="sub-label">Visual Reference</div>
     <div class="visual">
       <div class="visual-title">Layout archetypes — wireframe overview</div>
       <div class="visual-body">
@@ -313,7 +313,7 @@
       </div>
     </div>
 
-    <div class="sub-label anatomy">Structure</div>
+    <div class="sub-label">Structure</div>
     <div class="tbl-wrap">
       <table class="tbl">
         <thead><tr><th>Archetype</th><th>Panel structure</th><th>When to use</th></tr></thead>
@@ -325,7 +325,7 @@
       </table>
     </div>
 
-    <div class="sub-label rules">Rules</div>
+    <div class="sub-label">Rules</div>
     <div class="rule-list">
       <div class="rule-row"><strong>Panel collapse.</strong><span>Every panel except the main content area must include a <code>◀</code> collapse button in its header. Collapsed state hides the panel; the icon-only sidebar remains visible.</span></div>
       <div class="rule-row"><strong>Panel scroll.</strong><span>Each panel scrolls independently. Never let one panel's scroll affect another.</span></div>
@@ -344,7 +344,7 @@
       <span class="section-num">03</span>
     </div>
 
-    <div class="sub-label visual">Visual Reference</div>
+    <div class="sub-label">Visual Reference</div>
     <div class="visual">
       <div class="visual-title">Slot order — left to right</div>
       <div class="visual-body" style="padding:14px 20px;">
@@ -368,13 +368,13 @@
       </div>
     </div>
 
-    <div class="sub-label anatomy">Structure</div>
+    <div class="sub-label">Structure</div>
     <div class="anatomy">
       <div class="anatomy-row"><span class="anatomy-pos">Left</span><span class="anatomy-desc">Hamburger menu → logo (20px) → app name (heading-sm, white) → optional divider → module icon shortcuts</span></div>
       <div class="anatomy-row"><span class="anatomy-pos">Right</span><span class="anatomy-desc">"Today's Tasks" pill with orange count badge → gear icon → chat icon → bell icon → user avatar circle (32px)</span></div>
     </div>
 
-    <div class="sub-label rules">Rules</div>
+    <div class="sub-label">Rules</div>
     <div class="rule-list">
       <div class="rule-row"><strong>Background.</strong><span>Always near-black — use <code>--grey-900</code> (<code>#111317</code>). All icons and text use <code>--sys-text-on-color</code> (white).</span></div>
       <div class="rule-row"><strong>Tasks badge.</strong><span>A small filled orange circle badge (<code>--orange-500</code>) sits top-right of the pill button at all times, even when count is 0.</span></div>
@@ -393,7 +393,7 @@
       <span class="section-num">04</span>
     </div>
 
-    <div class="sub-label anatomy">Structure</div>
+    <div class="sub-label">Structure</div>
     <div class="tbl-wrap">
       <table class="tbl">
         <thead><tr><th>Variant</th><th>When to use</th><th>Item structure</th></tr></thead>
@@ -405,13 +405,13 @@
       </table>
     </div>
 
-    <div class="sub-label rules">Rules</div>
+    <div class="sub-label">Rules</div>
     <div class="rule-list">
       <div class="rule-row"><strong>Expandable items.</strong><span>Items with sub-navigation append a <code>›</code> or chevron-right icon. The chevron flips to point down when expanded.</span></div>
       <div class="rule-row"><strong>Background.</strong><span>Always <code>--sys-background-base</code> (white). Separated from the page by a <code>--sys-border-soft</code> right border.</span></div>
     </div>
 
-    <div class="sub-label decision">Decision Guide</div>
+    <div class="sub-label">Decision Guide</div>
     <div class="do-dont">
       <div class="do">
         <div class="vp"><div class="mv-sidebar"><div class="mv-sidebar-item active-chip"><div class="mv-icon blue"></div><span>Calendar</span></div><div class="mv-sidebar-item"><div class="mv-icon"></div><span>Frames</span></div><div class="mv-sidebar-item"><div class="mv-icon"></div><span>Contents</span></div></div></div>
@@ -434,19 +434,19 @@
       <span class="section-num">05</span>
     </div>
 
-    <div class="sub-label anatomy">Structure</div>
+    <div class="sub-label">Structure</div>
     <div class="anatomy">
       <div class="anatomy-row"><span class="anatomy-pos">Title row</span><span class="anatomy-desc">Page title (heading-xl or heading-lg) left-aligned + optional dropdown chevron + optional <code>⋯</code> overflow menu. CTA buttons right-aligned.</span></div>
       <div class="anatomy-row"><span class="anatomy-pos">Subtitle / quota</span><span class="anatomy-desc">One line of plain <code>--sys-text-secondary</code> text: counts, quota ("Users: 102 / 500 • Admin users: 86 / 290"), or filter summary.</span></div>
       <div class="anatomy-row"><span class="anatomy-pos">CTA buttons</span><span class="anatomy-desc">Secondary ghost buttons first (leftmost) → primary filled button last (rightmost). Each button may carry a 20px icon clarifying the action.</span></div>
     </div>
 
-    <div class="sub-label rules">Rules</div>
+    <div class="sub-label">Rules</div>
     <div class="rule-list">
       <div class="rule-row"><strong>Split CTA.</strong><span>When a primary action has sub-actions, use a split button: primary label segment + hairline divider + chevron-down segment. Both share <code>--sys-primary-default</code> background. Divider is a semi-transparent white stroke.</span></div>
     </div>
 
-    <div class="sub-label decision">Decision Guide</div>
+    <div class="sub-label">Decision Guide</div>
     <div class="do-dont">
       <div class="do">
         <div class="vp"><div style="font-family:system-ui,sans-serif;"><div style="font-size:18px;font-weight:700;color:#111317;margin-bottom:3px;">Labels</div><div style="font-size:11px;color:#5f6a82;">75 labels</div></div></div>
@@ -469,7 +469,7 @@
       <span class="section-num">06</span>
     </div>
 
-    <div class="sub-label anatomy">Row Anatomy</div>
+    <div class="sub-label">Row Anatomy</div>
     <div class="anatomy">
       <div class="anatomy-row"><span class="anatomy-pos">Col 1</span><span class="anatomy-desc">Optional expand chevron (▶/▼) — only present when the row has children</span></div>
       <div class="anatomy-row"><span class="anatomy-pos">Col 2 — Name</span><span class="anatomy-desc">16–20px colored icon + primary title (body-md-medium) + secondary sub-label (body-sm-regular, <code>--sys-text-secondary</code>)</span></div>
@@ -478,7 +478,7 @@
       <div class="anatomy-row"><span class="anatomy-pos">Last columns</span><span class="anatomy-desc">Timestamps, IDs — plain text, right-aligned, <code>--sys-text-secondary</code></span></div>
     </div>
 
-    <div class="sub-label rules">Rules</div>
+    <div class="sub-label">Rules</div>
     <div class="rule-list">
       <div class="rule-row"><strong>Sort indicator.</strong><span>Show ↑ or ↓ inline in the active sort column header. Only one column sorted at a time. No indicator on inactive columns.</span></div>
       <div class="rule-row"><strong>Inline toggle.</strong><span>On/off state rows (e.g., enabled strategy): render a toggle switch as the first element in the name column, before the label. Blue = on, grey = off.</span></div>
@@ -501,13 +501,13 @@
       <span class="section-num">07</span>
     </div>
 
-    <div class="sub-label rules">Rules</div>
+    <div class="sub-label">Rules</div>
     <div class="rule-list">
       <div class="rule-row"><strong>Container.</strong><span>White card (<code>--sys-background-base</code>), 8px rounded corners, <code>--shadows-shadow-md</code> elevation, no internal dividers. Min-width 200px.</span></div>
       <div class="rule-row"><strong>Trigger.</strong><span>Always a <code>⋯</code> icon button. No visible border at rest; gains <code>--sys-secondary-hover</code> background on hover.</span></div>
     </div>
 
-    <div class="sub-label decision">Decision Guide</div>
+    <div class="sub-label">Decision Guide</div>
     <div class="do-dont">
       <div class="do">
         <div class="vp">
@@ -559,7 +559,7 @@
       <span class="section-num">08</span>
     </div>
 
-    <div class="sub-label visual">Visual Reference</div>
+    <div class="sub-label">Visual Reference</div>
     <div class="visual">
       <div class="visual-title">All indicator types — rendered side by side</div>
       <div class="visual-body" style="flex-direction:column;align-items:flex-start;gap:18px;">
@@ -569,7 +569,7 @@
       </div>
     </div>
 
-    <div class="sub-label anatomy">Structure</div>
+    <div class="sub-label">Structure</div>
     <div class="tbl-wrap">
       <table class="tbl">
         <thead><tr><th>Indicator type</th><th>Shape</th><th>Icon</th><th>Values</th></tr></thead>
@@ -582,7 +582,7 @@
       </table>
     </div>
 
-    <div class="sub-label decision">Decision Guide</div>
+    <div class="sub-label">Decision Guide</div>
     <div class="do-dont">
       <div class="do">
         <div class="vp"><div style="display:flex;align-items:center;gap:6px;font-family:system-ui,sans-serif;"><span style="color:#2e881b;font-size:16px;">◆</span><span style="font-size:13px;font-weight:600;color:#111317;">Successful</span></div></div>
@@ -605,7 +605,7 @@
       <span class="section-num">09</span>
     </div>
 
-    <div class="sub-label visual">Visual Reference</div>
+    <div class="sub-label">Visual Reference</div>
     <div class="visual">
       <div class="visual-title">Empty state — structure reference</div>
       <div class="visual-body">
@@ -624,7 +624,7 @@
       </div>
     </div>
 
-    <div class="sub-label anatomy">Structure</div>
+    <div class="sub-label">Structure</div>
     <div class="anatomy">
       <div class="anatomy-row"><span class="anatomy-pos">Icon / illustration</span><span class="anatomy-desc">64px, centered. Use a muted grey icon (<code>--sys-text-disabled</code>) or branded illustration. Never a color icon.</span></div>
       <div class="anatomy-row"><span class="anatomy-pos">Heading</span><span class="anatomy-desc">Bold, heading-sm or heading-md. Directly states what's missing ("No messages yet").</span></div>
@@ -632,7 +632,7 @@
       <div class="anatomy-row"><span class="anatomy-pos">CTA (optional)</span><span class="anatomy-desc">Primary or secondary button. Only include when there is a direct action the user can take.</span></div>
     </div>
 
-    <div class="sub-label rules">Rules</div>
+    <div class="sub-label">Rules</div>
     <div class="rule-list">
       <div class="rule-row"><strong>Centering.</strong><span>Center vertically and horizontally within the container. Use <code>display:flex; flex-direction:column; align-items:center; justify-content:center</code>.</span></div>
       <div class="rule-row"><strong>Accordion section.</strong><span>When a collapsible sidebar section has no items: bold "No data existing" + secondary "There are no entries". No icon needed at this scale.</span></div>
@@ -650,7 +650,7 @@
       <span class="section-num">10</span>
     </div>
 
-    <div class="sub-label anatomy">Structure</div>
+    <div class="sub-label">Structure</div>
     <div class="tbl-wrap">
       <table class="tbl">
         <thead><tr><th>Type</th><th>Placement</th><th>Structure</th><th>Dismissible</th></tr></thead>
@@ -662,13 +662,13 @@
       </table>
     </div>
 
-    <div class="sub-label rules">Rules</div>
+    <div class="sub-label">Rules</div>
     <div class="rule-list">
       <div class="rule-row"><strong>Banner colors.</strong><span>Warning = <code>--sys-warning-default</code> bg + <code>--sys-warning-content</code> icon/text. Danger = <code>--sys-danger-default</code> + <code>--sys-danger-content</code>. Success = <code>--sys-success-default</code> + <code>--sys-success-content</code>.</span></div>
       <div class="rule-row"><strong>Banner CTA.</strong><span>The action button inside a system banner uses the matching semantic color as its background (e.g., orange button on orange banner). Not a standard primary blue button.</span></div>
     </div>
 
-    <div class="sub-label decision">Decision Guide</div>
+    <div class="sub-label">Decision Guide</div>
     <div class="do-dont">
       <div class="do">
         <div class="vp" style="flex-direction:column;gap:0;align-items:stretch;padding:12px 16px;">
@@ -698,7 +698,7 @@
       <span class="section-num">11</span>
     </div>
 
-    <div class="sub-label visual">Visual Reference</div>
+    <div class="sub-label">Visual Reference</div>
     <div class="visual">
       <div class="visual-title">Feed item row — rendered example</div>
       <div class="visual-body">
@@ -715,7 +715,7 @@
       </div>
     </div>
 
-    <div class="sub-label anatomy">Row Anatomy</div>
+    <div class="sub-label">Row Anatomy</div>
     <div class="anatomy">
       <div class="anatomy-row"><span class="anatomy-pos">Left</span><span class="anatomy-desc">Checkbox (16px) — always present for bulk-select support</span></div>
       <div class="anatomy-row"><span class="anatomy-pos">Icon</span><span class="anatomy-desc">16–20px platform/network icon (TikTok, LinkedIn, Facebook…)</span></div>
@@ -725,7 +725,7 @@
       <div class="anatomy-row"><span class="anatomy-pos">Bottom-right</span><span class="anatomy-desc">Assignee initials avatar (24px circle, colored background)</span></div>
     </div>
 
-    <div class="sub-label rules">Rules</div>
+    <div class="sub-label">Rules</div>
     <div class="rule-list">
       <div class="rule-row"><strong>Selected state.</strong><span>Active/selected item gets <code>--sys-primary-subtle-hover</code> background tint + left border accent. No border change on the item card itself.</span></div>
       <div class="rule-row"><strong>Unassigned label.</strong><span>Show a small dark chip "Unassigned" on hover only — not as persistent row text.</span></div>
@@ -742,7 +742,7 @@
       <span class="section-num">12</span>
     </div>
 
-    <div class="sub-label anatomy">Structure</div>
+    <div class="sub-label">Structure</div>
     <div class="anatomy">
       <div class="anatomy-row"><span class="anatomy-pos">Container</span><span class="anatomy-desc">Bordered box — <code>--sys-border-base</code> at rest, <code>--sys-border-focus</code> ring on focus</span></div>
       <div class="anatomy-row"><span class="anatomy-pos">Text area</span><span class="anatomy-desc">Grows vertically with content. Placeholder uses <code>--sys-text-placeholder</code>.</span></div>
@@ -750,7 +750,7 @@
       <div class="anatomy-row"><span class="anatomy-pos">Send button</span><span class="anatomy-desc">Primary blue button, anchored to bottom-right corner of the panel — <strong>outside</strong> the input box.</span></div>
     </div>
 
-    <div class="sub-label decision">Decision Guide</div>
+    <div class="sub-label">Decision Guide</div>
     <div class="do-dont">
       <div class="do">
         <div class="vp"><div class="mv-compose"><div class="mv-compose-box"><div class="mv-compose-placeholder">Your message</div><div class="mv-compose-toolbar"><span class="b">B</span><span class="i">I</span><span class="u">U</span><span class="s">S</span><span class="sep"></span><span>≡</span><span>⋯</span></div></div><div class="mv-send-outside"><div class="mv-send-btn">➤ Send</div></div></div></div>
@@ -773,7 +773,7 @@
       <span class="section-num">13</span>
     </div>
 
-    <div class="sub-label anatomy">Card Anatomy</div>
+    <div class="sub-label">Card Anatomy</div>
     <div class="anatomy">
       <div class="anatomy-row"><span class="anatomy-pos">Top</span><span class="anatomy-desc">Status badge: ◆ icon (colored by status) + status label (body-sm-medium)</span></div>
       <div class="anatomy-row"><span class="anatomy-pos">Middle</span><span class="anatomy-desc">Media thumbnail (grey placeholder if no image). Fills most of the card height.</span></div>
@@ -781,7 +781,7 @@
       <div class="anatomy-row"><span class="anatomy-pos">Bottom</span><span class="anatomy-desc">Title text, truncated to 1 line, body-sm-regular. Optional tag chips below if tags exist.</span></div>
     </div>
 
-    <div class="sub-label decision">Decision Guide</div>
+    <div class="sub-label">Decision Guide</div>
     <div class="do-dont">
       <div class="do">
         <div class="vp"><div class="mv-card selected-border"><div class="mv-card-status">◆ Successful</div><div class="mv-card-thumb"><div class="net"></div></div><div class="mv-card-title">Hello simple tex...</div></div><div style="font-size:10px;color:#2e881b;font-family:system-ui,sans-serif;text-align:center;max-width:80px;">2px primary border ✓</div></div>
@@ -793,7 +793,7 @@
       </div>
     </div>
 
-    <div class="sub-label rules">Rules</div>
+    <div class="sub-label">Rules</div>
     <div class="rule-list">
       <div class="rule-row"><strong>Timeline rows.</strong><span>Year row: amber/orange fill + calendar icon + year label, full grid width. Campaign rows: <code>--sys-background-neutral</code> grey + calendar icon + name. These rows sit above day cells and never collapse into them.</span></div>
       <div class="rule-row"><strong>Media grid hover.</strong><span>On hover, show a semi-transparent dark overlay with centered action icons (view, edit, delete). Overlay must not shift card dimensions.</span></div>
@@ -813,7 +813,7 @@
       <span class="section-num">14</span>
     </div>
 
-    <div class="sub-label anatomy">Token Map</div>
+    <div class="sub-label">Token Map</div>
     <div class="tbl-wrap">
       <table class="tbl">
         <thead><tr><th>Situation</th><th>Token to use</th></tr></thead>
@@ -847,7 +847,7 @@
       <span class="section-num">15</span>
     </div>
 
-    <div class="sub-label rules">Rules</div>
+    <div class="sub-label">Rules</div>
     <div class="rule-list">
       <div class="rule-row"><strong>Colour contrast.</strong><span>All text on light backgrounds must meet WCAG AA (4.5:1 for normal text, 3:1 for large text). Default pairing: <code>--sys-text-primary</code> on <code>--sys-background-base</code>.</span></div>
       <div class="rule-row"><strong>Focus states.</strong><span>Every interactive element must have a visible focus ring using <code>--sys-border-focus</code>. Never suppress <code>outline</code> without a CSS-based replacement.</span></div>
