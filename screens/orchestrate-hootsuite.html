@@ -34,57 +34,49 @@ body{
 }
 
 /* ── APP SHELL ── */
-.app{display:flex;flex-direction:column;height:100vh}
-/* ── APP HEADER ── */
-.app-header{
-  height:56px;flex-shrink:0;
-  background:var(--hs-dark);
-  display:flex;align-items:center;
-  padding:0 16px;gap:10px;
-  z-index:10;
-}
-.hdr-menu{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--hs-icon-inactive);flex-shrink:0;}
-.hdr-menu:hover{background:rgba(255,255,255,0.08)}
-.app-logo{display:flex;align-items:center;gap:9px;flex-shrink:0}
-.logo-name{font-size:15px;font-weight:700;color:#fff;letter-spacing:-0.2px}
-.hdr-spacer{flex:1}
-.hdr-right{display:flex;align-items:center;gap:2px}
-.hdr-icon-btn{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--hs-icon-inactive);}
-.hdr-icon-btn:hover{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7)}
-.hdr-avatar{width:30px;height:30px;border-radius:50%;background:var(--hs-orange);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;margin-left:6px;cursor:pointer;flex-shrink:0;}
+.app{display:flex;flex-direction:row;height:100vh}
+/* ── APP HEADER — hidden, owl lives in sidebar ── */
+.app-header{display:none}
 
 /* ── APP BODY ── */
-.app-body{display:flex;flex:1;overflow:hidden}
+.app-body{display:flex;flex:1;overflow:hidden;height:100vh}
 
-/* ── SIDEBAR ── */
+/* ── SIDEBAR — Hootsuite style: narrow, icon+label stacked ── */
 .sidebar{
-  width:64px;flex-shrink:0;
+  width:60px;flex-shrink:0;
   background:var(--hs-dark);
-  border-right:1px solid rgba(255,255,255,0.06);
+  border-right:none;
   display:flex;flex-direction:column;
-  padding:6px 0;gap:1px;
-  z-index:10;overflow:hidden;
-  transition:width .2s cubic-bezier(.4,0,.2,1);
+  padding:0;gap:0;
+  z-index:10;overflow:visible;
 }
-.sidebar.is-expanded{width:240px}
-.sb-toggle-row{display:flex;align-items:center;justify-content:flex-end;height:36px;padding:0 8px;flex-shrink:0;margin-bottom:2px;}
-.sb-toggle-btn{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--hs-icon-inactive);flex-shrink:0;}
-.sb-toggle-btn:hover{background:rgba(255,255,255,0.08)}
+/* Owl logo at top of sidebar */
+.sb-owl-wrap{
+  height:52px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  margin-bottom:4px;
+}
+.sb-toggle-row{display:none}/* hide toggle */
 .sb-item{
-  height:40px;border-radius:0;
-  display:flex;align-items:center;gap:10px;
-  padding:0 20px;
+  height:52px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  padding:0;
   color:var(--hs-icon-inactive);
-  cursor:pointer;white-space:nowrap;flex-shrink:0;min-width:0;
-  border-left:2px solid transparent;
-  transition:background .1s;
+  cursor:pointer;white-space:nowrap;flex-shrink:0;
+  border-left:none;
+  transition:color .1s;
+  position:relative;
 }
-.sb-item:hover{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.75)}
-.sb-item.is-active{background:rgba(255,255,255,0.08);color:#fff;border-left-color:var(--hs-orange)}
+.sb-item:hover{color:rgba(255,255,255,0.85)}
+.sb-item.is-active{color:#fff}
+.sb-item.is-active::before{
+  content:'';position:absolute;left:0;top:8px;bottom:8px;width:3px;
+  background:var(--hs-orange);border-radius:0 3px 3px 0;
+}
 .sb-icon{width:20px;height:20px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
-.sb-label{font-size:13px;font-weight:500;color:rgba(255,255,255,0.75);opacity:0;pointer-events:none;transition:opacity .12s;overflow:hidden;}
-.sidebar.is-expanded .sb-label{opacity:1;pointer-events:auto}
-.sb-sep{height:1px;background:rgba(255,255,255,0.07);margin:4px 0;flex-shrink:0;}
+.sb-label{font-size:9.5px;font-weight:500;color:inherit;letter-spacing:.01em;text-align:center;line-height:1;max-width:56px;overflow:hidden;text-overflow:ellipsis;}
+.sb-sep{height:1px;background:rgba(255,255,255,0.07);margin:2px 8px;flex-shrink:0;}
 /* ── PAGE TITLE BAR — HOOTSUITE TABS ── */
 .page-title-bar{
   height:52px;flex-shrink:0;
@@ -210,38 +202,54 @@ body{
 .rec-label{font-size:10px;color:var(--hs-recommended);font-weight:500;}
 /* ── POST CARD — HOOTSUITE LAYOUT ── */
 .post-card{
-  border:1px solid var(--sys-border-soft);
+  border:1px solid #e4e7ec;
   border-radius:8px;
-  background:var(--grey-white);
+  background:#fff;
   overflow:hidden;cursor:pointer;
   transition:box-shadow .12s,border-color .12s;
-  flex-shrink:0;position:relative;
+  flex-shrink:0;
   display:flex;flex-direction:column;
 }
-.post-card:hover{box-shadow:0 2px 10px rgba(0,0,0,.09);border-color:var(--sys-border-base)}
-.post-card.is-failed{border:1.5px solid var(--sys-danger-content)!important}
+.post-card:hover{box-shadow:0 3px 12px rgba(0,0,0,.11);border-color:#c8cdd6}
+.post-card.is-failed{border-color:#f44336!important}
+/* NO top bar — Hootsuite cards are plain white */
+.post-card::before{display:none}
 
-/* top border bar instead of left bar */
-.post-card::before{content:'';position:absolute;left:0;top:0;right:0;height:3px;border-radius:8px 8px 0 0;}
-.post-card.s-successful::before{background:#4caf50}
-.post-card.s-scheduled::before{background:var(--hs-orange)}
-.post-card.s-draft::before{background:var(--grey-300)}
-.post-card.s-failed::before{background:var(--sys-danger-content)}
+/* THUMBNAIL FIRST — full-width, no padding, photo fills top */
+.post-thumb{
+  order:0;
+  width:100%;height:84px;
+  overflow:hidden;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:26px;
+  position:relative;
+  background:#f3f5f7;
+}
 
-/* account row at top */
-.post-acct-row{order:0;display:flex;align-items:center;gap:5px;padding:10px 8px 4px;}
-.post-acct-avatar{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;flex-shrink:0;}
+/* Account row BELOW thumbnail */
+.post-acct-row{
+  order:1;
+  display:flex;align-items:center;gap:5px;
+  padding:7px 8px 3px;
+}
+.post-acct-avatar{
+  width:22px;height:22px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:700;color:#fff;flex-shrink:0;
+  box-shadow:0 0 0 2px #fff;
+}
 .post-acct-name{font-size:11px;font-weight:600;color:var(--sys-text-primary);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 
-/* flex order for card children */
-.post-thumb{order:1;width:100%;height:76px;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:22px;}
-.post-body{order:2;padding:5px 7px 6px 8px;flex:1;}
-.post-status{order:3;display:flex;align-items:center;gap:4px;padding:5px 8px;border-top:1px solid var(--sys-border-subtle);}
+/* Body (caption) */
+.post-body{order:2;padding:2px 8px 6px;flex:1;}
+
+/* Status footer */
+.post-status{order:3;display:flex;align-items:center;gap:4px;padding:5px 8px 7px;}
 
 .post-si{flex-shrink:0;display:flex;align-items:center;width:12px;height:12px;}
 .post-si svg{width:12px;height:12px;}
 .post-st{font-size:11px;font-weight:600;flex:1;line-height:1;}
-.post-time{font-size:10.5px;color:var(--sys-text-placeholder);white-space:nowrap;}
+.post-time{font-size:10.5px;color:var(--sys-text-placeholder);white-space:nowrap;margin-left:auto;}
 
 .s-successful .post-st{color:var(--green-700)}
 .s-scheduled  .post-st{color:var(--hs-orange)}
@@ -494,11 +502,21 @@ body{
 <div class="app-body">
 <!-- SIDEBAR -->
 <nav class="sidebar" id="sidebar">
-  <div class="sb-toggle-row">
-    <button class="sb-toggle-btn" id="sb-toggle" title="Toggle sidebar">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M3 5C3 4.44772 3.44772 4 4 4H20C20.5523 4 21 4.44772 21 5C21 5.55228 20.5523 6 20 6H4C3.44772 6 3 5.55228 3 5ZM3 12C3 11.4477 3.44772 11 4 11H20C20.5523 11 21 11.4477 21 12C21 12.5523 20.5523 13 20 13H4C3.44772 13 3 12.5523 3 12ZM4 18C3.44772 18 3 18.4477 3 19C3 19.5523 3.44772 20 4 20H20C20.5523 20 21 19.5523 21 19C21 18.4477 20.5523 18 20 18H4Z" fill="currentColor"/></svg>
-    </button>
+  <!-- OWL LOGO at top -->
+  <div class="sb-owl-wrap">
+    <svg width="30" height="30" viewBox="0 0 40 40" fill="none">
+      <circle cx="20" cy="20" r="20" fill="#e8621a"/>
+      <ellipse cx="20" cy="19" rx="9" ry="10" fill="white"/>
+      <circle cx="16" cy="18" r="2.8" fill="#1c1e26"/>
+      <circle cx="24" cy="18" r="2.8" fill="#1c1e26"/>
+      <circle cx="16.9" cy="17.1" r="1" fill="white"/>
+      <circle cx="24.9" cy="17.1" r="1" fill="white"/>
+      <path d="M16 26 Q20 30 24 26" stroke="#1c1e26" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <path d="M14 11 Q16 8 18 10" stroke="#1c1e26" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <path d="M22 10 Q24 8 26 11" stroke="#1c1e26" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    </svg>
   </div>
+  <div class="sb-toggle-row"></div>
   <button class="sb-item" title="Analytics">
     <span class="sb-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M21 4.5C21 3.67157 20.3284 3 19.5 3C18.6716 3 18 3.67157 18 4.5V19.5C18 20.3284 18.6716 21 19.5 21C20.3284 21 21 20.3284 21 19.5V4.5ZM11 8.35712C11 7.52869 10.3284 6.85712 9.5 6.85712C8.67157 6.85712 8 7.52869 8 8.35712V19.5C8 20.3284 8.67157 21 9.5 21C10.3284 21 11 20.3284 11 19.5V8.35712ZM6 16.0714C6 15.243 5.32843 14.5714 4.5 14.5714C3.67157 14.5714 3 15.243 3 16.0714V19.5C3 20.3284 3.67157 21 4.5 21C5.32843 21 6 20.3284 6 19.5V16.0714ZM14.5 10.7143C15.3284 10.7143 16 11.3859 16 12.2143V19.5C16 20.3284 15.3284 21 14.5 21C13.6716 21 13 20.3284 13 19.5V12.2143C13 11.3859 13.6716 10.7143 14.5 10.7143Z" fill="currentColor"/></svg></span>
     <span class="sb-label">Analytics</span>
