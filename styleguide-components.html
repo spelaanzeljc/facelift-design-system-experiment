@@ -268,6 +268,7 @@
   </a>
 
   <nav class="quicknav">
+    <a href="#logo">Logo</a>
     <a href="#actions">Actions</a>
     <a href="#avatar">Avatar</a>
     <a href="#indicators">Indicators</a>
@@ -275,6 +276,25 @@
     <a href="#overlays">Overlays</a>
     <a href="#data-display">Data Display</a>
   </nav>
+
+  <!-- ═══════════════════════ LOGO ═════════════════════════════ -->
+  <div id="logo">
+    <p class="comp-section-title">Brand</p>
+
+    <h2 class="comp-h2">App Logo</h2>
+    <p class="comp-desc">The Facelift wordmark — diamond icon mark combined with logotype. Use the full logo as the primary brand expression. Use the type-only variant in space-constrained contexts where the mark is already present.</p>
+
+    <div class="static-preview" id="cl-logo-full" style="margin-bottom:24px">
+      <div class="preview-card"><div class="preview-viewport"></div><div class="preview-footer"><span class="preview-name">facelift-logo</span><a class="preview-open" href="output/components/facelift-logo.html" target="_blank">Open file <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H4M9 2v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div>
+    </div>
+
+    <h2 class="comp-h2">Logotype (type-only)</h2>
+    <p class="comp-desc">Text-only variant of the wordmark, without the diamond icon mark. Reserved for contexts where the mark has already been established.</p>
+
+    <div class="static-preview" id="cl-logo-type">
+      <div class="preview-card"><div class="preview-viewport"></div><div class="preview-footer"><span class="preview-name">facelift-type</span><a class="preview-open" href="output/components/facelift-type.html" target="_blank">Open file <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H4M9 2v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div>
+    </div>
+  </div>
 
   <!-- ═══════════════════════ ACTIONS ═══════════════════════════ -->
   <div id="actions">
@@ -1209,6 +1229,10 @@ window.DS = (function () {
 
   return { makePreviewer: makePreviewer, staticPreview: staticPreview };
 }());
+
+/* ── Logo ─────────────────────────────────────────────────────────── */
+DS.staticPreview(document.getElementById('cl-logo-full'), 'output/components/facelift-logo.html');
+DS.staticPreview(document.getElementById('cl-logo-type'), 'output/components/facelift-type.html');
 
 /* ── Buttons ──────────────────────────────────────────────────────── */
 DS.makePreviewer({
