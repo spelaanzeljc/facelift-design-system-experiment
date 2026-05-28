@@ -1,0 +1,241 @@
+/* Shared template styles — imported by all 5 template HTML files */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --nav-h: 56px;
+  --sidebar-w: 212px;
+  --font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+html, body { height: 100%; overflow: hidden; }
+
+body {
+  font-family: var(--font);
+  background: var(--sys-background-base);
+  color: var(--sys-text-primary);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── NAV BAR ────────────────────────────────────────── */
+.nav {
+  height: var(--nav-h);
+  background: var(--sys-background-base);
+  border-bottom: 1px solid var(--sys-border-soft);
+  display: flex;
+  align-items: center;
+  padding: 0 16px 0 20px;
+  gap: 12px;
+  flex-shrink: 0;
+  z-index: 100;
+}
+.nav-logo { display: flex; align-items: center; }
+.nav-logo svg { display: block; }
+.nav-spacer { flex: 1; }
+.nav-actions { display: flex; align-items: center; gap: 4px; }
+.nav-icon-btn {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  border: none; background: transparent;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--sys-text-secondary);
+  transition: background .12s;
+}
+.nav-icon-btn:hover { background: var(--sys-background-neutral); }
+.nav-icon-btn svg path { fill: currentColor; }
+.nav-avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--sys-primary-default);
+  color: var(--sys-text-on-color);
+  font-size: 13px; font-weight: 600;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+}
+.nav-compose-btn {
+  height: 32px;
+  padding: 0 14px;
+  background: var(--sys-primary-default);
+  color: var(--sys-text-on-color);
+  border: none; border-radius: 8px;
+  font-size: 13px; font-weight: 600;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 6px;
+  transition: background .12s;
+  font-family: var(--font);
+}
+.nav-compose-btn:hover { background: var(--sys-primary-hover); }
+.nav-compose-btn svg path { fill: currentColor; }
+
+/* ── LAYOUT SHELL ───────────────────────────────────── */
+.shell {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+/* ── SIDEBAR ────────────────────────────────────────── */
+.sidebar {
+  width: var(--sidebar-w);
+  flex-shrink: 0;
+  background: var(--sys-background-base);
+  border-right: 1px solid var(--sys-border-soft);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 8px 8px 16px;
+}
+.sidebar-section-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--sys-text-placeholder);
+  padding: 16px 8px 6px;
+}
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--sys-text-secondary);
+  text-decoration: none;
+  transition: background .1s, color .1s;
+  position: relative;
+}
+.sidebar-item:hover { background: var(--sys-background-neutral); color: var(--sys-text-primary); }
+.sidebar-item.active {
+  background: var(--sys-primary-subtle-hover);
+  color: var(--sys-primary-default);
+  font-weight: 600;
+}
+.sidebar-item svg { flex-shrink: 0; opacity: .7; }
+.sidebar-item.active svg { opacity: 1; }
+.sidebar-item svg path { fill: currentColor; }
+.sidebar-badge {
+  margin-left: auto;
+  background: var(--sys-danger-content);
+  color: white;
+  font-size: 10px; font-weight: 700;
+  padding: 1px 5px; border-radius: 10px;
+  min-width: 18px; text-align: center;
+}
+.sidebar-divider { height: 1px; background: var(--sys-border-subtle); margin: 8px 0; }
+.sidebar-bottom { margin-top: auto; }
+
+/* ── MAIN CONTENT ───────────────────────────────────── */
+.main {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── PAGE HEADER ────────────────────────────────────── */
+.page-header {
+  display: flex;
+  align-items: center;
+  padding: 20px 24px 16px;
+  gap: 12px;
+  border-bottom: 1px solid var(--sys-border-subtle);
+  flex-shrink: 0;
+}
+.page-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--sys-text-primary);
+  flex: 1;
+}
+.page-subtitle {
+  font-size: 13px;
+  color: var(--sys-text-secondary);
+  margin-top: 2px;
+}
+
+/* ── TOOLBAR ────────────────────────────────────────── */
+.toolbar {
+  display: flex;
+  align-items: center;
+  padding: 12px 24px;
+  gap: 8px;
+  border-bottom: 1px solid var(--sys-border-subtle);
+  flex-shrink: 0;
+}
+.search-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.search-input-wrap svg {
+  position: absolute; left: 10px;
+  pointer-events: none; color: var(--sys-text-placeholder);
+}
+.search-input-wrap svg path { fill: currentColor; }
+.search-input {
+  height: 34px;
+  padding: 0 12px 0 36px;
+  border: 1px solid var(--sys-border-base);
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: var(--font);
+  color: var(--sys-text-primary);
+  background: var(--sys-background-base);
+  width: 220px;
+  outline: none;
+}
+.search-input::placeholder { color: var(--sys-text-placeholder); }
+.search-input:focus { border-color: var(--sys-border-focus); }
+.toolbar-spacer { flex: 1; }
+.btn {
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font);
+  cursor: pointer;
+  display: flex; align-items: center; gap: 6px;
+  transition: background .12s;
+  border: none;
+}
+.btn-primary {
+  background: var(--sys-primary-default);
+  color: white;
+}
+.btn-primary:hover { background: var(--sys-primary-hover); }
+.btn-secondary {
+  background: transparent;
+  border: 1.5px solid var(--sys-border-base);
+  color: var(--sys-text-secondary);
+}
+.btn-secondary:hover { background: var(--sys-background-neutral); color: var(--sys-text-primary); }
+.btn svg path { fill: currentColor; }
+
+/* ── STATUS CHIPS ───────────────────────────────────── */
+.chip {
+  display: inline-flex; align-items: center;
+  font-size: 11px; font-weight: 600;
+  padding: 3px 8px; border-radius: 20px;
+  white-space: nowrap;
+}
+.chip-published { background: var(--sys-success-default); color: var(--sys-success-content); }
+.chip-draft { background: var(--sys-background-neutral); color: var(--sys-text-secondary); }
+.chip-scheduled { background: #dfe7fd; color: var(--sys-primary-default); }
+.chip-failed { background: var(--sys-danger-default); color: var(--sys-danger-content); }
+.chip-pending { background: var(--sys-warning-default); color: var(--sys-warning-content); }
+
+/* ── ICON BUTTON ────────────────────────────────────── */
+.icon-btn {
+  width: 32px; height: 32px;
+  border-radius: 6px;
+  border: none; background: transparent;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--sys-text-secondary);
+  transition: background .1s;
+}
+.icon-btn:hover { background: var(--sys-background-neutral); color: var(--sys-text-primary); }
+.icon-btn svg path { fill: currentColor; }

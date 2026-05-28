@@ -6,6 +6,74 @@
 <title>Design System — Templates</title>
 <link rel="stylesheet" href="output/tokens/tokens.css">
 <link rel="stylesheet" href="styleguide.css">
+<style>
+.template-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+.template-card {
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.template-meta {
+  padding: 16px 20px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.template-meta-body { flex: 1; }
+.template-meta h2 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: -.02em;
+  color: var(--text);
+  margin: 0 0 3px;
+  padding: 0;
+}
+.template-meta p {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0;
+}
+.layout-tags { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+.layout-tag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
+/* Screenshot preview */
+.template-preview {
+  background: #f0f2f5;
+  line-height: 0;
+}
+.template-preview img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.template-preview-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 320px;
+  background: var(--surface);
+  border-top: 1.5px dashed var(--border);
+  color: var(--text-faint);
+  font-size: 13px;
+}
+</style>
 </head>
 <body>
 <div class="layout">
@@ -42,19 +110,125 @@
   <div class="page-header">
     <div class="page-decoration"></div>
     <div class="page-header-eyebrow">Templates</div>
-    <h1>Templates</h1>
-    <p class="page-header-desc">Full-page layout templates assembled from components and patterns — coming soon.</p>
+    <h1>Screen Templates</h1>
+    <p class="page-header-desc">Five representative full-page layouts assembled from the design system. Each template shows how navigation, sidebar, panels, and content components combine in real product screens.</p>
   </div>
 
   <section class="section">
-    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 40px;text-align:center;background:var(--surface);border:1.5px dashed var(--border);border-radius:var(--radius);">
-      <div style="font-size:32px;margin-bottom:16px;opacity:.3;">⬜</div>
-      <h2 style="font-size:18px;font-weight:700;margin:0 0 8px;color:var(--text);">Page Templates — TBD</h2>
-      <p style="font-size:14px;color:var(--text-secondary);max-width:420px;line-height:1.6;margin:0;">Full-page layout templates (dashboard shell, content list page, detail view, settings page) will be documented here once finalized.</p>
+
+    <div class="quicknav">
+      <a href="#dashboard">Dashboard</a>
+      <a href="#list-table">List / Table</a>
+      <a href="#feed-detail">Feed + Detail</a>
+      <a href="#calendar">Calendar</a>
+      <a href="#inbox">Inbox</a>
     </div>
+
+    <div class="template-grid">
+
+      <!-- 1. Dashboard -->
+      <div id="dashboard" class="template-card">
+        <div class="template-meta">
+          <div class="template-meta-body">
+            <h2>Dashboard — Home</h2>
+            <p>Landing screen with performance metrics, a bar chart, platform breakdown, and recent activity feed. Sidebar active on Home.</p>
+            <div class="layout-tags">
+              <span class="layout-tag">Nav bar</span>
+              <span class="layout-tag">Sidebar</span>
+              <span class="layout-tag">Metric cards</span>
+              <span class="layout-tag">Chart</span>
+              <span class="layout-tag">Activity feed</span>
+            </div>
+          </div>
+          <a href="templates/dashboard.html" target="_blank">Open full screen ↗</a>
+        </div>
+        <div class="template-preview">
+          <img src="templates/screenshots/dashboard.png" alt="Dashboard — Home screen">
+        </div>
+      </div>
+
+      <!-- 2. List / Table -->
+      <div id="list-table" class="template-card">
+        <div class="template-meta">
+          <div class="template-meta-body">
+            <h2>List / Table — Team Members</h2>
+            <p>Standard two-column layout: sidebar + paginated data table with filter tabs, search, role badges, and status chips. Used for Users, Labels, and Settings screens.</p>
+            <div class="layout-tags">
+              <span class="layout-tag">Nav bar</span>
+              <span class="layout-tag">Sidebar</span>
+              <span class="layout-tag">Filter tabs</span>
+              <span class="layout-tag">Data table</span>
+              <span class="layout-tag">Pagination</span>
+            </div>
+          </div>
+          <a href="templates/list-table.html" target="_blank">Open full screen ↗</a>
+        </div>
+        <div class="template-preview-placeholder">Screenshot coming — share the Figma link to add it</div>
+      </div>
+
+      <!-- 3. Feed + Detail -->
+      <div id="feed-detail" class="template-card">
+        <div class="template-meta">
+          <div class="template-meta-body">
+            <h2>Feed + Detail — Publish</h2>
+            <p>Three-panel layout: post feed list (~300px), post preview/composer (flex), and metadata details panel (~280px). Used for Publish and content management screens.</p>
+            <div class="layout-tags">
+              <span class="layout-tag">Nav bar</span>
+              <span class="layout-tag">Sidebar</span>
+              <span class="layout-tag">Feed panel</span>
+              <span class="layout-tag">Composer</span>
+              <span class="layout-tag">Details panel</span>
+            </div>
+          </div>
+          <a href="templates/feed-detail.html" target="_blank">Open full screen ↗</a>
+        </div>
+        <div class="template-preview-placeholder">Screenshot coming — share the Figma link to add it</div>
+      </div>
+
+      <!-- 4. Calendar -->
+      <div id="calendar" class="template-card">
+        <div class="template-meta">
+          <div class="template-meta-body">
+            <h2>Calendar — Orchestrate</h2>
+            <p>Month-grid layout: sidebar + channel filter bar + 7-column calendar grid with post pills (published, scheduled, draft, failed states). Today is highlighted.</p>
+            <div class="layout-tags">
+              <span class="layout-tag">Nav bar</span>
+              <span class="layout-tag">Sidebar</span>
+              <span class="layout-tag">Month navigation</span>
+              <span class="layout-tag">Calendar grid</span>
+              <span class="layout-tag">Post pills</span>
+            </div>
+          </div>
+          <a href="templates/calendar.html" target="_blank">Open full screen ↗</a>
+        </div>
+        <div class="template-preview-placeholder">Screenshot coming — share the Figma link to add it</div>
+      </div>
+
+      <!-- 5. Inbox (four-panel) -->
+      <div id="inbox" class="template-card">
+        <div class="template-meta">
+          <div class="template-meta-body">
+            <h2>Inbox — Four-panel</h2>
+            <p>Dense four-panel layout replacing the sidebar with an inboxes column: inboxes (~240px) + conversation list (~300px) + message thread (flex) + contact details (~280px).</p>
+            <div class="layout-tags">
+              <span class="layout-tag">Nav bar</span>
+              <span class="layout-tag">Inbox list</span>
+              <span class="layout-tag">Conversation list</span>
+              <span class="layout-tag">Message thread</span>
+              <span class="layout-tag">Contact panel</span>
+            </div>
+          </div>
+          <a href="templates/inbox-feed-detail.html" target="_blank">Open full screen ↗</a>
+        </div>
+        <div class="template-preview-placeholder">Screenshot coming — share the Figma link to add it</div>
+      </div>
+
+    </div>
+
   </section>
 
 </main>
 </div>
+
 </body>
 </html>

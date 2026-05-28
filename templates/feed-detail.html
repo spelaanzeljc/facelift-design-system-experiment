@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Publish — Feed</title>
+<link rel="stylesheet" href="../output/tokens/tokens.css">
+<link rel="stylesheet" href="_shared.css">
+<style>
+/* Three-panel layout */
+.shell { overflow: hidden; }
+.panel-feed {
+  width: 300px; flex-shrink: 0;
+  border-right: 1px solid var(--sys-border-soft);
+  display: flex; flex-direction: column;
+  background: var(--sys-background-base);
+}
+.panel-context {
+  flex: 1;
+  display: flex; flex-direction: column;
+  border-right: 1px solid var(--sys-border-soft);
+  background: var(--sys-background-base);
+  overflow: hidden;
+}
+.panel-details {
+  width: 280px; flex-shrink: 0;
+  background: var(--sys-background-base);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+
+/* Panel headers */
+.panel-header {
+  display: flex; align-items: center; gap: 8px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--sys-border-subtle);
+  flex-shrink: 0;
+}
+.panel-header-title { font-size: 14px; font-weight: 700; color: var(--sys-text-primary); flex: 1; }
+.panel-header-sub { font-size: 12px; color: var(--sys-text-secondary); }
+
+/* Feed search */
+.feed-search {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--sys-border-subtle);
+  flex-shrink: 0;
+}
+.feed-search .search-input-wrap { width: 100%; }
+.feed-search .search-input { width: 100%; }
+
+/* Feed status tabs */
+.feed-tabs { display: flex; border-bottom: 1px solid var(--sys-border-soft); flex-shrink: 0; }
+.feed-tab {
+  flex: 1; padding: 8px 0; text-align: center;
+  font-size: 11px; font-weight: 600;
+  color: var(--sys-text-secondary);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color .1s;
+}
+.feed-tab.active { color: var(--sys-primary-default); border-bottom-color: var(--sys-primary-default); }
+
+/* Post items in feed */
+.feed-list { flex: 1; overflow-y: auto; }
+.feed-item {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--sys-border-subtle);
+  cursor: pointer;
+  transition: background .1s;
+}
+.feed-item:hover { background: var(--sys-background-neutral); }
+.feed-item.active { background: var(--sys-primary-subtle-hover); border-right: 2px solid var(--sys-primary-default); }
+.feed-item-header { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+.feed-item-network { width: 18px; height: 18px; border-radius: 4px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.feed-item-profile { font-size: 11px; font-weight: 600; color: var(--sys-text-secondary); flex: 1; }
+.feed-item-time { font-size: 10px; color: var(--sys-text-placeholder); }
+.feed-item-text { font-size: 12px; color: var(--sys-text-primary); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.feed-item-footer { display: flex; align-items: center; gap: 6px; margin-top: 6px; }
+
+/* Context / composer area */
+.composer-scroll { flex: 1; overflow-y: auto; padding: 24px; }
+.composer-profile { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.composer-avatar { width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: white; }
+.composer-profile-name { font-size: 13px; font-weight: 700; }
+.composer-profile-handle { font-size: 11px; color: var(--sys-text-secondary); }
+.composer-text {
+  font-size: 14px; line-height: 1.6; color: var(--sys-text-primary);
+  margin-bottom: 16px;
+}
+.composer-img {
+  border-radius: 10px; overflow: hidden;
+  background: var(--sys-background-neutral);
+  aspect-ratio: 4/3;
+  margin-bottom: 16px;
+  display: flex; align-items: center; justify-content: center;
+}
+.composer-img-placeholder { color: var(--sys-text-placeholder); font-size: 12px; }
+
+.post-stats { display: flex; gap: 20px; padding: 12px 0; border-top: 1px solid var(--sys-border-subtle); margin-top: 4px; }
+.post-stat { font-size: 12px; color: var(--sys-text-secondary); }
+.post-stat strong { display: block; font-size: 16px; font-weight: 700; color: var(--sys-text-primary); }
+
+/* Context bottom toolbar */
+.composer-actions {
+  border-top: 1px solid var(--sys-border-subtle);
+  padding: 12px 16px;
+  display: flex; align-items: center; gap: 6px;
+  flex-shrink: 0;
+}
+.composer-actions .btn-secondary { font-size: 12px; height: 30px; padding: 0 12px; }
+.composer-actions .btn-primary { font-size: 12px; height: 30px; padding: 0 12px; margin-left: auto; }
+
+/* Details panel */
+.details-scroll { flex: 1; overflow-y: auto; padding: 16px; }
+.detail-section { margin-bottom: 20px; }
+.detail-section-label { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--sys-text-placeholder); margin-bottom: 8px; }
+.detail-row { display: flex; align-items: center; gap: 8px; padding: 6px 0; font-size: 12px; }
+.detail-row-key { color: var(--sys-text-secondary); width: 72px; flex-shrink: 0; }
+.detail-row-val { color: var(--sys-text-primary); font-weight: 500; flex: 1; }
+
+.network-icon { width: 20px; height: 20px; border-radius: 4px; display: flex; align-items: center; justify-content: center; }
+.tag-list { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+.tag-pill { padding: 2px 8px; border-radius: 12px; background: var(--sys-background-neutral); border: 1px solid var(--sys-border-soft); font-size: 11px; color: var(--sys-text-secondary); font-weight: 500; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">
+    <svg width="108" height="31" viewBox="0 0 140 40" fill="none"><path d="M23.1257 9.06816C21.7514 7.71589 19.5257 7.71589 18.1528 9.06816L9.67711 17.4081C9.00854 18.066 8.64282 18.9403 8.64282 19.8737C8.64282 20.807 9.01997 21.6561 9.68854 22.2915L18.1528 30.6201C18.8214 31.278 19.6971 31.6379 20.6343 31.6379C21.5714 31.6379 22.4585 31.2794 23.1157 30.6201L31.58 22.2915C32.9543 20.9392 32.9543 18.7379 31.58 17.3969L23.1285 9.06816H23.1257Z" fill="#111317"/><path d="M38.7729 28.5905H42.5186V21.056H49.8543V17.5629H42.5186V14.1668H51.9086V10.675H38.7729V28.5905Z" fill="#111317"/><path d="M63.04 16.2836C61.9643 15.4584 60.6086 14.9636 59.0858 14.9636C55.34 14.9636 52.0572 17.9746 52.0572 21.8937C52.0572 25.8127 55.34 28.8378 59.0858 28.8378C60.6086 28.8378 61.9643 28.3429 63.04 27.5178V28.5904H66.5615V15.2124H63.04V16.285V16.2836ZM59.3243 25.5794C57.3129 25.5794 55.6358 23.8883 55.6358 21.8937C55.6358 19.899 57.3129 18.2234 59.3243 18.2234C61.3358 18.2234 63.0415 19.9145 63.0415 21.8937C63.0415 23.8729 61.4072 25.5794 59.3243 25.5794Z" fill="#111317"/><path d="M75.7143 18.2643C77.1957 18.2643 78.0343 19.0754 78.8871 19.9835L81.8628 18.2376C80.4657 16.2711 78.3143 14.9385 75.7143 14.9385C71.7043 14.9385 68.5043 18.1013 68.5043 21.9514C68.5043 25.8016 71.7043 28.9644 75.7143 28.9644C78.3143 28.9644 80.4657 27.6304 81.8628 25.6639L78.8871 23.918C78.0343 24.8261 77.1971 25.6372 75.7143 25.6372C73.6457 25.6372 72.0814 23.9461 72.0814 21.9514C72.0814 19.9568 73.6457 18.2657 75.7143 18.2657V18.2643Z" fill="#111317"/><path d="M90.0186 14.9636C85.9243 14.9636 83.1014 18.2501 83.1014 21.8937C83.1014 25.5372 85.6171 28.9614 90.4243 28.9614C93.1343 28.9614 94.7414 27.7793 96.0557 26.2246L93.6529 24.341C92.6043 25.2631 91.8786 25.8254 90.3129 25.8254C88.3286 25.8254 87.0157 24.6699 86.61 23.0477H96.9229C96.95 22.6766 96.9786 22.2226 96.9786 21.9485C96.9786 18.0294 94.3929 14.9636 90.02 14.9636H90.0186ZM86.6786 20.5062C87.1814 18.9937 88.4957 18.1138 90.1014 18.1138C92.0729 18.1138 93.1486 19.0485 93.4414 20.5062H86.6786Z" fill="#111317"/><path d="M102.287 24.2313V10.6735H98.7657V25.0143C98.7657 27.5445 100.19 28.9614 102.804 28.9614C103.923 28.8377 104.313 28.7281V25.6609C104.117 25.689 103.894 25.689 103.767 25.689C102.537 25.689 102.286 25.1253 102.286 24.2313H102.287Z" fill="#111317"/><path d="M110.123 15.2124H106.601V28.5903H110.123V15.2124Z" fill="#111317"/><path d="M108.377 9.23975C107.119 9.23975 106.141 10.1745 106.141 11.4129C106.141 12.6513 107.119 13.5988 108.377 13.5988C109.636 13.5988 110.584 12.6781 110.584 11.4129C110.584 10.1478 109.607 9.23975 108.377 9.23975Z" fill="#111317"/><path d="M130.357 18.5396V15.2123H126.751V10.8252H123.23V15.2123H117.406V14.7091C117.406 13.2922 117.979 12.9084 119.069 12.9084C119.726 12.9084 120.731 13.0462 120.731 13.0462V9.97897C120.047 9.82856 119.291 9.63599 118.104 9.63599C115.24 9.63599 113.899 11.3551 113.899 14.2551V15.2123H111.887V18.5396H113.899V28.5903H117.406V18.5396H123.23V24.3001C123.23 26.9273 124.6 28.7828 127.254 28.7828C128.526 28.7828 129.113 28.5903 129.979 28.3288V25.2349S129.154 25.3726 128.26 25.3726C127.003 25.3726 126.751 24.5067 126.751 23.572V18.5396H130.357Z" fill="#111317"/></svg>
+  </div>
+  <div class="nav-spacer"></div>
+  <div class="nav-actions">
+    <button class="nav-icon-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.7426 3.96602H12.2021C14.0769 4.02518 16.1163 5.48833 16.6664 7.39643C16.9965 8.85491 17.1659 10.0788 17.1659 10.0788C17.2563 10.7521 17.3114 11.1675 17.3519 11.472C17.3878 11.7427 17.4013 11.8414L17.4468 12.1661C17.5357 12.787 17.614 13.2405 17.7001 13.599L17.703 13.6811C17.709 13.9314 17.8084 14.1863 18.0194 14.3933C18.3478 14.6436 18.6522 14.8469 18.965 15.1037C19.3661 15.4633 19.5722 15.8267 19.5725 16.2273C19.5725 16.534 19.4897 16.6268 19.2104 16.7048C19.0092 16.761 18.769 16.7731 18.5633 16.7565L18.3942 16.7438H5.60456L5.4722 16.7531C5.22998 16.7731 4.99002 16.761 4.78911 16.7048C4.51023 16.6269 4.42751 16.5341 4.42751 16.2266C4.42781 15.7932 4.63476 15.4148 5.02709 15.0569C5.35822 14.7854 5.58012 14.6429C5.95486 14.3675L6.17195 14.0695C6.22527 13.9626 6.26364 13.8014L6.2999 13.599C6.40039 13.1808 6.49014 12.6332 6.5987 11.8414C6.6481 11.4724 6.83414 10.0788C7.00352 8.85491 7.33364 7.39643C7.88367 5.48833 9.92315 4.02518 11.7426 3.96602Z" fill="currentColor"/></svg></button>
+    <div class="nav-avatar">SA</div>
+    <button class="nav-compose-btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M21 5.04468L18.9553 2.99998C18.0142 2.05892 16.4885 2.05893 15.5474 2.99998L3.99197 14.5555C3.7117 14.8358 3.50489 15.1809 3.38987 15.5602L2.49999 18.4947C1.94122 20.3374 3.66259 22.0588 5.50528 21.5L8.43987 20.6101C8.81917 20.4951 9.16425 20.2883 9.44452 20.0081L21 8.45252C21.941 7.51147 21.941 5.98573 21 5.04468ZM5.35511 15.9186L8.08138 18.6449L4.94586 19.6552C4.57733 19.767 4.23305 19.4227 4.34481 19.0542L5.23469 16.1196C5.29905 15.9747 5.35511 15.9186 5.35511 15.9186ZM14.2761 6.99764L17.0023 9.72391L6.39596 20.0081L5.35511 15.9186L14.2761 6.99764ZM15.6392 5.6345L18.3655 8.36077L19.6369 7.08938C19.8251 6.90118 19.8251 6.59603 19.6369 6.40782L17.5922 4.36311C17.4039 4.1749 17.0988 4.1749 16.9106 4.36311L15.6392 5.6345Z" fill="currentColor"/></svg>
+      New post
+    </button>
+  </div>
+</nav>
+
+<!-- SHELL -->
+<div class="shell">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <a class="sidebar-item" href="#"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M19.1214 19.1858C19.1214 19.4062 19.0426 19.5973 18.8854 19.7579C18.7285 19.9192 18.5422 20 18.3272 20L14.052 20L14.052 14.7487L9.95156 14.7487L9.95156 19.9998L5.6244 19.9998C5.22337 19.9188 5.06621 19.7579C4.90914 19.5971 4.83049 19.4062 4.83049 19.1858L4.83049 13.5034L11.9757 7.40025L19.1089 13.4274L19.1214 19.1858Z" fill="currentColor"/></svg>Home</a>
+    <a class="sidebar-item active" href="#"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.76 6.99955L4.70127 6.67646L7.83269 10.5705L16.76 6.99955ZM8.70605 12.376L9.66715 18.3405L17.9521 8.67749L8.70605 12.376ZM20.4438 5.08971C21.7012 5.12339 22.347 6.61206 21.5218 7.5745L10.4737 20.4603C9.64268 21.4295 8.07334 20.9903 7.87055 19.7318L6.69977 12.466L2.4675 7.09828C1.66516 6.10053 2.403 4.60635 3.68114 4.64059L20.4438 5.08971Z" fill="currentColor"/></svg>Publish</a>
+    <a class="sidebar-item" href="#"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M6.91983 3C5.76547 3 4.7135 3.66234 4.21454 4.7033L2.29725 8.70329C1.99144 9.34131 1.93259 10.0115 2.06648 10.6279V18C2.06648 19.6569 3.40962 21 5.06648 21H18.9272C20.584 21 21.9272 19.6569 21.9272 18V10.6523C22.0005 9.22154 21.6116 8.52975L19.3626 4.52975C18.8314 3.58482 17.8317 3 16.7476 3H6.91983Z" fill="currentColor"/></svg>Inbox<span class="sidebar-badge">7</span></a>
+    <a class="sidebar-item" href="#"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M6 6C4.89543 6 4 6.89543 4 8V18C4 19.1046 4.89543 20 6 20H18C19.1046 20 20 19.1046 20 18V8C20 6.89543 19.1046 6 18 6H16H8H6ZM9 4H15V3C15 2.44772 15.4477 2 16 2C16.5523 2 17 2.44772 17 3V4H18C20.2091 4 22 5.79086 22 8V18C22 20.2091 20.2091 22 18 22H6C3.79086 22 2 20.2091 2 18V8C2 5.79086 3.79086 4 6 4H7V3C7 2.44772 7.44772 2 8 2C8.55228 2 9 2.44772 9 3V4Z" fill="currentColor"/></svg>Calendar</a>
+    <div class="sidebar-divider"></div>
+    <a class="sidebar-item" href="#"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M19 5H15V12.5H19V5ZM15 3C13.8954 3 13 3.89543 13 5V12.5C13 13.6046 13.8954 14.5 15 14.5H19C20.1046 14.5 21 13.6046 21 12.5V5C21 3.89543 20.1046 3 19 3H15ZM3 18C3 16.8954 3.89543 16 5 16H9C10.1046 16 11 16.8954 11 18V19C11 20.1046 10.1046 21 9 21H5C3.89543 21 3 20.1046 3 19V18ZM15 16C13.8954 16 13 16.8954 13 18V19C13 20.1046 13.8954 21 15 21H19C20.1046 21 21 20.1046 21 19V18C21 16.8954 20.1046 16 19 16H15ZM3 11.5C3 10.3954 3.89543 9.5 5 9.5H9C10.1046 9.5 11 10.3954 11 11.5V12.5C11 13.6046 10.1046 14.5 9 14.5H5C3.89543 14.5 3 13.6046 3 12.5V11.5ZM5 3C3.89543 3 3 3.89543 3 5V6C3 7.10457 3.89543 8 5 8H9C10.1046 8 11 7.10457 11 6V5C11 3.89543 10.1046 3 9 3H5Z" fill="currentColor"/></svg>Analytics</a>
+    <a class="sidebar-item" href="#"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9.58831 14.475H13.8991L14.6033 9.48625H10.3242L9.58831 14.475ZM5.2275 16.93C4.54957 16.93 4 16.3804 4 15.7025C4 15.0246 4.54957 14.475 5.2275 14.475H6.74527L7.47849 9.48625H6.31063C5.61164 9.48625 5.045 8.91961 5.045 8.22063C5.045 7.52164 5.61164 6.955 6.31063 6.955H7.83123L8.35713 3.2122C8.4548 2.51704 9.04957 2 9.75156 2C10.6073 2 11.2652 2.75702 11.1459 3.60443L10.6743 6.955H14.9851L15.4888 3.22115C15.5831 2.52182 16.1801 2 16.8858 2C17.739 2 18.3966 2.7521 18.2828 3.59772L17.8307 6.955H18.7331C19.4328 6.955 20 7.5222 20 8.22188C20 8.92155 19.4328 9.48875 18.7331 9.48875H17.4489L16.7435 14.475H17.6879C18.3658 14.475 18.9154 15.0246 18.9154 15.7025C18.9154 16.3804 18.3658 16.93 17.6879 16.93H16.3643L15.8246 20.7867C15.7273 21.4824 15.1322 22 14.4298 22C13.5743 22 12.9163 21.2436 13.0349 20.3964L13.5199 16.93H9.23821L8.67516 20.7955C8.57442 21.4871 7.98141 22 7.28253 22C6.42454 22 5.76623 21.2388 5.8899 20.3898L6.39386 16.93H5.2275Z" fill="currentColor"/></svg>Labels</a>
+    <div class="sidebar-divider"></div>
+    <a class="sidebar-item" href="#"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M6.54177 5.87243C8.31772 7.28881 11.0005 6.27358 11.366 4H12.6085C12.9678 6.25983 15.6544 7.30375 17.4466 5.86082L18.1617 6.57593C16.6999 8.4134 17.7826 11.0673 20 11.4247V12.54C17.8566 12.8883 16.7309 15.4402 18.0925 17.2794L17.4411 18.1447C15.6349 16.6728 12.9351 17.7434 12.5854 20H11.3676C11.0076 17.7152 8.31172 16.6989 6.5365 18.1223L5.85513 17.4409C7.41248 15.5853 6.30875 12.8217 4 12.5079V11.4921C6.30875 11.1784 7.4125 8.41467 5.88268 6.59192L6.54177 5.87243ZM14 12C14 13.1046 13.1046 14 12 14C10.8954 14 10 13.1046 10 12C10 10.8954 10.8954 10 12 10C13.1046 10 14 10.8954 14 12ZM16 12C16 14.2091 14.2091 16 12 16C9.79086 16 8 14.2091 8 12C8 9.79086 9.79086 8 12 8C14.2091 8 16 9.79086 16 12Z" fill="currentColor"/></svg>Settings</a>
+  </aside>
+
+  <!-- FEED PANEL -->
+  <div class="panel-feed">
+    <div class="panel-header">
+      <div class="panel-header-title">Posts</div>
+      <button class="icon-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M3 7C3 6.44772 3.44772 6 4 6H20C20.5523 6 21 6.44772 21 7C21 7.55228 20.5523 8 20 8H4C3.44772 8 3 7.55228 3 7ZM6 12C6 11.4477 6.44772 11 7 11H17C17.5523 11 18 11.4477 18 12C18 12.5523 17.5523 13 17 13H7C6.44772 13 6 12.5523 6 12ZM9 17C9 16.4477 9.44772 16 10 16H14C14.5523 16 15 16.4477 15 17C15 17.5523 14.5523 18 14 18H10C9.44772 18 9 17.5523 9 17Z" fill="currentColor"/></svg></button>
+    </div>
+    <div class="feed-search">
+      <div class="search-input-wrap" style="width:100%">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--sys-text-placeholder)"><path fill-rule="evenodd" clip-rule="evenodd" d="M17.3173 15.9089C18.3719 14.5537 19 12.8502 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19C12.8472 19 14.5482 18.3739 15.9024 17.3224L19.3058 20.7258C19.6834 21.1034 20.3061 21.0929 20.6966 20.7024C21.0871 20.3118 21.0976 19.6892 20.72 19.3116L17.3173 15.9089Z" fill="currentColor"/></svg>
+        <input type="text" placeholder="Search posts…" style="height:32px;padding:0 10px 0 32px;border:1px solid var(--sys-border-base);border-radius:7px;font-size:12px;font-family:var(--font);color:var(--sys-text-primary);background:var(--sys-background-base);width:100%;outline:none">
+      </div>
+    </div>
+    <div class="feed-tabs">
+      <div class="feed-tab active">All</div>
+      <div class="feed-tab">Scheduled</div>
+      <div class="feed-tab">Drafts</div>
+    </div>
+    <div class="feed-list">
+
+      <div class="feed-item active">
+        <div class="feed-item-header">
+          <div class="feed-item-network" style="background:#E2007A"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.0357 3.86108C14.9802 3.81346 14.6667 3.80155 11.996 3.80155C9.32539 3.80155 9.0119 3.80949 7.95634 3.86108C6.98015 3.90473 6.45238 4.07139 6.0992 4.20632C5.63095 4.38489 5.29761 4.60314 4.94841 4.95235C4.5992 5.30155 4.38492 5.63489 4.20238 6.10314C4.06349 6.45632 3.90079 6.98409 3.85714 7.96028C3.80952 9.01584 3.79761 9.32933 3.79761 12C3.79761 14.6706 3.80952 14.9841 3.85714 16.0396C3.90079 17.0158 4.06745 17.5436 4.20238 17.8968C4.38095 18.365 4.5992 18.6984 4.94841 19.0476C5.29761 19.3968 5.63095 19.6111 6.0992 19.7936C6.45238 19.9325 6.98015 20.0952 7.95634 20.1389C9.0119 20.1865 9.32539 20.1984 11.996 20.1984C14.6667 20.1984 14.9802 20.1865 16.0357 20.1389C17.0119 20.0952 17.5397 19.9285 17.8929 19.7936C18.3611 19.615 18.6944 19.3968 19.0436 19.0476C19.3929 18.6984 19.6071 18.365 19.7897 17.8968C19.9286 17.5436 20.0913 17.0158 20.1349 16.0396C20.1825 14.9841 20.1944 14.6706 20.1944 12C20.1944 9.32933 20.1825 9.01584 20.1349 7.96028C20.0913 6.98409 19.9246 6.45632 19.7897 6.10314C19.6111 5.63489 19.3929 5.30155 19.0436 4.95235C18.6944 4.60314 18.3611 4.38885 17.8929 4.20632C17.5397 4.06743 17.0119 3.90473 16.0357 3.86108Z" fill="white"/></svg></div>
+          <div class="feed-item-profile">@facelift_official</div>
+          <div class="feed-item-time">Today 3:00 PM</div>
+        </div>
+        <div class="feed-item-text">🚀 Excited to share our latest product update — introducing AI-powered scheduling that learns your best posting times automatically!</div>
+        <div class="feed-item-footer"><span class="chip chip-scheduled" style="font-size:10px;padding:1px 6px">Scheduled</span></div>
+      </div>
+
+      <div class="feed-item">
+        <div class="feed-item-header">
+          <div class="feed-item-network" style="background:#1877F2"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M22 12.0611C22 6.50451 17.5229 2 12 2C6.47715 2 2 6.50451 2 12.0611C2 17.0829 5.65686 21.2452 10.4375 22V14.9694H7.89844V12.0611H10.4375V9.84452C10.4375 7.32296 11.9304 5.93012 14.2146 5.93012C15.3087 5.93012 16.4531 6.12663 16.4531 6.12663V8.60261H15.1921C13.9499 8.60261 13.5625 9.37816 13.5625 10.1738V12.0611H16.3359L15.8926 14.9694H13.5625V22C18.3431 21.2452 22 17.0829 22 12.0611Z" fill="white"/></svg></div>
+          <div class="feed-item-profile">Facelift Page</div>
+          <div class="feed-item-time">May 27</div>
+        </div>
+        <div class="feed-item-text">Join us for a free webinar on social media analytics this Thursday. Reserve your spot now →</div>
+        <div class="feed-item-footer"><span class="chip chip-published" style="font-size:10px;padding:1px 6px">Published</span></div>
+      </div>
+
+      <div class="feed-item">
+        <div class="feed-item-header">
+          <div class="feed-item-network" style="background:#E2007A"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.0357 3.86108C14.9802 3.81346 14.6667 3.80155 11.996 3.80155C9.32539 3.80155 9.0119 3.80949 7.95634 3.86108C6.98015 3.90473 6.45238 4.07139 6.0992 4.20632C5.63095 4.38489 5.29761 4.60314 4.94841 4.95235C4.5992 5.30155 4.38492 5.63489 4.20238 6.10314C4.06349 6.45632 3.90079 6.98409 3.85714 7.96028C3.80952 9.01584 3.79761 9.32933 3.79761 12C3.79761 14.6706 3.80952 14.9841 3.85714 16.0396C3.90079 17.0158 4.06745 17.5436 4.20238 17.8968C4.38095 18.365 4.5992 18.6984 4.94841 19.0476C5.29761 19.3968 5.63095 19.6111 6.0992 19.7936C6.45238 19.9325 6.98015 20.0952 7.95634 20.1389C9.0119 20.1865 9.32539 20.1984 11.996 20.1984C14.6667 20.1984 14.9802 20.1865 16.0357 20.1389C17.0119 20.0952 17.5397 19.9285 17.8929 19.7936C18.3611 19.615 18.6944 19.3968 19.0436 19.0476C19.3929 18.6984 19.6071 18.365 19.7897 17.8968C19.9286 17.5436 20.0913 17.0158 20.1349 16.0396C20.1825 14.9841 20.1944 14.6706 20.1944 12C20.1944 9.32933 20.1825 9.01584 20.1349 7.96028C20.0913 6.98409 19.9246 6.45632 19.7897 6.10314C19.6111 5.63489 19.3929 5.30155 19.0436 4.95235C18.6944 4.60314 18.3611 4.38885 17.8929 4.20632C17.5397 4.06743 17.0119 3.90473 16.0357 3.86108Z" fill="white"/></svg></div>
+          <div class="feed-item-profile">@facelift_official</div>
+          <div class="feed-item-time">May 26</div>
+        </div>
+        <div class="feed-item-text">Behind the scenes of our latest campaign shoot 📸 Swipe to see how we created our summer content series.</div>
+        <div class="feed-item-footer"><span class="chip chip-published" style="font-size:10px;padding:1px 6px">Published</span></div>
+      </div>
+
+      <div class="feed-item">
+        <div class="feed-item-header">
+          <div class="feed-item-network" style="background:#0A66C2"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="4" fill="white"/><path d="M6.5 9h2V18h-2V9zm1-1.5a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5zM16.5 12.5c0-1.5-1-2-2-2s-2 .7-2 2V18h-2V9h2v.9c.5-.7 1.5-1.2 2.7-1.2 2 0 3.3 1.3 3.3 3.3V18h-2v-5.5z" fill="#0A66C2"/></svg></div>
+          <div class="feed-item-profile">Facelift GmbH</div>
+          <div class="feed-item-time">May 25</div>
+        </div>
+        <div class="feed-item-text">We're proud to announce our new partnership with MetaBrand Agency to deliver premium social media solutions across Europe.</div>
+        <div class="feed-item-footer"><span class="chip chip-published" style="font-size:10px;padding:1px 6px">Published</span></div>
+      </div>
+
+      <div class="feed-item">
+        <div class="feed-item-header">
+          <div class="feed-item-network" style="background:var(--sys-background-neutral);border:1px solid var(--sys-border-soft)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v2H4z" fill="var(--sys-text-placeholder)"/></svg></div>
+          <div class="feed-item-profile">@facelift</div>
+          <div class="feed-item-time">Draft</div>
+        </div>
+        <div class="feed-item-text">Our 2026 social media trends report is here. Download now and stay ahead of the curve…</div>
+        <div class="feed-item-footer"><span class="chip chip-draft" style="font-size:10px;padding:1px 6px">Draft</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CONTEXT / POST DETAIL -->
+  <div class="panel-context">
+    <div class="panel-header">
+      <span class="chip chip-scheduled" style="font-size:11px">Scheduled</span>
+      <div class="panel-header-title" style="flex:1;font-size:13px;font-weight:500;color:var(--sys-text-secondary)">Today · 3:00 PM</div>
+      <button class="icon-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 12C7 13.1046 6.10457 14 5 14C3.89543 14 3 13.1046 3 12C3 10.8954 3.89543 10 5 10C6.10457 10 7 10.8954 7 12ZM14 12C14 13.1046 13.1046 14 12 14C10.8954 14 10 13.1046 10 12C10 10.8954 10.8954 10 12 10C13.1046 10 14 10.8954 14 12ZM19 14C20.1046 14 21 13.1046 21 12C21 10.8954 20.1046 10 19 10C17.8954 10 17 10.8954 17 12C17 13.1046 17.8954 14 19 14Z" fill="currentColor"/></svg></button>
+    </div>
+    <div class="composer-scroll">
+      <div class="composer-profile">
+        <div class="composer-avatar" style="background:#E2007A"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.0357 3.86108C14.9802 3.81346 14.6667 3.80155 11.996 3.80155C9.32539 3.80155 9.0119 3.80949 7.95634 3.86108C6.0992 4.20632 5.63095 4.38489 5.29761 4.60314 4.94841 4.95235C4.5992 5.30155 4.38492 5.63489 4.20238 6.10314C4.06349 6.45632 3.90079 6.98409 3.85714 7.96028C3.80952 9.01584 3.79761 9.32933 3.79761 12C3.79761 14.6706 3.80952 14.9841 3.85714 16.0396C3.90079 17.0158 4.06745 17.5436 4.20238 17.8968C4.38095 18.365 4.5992 18.6984 4.94841 19.0476C5.29761 19.3968 5.63095 19.6111 6.0992 19.7936C6.45238 19.9325 6.98015 20.0952 7.95634 20.1389C9.0119 20.1865 9.32539 20.1984 11.996 20.1984C14.6667 20.1984 14.9802 20.1865 16.0357 20.1389C17.0119 20.0952 17.5397 19.9285 17.8929 19.7936C18.3611 19.615 18.6944 19.3968 19.0436 19.0476C19.7897 17.8968 19.9286 17.5436 20.0913 17.0158 20.1349 16.0396C20.1825 14.9841 20.1944 14.6706 20.1944 12C20.1944 9.32933 20.1825 9.01584 20.1349 7.96028C20.0913 6.98409 19.9246 6.45632 19.7897 6.10314C19.6111 5.63489 19.3929 5.30155 19.0436 4.95235C18.6944 4.60314 18.3611 4.38885 17.8929 4.20632C17.5397 4.06743 17.0119 3.90473 16.0357 3.86108Z" fill="white"/></svg></div>
+        <div>
+          <div class="composer-profile-name">@facelift_official</div>
+          <div class="composer-profile-handle">Instagram · 48.2K followers</div>
+        </div>
+      </div>
+      <div class="composer-text">🚀 Excited to share our latest product update — introducing AI-powered scheduling that learns your best posting times automatically!<br><br>No more guessing. Just great results. ✨<br><br>Try it free for 14 days → link in bio<br><br>#SocialMedia #MarketingTools #AI #ContentScheduling #Facelift</div>
+      <div class="composer-img">
+        <div style="width:100%;height:100%;background:linear-gradient(135deg,#1339ec22 0%,#E2007A22 100%);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" style="color:var(--sys-text-placeholder)"><path fill-rule="evenodd" clip-rule="evenodd" d="M5 3C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3H5ZM16 8.5C16 9.88071 14.8807 11 13.5 11C12.1193 11 11 9.88071 11 8.5C11 7.11929 12.1193 6 13.5 6C14.8807 6 16 7.11929 16 8.5ZM5 19L8.5 13.5L11.5 17L14.5 13L19 19H5Z" fill="currentColor"/></svg>
+          <span style="font-size:11px;color:var(--sys-text-placeholder)">Image attached</span>
+        </div>
+      </div>
+      <div class="post-stats">
+        <div class="post-stat"><strong>—</strong>Likes</div>
+        <div class="post-stat"><strong>—</strong>Comments</div>
+        <div class="post-stat"><strong>—</strong>Shares</div>
+        <div class="post-stat"><strong>—</strong>Reach</div>
+      </div>
+    </div>
+    <div class="composer-actions">
+      <button class="btn btn-secondary" style="font-size:12px;height:30px;padding:0 12px">Edit</button>
+      <button class="btn btn-secondary" style="font-size:12px;height:30px;padding:0 12px">Duplicate</button>
+      <button class="btn btn-secondary" style="font-size:12px;height:30px;padding:0 12px;color:var(--sys-danger-content);border-color:var(--sys-danger-default)">Delete</button>
+      <button class="btn btn-primary" style="font-size:12px;height:30px;padding:0 12px;margin-left:auto">Publish now</button>
+    </div>
+  </div>
+
+  <!-- DETAILS PANEL -->
+  <div class="panel-details">
+    <div class="panel-header">
+      <div class="panel-header-title">Post details</div>
+    </div>
+    <div class="details-scroll">
+
+      <div class="detail-section">
+        <div class="detail-section-label">Publishing</div>
+        <div class="detail-row">
+          <div class="detail-row-key">Profile</div>
+          <div class="detail-row-val" style="display:flex;align-items:center;gap:6px"><div class="network-icon" style="background:#E2007A"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.0357 3.86C14.98 3.81 14.67 3.8 12 3.8C9.33 3.8 9.01 3.81 7.96 3.86C7 3.9 6.45 4.07 6.1 4.21C5.63 4.38 5.3 4.6 4.95 4.95C4.6 5.3 4.38 5.63 4.2 6.1C4.06 6.46 3.9 6.98 3.86 7.96C3.81 9.02 3.8 9.33 3.8 12C3.8 14.67 3.81 14.98 3.86 16.04C3.9 17.02 4.07 17.54 4.2 17.9C4.38 18.37 4.6 18.7 4.95 19.05C5.3 19.4 5.63 19.61 6.1 19.79C6.45 19.93 6.98 20.1 7.96 20.14C9.01 20.19 9.33 20.2 12 20.2C14.67 20.2 14.98 20.19 16.04 20.14C17.01 20.1 17.54 19.93 17.89 19.79C18.36 19.61 18.69 19.4 19.04 19.05C19.39 18.7 19.61 18.37 19.79 17.9C19.93 17.54 20.09 17.02 20.13 16.04C20.18 14.98 20.19 14.67 20.19 12C20.19 9.33 20.18 9.02 20.13 7.96C20.09 6.98 19.92 6.46 19.79 6.1C19.61 5.63 19.39 5.3 19.04 4.95C18.69 4.6 18.36 4.39 17.89 4.21C17.54 4.07 17.01 3.9 16.04 3.86H16.0357Z" fill="white"/></svg></div>@facelift_official</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-row-key">Scheduled</div>
+          <div class="detail-row-val">Today, 3:00 PM</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-row-key">Timezone</div>
+          <div class="detail-row-val" style="color:var(--sys-text-secondary)">CET (UTC+1)</div>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <div class="detail-section-label">Media</div>
+        <div style="border-radius:8px;overflow:hidden;background:linear-gradient(135deg,#1339ec22 0%,#E2007A22 100%);height:100px;display:flex;align-items:center;justify-content:center">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="color:var(--sys-text-placeholder)"><path fill-rule="evenodd" clip-rule="evenodd" d="M5 3C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3H5ZM16 8.5C16 9.88071 14.8807 11 13.5 11C12.1193 11 11 9.88071 11 8.5C11 7.11929 12.1193 6 13.5 6C14.8807 6 16 7.11929 16 8.5ZM5 19L8.5 13.5L11.5 17L14.5 13L19 19H5Z" fill="currentColor"/></svg>
+        </div>
+        <div style="font-size:11px;color:var(--sys-text-placeholder);margin-top:6px">campaign-launch-visual.jpg · 2.4 MB</div>
+      </div>
+
+      <div class="detail-section">
+        <div class="detail-section-label">Labels</div>
+        <div class="tag-list">
+          <div class="tag-pill">Q2 Campaign</div>
+          <div class="tag-pill">Product</div>
+          <div class="tag-pill">AI Feature</div>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <div class="detail-section-label">Created by</div>
+        <div class="detail-row" style="padding:0">
+          <div class="user-avatar" style="width:24px;height:24px;border-radius:50%;background:var(--sys-primary-default);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:white;flex-shrink:0">SA</div>
+          <div style="font-size:12px;color:var(--sys-text-primary);font-weight:500">Špela Anželjc</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

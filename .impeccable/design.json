@@ -1,0 +1,214 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-05-28T00:00:00.000Z",
+  "title": "Design System: Facelift",
+  "extensions": {
+    "colorMeta": {
+      "primary-blue": {
+        "role": "primary",
+        "displayName": "Directive Blue",
+        "canonical": "#1339ec",
+        "tonalRamp": ["#030926", "#08175e", "#0c228d", "#0f2ebd", "#1339ec", "#5581f1", "#75a7eb", "#c7d5fa", "#dfe7fd", "#eef3fd"]
+      },
+      "shell-ink": {
+        "role": "neutral",
+        "displayName": "Shell Ink",
+        "canonical": "#111317",
+        "tonalRamp": ["#000000", "#111317", "#2b303b", "#414858", "#5f6a82", "#848ea4", "#a7aebe", "#d3d7de", "#e7eaee", "#f3f5f7"]
+      },
+      "surface-base": {
+        "role": "neutral",
+        "displayName": "Surface Base",
+        "canonical": "#ffffff",
+        "tonalRamp": ["#111317", "#2b303b", "#5f6a82", "#a7aebe", "#d3d7de", "#e7eaee", "#f3f5f7", "#f9fafb", "#fcfcfd", "#ffffff"]
+      },
+      "surface-neutral": {
+        "role": "neutral",
+        "displayName": "Studio Grey",
+        "canonical": "#f3f5f7",
+        "tonalRamp": ["#111317", "#2b303b", "#414858", "#5f6a82", "#848ea4", "#a7aebe", "#d3d7de", "#e7eaee", "#f3f5f7", "#ffffff"]
+      },
+      "status-success": {
+        "role": "tertiary",
+        "displayName": "Growth Green",
+        "canonical": "#2e881b",
+        "tonalRamp": ["#0a330a", "#1b5c14", "#2e881b", "#5fbb2f", "#80d747", "#a8e972", "#caf5a0", "#dafab7", "#e9ffcf", "#f4ffe6"]
+      },
+      "status-danger": {
+        "role": "tertiary",
+        "displayName": "Alert Red",
+        "canonical": "#cc0000",
+        "tonalRamp": ["#570000", "#850000", "#b20000", "#cc0000", "#e50000", "#ff3838", "#ff6b6b", "#ff9e9e", "#ffd1d1", "#ffebeb"]
+      },
+      "status-warning": {
+        "role": "tertiary",
+        "displayName": "Ember Orange",
+        "canonical": "#e05a00",
+        "tonalRamp": ["#391700", "#803300", "#ad4500", "#e05a00", "#ff6600", "#ff7c24", "#ff944d", "#ffb482", "#ffdcc5", "#ffede2"]
+      },
+      "ai-violet": {
+        "role": "secondary",
+        "displayName": "Lifty Violet",
+        "canonical": "#c68ed7",
+        "tonalRamp": ["#533c5a", "#6d4e76", "#8d6599", "#b481c4", "#c68ed7", "#d1a5df", "#d9b3e4", "#e5cbed", "#eddcf3", "#f9f4fb"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Marketing and hero sections only. Never inside the product shell." },
+      "headline": { "displayName": "Headline XL", "purpose": "Page-level titles. Maximum one per view." },
+      "title": { "displayName": "Title / Heading Sm", "purpose": "Section headers, panel headings, card titles." },
+      "body": { "displayName": "Body Md", "purpose": "Default UI text — labels, descriptions, cell content. 14px is the standard product text size." },
+      "label": { "displayName": "Body Sm", "purpose": "Metadata, timestamps, compact table headers. 12px is the floor — nothing smaller." }
+    },
+    "shadows": [
+      { "name": "content-hover", "cssVar": "--shadows-shadow-md", "value": "0px 1px 4px 0px rgba(0,0,0,0.10), 0px 4px 8px -2px rgba(0,0,0,0.10)", "purpose": "Cards and list items on hover. Dropdowns, context menus, tooltips. Never at rest." },
+      { "name": "widget-resting", "cssVar": "--card-widget---default", "value": "0px 1px 3px 0px rgba(172,172,172,0.20)", "purpose": "Dashboard widgets at rest only." },
+      { "name": "widget-hover", "cssVar": "--card-widget---hover", "value": "0px 6px 12px 0px rgba(172,172,172,0.10), 0px 1px 3px 0px rgba(172,172,172,0.20)", "purpose": "Dashboard widgets on hover." },
+      { "name": "media-resting", "cssVar": "--media-item---default", "value": "0px 0px 8px 0px rgba(0,0,0,0.25)", "purpose": "Media library thumbnails at rest." },
+      { "name": "media-hover", "cssVar": "--media-item---hover", "value": "0px 4px 8px 0px rgba(0,0,0,0.25)", "purpose": "Media library thumbnails on hover." }
+    ],
+    "motion": [
+      { "name": "state-transition", "value": "0.12s ease-out", "purpose": "Default for interactive state changes: border-color, background, box-shadow, color. Short and imperceptible." },
+      { "name": "overlay-enter", "value": "0.15s cubic-bezier(0,0,0.2,1)", "purpose": "Dropdown, popover, tooltip appear. No bounce." }
+    ],
+    "breakpoints": [
+      { "name": "min-width", "value": "1280px", "purpose": "Product UI minimum. Desktop-first; no responsive collapse below this." }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "One active voice per screen. Blue background, white label, 8px radius.",
+      "html": "<button class=\"ds-btn-primary\"><svg class=\"ds-btn-icon\" width=\"16\" height=\"16\" viewBox=\"0 0 20 20\" fill=\"none\"><path d=\"M10 4v12M4 10h12\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\"/></svg>Create Post</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; border-radius: 8px; background: #1339ec; color: #ffffff; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 600; line-height: 20px; border: none; cursor: pointer; transition: background 0.12s ease-out; } .ds-btn-primary:hover { background: #0f2ebd; } .ds-btn-primary:active { background: #0c228d; } .ds-btn-primary:focus-visible { outline: 2px solid #5581f1; outline-offset: 2px; } .ds-btn-icon { flex-shrink: 0; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Ghost button. Alpha grey fill, no border. Used alongside primary for secondary actions.",
+      "html": "<button class=\"ds-btn-secondary\">Export</button>",
+      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; border-radius: 8px; background: rgba(95,106,130,0.08); color: #111317; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 500; line-height: 20px; border: none; cursor: pointer; transition: background 0.12s ease-out; } .ds-btn-secondary:hover { background: rgba(95,106,130,0.12); } .ds-btn-secondary:active { background: rgba(95,106,130,0.20); } .ds-btn-secondary:focus-visible { outline: 2px solid #5581f1; outline-offset: 2px; }"
+    },
+    {
+      "name": "Filter Chip",
+      "kind": "chip",
+      "refersTo": "filter-chip",
+      "description": "Pill-shaped toolbar filter. Transparent at rest, fills on hover. Active state: blue border + subtle blue bg.",
+      "html": "<div style=\"display:flex;gap:6px;\"><button class=\"ds-filter-chip\">Networks<svg width=\"12\" height=\"12\" viewBox=\"0 0 20 20\" fill=\"none\" style=\"margin-left:2px;\"><path d=\"M5 8l5 5 5-5\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></button><button class=\"ds-filter-chip ds-filter-chip--active\">Instagram<svg width=\"12\" height=\"12\" viewBox=\"0 0 20 20\" fill=\"none\" style=\"margin-left:2px;\"><path d=\"M5 8l5 5 5-5\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></button></div>",
+      "css": ".ds-filter-chip { display: inline-flex; align-items: center; gap: 4px; padding: 5px 12px; border-radius: 1024px; background: transparent; color: #5f6a82; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 500; line-height: 20px; border: 1px solid #d3d7de; cursor: pointer; white-space: nowrap; transition: background 0.12s ease-out; } .ds-filter-chip:hover { background: #f3f5f7; } .ds-filter-chip--active { background: #eef3fd; color: #111317; border-color: #1339ec; } .ds-filter-chip:focus-visible { outline: 2px solid #5581f1; outline-offset: 2px; }"
+    },
+    {
+      "name": "Post Card (Calendar)",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Content card in the publishing calendar. Diamond status badge at top. Flat at rest, shadow on hover.",
+      "html": "<div class=\"ds-post-card\"><div class=\"ds-post-thumb\" style=\"background:#dfe7fd;\"></div><div class=\"ds-post-body\"><div class=\"ds-post-status-row\"><svg width=\"8\" height=\"8\" viewBox=\"0 0 8 8\" fill=\"none\" style=\"flex-shrink:0;\"><rect x=\"4\" y=\"0.5\" width=\"5\" height=\"5\" rx=\"0\" transform=\"rotate(45 4 0.5)\" fill=\"#1339ec\"/></svg><span class=\"ds-post-status-label\">Scheduled</span><span class=\"ds-post-net-badge\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 20 20\" fill=\"none\"><circle cx=\"10\" cy=\"10\" r=\"9\" fill=\"#1877F2\"/><path d=\"M11 10h2l.5-2.5H11V6c0-.7.3-1 1-1h1.5V2.5A12 12 0 0011 2.5C8.8 2.5 7.5 4 7.5 6.5V7.5H5.5V10h2v6h3.5v-6z\" fill=\"white\"/></svg></span></div><p class=\"ds-post-txt\">Summer collection is here — shop the look before it sells out.</p><div class=\"ds-post-foot\"><span class=\"ds-post-time\">10:30 AM</span><div class=\"ds-post-av\">JD</div></div></div></div>",
+      "css": ".ds-post-card { border: 1px solid #e7eaee; border-radius: 8px; background: #ffffff; overflow: hidden; cursor: pointer; width: 158px; transition: box-shadow 0.12s ease-out, border-color 0.12s ease-out; } .ds-post-card:hover { box-shadow: 0px 1px 4px rgba(0,0,0,.10), 0px 4px 8px -2px rgba(0,0,0,.10); border-color: #d3d7de; } .ds-post-card.selected { border: 2px solid #1339ec; } .ds-post-thumb { width: 100%; height: 52px; } .ds-post-body { padding: 6px 8px 8px; } .ds-post-status-row { display: flex; align-items: center; gap: 4px; margin-bottom: 5px; } .ds-post-status-label { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 11px; font-weight: 500; color: #1339ec; flex: 1; } .ds-post-net-badge { margin-left: auto; } .ds-post-txt { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 11.5px; line-height: 1.45; color: #111317; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; } .ds-post-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; } .ds-post-time { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 11px; color: #848ea4; } .ds-post-av { width: 18px; height: 18px; border-radius: 50%; background: #0f2ebd; display: flex; align-items: center; justify-content: center; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 8px; font-weight: 700; color: #ffffff; }"
+    },
+    {
+      "name": "App Navigation Header",
+      "kind": "nav",
+      "refersTo": "nav-header",
+      "description": "Persistent Shell Ink header. Always visible, never changes color between modules.",
+      "html": "<header class=\"ds-app-header\"><div class=\"ds-header-brand\"><div class=\"ds-logo-mark\">F</div><span class=\"ds-logo-name\">Facelift</span><div class=\"ds-header-sep\"></div><span class=\"ds-module-badge\">Orchestrate</span></div><div class=\"ds-header-spacer\"></div><div class=\"ds-header-actions\"><button class=\"ds-header-icon-btn\" aria-label=\"Tasks\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 20 20\" fill=\"none\"><path d=\"M4 5h12M4 10h8M4 15h10\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\"/></svg><span class=\"ds-tasks-badge\">3</span></button><button class=\"ds-header-icon-btn\" aria-label=\"Notifications\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 20 20\" fill=\"none\"><path d=\"M10 2a6 6 0 016 6v3l1.5 2.5H2.5L4 11V8a6 6 0 016-6z\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M8 16.5a2 2 0 004 0\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\"/></svg></button><div class=\"ds-header-avatar\">SP</div></div></header>",
+      "css": ".ds-app-header { height: 44px; background: #111317; display: flex; align-items: center; padding: 0 8px; gap: 4px; } .ds-header-brand { display: flex; align-items: center; gap: 10px; } .ds-logo-mark { width: 28px; height: 28px; background: #1339ec; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 800; color: #ffffff; letter-spacing: -0.5px; flex-shrink: 0; } .ds-logo-name { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px; font-weight: 700; color: #ffffff; letter-spacing: -0.3px; } .ds-header-sep { width: 1px; height: 16px; background: #2b303b; } .ds-module-badge { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 12px; font-weight: 500; color: #5f6a82; } .ds-header-spacer { flex: 1; } .ds-header-actions { display: flex; align-items: center; gap: 2px; } .ds-header-icon-btn { position: relative; width: 32px; height: 32px; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #848ea4; background: none; border: none; cursor: pointer; transition: background 0.12s ease-out, color 0.12s ease-out; } .ds-header-icon-btn:hover { background: rgba(255,255,255,0.16); color: #e7eaee; } .ds-header-icon-btn:focus-visible { outline: 2px solid #5581f1; outline-offset: -2px; } .ds-tasks-badge { position: absolute; top: 4px; right: 4px; width: 8px; height: 8px; border-radius: 50%; background: #ff6600; } .ds-header-avatar { width: 28px; height: 28px; border-radius: 50%; background: #0f2ebd; display: flex; align-items: center; justify-content: center; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 10px; font-weight: 700; color: #ffffff; cursor: pointer; margin-left: 4px; flex-shrink: 0; }"
+    },
+    {
+      "name": "Expanded Sidebar Navigation",
+      "kind": "nav",
+      "refersTo": "sidebar-nav",
+      "description": "White sidebar. Active item = filled blue chip. Never dark — only the icon-only collapsed sidebar uses Shell Ink.",
+      "html": "<nav class=\"ds-sidebar\"><a class=\"ds-sidebar-item ds-sidebar-item--active\" href=\"#\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"none\"><rect x=\"3\" y=\"3\" width=\"6\" height=\"6\" rx=\"1.5\" fill=\"currentColor\"/><rect x=\"11\" y=\"3\" width=\"6\" height=\"6\" rx=\"1.5\" fill=\"currentColor\"/><rect x=\"3\" y=\"11\" width=\"6\" height=\"6\" rx=\"1.5\" fill=\"currentColor\"/><rect x=\"11\" y=\"11\" width=\"6\" height=\"6\" rx=\"1.5\" fill=\"currentColor\"/></svg>Calendar</a><a class=\"ds-sidebar-item\" href=\"#\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"none\"><rect x=\"3\" y=\"4\" width=\"14\" height=\"12\" rx=\"2\" stroke=\"currentColor\" stroke-width=\"1.5\"/><path d=\"M7 2v4M13 2v4M3 8h14\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\"/></svg>Campaigns</a><a class=\"ds-sidebar-item\" href=\"#\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"none\"><path d=\"M3 5h14M3 10h10M3 15h7\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\"/></svg>Drafts</a></nav>",
+      "css": ".ds-sidebar { background: #ffffff; border-right: 1px solid #e7eaee; padding: 8px; display: flex; flex-direction: column; gap: 2px; width: 220px; } .ds-sidebar-item { display: flex; align-items: center; gap: 10px; padding: 7px 10px; border-radius: 6px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 500; color: #5f6a82; text-decoration: none; transition: background 0.10s ease-out, color 0.10s ease-out; } .ds-sidebar-item:hover { background: #f3f5f7; color: #111317; } .ds-sidebar-item--active { background: #1339ec; color: #ffffff; } .ds-sidebar-item--active:hover { background: #0f2ebd; color: #ffffff; } .ds-sidebar-item svg { flex-shrink: 0; }"
+    },
+    {
+      "name": "Status Badge Set",
+      "kind": "chip",
+      "refersTo": "card",
+      "description": "Four types: post status (diamond), sentiment (pill+dot), record status (circle), toggle. Not interchangeable.",
+      "html": "<div style=\"display:flex;flex-direction:column;gap:8px;padding:4px;\"><div style=\"display:flex;gap:8px;flex-wrap:wrap;\"><div class=\"ds-status ds-status--scheduled\"><svg width=\"8\" height=\"8\" viewBox=\"0 0 8 8\"><rect x=\"4\" y=\"0.5\" width=\"5\" height=\"5\" transform=\"rotate(45 4 0.5)\" fill=\"currentColor\"/></svg>Scheduled</div><div class=\"ds-status ds-status--success\"><svg width=\"8\" height=\"8\" viewBox=\"0 0 8 8\"><rect x=\"4\" y=\"0.5\" width=\"5\" height=\"5\" transform=\"rotate(45 4 0.5)\" fill=\"currentColor\"/></svg>Successful</div><div class=\"ds-status ds-status--draft\"><svg width=\"8\" height=\"8\" viewBox=\"0 0 8 8\"><rect x=\"4\" y=\"0.5\" width=\"5\" height=\"5\" transform=\"rotate(45 4 0.5)\" fill=\"currentColor\"/></svg>Draft</div></div><div style=\"display:flex;gap:8px;\"><div class=\"ds-sentiment ds-sentiment--positive\"><span class=\"ds-sentiment-dot\"></span>POSITIVE</div><div class=\"ds-sentiment ds-sentiment--neutral\"><span class=\"ds-sentiment-dot\"></span>NEUTRAL</div><div class=\"ds-sentiment ds-sentiment--negative\"><span class=\"ds-sentiment-dot\"></span>NEGATIVE</div></div></div>",
+      "css": ".ds-status { display: inline-flex; align-items: center; gap: 4px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 12px; font-weight: 500; line-height: 18px; } .ds-status--scheduled { color: #1339ec; } .ds-status--success { color: #2e881b; } .ds-status--draft { color: #5f6a82; } .ds-status--failed { color: #cc0000; } .ds-sentiment { display: inline-flex; align-items: center; gap: 5px; padding: 2px 8px; border-radius: 1024px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; } .ds-sentiment--positive { background: #e9ffcf; color: #2e881b; } .ds-sentiment--neutral { background: #f3f5f7; color: #5f6a82; } .ds-sentiment--negative { background: #ffebeb; color: #cc0000; } .ds-sentiment-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }"
+    },
+    {
+      "name": "Segmented Control",
+      "kind": "custom",
+      "refersTo": "card",
+      "description": "View toggle in module toolbars. Studio Grey container, active button gets white bg + shadow.",
+      "html": "<div class=\"ds-seg-ctrl\"><button class=\"ds-seg-btn ds-seg-btn--active\">Week</button><button class=\"ds-seg-btn\">Month</button><button class=\"ds-seg-btn\">List</button></div>",
+      "css": ".ds-seg-ctrl { display: inline-flex; background: #f3f5f7; border: 1px solid #d3d7de; border-radius: 8px; padding: 2px; gap: 1px; } .ds-seg-btn { padding: 5px 13px; border-radius: 6px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 500; color: #5f6a82; background: none; border: none; cursor: pointer; transition: background 0.10s ease-out, color 0.10s ease-out; } .ds-seg-btn:hover { color: #111317; } .ds-seg-btn--active { background: #ffffff; color: #111317; box-shadow: 0 1px 2px rgba(0,0,0,0.12); } .ds-seg-btn:focus-visible { outline: 2px solid #5581f1; outline-offset: -2px; }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "card",
+      "description": "Flat border at rest. Directive Blue focus ring. Error border in Alert Red.",
+      "html": "<div class=\"ds-field\"><label class=\"ds-field-label\">Campaign name</label><input class=\"ds-input\" type=\"text\" placeholder=\"Enter campaign name…\"></div>",
+      "css": ".ds-field { display: flex; flex-direction: column; gap: 5px; } .ds-field-label { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 12px; font-weight: 500; color: #111317; line-height: 18px; } .ds-input { height: 36px; padding: 0 12px; border: 1px solid #d3d7de; border-radius: 8px; background: #ffffff; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; color: #111317; line-height: 20px; transition: border-color 0.12s ease-out; } .ds-input::placeholder { color: #848ea4; } .ds-input:hover { border-color: #a7aebe; } .ds-input:focus { outline: none; border-color: #5581f1; box-shadow: 0 0 0 1px #5581f1; } .ds-input:disabled { background: #f3f5f7; color: #848ea4; cursor: not-allowed; }"
+    },
+    {
+      "name": "Empty State",
+      "kind": "custom",
+      "refersTo": "card",
+      "description": "64px muted grey icon, heading-sm, 1-2 lines body-sm, optional CTA. Centered in its container.",
+      "html": "<div class=\"ds-empty\"><svg class=\"ds-empty-icon\" width=\"64\" height=\"64\" viewBox=\"0 0 64 64\" fill=\"none\"><rect x=\"12\" y=\"16\" width=\"40\" height=\"32\" rx=\"4\" stroke=\"currentColor\" stroke-width=\"2\"/><path d=\"M22 28h20M22 36h12\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg><h3 class=\"ds-empty-heading\">No posts scheduled</h3><p class=\"ds-empty-body\">Create your first post to start planning your content calendar.</p><button class=\"ds-empty-cta\">Create post</button></div>",
+      "css": ".ds-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 48px 32px; text-align: center; gap: 8px; } .ds-empty-icon { color: #a7aebe; flex-shrink: 0; margin-bottom: 4px; } .ds-empty-heading { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 700; line-height: 24px; color: #111317; } .ds-empty-body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 12px; font-weight: 400; line-height: 18px; color: #5f6a82; max-width: 280px; margin-top: 2px; } .ds-empty-cta { margin-top: 12px; display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; border-radius: 8px; background: #1339ec; color: #ffffff; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 600; border: none; cursor: pointer; } .ds-empty-cta:hover { background: #0f2ebd; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Quiet Professional",
+    "overview": "Facelift is an operations layer, not a showpiece. Its interface is built for professional social media managers, community operators, and enterprise marketing teams who are under real pressure and do not have time to decipher a designer's aesthetic statement. The visual system earns trust by being invisible: nothing calls for attention unless it needs to be acted on.\n\nThe palette is almost entirely grey and white. Blue enters the frame only to direct action. The dark carbon shell gives the product a grounded, production-grade presence. Content lives on white surfaces. The workspace behind them is light grey. The shell is near-black. Nothing crosses those registers without reason.\n\nThe design guidelines are explicit: 'The main interface consists of grey/black/white tones. Blue is the primary color and is used to guide the user to the main action. Do not use decorative elements, shadows or gradients.'",
+    "keyCharacteristics": [
+      "Near-monochromatic interface: shell ink, workspace grey, surface white, one action blue",
+      "Reduction as a design principle: space over lines, no decorative elements",
+      "Flat at rest; elevation only in response to state (hover, overlay, focus)",
+      "One primary blue for direction, status colors for system feedback only",
+      "AI features marked with a deliberate violet departure (Lifty Violet)",
+      "Dense information capability: 14px body, compact spacing scale, multi-panel layouts",
+      "1,140 components — always use the system before writing custom markup"
+    ],
+    "rules": [
+      { "name": "The One Voice Rule", "body": "Directive Blue (#1339ec) is the only color permitted on a primary interactive element. Everything blue is actionable.", "section": "colors" },
+      { "name": "The Secondary Palette Belongs to Users", "body": "Extended ramps (cobalt, amber, coral, etc.) are reserved for user-generated content only. The product UI uses grey/white/blue.", "section": "colors" },
+      { "name": "The Two-Scale Rule", "body": "In-app UI uses only the BB Update scale (Helvetica Neue). Lota Grotesque never enters the product shell.", "section": "typography" },
+      { "name": "The Flat-by-Default Rule", "body": "A resting surface has no shadow. Shadows are earned by hover, overlay, or genuine z-elevation.", "section": "elevation" },
+      { "name": "The Filled Chip Rule", "body": "The active state in navigation is always a filled chip (blue bg + white text for main nav, light grey pill for settings). Never underline, left border, or bold text alone.", "section": "components" },
+      { "name": "The Diamond Rule", "body": "Post status on calendar cards uses a ◆ diamond icon + label, never a pill chip. Pill chips are reserved for sentiment badges only.", "section": "components" },
+      { "name": "The White Sidebar Rule", "body": "The expanded sidebar is always Surface Base white. Only the icon-only collapsed sidebar uses Shell Ink.", "section": "components" }
+    ],
+    "dos": [
+      "Do use Directive Blue (#1339ec) on one CTA per screen.",
+      "Do place content surfaces on white lifted from Studio Grey. Maintain the three-tier depth structure.",
+      "Do use a filled chip (blue bg + white text) as the active indicator in main navigation.",
+      "Do show item counts as plain secondary text. Never wrap counts in badge chips.",
+      "Do use ◆ diamond + label for post status on calendar cards. Pill chips are for sentiment only.",
+      "Do show tag chips as first two + grey +N overflow. Never wrap to a second row.",
+      "Do keep the expanded sidebar white. Only the collapsed icon sidebar is Shell Ink.",
+      "Do mark every AI feature with Lifty Violet and the Facelift AI icon.",
+      "Do apply shadows on hover or overlaid layers only. Never on resting cards.",
+      "Do use aria-label on every icon-only button.",
+      "Do wrap non-essential transitions in @media (prefers-reduced-motion: reduce).",
+      "Do use 2px Directive Blue border for selected calendar cards — background stays white."
+    ],
+    "donts": [
+      "Don't use heavy gradients, flashy micro-animations, or visual decoration that performs excitement.",
+      "Don't replicate Hootsuite/Buffer: cluttered hierarchies, legacy tables, dense chrome.",
+      "Don't add a resting shadow to a card or list item.",
+      "Don't use border-left/border-right as a colored accent stripe on cards or callouts. The only sanctioned left border is the selected-state in Engage feed list items.",
+      "Don't apply background-clip:text gradient effects.",
+      "Don't use blur or glassmorphism effects.",
+      "Don't use Lota Grotesque inside the product UI.",
+      "Don't use secondary ramps (cobalt, amber, coral, etc.) for product UI elements.",
+      "Don't use Lifty Violet outside AI feature contexts.",
+      "Don't place more than one primary blue button on a screen.",
+      "Don't rely on color alone for status — always pair with text label and/or icon.",
+      "Don't stack multiple system banners. One at a time.",
+      "Don't hide disabled menu items. Keep them visible with --sys-text-disabled.",
+      "Don't use pill chips for post status on calendar cards.",
+      "Don't use a background tint for selected cards. Use the 2px blue border.",
+      "Don't make the expanded sidebar dark."
+    ]
+  }
+}
