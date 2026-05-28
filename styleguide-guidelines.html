@@ -198,8 +198,17 @@
       </table>
     </div>
 
+    <div class="do-dont">
+      <div class="do">
+        <div class="do-label">Do</div>
+        <p>Use a filled background chip for the active sidebar item — brand blue (<code>--sys-primary-default</code>) in the main app nav, light grey (<code>--sys-background-neutral</code>) in Settings hierarchy.</p>
+      </div>
+      <div class="dont">
+        <div class="dont-label">Don't</div>
+        <p>Don't use an underline, left border accent, or bold text alone to indicate the active item. The filled chip is the only sanctioned active indicator in sidebars.</p>
+      </div>
+    </div>
     <div class="rule-list">
-      <div class="rule-row"><strong>Active state.</strong><span>Main app sidebar: use brand blue background chip. Settings sidebar: use light grey chip (<code>--sys-background-neutral</code>). Never underline as the active indicator.</span></div>
       <div class="rule-row"><strong>Expandable items.</strong><span>Items with sub-navigation append a <code>›</code> or chevron-right icon. The chevron flips to point down when expanded.</span></div>
       <div class="rule-row"><strong>Sidebar background.</strong><span>Always <code>--sys-background-base</code> (white). The sidebar is visually separated from the page by a <code>--sys-border-soft</code> right border.</span></div>
     </div>
@@ -217,7 +226,16 @@
     </div>
     <div class="rule-list">
       <div class="rule-row"><strong>Split CTA.</strong><span>When a primary action has sub-actions, use a split button: primary label segment + a hairline divider + a separate chevron-down segment. Both share the same <code>--sys-primary-default</code> background. The divider is a semi-transparent white stroke.</span></div>
-      <div class="rule-row"><strong>Count display.</strong><span>Show the total count of listed items below the title as a plain text line (e.g., "75 labels"). Do not wrap it in a badge or chip.</span></div>
+    </div>
+    <div class="do-dont">
+      <div class="do">
+        <div class="do-label">Do</div>
+        <p>Render item counts as plain secondary text directly below the page title: "75 labels" or "Entries 1–50 of 1714".</p>
+      </div>
+      <div class="dont">
+        <div class="dont-label">Don't</div>
+        <p>Don't wrap the count in a badge chip or place it inside the title heading. Chips in the header area are reserved for status or filter indicators, not totals.</p>
+      </div>
     </div>
   </section>
 
@@ -254,10 +272,27 @@
 
     <div class="rule-list">
       <div class="rule-row"><strong>Container.</strong><span>White card (<code>--sys-background-base</code>), rounded corners (8px), <code>--shadows-shadow-md</code> elevation, no internal dividers between items. Min-width 200px.</span></div>
-      <div class="rule-row"><strong>Item structure.</strong><span>Each item: 20px outlined icon left-aligned + 12px gap + body-md label. Never use filled icons inside menus.</span></div>
-      <div class="rule-row"><strong>Disabled items.</strong><span>Render disabled items in the list at their natural position — do not hide them. Set both the icon and label to <code>--sys-text-disabled</code>. Do not add a tooltip explaining why unless the reason is non-obvious.</span></div>
       <div class="rule-row"><strong>Trigger.</strong><span>Context menus are always triggered by a <code>⋯</code> (three-dot) icon button. The button has no visible border at rest; it gains a <code>--sys-secondary-hover</code> background on hover.</span></div>
-      <div class="rule-row"><strong>Positioning.</strong><span>Open menus must render above all other content (use <code>z-index</code> above panels). A menu triggered inside a panel must not be clipped by the panel's <code>overflow:hidden</code>.</span></div>
+    </div>
+    <div class="do-dont">
+      <div class="do">
+        <div class="do-label">Do</div>
+        <p>Use 20px <strong>outlined</strong> icons in menu items. Keep disabled items in their natural list position, setting both icon and label to <code>--sys-text-disabled</code>.</p>
+      </div>
+      <div class="dont">
+        <div class="dont-label">Don't</div>
+        <p>Don't use filled icons in menus, and don't hide disabled items — removing them breaks the user's mental model of what actions exist.</p>
+      </div>
+    </div>
+    <div class="do-dont">
+      <div class="do">
+        <div class="do-label">Do</div>
+        <p>Render open menus with a high <code>z-index</code> so they appear above all panels. Use a portal or fixed positioning to escape any parent <code>overflow:hidden</code>.</p>
+      </div>
+      <div class="dont">
+        <div class="dont-label">Don't</div>
+        <p>Don't let a menu get clipped by a panel's <code>overflow:hidden</code>. A partially visible menu is a broken interaction.</p>
+      </div>
     </div>
   </section>
 
@@ -364,7 +399,16 @@
     <div class="rule-list">
       <div class="rule-row"><strong>System banner colors.</strong><span>Warning = <code>--sys-warning-default</code> background + <code>--sys-warning-content</code> icon/text. Danger = <code>--sys-danger-default</code> + <code>--sys-danger-content</code>. Success = <code>--sys-success-default</code> + <code>--sys-success-content</code>.</span></div>
       <div class="rule-row"><strong>Banner action button.</strong><span>The CTA inside a system banner uses the matching semantic color as its background (e.g., orange button on orange banner). It is not a standard primary blue button.</span></div>
-      <div class="rule-row"><strong>Never stack system banners.</strong><span>Only one system banner is visible at a time. If multiple conditions exist, either combine the messages or prioritize by severity (danger &gt; warning &gt; info).</span></div>
+    </div>
+    <div class="do-dont">
+      <div class="do">
+        <div class="do-label">Do</div>
+        <p>Show one system banner at a time. If multiple conditions exist, combine messages or prioritize by severity: danger &gt; warning &gt; info.</p>
+      </div>
+      <div class="dont">
+        <div class="dont-label">Don't</div>
+        <p>Don't stack multiple system banners. Stacked banners push the page content down and compete for attention — only the highest-severity message should be visible.</p>
+      </div>
     </div>
   </section>
 
@@ -402,9 +446,15 @@
       <div class="anatomy-row"><span class="anatomy-pos">Send button</span><span class="anatomy-desc">Primary blue button, anchored to the bottom-right corner of the panel — <strong>outside</strong> the input box, not inside it.</span></div>
     </div>
 
-    <div class="rule-list">
-      <div class="rule-row"><strong>Toolbar placement.</strong><span>The formatting toolbar lives inside the bordered textarea container, at the bottom. It is not a separate toolbar row above or below the input.</span></div>
-      <div class="rule-row"><strong>Send button placement.</strong><span>The Send button (<code>action_primary</code> family, small size) sits outside the input box, in the bottom-right corner of the panel or form section. Use the paperplane icon prefix.</span></div>
+    <div class="do-dont">
+      <div class="do">
+        <div class="do-label">Do</div>
+        <p>Put the formatting toolbar <strong>inside</strong> the bordered textarea box, at the bottom. Place the Send button <strong>outside</strong> the box, anchored to the bottom-right corner of the panel.</p>
+      </div>
+      <div class="dont">
+        <div class="dont-label">Don't</div>
+        <p>Don't float the toolbar above/below the input as a separate row, and don't place the Send button inside the textarea border. Both patterns break the expected input boundary.</p>
+      </div>
     </div>
   </section>
 
@@ -421,8 +471,17 @@
       <div class="anatomy-row"><span class="anatomy-pos">Bottom</span><span class="anatomy-desc">Title text, truncated to 1 line, body-sm-regular. Optional tag chips below if tags exist.</span></div>
     </div>
 
+    <div class="do-dont">
+      <div class="do">
+        <div class="do-label">Do</div>
+        <p>Indicate a selected post card with a solid 2px <code>--sys-primary-default</code> border. The card's interior background stays white.</p>
+      </div>
+      <div class="dont">
+        <div class="dont-label">Don't</div>
+        <p>Don't use a background tint to indicate selection on calendar cards — that pattern conflicts with hover states and makes the selected item harder to distinguish at a glance.</p>
+      </div>
+    </div>
     <div class="rule-list">
-      <div class="rule-row"><strong>Selected card.</strong><span>Use a solid <code>--sys-primary-default</code> border (2px) on the selected post card. No background tint change on the card itself.</span></div>
       <div class="rule-row"><strong>Calendar timeline rows.</strong><span>Year row: amber/orange fill (<code>--amber-400</code> or similar) + calendar icon + year label, full grid width. Campaign rows: <code>--sys-background-neutral</code> grey fill + calendar icon + name. These rows sit above the day cells and never collapse into them.</span></div>
       <div class="rule-row"><strong>Media grid hover.</strong><span>On hover, show a semi-transparent dark overlay on the thumbnail with centered action icons (view eye, pencil edit, trash delete). The overlay must not shift the card dimensions.</span></div>
       <div class="rule-row"><strong>Video indicator.</strong><span>Video thumbnails always show a semi-transparent play button (▶) overlay at rest — not only on hover.</span></div>
