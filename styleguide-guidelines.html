@@ -6,6 +6,39 @@
 <title>Design System — Guidelines</title>
 <link rel="stylesheet" href="output/tokens/tokens.css">
 <link rel="stylesheet" href="styleguide.css">
+<style>
+  .rule-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px; margin-bottom:32px; }
+  .rule-card { background:var(--surface); border:1.5px solid var(--border); border-radius:var(--radius); padding:20px; }
+  .rule-label { font-size:11px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; color:var(--sys-primary-default); margin-bottom:8px; }
+  .rule-body { font-size:13px; line-height:1.6; color:var(--text); margin:0; }
+  .rule-body code { background:#f0ede8; border-radius:3px; padding:1px 4px; font-size:11px; }
+  .tbl { width:100%; border-collapse:collapse; font-size:13px; }
+  .tbl thead tr { background:var(--bg); }
+  .tbl th { text-align:left; padding:10px 20px; border-bottom:1.5px solid var(--border); font-size:10px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; color:var(--text-faint); }
+  .tbl td { padding:10px 20px; border-bottom:1px solid var(--border); vertical-align:top; }
+  .tbl tr:last-child td { border-bottom:none; }
+  .tbl td code { background:#f0ede8; border-radius:3px; padding:1px 4px; font-size:11px; }
+  .tbl-wrap { background:var(--surface); border:1.5px solid var(--border); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow-card); margin-bottom:32px; }
+  .rule-list { display:grid; gap:10px; margin-bottom:32px; }
+  .rule-row { background:var(--surface); border:1.5px solid var(--border); border-radius:var(--radius); padding:14px 20px; font-size:13px; line-height:1.6; }
+  .rule-row strong { color:var(--text); }
+  .rule-row span { color:var(--text-muted); margin-left:6px; }
+  .rule-row code { background:#f0ede8; border-radius:3px; padding:1px 4px; font-size:11px; }
+  .do-dont { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:32px; }
+  .do { background:#f4fbf0; border:1.5px solid #c3e6b0; border-radius:var(--radius); padding:16px 20px; }
+  .dont { background:#fff3f3; border:1.5px solid #f5c0c0; border-radius:var(--radius); padding:16px 20px; }
+  .do-label { font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#2e881b; margin-bottom:8px; }
+  .dont-label { font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#cc0000; margin-bottom:8px; }
+  .do p, .dont p { font-size:13px; line-height:1.6; margin:0; color:var(--text); }
+  .do p code, .dont p code { background:rgba(0,0,0,.07); border-radius:3px; padding:1px 4px; font-size:11px; }
+  .anatomy { background:var(--surface); border:1.5px solid var(--border); border-radius:var(--radius); padding:20px; margin-bottom:32px; }
+  .anatomy-title { font-size:11px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; color:var(--text-faint); margin-bottom:12px; }
+  .anatomy-row { display:flex; align-items:baseline; gap:12px; padding:6px 0; border-bottom:1px solid var(--border); font-size:13px; }
+  .anatomy-row:last-child { border-bottom:none; }
+  .anatomy-pos { min-width:120px; font-weight:600; color:var(--text); }
+  .anatomy-desc { color:var(--text-muted); }
+  .anatomy-desc code { background:#f0ede8; border-radius:3px; padding:1px 4px; font-size:11px; }
+</style>
 </head>
 <body>
 <div class="layout">
@@ -43,99 +76,402 @@
     <div class="page-decoration"></div>
     <div class="page-header-eyebrow">Guidelines</div>
     <h1>Guidelines</h1>
-    <p class="page-header-desc">Usage principles, accessibility standards, and design decisions that govern how the system is applied.</p>
+    <p class="page-header-desc">Prescriptive rules for building new screens or modifying existing ones. Every rule maps directly to tokens, components, or patterns found in the design system. When in doubt, check <code>output/components/</code> before writing any custom markup.</p>
   </div>
 
-  <section class="section">
-    <div class="section-header">
-      <h2>Core Principles</h2>
-    </div>
 
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:32px;">
-      <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:20px;">
-        <div style="font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--sys-primary-default);margin-bottom:8px;">Tokens First</div>
-        <p style="font-size:13px;line-height:1.6;color:var(--text);margin:0;">Every colour, size, and shadow must reference a <code>--token</code> from <code>tokens.css</code>. Never write raw hex, rgba, or hardcoded pixel values for design properties.</p>
+  <!-- ─── CORE PRINCIPLES ──────────────────────────────────── -->
+  <section class="section">
+    <div class="section-header"><h2>Core Principles</h2></div>
+    <div class="rule-grid">
+      <div class="rule-card">
+        <div class="rule-label">Tokens First</div>
+        <p class="rule-body">Every colour, font, shadow, and spacing value must come from <code>tokens.css</code>. Never write a raw hex, <code>rgba()</code>, or hardcoded <code>px</code> value for any design property.</p>
       </div>
-      <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:20px;">
-        <div style="font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--sys-primary-default);margin-bottom:8px;">Components Before Custom</div>
-        <p style="font-size:13px;line-height:1.6;color:var(--text);margin:0;">Before writing any UI element, check <code>output/components/</code> for a matching family. Only build custom if no match exists. Mirror the component's exact dimensions and markup structure.</p>
+      <div class="rule-card">
+        <div class="rule-label">Components Before Custom</div>
+        <p class="rule-body">Before writing any UI element, search <code>output/components/</code> and <code>output/components2/</code> by family name. If a matching family exists, mirror its exact HTML structure and dimensions.</p>
       </div>
-      <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:20px;">
-        <div style="font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--sys-primary-default);margin-bottom:8px;">Semantic Tokens</div>
-        <p style="font-size:13px;line-height:1.6;color:var(--text);margin:0;">Always prefer semantic tokens (<code>--sys-primary-default</code>, <code>--sys-text-primary</code>) over reference palette tokens (<code>--blue-500</code>, <code>--grey-900</code>). Use reference tokens only when no semantic alias exists.</p>
+      <div class="rule-card">
+        <div class="rule-label">Semantic Tokens</div>
+        <p class="rule-body">Always use semantic tokens (<code>--sys-primary-default</code>, <code>--sys-text-primary</code>) over reference palette tokens (<code>--blue-500</code>, <code>--grey-900</code>). Use reference tokens only when no semantic alias exists.</p>
       </div>
-      <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:20px;">
-        <div style="font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--sys-primary-default);margin-bottom:8px;">State Defaults</div>
-        <p style="font-size:13px;line-height:1.6;color:var(--text);margin:0;">Use the <code>state-default</code> variant as the base. Layer hover, focus, active, and disabled states via CSS on top — don't load separate component files per state at runtime.</p>
+      <div class="rule-card">
+        <div class="rule-label">State Defaults</div>
+        <p class="rule-body">Use the <code>state-default</code> variant as the base. Layer hover, focus, active, and disabled states via CSS on top — don't load separate component files per state at runtime.</p>
       </div>
-      <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:20px;">
-        <div style="font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--sys-primary-default);margin-bottom:8px;">Type Scale</div>
-        <p style="font-size:13px;line-height:1.6;color:var(--text);margin:0;">Use the BB Update body/heading scale (Helvetica Neue) for all in-app UI. Reserve the Lota Grotesque display scale exclusively for marketing or hero sections. Never mix the two within the same UI context.</p>
+      <div class="rule-card">
+        <div class="rule-label">Type Scale</div>
+        <p class="rule-body">Use the BB Update body/heading scale (Helvetica Neue) for all in-app UI. Reserve Lota Grotesque exclusively for marketing or hero sections. Never mix the two within the same UI context.</p>
       </div>
-      <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:20px;">
-        <div style="font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--sys-primary-default);margin-bottom:8px;">Icon Sizing</div>
-        <p style="font-size:13px;line-height:1.6;color:var(--text);margin:0;">All icons are designed on a 20×20 or 24×24 grid. Default to 20px. Check the surrounding component's HTML file to confirm the intended size before placing an icon.</p>
+      <div class="rule-card">
+        <div class="rule-label">Icon Sizing</div>
+        <p class="rule-body">All icons are designed on a 20×20 or 24×24 grid. Default to 20px. Check the surrounding component's HTML file to confirm the intended size before placing an icon.</p>
       </div>
     </div>
   </section>
 
+
+  <!-- ─── LAYOUT PATTERNS ──────────────────────────────────── -->
   <section class="section">
-    <div class="section-header">
-      <h2>Colour Usage</h2>
-    </div>
-    <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-card);">
-      <table style="width:100%;border-collapse:collapse;font-size:13px;">
-        <thead>
-          <tr>
-            <th style="text-align:left;padding:10px 20px;background:var(--bg);border-bottom:1.5px solid var(--border);font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--text-faint);">Situation</th>
-            <th style="text-align:left;padding:10px 20px;background:var(--bg);border-bottom:1.5px solid var(--border);font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--text-faint);">Token to use</th>
-          </tr>
-        </thead>
+    <div class="section-header"><h2>Layout Patterns</h2></div>
+
+    <p style="font-size:13px;color:var(--text-muted);margin-bottom:20px;">Three layout archetypes cover all screens. Pick the one that matches the screen's information density and task flow.</p>
+
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr>
+          <th>Archetype</th>
+          <th>Structure</th>
+          <th>When to use</th>
+        </tr></thead>
         <tbody>
-          <tr style="border-bottom:1px solid var(--border)"><td style="padding:10px 20px;">Primary CTA, links, active states</td><td style="padding:10px 20px;font-family:monospace;font-size:12px;">--sys-primary-default</td></tr>
-          <tr style="border-bottom:1px solid var(--border)"><td style="padding:10px 20px;">Default body text</td><td style="padding:10px 20px;font-family:monospace;font-size:12px;">--sys-text-primary</td></tr>
-          <tr style="border-bottom:1px solid var(--border)"><td style="padding:10px 20px;">Muted / supporting text</td><td style="padding:10px 20px;font-family:monospace;font-size:12px;">--sys-text-secondary</td></tr>
-          <tr style="border-bottom:1px solid var(--border)"><td style="padding:10px 20px;">Page / panel background</td><td style="padding:10px 20px;font-family:monospace;font-size:12px;">--sys-background-base</td></tr>
-          <tr style="border-bottom:1px solid var(--border)"><td style="padding:10px 20px;">Subtle tinted surface</td><td style="padding:10px 20px;font-family:monospace;font-size:12px;">--sys-background-neutral</td></tr>
-          <tr style="border-bottom:1px solid var(--border)"><td style="padding:10px 20px;">Default input / container border</td><td style="padding:10px 20px;font-family:monospace;font-size:12px;">--sys-border-base</td></tr>
-          <tr style="border-bottom:1px solid var(--border)"><td style="padding:10px 20px;">Focus ring</td><td style="padding:10px 20px;font-family:monospace;font-size:12px;">--sys-border-focus</td></tr>
-          <tr style="border-bottom:1px solid var(--border)"><td style="padding:10px 20px;">Success feedback</td><td style="padding:10px 20px;font-family:monospace;font-size:12px;">--sys-success-default / --sys-success-content</td></tr>
-          <tr style="border-bottom:1px solid var(--border)"><td style="padding:10px 20px;">Warning feedback</td><td style="padding:10px 20px;font-family:monospace;font-size:12px;">--sys-warning-default / --sys-warning-content</td></tr>
-          <tr><td style="padding:10px 20px;">Danger / destructive feedback</td><td style="padding:10px 20px;font-family:monospace;font-size:12px;">--sys-danger-default / --sys-danger-content</td></tr>
+          <tr>
+            <td><strong>Standard</strong></td>
+            <td>Top nav bar + left sidebar + main content area</td>
+            <td>Settings pages, dashboards, single-focus views (Frames list, Users list)</td>
+          </tr>
+          <tr>
+            <td><strong>Three-panel</strong></td>
+            <td>Top nav bar + Feed panel (fixed ~300px) + Context panel (flex) + Details panel (fixed ~280px)</td>
+            <td>Inbox/feed workflows where selecting an item shows both context and metadata (Engage)</td>
+          </tr>
+          <tr>
+            <td><strong>Four-panel</strong></td>
+            <td>Top nav bar + Inboxes panel (fixed ~240px) + Feed + Context + Details</td>
+            <td>Feed workflows that also need secondary inbox/filter navigation</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="rule-list">
+      <div class="rule-row"><strong>Panel collapse.</strong><span>Every panel except the main content area must include a <code>◀</code> collapse button in its header. Collapsed state hides the panel; the icon-only sidebar remains visible.</span></div>
+      <div class="rule-row"><strong>Panel scroll.</strong><span>Each panel scrolls independently. Never let one panel's scroll affect another.</span></div>
+      <div class="rule-row"><strong>Detail panel open.</strong><span>The details panel slides in from the right and overlays the calendar/grid area. It does not push or resize adjacent panels.</span></div>
+      <div class="rule-row"><strong>Page background.</strong><span>Use <code>--sys-background-neutral</code> (<code>#f3f5f7</code>) as the page background for dashboard and settings layouts. Use <code>--sys-background-base</code> (<code>#ffffff</code>) for panel interiors and card surfaces.</span></div>
+    </div>
+  </section>
+
+
+  <!-- ─── TOP APP BAR ──────────────────────────────────────── -->
+  <section class="section">
+    <div class="section-header"><h2>Top App Bar</h2></div>
+    <div class="anatomy">
+      <div class="anatomy-title">Slot order — left to right</div>
+      <div class="anatomy-row"><span class="anatomy-pos">Left</span><span class="anatomy-desc">Hamburger menu icon → logo (20px) → app/section name (heading-sm, white) → optional vertical divider → module icon shortcuts</span></div>
+      <div class="anatomy-row"><span class="anatomy-pos">Right</span><span class="anatomy-desc">"Today's Tasks" pill button with count badge → settings gear icon → chat icon → bell icon → user avatar circle</span></div>
+    </div>
+    <div class="rule-list">
+      <div class="rule-row"><strong>Background.</strong><span>Always near-black — use <code>--grey-900</code> (<code>#111317</code>). All icons and text use <code>--sys-text-on-color</code> (white).</span></div>
+      <div class="rule-row"><strong>Today's Tasks badge.</strong><span>A small filled circle badge sits top-right of the pill button at all times, even when count is 0. Use brand orange (<code>--orange-500</code>) fill.</span></div>
+      <div class="rule-row"><strong>Icon buttons.</strong><span>Right-cluster icons (gear, chat, bell) are 20px, white. They have no label. Always include <code>aria-label</code>.</span></div>
+      <div class="rule-row"><strong>User avatar.</strong><span>Circular crop, 32px. Show photo if available; fall back to initials with a consistent per-user background color.</span></div>
+    </div>
+  </section>
+
+
+  <!-- ─── LEFT SIDEBAR ─────────────────────────────────────── -->
+  <section class="section">
+    <div class="section-header"><h2>Left Sidebar</h2></div>
+
+    <div class="tbl-wrap" style="margin-bottom:20px;">
+      <table class="tbl">
+        <thead><tr><th>Variant</th><th>When to use</th><th>Item structure</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Full (expanded)</strong></td>
+            <td>Main app navigation — Orchestrate, Engage, Settings</td>
+            <td>20px icon + label text; active item = filled chip, brand blue bg + white text</td>
+          </tr>
+          <tr>
+            <td><strong>Icon-only (collapsed)</strong></td>
+            <td>After user collapses the sidebar</td>
+            <td>20px icon only, centered; no tooltip required at rest</td>
+          </tr>
+          <tr>
+            <td><strong>Settings hierarchy</strong></td>
+            <td>Settings pages with section groups</td>
+            <td>Section header (bold + <code>›</code> chevron) → child items indented ~16px; active child = light grey filled pill, not brand blue</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="rule-list">
+      <div class="rule-row"><strong>Active state.</strong><span>Main app sidebar: use brand blue background chip. Settings sidebar: use light grey chip (<code>--sys-background-neutral</code>). Never underline as the active indicator.</span></div>
+      <div class="rule-row"><strong>Expandable items.</strong><span>Items with sub-navigation append a <code>›</code> or chevron-right icon. The chevron flips to point down when expanded.</span></div>
+      <div class="rule-row"><strong>Sidebar background.</strong><span>Always <code>--sys-background-base</code> (white). The sidebar is visually separated from the page by a <code>--sys-border-soft</code> right border.</span></div>
+    </div>
+  </section>
+
+
+  <!-- ─── PAGE HEADER ──────────────────────────────────────── -->
+  <section class="section">
+    <div class="section-header"><h2>Page Header Anatomy</h2></div>
+    <div class="anatomy">
+      <div class="anatomy-title">Slot order — standard page header</div>
+      <div class="anatomy-row"><span class="anatomy-pos">Title row</span><span class="anatomy-desc">Page title (heading-xl or heading-lg) left-aligned + optional dropdown chevron for context switching + optional <code>⋯</code> overflow menu — all left. CTA buttons right-aligned.</span></div>
+      <div class="anatomy-row"><span class="anatomy-pos">Subtitle / quota row</span><span class="anatomy-desc">One line of plain <code>--sys-text-secondary</code> text: counts, quota ("Users: 102 / 500 • Admin users: 86 / 290"), or filter summary. Sits directly below the title.</span></div>
+      <div class="anatomy-row"><span class="anatomy-pos">CTA buttons</span><span class="anatomy-desc">Secondary ghost buttons first (leftmost) → primary filled button last (rightmost). Each button may carry a 20px icon that clarifies the action.</span></div>
+    </div>
+    <div class="rule-list">
+      <div class="rule-row"><strong>Split CTA.</strong><span>When a primary action has sub-actions, use a split button: primary label segment + a hairline divider + a separate chevron-down segment. Both share the same <code>--sys-primary-default</code> background. The divider is a semi-transparent white stroke.</span></div>
+      <div class="rule-row"><strong>Count display.</strong><span>Show the total count of listed items below the title as a plain text line (e.g., "75 labels"). Do not wrap it in a badge or chip.</span></div>
+    </div>
+  </section>
+
+
+  <!-- ─── DATA TABLES ──────────────────────────────────────── -->
+  <section class="section">
+    <div class="section-header"><h2>Data Tables</h2></div>
+
+    <div class="anatomy" style="margin-bottom:20px;">
+      <div class="anatomy-title">Standard row anatomy</div>
+      <div class="anatomy-row"><span class="anatomy-pos">Col 1</span><span class="anatomy-desc">Optional expand chevron (▶/▼) for parent rows — only present when the row has children</span></div>
+      <div class="anatomy-row"><span class="anatomy-pos">Col 2 — Name</span><span class="anatomy-desc">16–20px colored icon + primary title (body-md-medium) stacked above secondary sub-label (body-sm-regular, <code>--sys-text-secondary</code>)</span></div>
+      <div class="anatomy-row"><span class="anatomy-pos">Col 3 — ⋯</span><span class="anatomy-desc">Overflow action button — appears on row hover only, hidden at rest</span></div>
+      <div class="anatomy-row"><span class="anatomy-pos">Data columns</span><span class="anatomy-desc">Publication date (calendar icon prefix), Status (colored circle + label + inline dropdown chevron), Tags (colored pill chips + <code>+N</code> overflow), Assignees (stacked avatar circles)</span></div>
+      <div class="anatomy-row"><span class="anatomy-pos">Last columns</span><span class="anatomy-desc">Timestamps, IDs — plain text, right-aligned, <code>--sys-text-secondary</code></span></div>
+    </div>
+
+    <div class="rule-list">
+      <div class="rule-row"><strong>Sort indicator.</strong><span>Show ↑ or ↓ inline in the active sort column header label. Only one column sorted at a time. No sort indicator on inactive columns.</span></div>
+      <div class="rule-row"><strong>Inline toggle.</strong><span>When a row has an on/off state (e.g., enabled strategy), render a toggle switch as the first element inside the name column, before the label. Blue = on, grey = off.</span></div>
+      <div class="rule-row"><strong>Inline status edit.</strong><span>Status cells that are editable show a dropdown chevron (▼) directly after the status label. Clicking opens a popover — not a full modal.</span></div>
+      <div class="rule-row"><strong>Tag chips in rows.</strong><span>Render each tag as a colored pill (<code>appearance_colored</code> family). When more than 2–3 tags exist, show the first two and a grey <code>+N</code> overflow chip. Never wrap to a second line.</span></div>
+      <div class="rule-row"><strong>Assignee avatars.</strong><span>Stack avatar circles with a small negative margin overlap. Show up to 3; use a <code>+N</code> grey circle for overflow. No names in the cell.</span></div>
+      <div class="rule-row"><strong>Label color dot.</strong><span>In label/tag list tables, prefix the row name with a filled circle (~8px) in the label's assigned color. This is the only place a raw color value may appear outside of a token — it is data, not a design decision.</span></div>
+      <div class="rule-row"><strong>Warning row state.</strong><span>Rows with a configuration error show a warning triangle icon (amber) in place of the normal content icon. Do not change the row background.</span></div>
+      <div class="rule-row"><strong>Row borders.</strong><span>Use <code>--sys-border-subtle</code> horizontal dividers between rows. No vertical column dividers. Header row uses <code>--sys-border-soft</code> bottom border.</span></div>
+    </div>
+  </section>
+
+
+  <!-- ─── CONTEXT MENUS & DROPDOWNS ───────────────────────── -->
+  <section class="section">
+    <div class="section-header"><h2>Context Menus &amp; Dropdowns</h2></div>
+
+    <div class="rule-list">
+      <div class="rule-row"><strong>Container.</strong><span>White card (<code>--sys-background-base</code>), rounded corners (8px), <code>--shadows-shadow-md</code> elevation, no internal dividers between items. Min-width 200px.</span></div>
+      <div class="rule-row"><strong>Item structure.</strong><span>Each item: 20px outlined icon left-aligned + 12px gap + body-md label. Never use filled icons inside menus.</span></div>
+      <div class="rule-row"><strong>Disabled items.</strong><span>Render disabled items in the list at their natural position — do not hide them. Set both the icon and label to <code>--sys-text-disabled</code>. Do not add a tooltip explaining why unless the reason is non-obvious.</span></div>
+      <div class="rule-row"><strong>Trigger.</strong><span>Context menus are always triggered by a <code>⋯</code> (three-dot) icon button. The button has no visible border at rest; it gains a <code>--sys-secondary-hover</code> background on hover.</span></div>
+      <div class="rule-row"><strong>Positioning.</strong><span>Open menus must render above all other content (use <code>z-index</code> above panels). A menu triggered inside a panel must not be clipped by the panel's <code>overflow:hidden</code>.</span></div>
+    </div>
+  </section>
+
+
+  <!-- ─── STATUS & SENTIMENT INDICATORS ───────────────────── -->
+  <section class="section">
+    <div class="section-header"><h2>Status &amp; Sentiment Indicators</h2></div>
+
+    <div class="tbl-wrap" style="margin-bottom:20px;">
+      <table class="tbl">
+        <thead><tr><th>Indicator type</th><th>Shape</th><th>Icon</th><th>Values</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Post status badge</strong><br><span style="font-size:12px;color:var(--text-faint);">Calendar cards, detail panel header</span></td>
+            <td>Inline label, no pill background</td>
+            <td>Filled diamond ◆ (colored)</td>
+            <td>Successful = green, Draft = orange, Failed = red, Scheduled = blue</td>
+          </tr>
+          <tr>
+            <td><strong>Sentiment badge</strong><br><span style="font-size:12px;color:var(--text-faint);">Feed list items (Engage)</span></td>
+            <td>Pill with colored background</td>
+            <td>Small filled dot</td>
+            <td>Negative = red pill, Neutral = grey pill, Positive = green pill. All-caps label text.</td>
+          </tr>
+          <tr>
+            <td><strong>Record status</strong><br><span style="font-size:12px;color:var(--text-faint);">Table status column</span></td>
+            <td>Inline label + dropdown chevron</td>
+            <td>Colored circle (●)</td>
+            <td>Draft = grey, Scheduled = blue, Published/Successful = green, Failed/Rejected = red</td>
+          </tr>
+          <tr>
+            <td><strong>Toggle (active/inactive)</strong><br><span style="font-size:12px;color:var(--text-faint);">Settings table rows</span></td>
+            <td>Toggle switch</td>
+            <td>None</td>
+            <td>On = <code>--sys-primary-default</code> blue track, Off = grey track</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="do-dont">
+      <div class="do">
+        <div class="do-label">Do</div>
+        <p>Use <code>◆ Successful</code> (diamond icon + label, no pill) for post status on calendar cards and in panel headers. Use the <code>status_*</code> component family from <code>output/components/</code>.</p>
+      </div>
+      <div class="dont">
+        <div class="dont-label">Don't</div>
+        <p>Don't use a solid pill chip for post status — that pattern is reserved for sentiment badges (Engage) and appearance chips (colored labels). Mixing the two makes status semantics ambiguous.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ─── EMPTY STATES ─────────────────────────────────────── -->
+  <section class="section">
+    <div class="section-header"><h2>Empty States</h2></div>
+
+    <div class="anatomy" style="margin-bottom:20px;">
+      <div class="anatomy-title">Structure — all empty state contexts</div>
+      <div class="anatomy-row"><span class="anatomy-pos">Icon / illustration</span><span class="anatomy-desc">64px, centered horizontally. Use a muted grey icon (<code>--sys-text-disabled</code>) or a branded illustration. Never a color icon.</span></div>
+      <div class="anatomy-row"><span class="anatomy-pos">Heading</span><span class="anatomy-desc">Bold, heading-sm or heading-md. Directly states what's missing ("No messages yet", "There are no comments available.").</span></div>
+      <div class="anatomy-row"><span class="anatomy-pos">Supporting text</span><span class="anatomy-desc">1–2 lines, body-sm-regular, <code>--sys-text-secondary</code>. Explains why or what to do next.</span></div>
+      <div class="anatomy-row"><span class="anatomy-pos">CTA (optional)</span><span class="anatomy-desc">Primary or secondary button below the text. Only include when there is a direct action the user can take from this state.</span></div>
+    </div>
+
+    <div class="rule-list">
+      <div class="rule-row"><strong>Centering.</strong><span>Center the empty state both vertically and horizontally within its container. For tall panels, use <code>display:flex; flex-direction:column; align-items:center; justify-content:center</code>.</span></div>
+      <div class="rule-row"><strong>Accordion section empty state.</strong><span>When a collapsible sidebar section has no items, show two stacked lines inside the section body: bold "No data existing" + secondary "There are no entries". No icon needed at this small scale.</span></div>
+      <div class="rule-row"><strong>Widget card empty state.</strong><span>Dashboard widget cards that have no data use the same icon + heading + body pattern scaled to fit the card. No full-page empty state treatment needed.</span></div>
+    </div>
+  </section>
+
+
+  <!-- ─── ALERTS & BANNERS ─────────────────────────────────── -->
+  <section class="section">
+    <div class="section-header"><h2>Alerts &amp; Banners</h2></div>
+
+    <div class="tbl-wrap" style="margin-bottom:20px;">
+      <table class="tbl">
+        <thead><tr><th>Type</th><th>Placement</th><th>Structure</th><th>Dismissible</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>System banner</strong></td>
+            <td>Full content-area width, above the page title, below the top nav</td>
+            <td>Warning icon + message text (left) + action button (right) + ✕ close</td>
+            <td>Yes — ✕ in far right</td>
+          </tr>
+          <tr>
+            <td><strong>Inline alert</strong></td>
+            <td>Inside a form section or card</td>
+            <td>Use <code>appearance_inline_*</code> component. Icon + short message. No close button.</td>
+            <td>No</td>
+          </tr>
+          <tr>
+            <td><strong>Toast</strong></td>
+            <td>Bottom-right corner, stacked</td>
+            <td>Use <code>appearance_floating_*</code> component. Auto-dismiss after ~4s.</td>
+            <td>Optional</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="rule-list">
+      <div class="rule-row"><strong>System banner colors.</strong><span>Warning = <code>--sys-warning-default</code> background + <code>--sys-warning-content</code> icon/text. Danger = <code>--sys-danger-default</code> + <code>--sys-danger-content</code>. Success = <code>--sys-success-default</code> + <code>--sys-success-content</code>.</span></div>
+      <div class="rule-row"><strong>Banner action button.</strong><span>The CTA inside a system banner uses the matching semantic color as its background (e.g., orange button on orange banner). It is not a standard primary blue button.</span></div>
+      <div class="rule-row"><strong>Never stack system banners.</strong><span>Only one system banner is visible at a time. If multiple conditions exist, either combine the messages or prioritize by severity (danger &gt; warning &gt; info).</span></div>
+    </div>
+  </section>
+
+
+  <!-- ─── FEED LIST ITEMS ──────────────────────────────────── -->
+  <section class="section">
+    <div class="section-header"><h2>Feed List Items (Engage)</h2></div>
+
+    <div class="anatomy" style="margin-bottom:20px;">
+      <div class="anatomy-title">Feed item row anatomy</div>
+      <div class="anatomy-row"><span class="anatomy-pos">Left</span><span class="anatomy-desc">Checkbox (16px) — always present for bulk-select support</span></div>
+      <div class="anatomy-row"><span class="anatomy-pos">Icon</span><span class="anatomy-desc">16–20px platform/network icon (TikTok, LinkedIn, Facebook, etc.)</span></div>
+      <div class="anatomy-row"><span class="anatomy-pos">Title</span><span class="anatomy-desc">Primary text — truncated to 1 line, body-md-medium</span></div>
+      <div class="anatomy-row"><span class="anatomy-pos">Row actions (right)</span><span class="anatomy-desc">Flag icon + checkmark icon — always visible (not hover-only)</span></div>
+      <div class="anatomy-row"><span class="anatomy-pos">Second line</span><span class="anatomy-desc">Timestamp (body-sm-regular, <code>--sys-text-secondary</code>) + sentiment badge pill</span></div>
+      <div class="anatomy-row"><span class="anatomy-pos">Bottom-right</span><span class="anatomy-desc">Assignee initials avatar (24px circle, colored background)</span></div>
+    </div>
+
+    <div class="rule-list">
+      <div class="rule-row"><strong>Selected state.</strong><span>Active/selected feed item gets a light blue tinted background (<code>--sys-primary-subtle-hover</code>). No border change on the item itself.</span></div>
+      <div class="rule-row"><strong>Unassigned label.</strong><span>If the item is unassigned, show a small dark chip tooltip "Unassigned" on hover — not as persistent text in the row.</span></div>
+    </div>
+  </section>
+
+
+  <!-- ─── COMPOSE AREAS ────────────────────────────────────── -->
+  <section class="section">
+    <div class="section-header"><h2>Compose &amp; Input Areas</h2></div>
+
+    <div class="anatomy" style="margin-bottom:20px;">
+      <div class="anatomy-title">Rich text compose area anatomy</div>
+      <div class="anatomy-row"><span class="anatomy-pos">Container</span><span class="anatomy-desc">Bordered box, <code>--sys-border-base</code> at rest, <code>--sys-border-focus</code> ring on focus</span></div>
+      <div class="anatomy-row"><span class="anatomy-pos">Text area</span><span class="anatomy-desc">Grows vertically with content. Placeholder text uses <code>--sys-text-placeholder</code>.</span></div>
+      <div class="anatomy-row"><span class="anatomy-pos">Toolbar (inside box, bottom)</span><span class="anatomy-desc">B I U S formatting buttons + list buttons + emoji + ⋯ overflow. Left-aligned within the box.</span></div>
+      <div class="anatomy-row"><span class="anatomy-pos">Send button</span><span class="anatomy-desc">Primary blue button, anchored to the bottom-right corner of the panel — <strong>outside</strong> the input box, not inside it.</span></div>
+    </div>
+
+    <div class="rule-list">
+      <div class="rule-row"><strong>Toolbar placement.</strong><span>The formatting toolbar lives inside the bordered textarea container, at the bottom. It is not a separate toolbar row above or below the input.</span></div>
+      <div class="rule-row"><strong>Send button placement.</strong><span>The Send button (<code>action_primary</code> family, small size) sits outside the input box, in the bottom-right corner of the panel or form section. Use the paperplane icon prefix.</span></div>
+    </div>
+  </section>
+
+
+  <!-- ─── CARDS & MEDIA GRID ───────────────────────────────── -->
+  <section class="section">
+    <div class="section-header"><h2>Calendar Post Cards &amp; Media Grid</h2></div>
+
+    <div class="anatomy" style="margin-bottom:20px;">
+      <div class="anatomy-title">Calendar post card anatomy</div>
+      <div class="anatomy-row"><span class="anatomy-pos">Top</span><span class="anatomy-desc">Status badge: ◆ icon (colored by status) + status label text (body-sm-medium)</span></div>
+      <div class="anatomy-row"><span class="anatomy-pos">Middle</span><span class="anatomy-desc">Media thumbnail (grey placeholder if no image). Fills most of the card height.</span></div>
+      <div class="anatomy-row"><span class="anatomy-pos">Thumbnail overlay</span><span class="anatomy-desc">Social network icon — small circle badge, bottom-left corner of the thumbnail</span></div>
+      <div class="anatomy-row"><span class="anatomy-pos">Bottom</span><span class="anatomy-desc">Title text, truncated to 1 line, body-sm-regular. Optional tag chips below if tags exist.</span></div>
+    </div>
+
+    <div class="rule-list">
+      <div class="rule-row"><strong>Selected card.</strong><span>Use a solid <code>--sys-primary-default</code> border (2px) on the selected post card. No background tint change on the card itself.</span></div>
+      <div class="rule-row"><strong>Calendar timeline rows.</strong><span>Year row: amber/orange fill (<code>--amber-400</code> or similar) + calendar icon + year label, full grid width. Campaign rows: <code>--sys-background-neutral</code> grey fill + calendar icon + name. These rows sit above the day cells and never collapse into them.</span></div>
+      <div class="rule-row"><strong>Media grid hover.</strong><span>On hover, show a semi-transparent dark overlay on the thumbnail with centered action icons (view eye, pencil edit, trash delete). The overlay must not shift the card dimensions.</span></div>
+      <div class="rule-row"><strong>Video indicator.</strong><span>Video thumbnails always show a semi-transparent play button (▶) overlay at rest — not only on hover.</span></div>
+      <div class="rule-row"><strong>View toggle.</strong><span>Grid/list toggle is a two-button group. Active view has a filled or bordered active state. Place it in the top-right of the content area, left of the filter icon.</span></div>
+      <div class="rule-row"><strong>Pagination.</strong><span>Rows-per-page: chip group (25 / 50 / 100), active chip highlighted with <code>--sys-primary-default</code> background. Page navigation: <code>|◀ ◀ 1 2 3 ▶ ▶|</code>. Always place pagination at the bottom of the list/grid.</span></div>
+    </div>
+  </section>
+
+
+  <!-- ─── COLOUR USAGE ─────────────────────────────────────── -->
+  <section class="section">
+    <div class="section-header"><h2>Colour Usage Quick Reference</h2></div>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr>
+          <th>Situation</th>
+          <th>Token to use</th>
+        </tr></thead>
+        <tbody>
+          <tr><td>Primary CTA, links, active states</td><td><code>--sys-primary-default</code></td></tr>
+          <tr><td>Default body text</td><td><code>--sys-text-primary</code></td></tr>
+          <tr><td>Muted / supporting text</td><td><code>--sys-text-secondary</code></td></tr>
+          <tr><td>Placeholder text</td><td><code>--sys-text-placeholder</code></td></tr>
+          <tr><td>Disabled text and icons</td><td><code>--sys-text-disabled</code></td></tr>
+          <tr><td>Text on coloured / dark backgrounds</td><td><code>--sys-text-on-color</code></td></tr>
+          <tr><td>Page / panel background</td><td><code>--sys-background-base</code></td></tr>
+          <tr><td>Subtle tinted surface, page bg</td><td><code>--sys-background-neutral</code></td></tr>
+          <tr><td>Default input / container border</td><td><code>--sys-border-base</code></td></tr>
+          <tr><td>Card / soft border</td><td><code>--sys-border-soft</code></td></tr>
+          <tr><td>Focus ring</td><td><code>--sys-border-focus</code></td></tr>
+          <tr><td>Success feedback</td><td><code>--sys-success-default</code> / <code>--sys-success-content</code></td></tr>
+          <tr><td>Warning feedback</td><td><code>--sys-warning-default</code> / <code>--sys-warning-content</code></td></tr>
+          <tr><td>Danger / destructive feedback</td><td><code>--sys-danger-default</code> / <code>--sys-danger-content</code></td></tr>
         </tbody>
       </table>
     </div>
   </section>
 
-  <section class="section">
-    <div class="section-header">
-      <h2>Accessibility</h2>
-    </div>
-    <div style="display:grid;gap:12px;">
-      <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px 20px;">
-        <strong style="font-size:13px;">Colour contrast:</strong>
-        <span style="font-size:13px;color:var(--text-secondary);margin-left:6px;">All text on light backgrounds must meet WCAG AA (4.5:1 for normal text, 3:1 for large text). Use <code>--sys-text-primary</code> on <code>--sys-background-base</code> as the default pairing.</span>
-      </div>
-      <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px 20px;">
-        <strong style="font-size:13px;">Focus states:</strong>
-        <span style="font-size:13px;color:var(--text-secondary);margin-left:6px;">Every interactive element must have a visible focus ring using <code>--sys-border-focus</code>. Never suppress <code>outline</code> without a CSS-based replacement.</span>
-      </div>
-      <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px 20px;">
-        <strong style="font-size:13px;">Icon-only buttons:</strong>
-        <span style="font-size:13px;color:var(--text-secondary);margin-left:6px;">Always include an <code>aria-label</code> or visually hidden label. Never rely on a tooltip as the only label for an action.</span>
-      </div>
-      <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px 20px;">
-        <strong style="font-size:13px;">Motion:</strong>
-        <span style="font-size:13px;color:var(--text-secondary);margin-left:6px;">Respect <code>prefers-reduced-motion</code>. Wrap non-essential transitions and animations in a media query and disable them when the user has requested reduced motion.</span>
-      </div>
-    </div>
-  </section>
 
+  <!-- ─── ACCESSIBILITY ────────────────────────────────────── -->
   <section class="section">
-    <div class="section-header">
-      <h2>Coming Soon</h2>
+    <div class="section-header"><h2>Accessibility</h2></div>
+    <div class="rule-list">
+      <div class="rule-row"><strong>Colour contrast.</strong><span>All text on light backgrounds must meet WCAG AA (4.5:1 for normal text, 3:1 for large text). Default pairing: <code>--sys-text-primary</code> on <code>--sys-background-base</code>.</span></div>
+      <div class="rule-row"><strong>Focus states.</strong><span>Every interactive element must have a visible focus ring using <code>--sys-border-focus</code>. Never suppress <code>outline</code> without a CSS-based replacement.</span></div>
+      <div class="rule-row"><strong>Icon-only buttons.</strong><span>Always include <code>aria-label</code> or a visually hidden label. Never rely on a tooltip as the only accessible label for an action.</span></div>
+      <div class="rule-row"><strong>Disabled menu items.</strong><span>Render disabled menu items with <code>aria-disabled="true"</code>. Do not use <code>disabled</code> on <code>&lt;button&gt;</code> inside menus — it removes focus and prevents tooltip/explanation delivery.</span></div>
+      <div class="rule-row"><strong>Motion.</strong><span>Wrap non-essential transitions and animations in <code>@media (prefers-reduced-motion: reduce)</code> and disable them when the user has requested reduced motion.</span></div>
     </div>
-    <p style="font-size:14px;color:var(--text-secondary);">Additional guidelines covering responsive breakpoints, content tone &amp; voice, form validation patterns, and loading states are in progress.</p>
   </section>
 
 </main>
