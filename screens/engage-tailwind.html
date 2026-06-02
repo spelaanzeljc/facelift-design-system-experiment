@@ -12,11 +12,12 @@
     ::-webkit-scrollbar { width: 3px; }
     ::-webkit-scrollbar-track { background: var(--sys-border-soft); }
     ::-webkit-scrollbar-thumb { background: var(--sys-border-base); border-radius: 2px; }
+
     input[type=checkbox] {
       width: 14px; height: 14px; min-width: 14px; min-height: 14px;
       border: 1.5px solid var(--sys-border-base); border-radius: 3px;
       appearance: none; -webkit-appearance: none; cursor: pointer;
-      position: relative; background: white; flex-shrink: 0;
+      position: relative; background: white; flex-shrink: 0; transition: background 0.1s;
     }
     input[type=checkbox]:checked { background: var(--sys-primary-default); border-color: var(--sys-primary-default); }
     input[type=checkbox]:checked::after {
@@ -24,404 +25,466 @@
       width: 5px; height: 9px; border: 2px solid white;
       border-top: none; border-left: none; transform: rotate(45deg);
     }
+
+    /* Feed item hover-reveal actions */
     .feed-item .feed-actions { opacity: 0; pointer-events: none; transition: opacity 0.15s; }
     .feed-item:hover .feed-actions { opacity: 1; pointer-events: auto; }
+
+    /* Feed item resolve animation */
+    .feed-item { transition: opacity 0.3s, transform 0.3s, max-height 0.35s; }
+    .feed-item.resolving { opacity: 0; transform: translateX(16px); }
+    .feed-item.resolved { max-height: 0; overflow: hidden; padding: 0; margin: 0; border: none; }
+
+    /* Feed item flagged state */
+    .feed-item.flagged { background: var(--orange-50) !important; }
+    .feed-item.flagged .btn-flag { color: var(--orange-600) !important; }
+
+    /* Search input */
     .search-input { flex: 1; border: none; outline: none; font-size: 12px; font-family: inherit; background: transparent; color: var(--sys-text-primary); }
     .search-input::placeholder { color: var(--sys-text-placeholder); }
+
+    /* Line clamp */
     .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
     .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+    /* Reply composer */
+    .reply-composer { margin-top: 8px; border: 1px solid var(--sys-border-base); border-radius: 8px; overflow: hidden; background: var(--sys-background-base); }
+    .reply-composer textarea { width: 100%; border: none; outline: none; resize: none; font-size: 12px; font-family: inherit; color: var(--sys-text-primary); background: transparent; padding: 8px 10px; min-height: 56px; display: block; }
+    .reply-composer textarea::placeholder { color: var(--sys-text-placeholder); }
+    .reply-composer-toolbar { display: flex; justify-content: flex-end; gap: 6px; padding: 4px 10px 8px; border-top: 1px solid var(--sys-border-soft); }
+
+    /* Like active */
+    .btn-like-pill.liked { background: var(--sys-primary-subtle-hover) !important; border-color: var(--sys-primary-default) !important; color: var(--sys-primary-default) !important; }
+
+    /* Comment resolved */
+    .comment-block.resolved-comment { opacity: 0.45; pointer-events: none; }
+    .comment-block.resolved-comment::after { content: '✓ Resolved'; display: block; font-size: 11px; font-weight: 600; color: var(--sys-success-content); margin-top: 4px; }
+
+    /* Post body collapsed */
+    .post-body-collapsed { display: none !important; }
+
+    /* Notification toast */
+    #toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--grey-900); color: white; font-size: 12px; font-weight: 500; padding: 8px 16px; border-radius: 8px; opacity: 0; transition: opacity 0.2s, transform 0.2s; pointer-events: none; z-index: 1000; white-space: nowrap; }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* Filter active state */
+    .filter-pill.active { background: var(--sys-primary-default) !important; color: white !important; border-color: transparent !important; }
+
+    /* Status dropdown */
+    #status-dropdown { position: absolute; top: calc(100% + 4px); left: 0; background: white; border: 1px solid var(--sys-border-base); border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.12); z-index: 200; min-width: 140px; padding: 4px; }
+    #status-dropdown button { display: flex; align-items: center; gap: 8px; width: 100%; padding: 6px 8px; border: none; background: transparent; font-size: 12px; font-family: inherit; cursor: pointer; border-radius: 5px; color: var(--sys-text-primary); text-align: left; }
+    #status-dropdown button:hover { background: var(--sys-background-neutral); }
+    #status-dropdown button .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+    /* Comment select highlight */
+    .comment-block.selected { background: var(--blue-50); }
   </style>
 </head>
 <body class="h-screen overflow-hidden flex flex-col" style="min-width:1280px;background:var(--sys-background-base)">
 
-  <!-- APP HEADER -->
-  <header class="flex items-center px-2 gap-1 z-50 flex-shrink-0" style="height:44px;background:var(--grey-900)">
-    <button class="w-8 h-8 flex items-center justify-center rounded-md cursor-pointer transition-colors hover:bg-white/10" style="border:none;background:transparent;color:var(--grey-400)">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M3 6a1 1 0 0 1 1-1h16a1 1 0 1 1 0 2H4a1 1 0 0 1-1-1zm0 6a1 1 0 0 1 1-1h16a1 1 0 1 1 0 2H4a1 1 0 0 1-1-1zm1 5a1 1 0 1 0 0 2h16a1 1 0 1 0 0-2H4z" fill="currentColor"/></svg>
+<!-- TOAST -->
+<div id="toast"></div>
+
+<!-- APP HEADER -->
+<header class="flex items-center px-2 gap-1 z-50 flex-shrink-0" style="height:44px;background:var(--grey-900)">
+  <button class="w-8 h-8 flex items-center justify-center rounded-md cursor-pointer transition-colors hover:bg-white/10" style="border:none;background:transparent;color:var(--grey-400)">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M3 6a1 1 0 0 1 1-1h16a1 1 0 1 1 0 2H4a1 1 0 0 1-1-1zm0 6a1 1 0 0 1 1-1h16a1 1 0 1 1 0 2H4a1 1 0 0 1-1-1zm1 5a1 1 0 1 0 0 2h16a1 1 0 1 0 0-2H4z" fill="currentColor"/></svg>
+  </button>
+  <div class="flex items-center gap-2 px-1">
+    <svg width="20" height="20" viewBox="0 0 34 40" fill="none"><path d="M17 0L0 20L17 40L34 20Z" fill="#E05A00"/></svg>
+    <span class="text-sm font-bold tracking-wide" style="color:white">Engage</span>
+  </div>
+  <div class="flex-1"></div>
+  <button class="w-8 h-8 flex items-center justify-center rounded-md cursor-pointer transition-colors hover:bg-white/10" title="Settings" style="border:none;background:transparent;color:var(--grey-400)">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.95 2.44a2 2 0 0 1 4.1 0l.27.9a1 1 0 0 0 1.29.65l.87-.32a2 2 0 0 1 2.5 2.9l-.56.73a1 1 0 0 0 0 1.2l.56.73a2 2 0 0 1-2.5 2.9l-.87-.32a1 1 0 0 0-1.29.65l-.27.9a2 2 0 0 1-4.1 0l-.27-.9a1 1 0 0 0-1.29-.65l-.87.32a2 2 0 0 1-2.5-2.9l.56-.73a1 1 0 0 0 0-1.2l-.56-.73a2 2 0 0 1 2.5-2.9l.87.32a1 1 0 0 0 1.29-.65l.27-.9zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" fill="currentColor"/></svg>
+  </button>
+  <button class="w-8 h-8 flex items-center justify-center rounded-md cursor-pointer transition-colors hover:bg-white/10" title="Help" style="border:none;background:transparent;color:var(--grey-400)">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 3a9 9 0 1 0 0 18A9 9 0 0 0 12 3zm0 13.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm.75-4.6v.35a.75.75 0 0 1-1.5 0v-.75c0-.414.336-.75.75-.75.69 0 1.25-.56 1.25-1.25S12.69 8.25 12 8.25s-1.25.56-1.25 1.25a.75.75 0 0 1-1.5 0 2.75 2.75 0 1 1 3.5 2.65z" fill="currentColor"/></svg>
+  </button>
+  <button id="notif-btn" class="w-8 h-8 flex items-center justify-center rounded-md cursor-pointer transition-colors hover:bg-white/10 relative" title="Notifications" style="border:none;background:transparent;color:var(--grey-400)">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 22c1.1 0 2-.9 2-2h-4a2 2 0 0 0 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4a1.5 1.5 0 0 0-3 0v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z" fill="currentColor"/></svg>
+  </button>
+  <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold flex-shrink-0 cursor-pointer" style="font-size:11px;background:var(--grey-700);border:2px solid var(--orange-600);color:white">LS</div>
+</header>
+
+<!-- APP BODY -->
+<div class="flex flex-1 overflow-hidden">
+
+  <!-- SIDEBAR -->
+  <nav id="sidebar" class="flex flex-col items-center py-2 gap-0.5 flex-shrink-0 border-r transition-all" style="width:52px;min-width:52px;background:var(--grey-900);border-color:rgba(255,255,255,0.06)">
+    <button id="sidebar-collapse-btn" class="w-9 h-9 flex items-center justify-center rounded-lg cursor-pointer transition-colors hover:bg-white/10" title="Collapse sidebar" style="border:none;background:transparent;color:var(--grey-400)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 3h2v18H5z" fill="currentColor"/><path id="sidebar-arrow" d="M11 12l6-6v12z" fill="currentColor"/></svg>
     </button>
-    <div class="flex items-center gap-2 px-1">
-      <svg width="20" height="20" viewBox="0 0 34 40" fill="none"><path d="M17 0L0 20L17 40L34 20Z" fill="#E05A00"/></svg>
-      <span class="text-sm font-bold tracking-wide" style="color:white">Engage</span>
-    </div>
+    <button class="sidebar-nav-btn w-9 h-9 flex items-center justify-center rounded-lg cursor-pointer transition-colors hover:bg-white/10" data-label="Welcome" style="border:none;background:transparent;color:var(--grey-400)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zM4.02 12.54A8 8 0 0 1 12 4a8 8 0 0 1 7.98 8.54l-3.24-1.73A4 4 0 0 0 12 8a4 4 0 0 0-4.74 2.81L4.02 12.54zm1.2 2.17A8 8 0 0 0 12 20a8 8 0 0 0 6.78-3.71L15.6 14.6A4 4 0 0 1 12 16a4 4 0 0 1-3.6-2.29L5.22 14.71z" fill="currentColor"/></svg>
+    </button>
+    <button class="sidebar-nav-btn w-9 h-9 flex items-center justify-center rounded-lg cursor-pointer transition-colors hover:bg-white/10" data-label="Insights" style="border:none;background:transparent;color:var(--grey-400)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2a7 7 0 0 0-4 12.83V17a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.17A7 7 0 0 0 12 2zm-2 15v-1h4v1H10zm1 2v-1h2v1a1 1 0 0 1-1 1 1 1 0 0 1-1-1zm1-15a5 5 0 0 1 3.54 8.54A2 2 0 0 0 14 14h-4a2 2 0 0 0-1.54.54A5 5 0 0 1 12 4z" fill="currentColor"/></svg>
+    </button>
+    <button class="sidebar-nav-btn w-9 h-9 flex items-center justify-center rounded-lg cursor-pointer transition-colors hover:bg-white/10" data-label="Publish" style="border:none;background:transparent;color:var(--grey-400)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M8 2a1 1 0 0 1 1 1v1h6V3a1 1 0 1 1 2 0v1h1a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3h1V3a1 1 0 0 1 1-1zM5 10v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-9H5z" fill="currentColor"/></svg>
+    </button>
+    <button class="sidebar-nav-btn w-9 h-9 flex items-center justify-center rounded-lg cursor-pointer transition-colors hover:bg-white/10" data-label="Analytics" style="border:none;background:transparent;color:var(--grey-400)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M19.5 3a1.5 1.5 0 0 1 1.5 1.5v15a1.5 1.5 0 0 1-3 0v-15A1.5 1.5 0 0 1 19.5 3zm-5 4a1.5 1.5 0 0 1 1.5 1.5v11a1.5 1.5 0 0 1-3 0v-11A1.5 1.5 0 0 1 14.5 7zm-5 3a1.5 1.5 0 0 1 1.5 1.5v8a1.5 1.5 0 0 1-3 0v-8A1.5 1.5 0 0 1 9.5 10zm-5 5a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-3 0v-3A1.5 1.5 0 0 1 4.5 15z" fill="currentColor"/></svg>
+    </button>
+    <!-- ENGAGE ACTIVE -->
+    <button class="sidebar-nav-btn w-9 h-9 flex items-center justify-center rounded-lg cursor-pointer" data-label="Engage" style="border:none;background:var(--sys-primary-default);color:white">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M18 18.507C20.209 18.507 22 16.683 22 14.434V6.073C22 3.824 20.209 2 18 2L6 2C3.791 2 2 3.824 2 6.073L2 14.434C2 16.683 3.791 18.507 6 18.507H8.689L13.306 21.746C14.235 22.398 15.5 21.72 15.5 20.572V18.507H18zM20 14.434C20 15.558 19.105 16.47 18 16.47L15 16.47C14.172 16.47 13.5 17.154 13.5 17.998V19.409L9.695 16.74A1 1 0 0 0 9.094 16.47H6C4.895 16.47 4 15.558 4 14.434L4 6.073C4 4.948 4.895 4.037 6 4.037L18 4.037C19.105 4.037 20 4.948 20 6.073V14.434z" fill="currentColor"/></svg>
+    </button>
+    <div class="w-6 h-px my-1" style="background:rgba(255,255,255,0.08)"></div>
+    <button class="sidebar-nav-btn w-9 h-9 flex items-center justify-center rounded-lg cursor-pointer transition-colors hover:bg-white/10" data-label="Content" style="border:none;background:transparent;color:var(--grey-400)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M9 2h6a1 1 0 0 1 1 1v1h1a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3h1V3a1 1 0 0 1 1-1zm0 4H7a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1h-2v.5a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5V6zm1-2v2h4V4h-4z" fill="currentColor"/></svg>
+    </button>
     <div class="flex-1"></div>
-    <button class="w-8 h-8 flex items-center justify-center rounded-md cursor-pointer transition-colors hover:bg-white/10" style="border:none;background:transparent;color:var(--grey-400)">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.95 2.44a2 2 0 0 1 4.1 0l.27.9a1 1 0 0 0 1.29.65l.87-.32a2 2 0 0 1 2.5 2.9l-.56.73a1 1 0 0 0 0 1.2l.56.73a2 2 0 0 1-2.5 2.9l-.87-.32a1 1 0 0 0-1.29.65l-.27.9a2 2 0 0 1-4.1 0l-.27-.9a1 1 0 0 0-1.29-.65l-.87.32a2 2 0 0 1-2.5-2.9l.56-.73a1 1 0 0 0 0-1.2l-.56-.73a2 2 0 0 1 2.5-2.9l.87.32a1 1 0 0 0 1.29-.65l.27-.9zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" fill="currentColor"/></svg>
-    </button>
-    <button class="w-8 h-8 flex items-center justify-center rounded-md cursor-pointer transition-colors hover:bg-white/10" style="border:none;background:transparent;color:var(--grey-400)">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 3a9 9 0 1 0 0 18A9 9 0 0 0 12 3zm0 13.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm.75-4.6v.35a.75.75 0 0 1-1.5 0v-.75c0-.414.336-.75.75-.75.69 0 1.25-.56 1.25-1.25S12.69 8.25 12 8.25s-1.25.56-1.25 1.25a.75.75 0 0 1-1.5 0 2.75 2.75 0 1 1 3.5 2.65z" fill="currentColor"/></svg>
-    </button>
-    <button class="w-8 h-8 flex items-center justify-center rounded-md cursor-pointer transition-colors hover:bg-white/10" style="border:none;background:transparent;color:var(--grey-400)">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 22c1.1 0 2-.9 2-2h-4a2 2 0 0 0 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4a1.5 1.5 0 0 0-3 0v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z" fill="currentColor"/></svg>
-    </button>
-    <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold flex-shrink-0 cursor-pointer" style="font-size:11px;background:var(--grey-700);border:2px solid var(--orange-600);color:white">LS</div>
-  </header>
+    <div class="relative">
+      <button class="sidebar-nav-btn w-9 h-9 flex items-center justify-center rounded-lg cursor-pointer transition-colors hover:bg-white/10" data-label="New" style="border:none;background:transparent;color:var(--grey-400)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M18 18.507C20.209 18.507 22 16.683 22 14.434V6.073C22 3.824 20.209 2 18 2L6 2C3.791 2 2 3.824 2 6.073L2 14.434C2 16.683 3.791 18.507 6 18.507H8.689L13.306 21.746C14.235 22.398 15.5 21.72 15.5 20.572V18.507H18z" fill="currentColor"/></svg>
+      </button>
+      <span class="absolute top-0 right-0 flex items-center justify-center h-3.5 px-1 rounded-full font-bold text-white" style="font-size:8px;letter-spacing:0.02em;background:var(--orange-600)">NEW</span>
+    </div>
+  </nav>
 
-  <!-- APP BODY -->
-  <div class="flex flex-1 overflow-hidden">
+  <!-- FEED PANEL -->
+  <div class="flex flex-col overflow-hidden flex-shrink-0 border-r" style="width:460px;min-width:460px;background:var(--sys-background-base);border-color:var(--sys-border-soft)">
 
-    <!-- SIDEBAR -->
-    <nav class="flex flex-col items-center py-2 gap-0.5 flex-shrink-0 border-r" style="width:52px;min-width:52px;background:var(--grey-900);border-color:rgba(255,255,255,0.06)">
-      <button class="w-9 h-9 flex items-center justify-center rounded-lg cursor-pointer transition-colors hover:bg-white/10" style="border:none;background:transparent;color:var(--grey-400)">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 3h2v18H5z" fill="currentColor"/><path d="M11 12l6-6v12z" fill="currentColor"/></svg>
-      </button>
-      <button class="w-9 h-9 flex items-center justify-center rounded-lg cursor-pointer transition-colors hover:bg-white/10" style="border:none;background:transparent;color:var(--grey-400)">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zM4.02 12.54A8 8 0 0 1 12 4a8 8 0 0 1 7.98 8.54l-3.24-1.73A4 4 0 0 0 12 8a4 4 0 0 0-4.74 2.81L4.02 12.54zm1.2 2.17A8 8 0 0 0 12 20a8 8 0 0 0 6.78-3.71L15.6 14.6A4 4 0 0 1 12 16a4 4 0 0 1-3.6-2.29L5.22 14.71z" fill="currentColor"/></svg>
-      </button>
-      <button class="w-9 h-9 flex items-center justify-center rounded-lg cursor-pointer transition-colors hover:bg-white/10" style="border:none;background:transparent;color:var(--grey-400)">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2a7 7 0 0 0-4 12.83V17a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.17A7 7 0 0 0 12 2zm-2 15v-1h4v1H10zm1 2v-1h2v1a1 1 0 0 1-1 1 1 1 0 0 1-1-1zm1-15a5 5 0 0 1 3.54 8.54A2 2 0 0 0 14 14h-4a2 2 0 0 0-1.54.54A5 5 0 0 1 12 4z" fill="currentColor"/></svg>
-      </button>
-      <button class="w-9 h-9 flex items-center justify-center rounded-lg cursor-pointer transition-colors hover:bg-white/10" style="border:none;background:transparent;color:var(--grey-400)">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M8 2a1 1 0 0 1 1 1v1h6V3a1 1 0 1 1 2 0v1h1a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3h1V3a1 1 0 0 1 1-1zM5 10v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-9H5z" fill="currentColor"/></svg>
-      </button>
-      <!-- ENGAGE ACTIVE -->
-      <button class="w-9 h-9 flex items-center justify-center rounded-lg cursor-pointer" style="border:none;background:var(--sys-primary-default);color:white">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M18 18.507C20.209 18.507 22 16.683 22 14.434V6.073C22 3.824 20.209 2 18 2L6 2C3.791 2 2 3.824 2 6.073L2 14.434C2 16.683 3.791 18.507 6 18.507H8.689L13.306 21.746C14.235 22.398 15.5 21.72 15.5 20.572V18.507H18zM20 14.434C20 15.558 19.105 16.47 18 16.47L15 16.47C14.172 16.47 13.5 17.154 13.5 17.998V19.409L9.695 16.74A1 1 0 0 0 9.094 16.47H6C4.895 16.47 4 15.558 4 14.434L4 6.073C4 4.948 4.895 4.037 6 4.037L18 4.037C19.105 4.037 20 4.948 20 6.073V14.434z" fill="currentColor"/></svg>
-      </button>
-      <div class="w-6 h-px my-1" style="background:rgba(255,255,255,0.08)"></div>
-      <button class="w-9 h-9 flex items-center justify-center rounded-lg cursor-pointer transition-colors hover:bg-white/10" style="border:none;background:transparent;color:var(--grey-400)">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M9 2h6a1 1 0 0 1 1 1v1h1a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3h1V3a1 1 0 0 1 1-1zm0 4H7a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1h-2v.5a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5V6zm1-2v2h4V4h-4z" fill="currentColor"/></svg>
-      </button>
+    <!-- Feed header -->
+    <div class="flex items-center px-3 gap-1.5 border-b flex-shrink-0" style="height:48px;border-color:var(--sys-border-soft)">
+      <span class="font-bold text-base" style="color:var(--sys-text-primary)">Feed</span>
       <div class="flex-1"></div>
-      <!-- NEW badge item -->
+      <button id="export-btn" class="inline-flex items-center gap-1.5 px-2.5 rounded-md border cursor-pointer transition-colors hover:bg-[var(--sys-background-neutral)]" style="height:28px;font-size:12px;font-weight:500;font-family:inherit;background:transparent;border-color:var(--sys-border-base);color:var(--sys-text-primary)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.75a.75.75 0 0 1 .53.22l4.5 4.5a.75.75 0 1 1-1.06 1.06L12.75 5.31V20a.75.75 0 0 1-1.5 0V5.31L8.03 8.53a.75.75 0 0 1-1.06-1.06l4.5-4.5A.75.75 0 0 1 12 2.75z" fill="currentColor"/></svg>
+        Export
+        <span class="inline-flex items-center px-1.5 rounded-full font-bold text-white" style="height:16px;font-size:9px;background:var(--orange-600)">NEW</span>
+      </button>
+      <button class="w-8 h-8 flex items-center justify-center rounded-md cursor-pointer transition-colors hover:bg-[var(--sys-background-neutral)]" style="border:none;background:transparent;color:var(--sys-text-secondary)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.95 2.44a2 2 0 0 1 4.1 0l.27.9a1 1 0 0 0 1.29.65l.87-.32a2 2 0 0 1 2.5 2.9l-.56.73a1 1 0 0 0 0 1.2l.56.73a2 2 0 0 1-2.5 2.9l-.87-.32a1 1 0 0 0-1.29.65l-.27.9a2 2 0 0 1-4.1 0l-.27-.9a1 1 0 0 0-1.29-.65l-.87.32a2 2 0 0 1-2.5-2.9l.56-.73a1 1 0 0 0 0-1.2l-.56-.73a2 2 0 0 1 2.5-2.9l.87.32a1 1 0 0 0 1.29-.65l.27-.9zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" fill="currentColor"/></svg>
+      </button>
+    </div>
+
+    <!-- Subheader -->
+    <div class="flex items-center px-3 gap-1 border-b flex-shrink-0" style="height:32px;border-color:var(--sys-border-soft)">
+      <span style="font-size:12px;color:var(--sys-text-secondary)">All Inboxes</span>
+      <span style="font-size:12px;color:var(--sys-border-bold);margin:0 4px">|</span>
+      <span id="item-count" style="font-size:12px;color:var(--sys-text-secondary)">5 Items</span>
+    </div>
+
+    <!-- Filter toolbar -->
+    <div class="flex items-center px-3 gap-1.5 border-b flex-shrink-0" style="height:40px;border-color:var(--sys-border-soft)">
+      <button id="filter-all-btn" class="filter-pill active inline-flex items-center px-3 rounded-full font-semibold cursor-pointer transition-colors" style="height:24px;font-size:12px;font-family:inherit;border:none">All</button>
       <div class="relative">
-        <button class="w-9 h-9 flex items-center justify-center rounded-lg cursor-pointer transition-colors hover:bg-white/10" style="border:none;background:transparent;color:var(--grey-400)">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M18 18.507C20.209 18.507 22 16.683 22 14.434V6.073C22 3.824 20.209 2 18 2L6 2C3.791 2 2 3.824 2 6.073L2 14.434C2 16.683 3.791 18.507 6 18.507H8.689L13.306 21.746C14.235 22.398 15.5 21.72 15.5 20.572V18.507H18z" fill="currentColor"/></svg>
-        </button>
-        <span class="absolute top-0 right-0 flex items-center justify-center h-3.5 px-1 rounded-full font-bold text-white" style="font-size:8px;letter-spacing:0.02em;background:var(--orange-600)">NEW</span>
-      </div>
-    </nav>
-
-    <!-- FEED PANEL -->
-    <div class="flex flex-col overflow-hidden flex-shrink-0 border-r" style="width:460px;min-width:460px;background:var(--sys-background-base);border-color:var(--sys-border-soft)">
-
-      <!-- Feed header -->
-      <div class="flex items-center px-3 gap-1.5 border-b flex-shrink-0" style="height:48px;border-color:var(--sys-border-soft)">
-        <span class="font-bold text-base" style="color:var(--sys-text-primary)">Feed</span>
-        <div class="flex-1"></div>
-        <button class="inline-flex items-center gap-1.5 px-2.5 rounded-md border cursor-pointer transition-colors hover:bg-[var(--sys-background-neutral)]" style="height:28px;font-size:12px;font-weight:500;font-family:inherit;background:transparent;border-color:var(--sys-border-base);color:var(--sys-text-primary)">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.75a.75.75 0 0 1 .53.22l4.5 4.5a.75.75 0 1 1-1.06 1.06L12.75 5.31V20a.75.75 0 0 1-1.5 0V5.31L8.03 8.53a.75.75 0 0 1-1.06-1.06l4.5-4.5A.75.75 0 0 1 12 2.75z" fill="currentColor"/></svg>
-          Export
-          <span class="inline-flex items-center px-1.5 rounded-full font-bold text-white" style="height:16px;font-size:9px;background:var(--orange-600)">NEW</span>
-        </button>
-        <button class="w-8 h-8 flex items-center justify-center rounded-md cursor-pointer transition-colors hover:bg-[var(--sys-background-neutral)]" style="border:none;background:transparent;color:var(--sys-text-secondary)">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.95 2.44a2 2 0 0 1 4.1 0l.27.9a1 1 0 0 0 1.29.65l.87-.32a2 2 0 0 1 2.5 2.9l-.56.73a1 1 0 0 0 0 1.2l.56.73a2 2 0 0 1-2.5 2.9l-.87-.32a1 1 0 0 0-1.29.65l-.27.9a2 2 0 0 1-4.1 0l-.27-.9a1 1 0 0 0-1.29-.65l-.87.32a2 2 0 0 1-2.5-2.9l.56-.73a1 1 0 0 0 0-1.2l-.56-.73a2 2 0 0 1 2.5-2.9l.87.32a1 1 0 0 0 1.29-.65l.27-.9zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" fill="currentColor"/></svg>
-        </button>
-      </div>
-
-      <!-- Subheader -->
-      <div class="flex items-center px-3 gap-1 border-b flex-shrink-0" style="height:32px;border-color:var(--sys-border-soft)">
-        <span style="font-size:12px;color:var(--sys-text-secondary)">All Inboxes</span>
-        <span style="font-size:12px;color:var(--sys-border-bold);margin:0 4px">|</span>
-        <span style="font-size:12px;color:var(--sys-text-secondary)">23 Items</span>
-      </div>
-
-      <!-- Filter toolbar -->
-      <div class="flex items-center px-3 gap-1.5 border-b flex-shrink-0" style="height:40px;border-color:var(--sys-border-soft)">
-        <button class="inline-flex items-center px-3 rounded-full font-semibold cursor-pointer" style="height:24px;font-size:12px;font-family:inherit;border:none;background:var(--sys-primary-default);color:white">All</button>
-        <button class="inline-flex items-center gap-1 px-2.5 rounded-md border cursor-pointer transition-colors" style="height:24px;font-size:12px;font-weight:500;font-family:inherit;background:transparent;border-color:var(--sys-border-base);color:var(--sys-text-primary)">
+        <button id="status-filter-btn" class="filter-pill inline-flex items-center gap-1 px-2.5 rounded-md border cursor-pointer transition-colors hover:bg-[var(--sys-background-neutral)]" style="height:24px;font-size:12px;font-weight:500;font-family:inherit;background:transparent;border-color:var(--sys-border-base);color:var(--sys-text-primary)">
           Status
           <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 13.226L7.707 8.802a1 1 0 0 0-1.414 1.414l4.646 4.789a1.5 1.5 0 0 0 2.122 0l4.646-4.789a1 1 0 0 0-1.414-1.414L12 13.226z" fill="currentColor"/></svg>
         </button>
-        <div class="flex-1"></div>
-        <button class="w-8 h-8 flex items-center justify-center rounded-md cursor-pointer transition-colors hover:bg-[var(--sys-background-neutral)]" style="border:none;background:transparent;color:var(--sys-text-secondary)">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 3v18M5 4h11l-2.5 4.5L16 13H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <button class="w-8 h-8 flex items-center justify-center rounded-md cursor-pointer transition-colors hover:bg-[var(--sys-background-neutral)]" style="border:none;background:transparent;color:var(--sys-text-secondary)">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/><path d="M12 9v4M12 17h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-        </button>
-        <div class="relative">
-          <button class="w-8 h-8 flex items-center justify-center rounded-md cursor-pointer transition-colors hover:bg-[var(--sys-background-neutral)]" style="border:none;background:transparent;color:var(--sys-text-secondary)">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 5h18M6 12h12M10 19h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          </button>
-          <span class="absolute -top-0.5 -right-0.5 w-[14px] h-[14px] flex items-center justify-center rounded-full font-bold text-white" style="font-size:8px;background:var(--sys-primary-default)">2</span>
+        <div id="status-dropdown" style="display:none">
+          <button data-filter="all"><span class="dot" style="background:var(--grey-400)"></span> All</button>
+          <button data-filter="positive"><span class="dot" style="background:var(--sys-success-content)"></span> Positive</button>
+          <button data-filter="neutral"><span class="dot" style="background:var(--sys-text-secondary)"></span> Neutral</button>
+          <button data-filter="spam"><span class="dot" style="background:var(--orange-600)"></span> Spam</button>
+          <button data-filter="negative"><span class="dot" style="background:var(--sys-danger-content)"></span> Negative</button>
         </div>
       </div>
-
-      <!-- Search row -->
-      <div class="flex items-center px-2.5 gap-2 border-b flex-shrink-0" style="height:36px;border-color:var(--sys-border-soft)">
-        <input type="checkbox" title="Select all">
-        <div class="flex flex-1 items-center gap-1.5 px-2 rounded-md border" style="height:28px;border-color:var(--sys-border-base)">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;color:var(--sys-text-placeholder)"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.5 2a8.5 8.5 0 1 0 5.262 15.176l3.53 3.531a1 1 0 0 0 1.414-1.414l-3.53-3.531A8.5 8.5 0 0 0 10.5 2zm-6.5 8.5a6.5 6.5 0 1 1 13 0 6.5 6.5 0 0 1-13 0z" fill="currentColor"/></svg>
-          <input type="text" placeholder="Search Feed" class="search-input">
-        </div>
-        <button class="w-8 h-8 flex items-center justify-center rounded-md cursor-pointer transition-colors hover:bg-[var(--sys-background-neutral)]" style="border:none;background:transparent;color:var(--sys-text-secondary)">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.94 20.06a1.5 1.5 0 0 0 2.12 0l2.65-2.65a1 1 0 0 0-1.42-1.41L19 17.29V4.5a1 1 0 0 0-2 0v12.79l-1.29-1.29a1 1 0 0 0-1.42 1.41l2.65 2.65zM6 19.5a1 1 0 0 1-1 1H3a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1zM9 14.5a1 1 0 0 1-1 1H3a1 1 0 0 1 0-2h5a1 1 0 0 1 1 1zM11 9.5a1 1 0 0 1-1 1H3a1 1 0 0 1 0-2h7a1 1 0 0 1 1 1zM13 4.5a1 1 0 0 1-1 1H3a1 1 0 0 1 0-2h9a1 1 0 0 1 1 1z" fill="currentColor"/></svg>
+      <div class="flex-1"></div>
+      <button id="btn-flag-filter" class="w-8 h-8 flex items-center justify-center rounded-md cursor-pointer transition-colors hover:bg-[var(--sys-background-neutral)]" title="Show flagged" style="border:none;background:transparent;color:var(--sys-text-secondary)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 3v18M5 4h11l-2.5 4.5L16 13H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="w-8 h-8 flex items-center justify-center rounded-md cursor-pointer transition-colors hover:bg-[var(--sys-background-neutral)]" title="Warnings" style="border:none;background:transparent;color:var(--sys-text-secondary)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/><path d="M12 9v4M12 17h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+      <div class="relative">
+        <button id="sort-btn" class="w-8 h-8 flex items-center justify-center rounded-md cursor-pointer transition-colors hover:bg-[var(--sys-background-neutral)]" title="Sort order" style="border:none;background:transparent;color:var(--sys-text-secondary)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 5h18M6 12h12M10 19h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
         </button>
-      </div>
-
-      <!-- Feed list -->
-      <div class="flex-1 overflow-y-auto">
-
-        <!-- ITEM 1: James Greer — LinkedIn — POSITIVE — SELECTED -->
-        <div class="feed-item relative border-l-[3px] cursor-pointer" style="border-left-color:var(--sys-primary-default);background:var(--blue-50)">
-          <div class="flex gap-2 px-3 py-2.5">
-            <input type="checkbox" checked style="margin-top:1px">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;margin-top:1px;border-radius:4px"><rect width="24" height="24" rx="4" fill="#0A66C2"/><path d="M7 10.5h2.5V17H7v-6.5zm1.25-4a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zM11 10.5h2.4v.9c.34-.65 1.17-1.1 2.1-1.1C17.66 10.3 19 11.64 19 13.3V17h-2.5v-3.2c0-.87-.7-1.6-1.5-1.6s-1.5.73-1.5 1.6V17H11v-6.5z" fill="#fff"/></svg>
-            <div class="flex-1 min-w-0">
-              <div class="font-bold leading-tight" style="font-size:13px;color:var(--sys-text-primary)">Comment on Mercedes-Benz</div>
-              <div class="flex items-center gap-1.5 mt-0.5">
-                <span style="font-size:11px;color:var(--sys-text-secondary)">Today at 10:05 AM</span>
-                <span class="inline-flex items-center px-1.5 rounded-sm font-semibold" style="height:16px;font-size:10px;background:var(--sys-success-default);color:var(--sys-success-content)">POSITIVE</span>
-              </div>
-              <div class="line-clamp-2 mt-1" style="font-size:12px;color:var(--sys-text-secondary);line-height:1.4">James Greer: This car is a masterpiece! I can't wait to see what Mercedes comes up with next.…</div>
-              <div class="flex items-center justify-between mt-1.5">
-                <div></div>
-                <div class="w-[22px] h-[22px] rounded-full flex items-center justify-center font-bold text-white flex-shrink-0" style="font-size:9px;background:var(--orange-600)">JG</div>
-              </div>
-            </div>
-          </div>
-          <div class="feed-actions absolute top-2 right-2 flex items-center gap-0.5 rounded-md border px-1 py-0.5" style="background:var(--sys-background-base);border-color:var(--sys-border-base);box-shadow:0 1px 4px rgba(0,0,0,0.08)">
-            <button class="w-6 h-6 flex items-center justify-center rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="border:none;background:transparent;color:var(--sys-text-secondary)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 3v18M5 4h11l-2.5 4.5L16 13H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-            <button class="w-6 h-6 flex items-center justify-center rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="border:none;background:transparent;color:var(--sys-text-secondary)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path fill-rule="evenodd" clip-rule="evenodd" d="M16.5 8.97a.75.75 0 0 1 0 1.06l-6 6a.75.75 0 0 1-1.06 0l-2.5-2.5a.75.75 0 1 1 1.06-1.06L10 14.44l5.44-5.47a.75.75 0 0 1 1.06 0z" fill="currentColor"/></svg></button>
-          </div>
-        </div>
-
-        <!-- ITEM 2: Michael Stadler — Facebook — NEUTRAL — tags -->
-        <div class="feed-item relative cursor-pointer border-l-[3px] border-b" style="border-left-color:transparent;border-bottom-color:var(--sys-border-soft)">
-          <div class="flex gap-2 px-3 py-2.5 hover:bg-[var(--sys-background-neutral)]">
-            <input type="checkbox" style="margin-top:1px">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;margin-top:1px;border-radius:50%"><circle cx="12" cy="12" r="12" fill="#1877F2"/><path d="M15.5 8H13.5C13.22 8 13 8.22 13 8.5V10.5H15.5L15.17 13H13V20H10.5V13H9V10.5H10.5V8.5C10.5 6.57 12.07 5 14 5H15.5V8Z" fill="white"/></svg>
-            <div class="flex-1 min-w-0">
-              <div class="font-bold leading-tight" style="font-size:13px;color:var(--sys-text-primary)">Comment on Mercedes-Benz</div>
-              <div class="flex items-center gap-1.5 mt-0.5">
-                <span style="font-size:11px;color:var(--sys-text-secondary)">Today at 10:05 AM</span>
-                <span class="inline-flex items-center px-1.5 rounded-sm font-semibold" style="height:16px;font-size:10px;background:var(--grey-100);color:var(--sys-text-secondary)">NEUTRAL</span>
-              </div>
-              <div class="line-clamp-2 mt-1" style="font-size:12px;color:var(--sys-text-secondary);line-height:1.4">Michael Stadler: My grandfather had one of these. Such a timeless car! 💯 #memories #vintage</div>
-              <div class="flex items-center justify-between mt-1.5">
-                <div class="flex items-center gap-1 flex-wrap">
-                  <span class="inline-flex items-center px-1.5 rounded-sm border" style="height:18px;font-size:10px;border-color:var(--sys-border-base);color:var(--sys-text-secondary)">#Tag 1</span>
-                  <span class="inline-flex items-center px-1.5 rounded-sm border" style="height:18px;font-size:10px;border-color:var(--sys-border-base);color:var(--sys-text-secondary)">#Tag 2</span>
-                </div>
-                <div class="w-[22px] h-[22px] rounded-full flex items-center justify-center font-bold text-white flex-shrink-0" style="font-size:9px;background:var(--amber-400,#f59e0b)">MS</div>
-              </div>
-            </div>
-          </div>
-          <div class="feed-actions absolute top-2 right-2 flex items-center gap-0.5 rounded-md border px-1 py-0.5" style="background:var(--sys-background-base);border-color:var(--sys-border-base);box-shadow:0 1px 4px rgba(0,0,0,0.08)">
-            <button class="w-6 h-6 flex items-center justify-center rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="border:none;background:transparent;color:var(--sys-text-secondary)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 3v18M5 4h11l-2.5 4.5L16 13H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-            <button class="w-6 h-6 flex items-center justify-center rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="border:none;background:transparent;color:var(--sys-text-secondary)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path fill-rule="evenodd" clip-rule="evenodd" d="M16.5 8.97a.75.75 0 0 1 0 1.06l-6 6a.75.75 0 0 1-1.06 0l-2.5-2.5a.75.75 0 1 1 1.06-1.06L10 14.44l5.44-5.47a.75.75 0 0 1 1.06 0z" fill="currentColor"/></svg></button>
-          </div>
-        </div>
-
-        <!-- ITEM 3: Elon Wilson — Facebook — SPAM + POSITIVE — tags -->
-        <div class="feed-item relative cursor-pointer border-l-[3px] border-b" style="border-left-color:transparent;border-bottom-color:var(--sys-border-soft)">
-          <div class="flex gap-2 px-3 py-2.5 hover:bg-[var(--sys-background-neutral)]">
-            <input type="checkbox" style="margin-top:1px">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;margin-top:1px;border-radius:50%"><circle cx="12" cy="12" r="12" fill="#1877F2"/><path d="M15.5 8H13.5C13.22 8 13 8.22 13 8.5V10.5H15.5L15.17 13H13V20H10.5V13H9V10.5H10.5V8.5C10.5 6.57 12.07 5 14 5H15.5V8Z" fill="white"/></svg>
-            <div class="flex-1 min-w-0">
-              <div class="font-bold leading-tight" style="font-size:13px;color:var(--sys-text-primary)">Comment on Mercedes-Benz</div>
-              <div class="flex items-center gap-1.5 mt-0.5 flex-wrap">
-                <span style="font-size:11px;color:var(--sys-text-secondary)">Today at 10:05 AM</span>
-                <span class="inline-flex items-center gap-1 px-1.5 rounded-sm font-semibold" style="height:16px;font-size:10px;background:var(--orange-50);color:var(--orange-600)">
-                  <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M15.7 2H8.25L2 8.3V15.7L8.3 22H15.7L22 15.7V8.3L15.7 2zM12 14.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-1-6.5v5a1 1 0 1 0 2 0V8a1 1 0 1 0-2 0z"/></svg>
-                  SPAM
-                </span>
-                <span class="inline-flex items-center px-1.5 rounded-sm font-semibold" style="height:16px;font-size:10px;background:var(--sys-success-default);color:var(--sys-success-content)">POSITIVE</span>
-              </div>
-              <div class="line-clamp-2 mt-1" style="font-size:12px;color:var(--sys-text-secondary);line-height:1.4">Elon Wilson: I remember seeing one of these back in Essen. Beautiful design! ✨ #classiccars…</div>
-              <div class="flex items-center justify-between mt-1.5">
-                <div class="flex items-center gap-1 flex-wrap">
-                  <span class="inline-flex items-center px-1.5 rounded-sm border" style="height:18px;font-size:10px;border-color:var(--sys-border-base);color:var(--sys-text-secondary)">#Tag 1</span>
-                  <span class="inline-flex items-center px-1.5 rounded-sm border" style="height:18px;font-size:10px;border-color:var(--sys-border-base);color:var(--sys-text-secondary)">#Tag 2</span>
-                </div>
-                <div class="w-[22px] h-[22px] rounded-full flex items-center justify-center font-bold text-white flex-shrink-0" style="font-size:9px;background:var(--orange-600)">EW</div>
-              </div>
-            </div>
-          </div>
-          <div class="feed-actions absolute top-2 right-2 flex items-center gap-0.5 rounded-md border px-1 py-0.5" style="background:var(--sys-background-base);border-color:var(--sys-border-base);box-shadow:0 1px 4px rgba(0,0,0,0.08)">
-            <button class="w-6 h-6 flex items-center justify-center rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="border:none;background:transparent;color:var(--sys-text-secondary)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 3v18M5 4h11l-2.5 4.5L16 13H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-            <button class="w-6 h-6 flex items-center justify-center rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="border:none;background:transparent;color:var(--sys-text-secondary)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path fill-rule="evenodd" clip-rule="evenodd" d="M16.5 8.97a.75.75 0 0 1 0 1.06l-6 6a.75.75 0 0 1-1.06 0l-2.5-2.5a.75.75 0 1 1 1.06-1.06L10 14.44l5.44-5.47a.75.75 0 0 1 1.06 0z" fill="currentColor"/></svg></button>
-          </div>
-        </div>
-
-        <!-- ITEM 4: Mauritz Schmidt — Facebook — SPAM — tags -->
-        <div class="feed-item relative cursor-pointer border-l-[3px] border-b" style="border-left-color:transparent;border-bottom-color:var(--sys-border-soft)">
-          <div class="flex gap-2 px-3 py-2.5 hover:bg-[var(--sys-background-neutral)]">
-            <input type="checkbox" style="margin-top:1px">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;margin-top:1px;border-radius:50%"><circle cx="12" cy="12" r="12" fill="#1877F2"/><path d="M15.5 8H13.5C13.22 8 13 8.22 13 8.5V10.5H15.5L15.17 13H13V20H10.5V13H9V10.5H10.5V8.5C10.5 6.57 12.07 5 14 5H15.5V8Z" fill="white"/></svg>
-            <div class="flex-1 min-w-0">
-              <div class="font-bold leading-tight" style="font-size:13px;color:var(--sys-text-primary)">Comment on Mercedes-Benz</div>
-              <div class="flex items-center gap-1.5 mt-0.5">
-                <span style="font-size:11px;color:var(--sys-text-secondary)">Today at 10:05 AM</span>
-                <span class="inline-flex items-center gap-1 px-1.5 rounded-sm font-semibold" style="height:16px;font-size:10px;background:var(--orange-50);color:var(--orange-600)">
-                  <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M15.7 2H8.25L2 8.3V15.7L8.3 22H15.7L22 15.7V8.3L15.7 2zM12 14.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-1-6.5v5a1 1 0 1 0 2 0V8a1 1 0 1 0-2 0z"/></svg>
-                  SPAM
-                </span>
-              </div>
-              <div class="line-clamp-2 mt-1" style="font-size:12px;color:var(--sys-text-secondary);line-height:1.4">Mauritz Schmidt: Just saw this on the autobahn! The future is now. 🤩 #mercedesbenz #innovation</div>
-              <div class="flex items-center justify-between mt-1.5">
-                <div class="flex items-center gap-1 flex-wrap">
-                  <span class="inline-flex items-center px-1.5 rounded-sm border" style="height:18px;font-size:10px;border-color:var(--sys-border-base);color:var(--sys-text-secondary)">#Tag 1</span>
-                  <span class="inline-flex items-center px-1.5 rounded-sm border" style="height:18px;font-size:10px;border-color:var(--sys-border-base);color:var(--sys-text-secondary)">#Tag 2</span>
-                </div>
-                <div class="w-[22px] h-[22px] rounded-full flex items-center justify-center font-bold text-white flex-shrink-0" style="font-size:9px;background:var(--amber-400,#f59e0b)">MS</div>
-              </div>
-            </div>
-          </div>
-          <div class="feed-actions absolute top-2 right-2 flex items-center gap-0.5 rounded-md border px-1 py-0.5" style="background:var(--sys-background-base);border-color:var(--sys-border-base);box-shadow:0 1px 4px rgba(0,0,0,0.08)">
-            <button class="w-6 h-6 flex items-center justify-center rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="border:none;background:transparent;color:var(--sys-text-secondary)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 3v18M5 4h11l-2.5 4.5L16 13H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-            <button class="w-6 h-6 flex items-center justify-center rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="border:none;background:transparent;color:var(--sys-text-secondary)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path fill-rule="evenodd" clip-rule="evenodd" d="M16.5 8.97a.75.75 0 0 1 0 1.06l-6 6a.75.75 0 0 1-1.06 0l-2.5-2.5a.75.75 0 1 1 1.06-1.06L10 14.44l5.44-5.47a.75.75 0 0 1 1.06 0z" fill="currentColor"/></svg></button>
-          </div>
-        </div>
-
-        <!-- ITEM 5: Tøp Gêê — Facebook — NEGATIVE -->
-        <div class="feed-item relative cursor-pointer border-l-[3px]" style="border-left-color:transparent">
-          <div class="flex gap-2 px-3 py-2.5 hover:bg-[var(--sys-background-neutral)]">
-            <input type="checkbox" style="margin-top:1px">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;margin-top:1px;border-radius:50%"><circle cx="12" cy="12" r="12" fill="#1877F2"/><path d="M15.5 8H13.5C13.22 8 13 8.22 13 8.5V10.5H15.5L15.17 13H13V20H10.5V13H9V10.5H10.5V8.5C10.5 6.57 12.07 5 14 5H15.5V8Z" fill="white"/></svg>
-            <div class="flex-1 min-w-0">
-              <div class="font-bold leading-tight" style="font-size:13px;color:var(--sys-text-primary)">Comment on Mercedes-Benz</div>
-              <div class="flex items-center gap-1.5 mt-0.5">
-                <span style="font-size:11px;color:var(--sys-text-secondary)">Today at 10:05 AM</span>
-                <span class="inline-flex items-center px-1.5 rounded-sm font-semibold" style="height:16px;font-size:10px;background:var(--sys-danger-default);color:var(--sys-danger-content)">NEGATIVE</span>
-              </div>
-              <div class="line-clamp-2 mt-1" style="font-size:12px;color:var(--sys-text-secondary);line-height:1.4">Tøp Gêê: Life rarely moves in dramatic leaps;</div>
-            </div>
-          </div>
-          <div class="feed-actions absolute top-2 right-2 flex items-center gap-0.5 rounded-md border px-1 py-0.5" style="background:var(--sys-background-base);border-color:var(--sys-border-base);box-shadow:0 1px 4px rgba(0,0,0,0.08)">
-            <button class="w-6 h-6 flex items-center justify-center rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="border:none;background:transparent;color:var(--sys-text-secondary)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 3v18M5 4h11l-2.5 4.5L16 13H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-            <button class="w-6 h-6 flex items-center justify-center rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="border:none;background:transparent;color:var(--sys-text-secondary)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path fill-rule="evenodd" clip-rule="evenodd" d="M16.5 8.97a.75.75 0 0 1 0 1.06l-6 6a.75.75 0 0 1-1.06 0l-2.5-2.5a.75.75 0 1 1 1.06-1.06L10 14.44l5.44-5.47a.75.75 0 0 1 1.06 0z" fill="currentColor"/></svg></button>
-          </div>
-        </div>
-
+        <span id="sort-badge" class="absolute -top-0.5 -right-0.5 w-[14px] h-[14px] flex items-center justify-center rounded-full font-bold text-white" style="font-size:8px;background:var(--sys-primary-default)">2</span>
       </div>
     </div>
 
-    <!-- CONTEXT PANEL -->
-    <div class="flex-1 flex flex-col overflow-hidden" style="background:var(--sys-background-base)">
-
-      <!-- Context header -->
-      <div class="flex items-center px-3 gap-1.5 border-b flex-shrink-0" style="height:48px;border-color:var(--sys-border-soft)">
-        <span class="font-bold text-base" style="color:var(--sys-text-primary)">Context</span>
-        <div class="flex-1"></div>
-        <button class="w-8 h-8 flex items-center justify-center rounded-md cursor-pointer transition-colors hover:bg-[var(--sys-background-neutral)]" style="border:none;background:transparent;color:var(--sys-text-secondary)">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M7 3l-4 4h3v10H4l4 4 4-4h-3V7h3L8 3zM17 21l4-4h-3V7h3l-4-4-4 4h3v10h-3l4 4z" fill="currentColor"/></svg>
-        </button>
-        <button class="w-8 h-8 flex items-center justify-center rounded-md cursor-pointer transition-colors hover:bg-[var(--sys-background-neutral)]" style="border:none;background:transparent;color:var(--sys-text-secondary)">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10c0 .375-.024.75-.069 1.123a1 1 0 1 1-1.986-.246A8 8 0 1 0 11.764 20a1 1 0 1 1 .234-1.988A6.024 6.024 0 0 1 12 18" fill="currentColor"/><path d="M11.53 15.26l5.12-5.146a1 1 0 0 0-1.418-1.41l-4.12 4.14-2.12-2.122a1 1 0 0 0-1.414 1.414l2.828 2.834a1 1 0 0 0 1.41-.006z" fill="currentColor"/></svg>
-        </button>
-        <button class="w-8 h-8 flex items-center justify-center rounded-md cursor-pointer transition-colors hover:bg-[var(--sys-background-neutral)]" style="border:none;background:transparent;color:var(--sys-text-secondary)">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm-3 7a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm9.13 8.19A8 8 0 0 1 4.87 17.2C5.7 15.56 7.37 14.5 9.25 14.5h5.5c1.88 0 3.54 1.06 4.38 2.69z" fill="currentColor"/></svg>
-        </button>
-        <button class="w-8 h-8 flex items-center justify-center rounded-md cursor-pointer transition-colors hover:bg-[var(--sys-background-neutral)]" style="border:none;background:transparent;color:var(--sys-text-secondary)">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M2 5a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H9.414l-3.707 3.707A1 1 0 0 1 4 17v-3a3 3 0 0 1-2-2.82V5zm3-1a1 1 0 0 0-1 1v6.18A1 1 0 0 0 5 12.18V15l2.293-2.293A1 1 0 0 1 8 12.387h7a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H5z" fill="currentColor"/></svg>
-        </button>
+    <!-- Search row -->
+    <div class="flex items-center px-2.5 gap-2 border-b flex-shrink-0" style="height:36px;border-color:var(--sys-border-soft)">
+      <input type="checkbox" id="master-feed-cb" title="Select all">
+      <div class="flex flex-1 items-center gap-1.5 px-2 rounded-md border" style="height:28px;border-color:var(--sys-border-base)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;color:var(--sys-text-placeholder)"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.5 2a8.5 8.5 0 1 0 5.262 15.176l3.53 3.531a1 1 0 0 0 1.414-1.414l-3.53-3.531A8.5 8.5 0 0 0 10.5 2zm-6.5 8.5a6.5 6.5 0 1 1 13 0 6.5 6.5 0 0 1-13 0z" fill="currentColor"/></svg>
+        <input type="text" id="search-input" placeholder="Search Feed" class="search-input">
       </div>
+      <button id="sort-order-btn" class="w-8 h-8 flex items-center justify-center rounded-md cursor-pointer transition-colors hover:bg-[var(--sys-background-neutral)]" title="Reverse sort" style="border:none;background:transparent;color:var(--sys-text-secondary)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.94 20.06a1.5 1.5 0 0 0 2.12 0l2.65-2.65a1 1 0 0 0-1.42-1.41L19 17.29V4.5a1 1 0 0 0-2 0v12.79l-1.29-1.29a1 1 0 0 0-1.42 1.41l2.65 2.65zM6 19.5a1 1 0 0 1-1 1H3a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1zM9 14.5a1 1 0 0 1-1 1H3a1 1 0 0 1 0-2h5a1 1 0 0 1 1 1zM11 9.5a1 1 0 0 1-1 1H3a1 1 0 0 1 0-2h7a1 1 0 0 1 1 1zM13 4.5a1 1 0 0 1-1 1H3a1 1 0 0 1 0-2h9a1 1 0 0 1 1 1z" fill="currentColor"/></svg>
+      </button>
+    </div>
 
-      <!-- Context subheader -->
-      <div class="flex items-center px-3 gap-2 border-b flex-shrink-0" style="height:40px;border-color:var(--sys-border-soft)">
-        <input type="checkbox">
-        <span style="font-size:13px;font-weight:500;color:var(--sys-text-primary)">13 Comments</span>
-        <div class="flex-1"></div>
-        <button class="w-7 h-7 flex items-center justify-center rounded-md cursor-pointer transition-colors hover:bg-[var(--sys-background-neutral)]" style="border:none;background:transparent;color:var(--sys-text-secondary)">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2M9 2h6a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-        </button>
-        <button class="inline-flex items-center gap-1.5 px-3 rounded-full border cursor-pointer transition-colors hover:bg-[var(--sys-background-neutral)]" style="height:28px;font-size:12px;font-weight:500;font-family:inherit;background:transparent;border-color:var(--sys-border-base);color:var(--sys-text-primary)">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10c0 .375-.024.75-.069 1.123a1 1 0 1 1-1.986-.246A8 8 0 1 0 11.764 20a1 1 0 1 1 .234-1.988A6.024 6.024 0 0 1 12 18" fill="currentColor"/><path d="M11.53 15.26l5.12-5.146a1 1 0 0 0-1.418-1.41l-4.12 4.14-2.12-2.122a1 1 0 0 0-1.414 1.414l2.828 2.834a1 1 0 0 0 1.41-.006z" fill="currentColor"/></svg>
-          Quick Resolve
-        </button>
-      </div>
+    <!-- Feed list -->
+    <div id="feed-list" class="flex-1 overflow-y-auto">
 
-      <!-- Scrollable context body -->
-      <div class="flex-1 overflow-y-auto">
-
-        <!-- Post card -->
-        <div class="mx-4 mt-4 mb-2 rounded-xl border p-3" style="border-color:var(--sys-border-soft);box-shadow:var(--shadows-shadow-md)">
-          <div class="flex items-start gap-2.5">
-            <div class="relative flex-shrink-0">
-              <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-white" style="font-size:11px;background:var(--grey-600,#5f6a82)">MB</div>
-              <div class="absolute -bottom-0.5 -right-0.5 w-[14px] h-[14px] rounded-[3px] flex items-center justify-center overflow-hidden" style="background:#0A66C2">
-                <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M7 10.5h2.5V17H7v-6.5zm1.25-4a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zM11 10.5h2.4v.9c.34-.65 1.17-1.1 2.1-1.1C17.66 10.3 19 11.64 19 13.3V17h-2.5v-3.2c0-.87-.7-1.6-1.5-1.6s-1.5.73-1.5 1.6V17H11v-6.5z" fill="#fff"/></svg>
-              </div>
+      <!-- ITEM 1 -->
+      <div class="feed-item relative border-l-[3px] cursor-pointer selected-item" data-sentiment="positive" data-text="james greer masterpiece mercedes luxury automotive">
+        <div class="flex gap-2 px-3 py-2.5">
+          <input type="checkbox" class="feed-cb" checked style="margin-top:1px" onclick="event.stopPropagation()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;margin-top:1px;border-radius:4px"><rect width="24" height="24" rx="4" fill="#0A66C2"/><path d="M7 10.5h2.5V17H7v-6.5zm1.25-4a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zM11 10.5h2.4v.9c.34-.65 1.17-1.1 2.1-1.1C17.66 10.3 19 11.64 19 13.3V17h-2.5v-3.2c0-.87-.7-1.6-1.5-1.6s-1.5.73-1.5 1.6V17H11v-6.5z" fill="#fff"/></svg>
+          <div class="flex-1 min-w-0">
+            <div class="font-bold leading-tight" style="font-size:13px;color:var(--sys-text-primary)">Comment on Mercedes-Benz</div>
+            <div class="flex items-center gap-1.5 mt-0.5">
+              <span style="font-size:11px;color:var(--sys-text-secondary)">Today at 10:05 AM</span>
+              <span class="inline-flex items-center px-1.5 rounded-sm font-semibold" style="height:16px;font-size:10px;background:var(--sys-success-default);color:var(--sys-success-content)">POSITIVE</span>
             </div>
-            <div class="flex-1 min-w-0">
-              <div class="flex items-start gap-2">
-                <div>
-                  <span class="font-bold" style="font-size:13px;color:var(--sys-text-primary)">Mercedes-Benz</span>
-                  <span class="ml-2" style="font-size:11px;color:var(--sys-text-secondary)">Mar 23, 2026, 4:08 PM</span>
-                </div>
-                <div class="flex-1"></div>
-                <button class="cursor-pointer" style="font-size:12px;font-weight:500;font-family:inherit;border:none;background:transparent;color:var(--sys-text-secondary)">Collapse ∧</button>
-                <button class="w-7 h-7 flex items-center justify-center rounded-md cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="border:none;background:transparent;color:var(--sys-text-secondary)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg></button>
-              </div>
-              <div class="line-clamp-3 mt-1.5" style="font-size:13px;color:var(--sys-text-primary);line-height:1.55">I started NVIDIA in 1993 with $40,000 and a belief that accelerated computing would change the world. Most people thought we were wrong. GPU for gaming? Interesting niche. GPU for AI? That's science fiction.<br><br>Thirty-three years later, I want to share something I've never said publicly before.…</div>
-              <button class="mt-1 cursor-pointer" style="font-size:12px;font-weight:500;font-family:inherit;border:none;background:transparent;color:var(--sys-primary-default)">Read more</button>
+            <div class="line-clamp-2 mt-1" style="font-size:12px;color:var(--sys-text-secondary);line-height:1.4">James Greer: This car is a masterpiece! I can't wait to see what Mercedes comes up with next.…</div>
+            <div class="flex items-center justify-between mt-1.5">
+              <div></div>
+              <div class="w-[22px] h-[22px] rounded-full flex items-center justify-center font-bold text-white flex-shrink-0" style="font-size:9px;background:var(--orange-600)">JG</div>
             </div>
           </div>
         </div>
+        <div class="feed-actions absolute top-2 right-2 flex items-center gap-0.5 rounded-md border px-1 py-0.5" style="background:var(--sys-background-base);border-color:var(--sys-border-base);box-shadow:0 1px 4px rgba(0,0,0,0.08)">
+          <button class="btn-flag w-6 h-6 flex items-center justify-center rounded cursor-pointer" title="Flag" style="border:none;background:transparent;color:var(--sys-text-secondary)" onclick="event.stopPropagation()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 3v18M5 4h11l-2.5 4.5L16 13H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="btn-resolve-item w-6 h-6 flex items-center justify-center rounded cursor-pointer" title="Resolve" style="border:none;background:transparent;color:var(--sys-text-secondary)" onclick="event.stopPropagation()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path fill-rule="evenodd" clip-rule="evenodd" d="M16.5 8.97a.75.75 0 0 1 0 1.06l-6 6a.75.75 0 0 1-1.06 0l-2.5-2.5a.75.75 0 1 1 1.06-1.06L10 14.44l5.44-5.47a.75.75 0 0 1 1.06 0z" fill="currentColor"/></svg></button>
+        </div>
+      </div>
 
-        <!-- COMMENT THREAD -->
+      <!-- ITEM 2 -->
+      <div class="feed-item relative cursor-pointer border-l-[3px] border-b" data-sentiment="neutral" data-text="michael stadler grandfather timeless car memories vintage" style="border-left-color:transparent;border-bottom-color:var(--sys-border-soft)">
+        <div class="flex gap-2 px-3 py-2.5">
+          <input type="checkbox" class="feed-cb" style="margin-top:1px" onclick="event.stopPropagation()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;margin-top:1px;border-radius:50%"><circle cx="12" cy="12" r="12" fill="#1877F2"/><path d="M15.5 8H13.5C13.22 8 13 8.22 13 8.5V10.5H15.5L15.17 13H13V20H10.5V13H9V10.5H10.5V8.5C10.5 6.57 12.07 5 14 5H15.5V8Z" fill="white"/></svg>
+          <div class="flex-1 min-w-0">
+            <div class="font-bold leading-tight" style="font-size:13px;color:var(--sys-text-primary)">Comment on Mercedes-Benz</div>
+            <div class="flex items-center gap-1.5 mt-0.5">
+              <span style="font-size:11px;color:var(--sys-text-secondary)">Today at 10:05 AM</span>
+              <span class="inline-flex items-center px-1.5 rounded-sm font-semibold" style="height:16px;font-size:10px;background:var(--grey-100);color:var(--sys-text-secondary)">NEUTRAL</span>
+            </div>
+            <div class="line-clamp-2 mt-1" style="font-size:12px;color:var(--sys-text-secondary);line-height:1.4">Michael Stadler: My grandfather had one of these. Such a timeless car! 💯 #memories #vintage</div>
+            <div class="flex items-center justify-between mt-1.5">
+              <div class="flex items-center gap-1 flex-wrap">
+                <span class="inline-flex items-center px-1.5 rounded-sm border" style="height:18px;font-size:10px;border-color:var(--sys-border-base);color:var(--sys-text-secondary)">#Tag 1</span>
+                <span class="inline-flex items-center px-1.5 rounded-sm border" style="height:18px;font-size:10px;border-color:var(--sys-border-base);color:var(--sys-text-secondary)">#Tag 2</span>
+              </div>
+              <div class="w-[22px] h-[22px] rounded-full flex items-center justify-center font-bold text-white flex-shrink-0" style="font-size:9px;background:var(--amber-400,#f59e0b)">MS</div>
+            </div>
+          </div>
+        </div>
+        <div class="feed-actions absolute top-2 right-2 flex items-center gap-0.5 rounded-md border px-1 py-0.5" style="background:var(--sys-background-base);border-color:var(--sys-border-base);box-shadow:0 1px 4px rgba(0,0,0,0.08)">
+          <button class="btn-flag w-6 h-6 flex items-center justify-center rounded cursor-pointer" title="Flag" style="border:none;background:transparent;color:var(--sys-text-secondary)" onclick="event.stopPropagation()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 3v18M5 4h11l-2.5 4.5L16 13H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="btn-resolve-item w-6 h-6 flex items-center justify-center rounded cursor-pointer" title="Resolve" style="border:none;background:transparent;color:var(--sys-text-secondary)" onclick="event.stopPropagation()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path fill-rule="evenodd" clip-rule="evenodd" d="M16.5 8.97a.75.75 0 0 1 0 1.06l-6 6a.75.75 0 0 1-1.06 0l-2.5-2.5a.75.75 0 1 1 1.06-1.06L10 14.44l5.44-5.47a.75.75 0 0 1 1.06 0z" fill="currentColor"/></svg></button>
+        </div>
+      </div>
 
-        <!-- Comment 1: Theodore Maximilian Montgomery — POSITIVE — SELECTED (blue border) -->
-        <div class="mx-4 my-2 rounded-xl border p-3" style="border-color:var(--sys-primary-default)">
+      <!-- ITEM 3 -->
+      <div class="feed-item relative cursor-pointer border-l-[3px] border-b" data-sentiment="spam" data-text="elon wilson essen beautiful design classiccars" style="border-left-color:transparent;border-bottom-color:var(--sys-border-soft)">
+        <div class="flex gap-2 px-3 py-2.5">
+          <input type="checkbox" class="feed-cb" style="margin-top:1px" onclick="event.stopPropagation()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;margin-top:1px;border-radius:50%"><circle cx="12" cy="12" r="12" fill="#1877F2"/><path d="M15.5 8H13.5C13.22 8 13 8.22 13 8.5V10.5H15.5L15.17 13H13V20H10.5V13H9V10.5H10.5V8.5C10.5 6.57 12.07 5 14 5H15.5V8Z" fill="white"/></svg>
+          <div class="flex-1 min-w-0">
+            <div class="font-bold leading-tight" style="font-size:13px;color:var(--sys-text-primary)">Comment on Mercedes-Benz</div>
+            <div class="flex items-center gap-1.5 mt-0.5 flex-wrap">
+              <span style="font-size:11px;color:var(--sys-text-secondary)">Today at 10:05 AM</span>
+              <span class="inline-flex items-center gap-1 px-1.5 rounded-sm font-semibold" style="height:16px;font-size:10px;background:var(--orange-50);color:var(--orange-600)">
+                <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M15.7 2H8.25L2 8.3V15.7L8.3 22H15.7L22 15.7V8.3L15.7 2zM12 14.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-1-6.5v5a1 1 0 1 0 2 0V8a1 1 0 1 0-2 0z"/></svg>
+                SPAM
+              </span>
+              <span class="inline-flex items-center px-1.5 rounded-sm font-semibold" style="height:16px;font-size:10px;background:var(--sys-success-default);color:var(--sys-success-content)">POSITIVE</span>
+            </div>
+            <div class="line-clamp-2 mt-1" style="font-size:12px;color:var(--sys-text-secondary);line-height:1.4">Elon Wilson: I remember seeing one of these back in Essen. Beautiful design! ✨ #classiccars…</div>
+            <div class="flex items-center justify-between mt-1.5">
+              <div class="flex items-center gap-1 flex-wrap">
+                <span class="inline-flex items-center px-1.5 rounded-sm border" style="height:18px;font-size:10px;border-color:var(--sys-border-base);color:var(--sys-text-secondary)">#Tag 1</span>
+                <span class="inline-flex items-center px-1.5 rounded-sm border" style="height:18px;font-size:10px;border-color:var(--sys-border-base);color:var(--sys-text-secondary)">#Tag 2</span>
+              </div>
+              <div class="w-[22px] h-[22px] rounded-full flex items-center justify-center font-bold text-white flex-shrink-0" style="font-size:9px;background:var(--orange-600)">EW</div>
+            </div>
+          </div>
+        </div>
+        <div class="feed-actions absolute top-2 right-2 flex items-center gap-0.5 rounded-md border px-1 py-0.5" style="background:var(--sys-background-base);border-color:var(--sys-border-base);box-shadow:0 1px 4px rgba(0,0,0,0.08)">
+          <button class="btn-flag w-6 h-6 flex items-center justify-center rounded cursor-pointer" title="Flag" style="border:none;background:transparent;color:var(--sys-text-secondary)" onclick="event.stopPropagation()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 3v18M5 4h11l-2.5 4.5L16 13H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="btn-resolve-item w-6 h-6 flex items-center justify-center rounded cursor-pointer" title="Resolve" style="border:none;background:transparent;color:var(--sys-text-secondary)" onclick="event.stopPropagation()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path fill-rule="evenodd" clip-rule="evenodd" d="M16.5 8.97a.75.75 0 0 1 0 1.06l-6 6a.75.75 0 0 1-1.06 0l-2.5-2.5a.75.75 0 1 1 1.06-1.06L10 14.44l5.44-5.47a.75.75 0 0 1 1.06 0z" fill="currentColor"/></svg></button>
+        </div>
+      </div>
+
+      <!-- ITEM 4 -->
+      <div class="feed-item relative cursor-pointer border-l-[3px] border-b" data-sentiment="spam" data-text="mauritz schmidt autobahn future innovation mercedesbenz" style="border-left-color:transparent;border-bottom-color:var(--sys-border-soft)">
+        <div class="flex gap-2 px-3 py-2.5">
+          <input type="checkbox" class="feed-cb" style="margin-top:1px" onclick="event.stopPropagation()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;margin-top:1px;border-radius:50%"><circle cx="12" cy="12" r="12" fill="#1877F2"/><path d="M15.5 8H13.5C13.22 8 13 8.22 13 8.5V10.5H15.5L15.17 13H13V20H10.5V13H9V10.5H10.5V8.5C10.5 6.57 12.07 5 14 5H15.5V8Z" fill="white"/></svg>
+          <div class="flex-1 min-w-0">
+            <div class="font-bold leading-tight" style="font-size:13px;color:var(--sys-text-primary)">Comment on Mercedes-Benz</div>
+            <div class="flex items-center gap-1.5 mt-0.5">
+              <span style="font-size:11px;color:var(--sys-text-secondary)">Today at 10:05 AM</span>
+              <span class="inline-flex items-center gap-1 px-1.5 rounded-sm font-semibold" style="height:16px;font-size:10px;background:var(--orange-50);color:var(--orange-600)">
+                <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M15.7 2H8.25L2 8.3V15.7L8.3 22H15.7L22 15.7V8.3L15.7 2zM12 14.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-1-6.5v5a1 1 0 1 0 2 0V8a1 1 0 1 0-2 0z"/></svg>
+                SPAM
+              </span>
+            </div>
+            <div class="line-clamp-2 mt-1" style="font-size:12px;color:var(--sys-text-secondary);line-height:1.4">Mauritz Schmidt: Just saw this on the autobahn! The future is now. 🤩 #mercedesbenz #innovation</div>
+            <div class="flex items-center justify-between mt-1.5">
+              <div class="flex items-center gap-1 flex-wrap">
+                <span class="inline-flex items-center px-1.5 rounded-sm border" style="height:18px;font-size:10px;border-color:var(--sys-border-base);color:var(--sys-text-secondary)">#Tag 1</span>
+                <span class="inline-flex items-center px-1.5 rounded-sm border" style="height:18px;font-size:10px;border-color:var(--sys-border-base);color:var(--sys-text-secondary)">#Tag 2</span>
+              </div>
+              <div class="w-[22px] h-[22px] rounded-full flex items-center justify-center font-bold text-white flex-shrink-0" style="font-size:9px;background:var(--amber-400,#f59e0b)">MS</div>
+            </div>
+          </div>
+        </div>
+        <div class="feed-actions absolute top-2 right-2 flex items-center gap-0.5 rounded-md border px-1 py-0.5" style="background:var(--sys-background-base);border-color:var(--sys-border-base);box-shadow:0 1px 4px rgba(0,0,0,0.08)">
+          <button class="btn-flag w-6 h-6 flex items-center justify-center rounded cursor-pointer" title="Flag" style="border:none;background:transparent;color:var(--sys-text-secondary)" onclick="event.stopPropagation()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 3v18M5 4h11l-2.5 4.5L16 13H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="btn-resolve-item w-6 h-6 flex items-center justify-center rounded cursor-pointer" title="Resolve" style="border:none;background:transparent;color:var(--sys-text-secondary)" onclick="event.stopPropagation()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path fill-rule="evenodd" clip-rule="evenodd" d="M16.5 8.97a.75.75 0 0 1 0 1.06l-6 6a.75.75 0 0 1-1.06 0l-2.5-2.5a.75.75 0 1 1 1.06-1.06L10 14.44l5.44-5.47a.75.75 0 0 1 1.06 0z" fill="currentColor"/></svg></button>
+        </div>
+      </div>
+
+      <!-- ITEM 5 -->
+      <div class="feed-item relative cursor-pointer border-l-[3px]" data-sentiment="negative" data-text="top gee life dramatic leaps negative" style="border-left-color:transparent">
+        <div class="flex gap-2 px-3 py-2.5">
+          <input type="checkbox" class="feed-cb" style="margin-top:1px" onclick="event.stopPropagation()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;margin-top:1px;border-radius:50%"><circle cx="12" cy="12" r="12" fill="#1877F2"/><path d="M15.5 8H13.5C13.22 8 13 8.22 13 8.5V10.5H15.5L15.17 13H13V20H10.5V13H9V10.5H10.5V8.5C10.5 6.57 12.07 5 14 5H15.5V8Z" fill="white"/></svg>
+          <div class="flex-1 min-w-0">
+            <div class="font-bold leading-tight" style="font-size:13px;color:var(--sys-text-primary)">Comment on Mercedes-Benz</div>
+            <div class="flex items-center gap-1.5 mt-0.5">
+              <span style="font-size:11px;color:var(--sys-text-secondary)">Today at 10:05 AM</span>
+              <span class="inline-flex items-center px-1.5 rounded-sm font-semibold" style="height:16px;font-size:10px;background:var(--sys-danger-default);color:var(--sys-danger-content)">NEGATIVE</span>
+            </div>
+            <div class="line-clamp-2 mt-1" style="font-size:12px;color:var(--sys-text-secondary);line-height:1.4">Tøp Gêê: Life rarely moves in dramatic leaps;</div>
+          </div>
+        </div>
+        <div class="feed-actions absolute top-2 right-2 flex items-center gap-0.5 rounded-md border px-1 py-0.5" style="background:var(--sys-background-base);border-color:var(--sys-border-base);box-shadow:0 1px 4px rgba(0,0,0,0.08)">
+          <button class="btn-flag w-6 h-6 flex items-center justify-center rounded cursor-pointer" title="Flag" style="border:none;background:transparent;color:var(--sys-text-secondary)" onclick="event.stopPropagation()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 3v18M5 4h11l-2.5 4.5L16 13H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="btn-resolve-item w-6 h-6 flex items-center justify-center rounded cursor-pointer" title="Resolve" style="border:none;background:transparent;color:var(--sys-text-secondary)" onclick="event.stopPropagation()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path fill-rule="evenodd" clip-rule="evenodd" d="M16.5 8.97a.75.75 0 0 1 0 1.06l-6 6a.75.75 0 0 1-1.06 0l-2.5-2.5a.75.75 0 1 1 1.06-1.06L10 14.44l5.44-5.47a.75.75 0 0 1 1.06 0z" fill="currentColor"/></svg></button>
+        </div>
+      </div>
+
+    </div><!-- /feed-list -->
+  </div><!-- /feed-panel -->
+
+  <!-- CONTEXT PANEL -->
+  <div class="flex-1 flex flex-col overflow-hidden" style="background:var(--sys-background-base)">
+
+    <!-- Context header -->
+    <div class="flex items-center px-3 gap-1.5 border-b flex-shrink-0" style="height:48px;border-color:var(--sys-border-soft)">
+      <span class="font-bold text-base" style="color:var(--sys-text-primary)">Context</span>
+      <div class="flex-1"></div>
+      <button id="sort-comments-btn" class="w-8 h-8 flex items-center justify-center rounded-md cursor-pointer transition-colors hover:bg-[var(--sys-background-neutral)]" title="Sort comments" style="border:none;background:transparent;color:var(--sys-text-secondary)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M7 3l-4 4h3v10H4l4 4 4-4h-3V7h3L8 3zM17 21l4-4h-3V7h3l-4-4-4 4h3v10h-3l4 4z" fill="currentColor"/></svg>
+      </button>
+      <button class="w-8 h-8 flex items-center justify-center rounded-md cursor-pointer transition-colors hover:bg-[var(--sys-background-neutral)]" title="AI resolve" style="border:none;background:transparent;color:var(--sys-text-secondary)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10c0 .375-.024.75-.069 1.123a1 1 0 1 1-1.986-.246A8 8 0 1 0 11.764 20a1 1 0 1 1 .234-1.988A6.024 6.024 0 0 1 12 18" fill="currentColor"/><path d="M11.53 15.26l5.12-5.146a1 1 0 0 0-1.418-1.41l-4.12 4.14-2.12-2.122a1 1 0 0 0-1.414 1.414l2.828 2.834a1 1 0 0 0 1.41-.006z" fill="currentColor"/></svg>
+      </button>
+      <button class="w-8 h-8 flex items-center justify-center rounded-md cursor-pointer transition-colors hover:bg-[var(--sys-background-neutral)]" title="User info" style="border:none;background:transparent;color:var(--sys-text-secondary)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm-3 7a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm9.13 8.19A8 8 0 0 1 4.87 17.2C5.7 15.56 7.37 14.5 9.25 14.5h5.5c1.88 0 3.54 1.06 4.38 2.69z" fill="currentColor"/></svg>
+      </button>
+      <button class="w-8 h-8 flex items-center justify-center rounded-md cursor-pointer transition-colors hover:bg-[var(--sys-background-neutral)]" title="Internal chat" style="border:none;background:transparent;color:var(--sys-text-secondary)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M2 5a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H9.414l-3.707 3.707A1 1 0 0 1 4 17v-3a3 3 0 0 1-2-2.82V5zm3-1a1 1 0 0 0-1 1v6.18A1 1 0 0 0 5 12.18V15l2.293-2.293A1 1 0 0 1 8 12.387h7a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H5z" fill="currentColor"/></svg>
+      </button>
+    </div>
+
+    <!-- Context subheader -->
+    <div class="flex items-center px-3 gap-2 border-b flex-shrink-0" style="height:40px;border-color:var(--sys-border-soft)">
+      <input type="checkbox" id="master-comment-cb">
+      <span id="comment-count-label" style="font-size:13px;font-weight:500;color:var(--sys-text-primary)">2 Comments</span>
+      <div class="flex-1"></div>
+      <button id="copy-btn" class="w-7 h-7 flex items-center justify-center rounded-md cursor-pointer transition-colors hover:bg-[var(--sys-background-neutral)]" title="Copy thread" style="border:none;background:transparent;color:var(--sys-text-secondary)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2M9 2h6a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <button id="quick-resolve-btn" class="inline-flex items-center gap-1.5 px-3 rounded-full border cursor-pointer transition-colors hover:bg-[var(--sys-background-neutral)]" style="height:28px;font-size:12px;font-weight:500;font-family:inherit;background:transparent;border-color:var(--sys-border-base);color:var(--sys-text-primary)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10c0 .375-.024.75-.069 1.123a1 1 0 1 1-1.986-.246A8 8 0 1 0 11.764 20a1 1 0 1 1 .234-1.988A6.024 6.024 0 0 1 12 18" fill="currentColor"/><path d="M11.53 15.26l5.12-5.146a1 1 0 0 0-1.418-1.41l-4.12 4.14-2.12-2.122a1 1 0 0 0-1.414 1.414l2.828 2.834a1 1 0 0 0 1.41-.006z" fill="currentColor"/></svg>
+        Quick Resolve
+      </button>
+    </div>
+
+    <!-- Scrollable context body -->
+    <div class="flex-1 overflow-y-auto">
+
+      <!-- Post card -->
+      <div class="mx-4 mt-4 mb-2 rounded-xl border p-3" style="border-color:var(--sys-border-soft);box-shadow:var(--shadows-shadow-md)">
+        <div class="flex items-start gap-2.5">
+          <div class="relative flex-shrink-0">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-white" style="font-size:11px;background:var(--grey-600,#5f6a82)">MB</div>
+            <div class="absolute -bottom-0.5 -right-0.5 w-[14px] h-[14px] rounded-[3px] flex items-center justify-center overflow-hidden" style="background:#0A66C2">
+              <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M7 10.5h2.5V17H7v-6.5zm1.25-4a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zM11 10.5h2.4v.9c.34-.65 1.17-1.1 2.1-1.1C17.66 10.3 19 11.64 19 13.3V17h-2.5v-3.2c0-.87-.7-1.6-1.5-1.6s-1.5.73-1.5 1.6V17H11v-6.5z" fill="#fff"/></svg>
+            </div>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-start gap-2">
+              <div>
+                <span class="font-bold" style="font-size:13px;color:var(--sys-text-primary)">Mercedes-Benz</span>
+                <span class="ml-2" style="font-size:11px;color:var(--sys-text-secondary)">Mar 23, 2026, 4:08 PM</span>
+              </div>
+              <div class="flex-1"></div>
+              <button id="collapse-post-btn" class="cursor-pointer transition-colors hover:text-[var(--sys-text-primary)]" style="font-size:12px;font-weight:500;font-family:inherit;border:none;background:transparent;color:var(--sys-text-secondary)">Collapse ∧</button>
+              <button class="w-7 h-7 flex items-center justify-center rounded-md cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="border:none;background:transparent;color:var(--sys-text-secondary)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg></button>
+            </div>
+            <div id="post-body-text" class="line-clamp-3 mt-1.5" style="font-size:13px;color:var(--sys-text-primary);line-height:1.55">I started NVIDIA in 1993 with $40,000 and a belief that accelerated computing would change the world. Most people thought we were wrong. GPU for gaming? Interesting niche. GPU for AI? That's science fiction.<br><br>Thirty-three years later, I want to share something I've never said publicly before: we almost didn't make it. The board wanted to shut down the GPU project in 2001. I had to fight for it. And now, the technology we almost abandoned is powering the AI revolution.</div>
+            <button id="read-more-btn" class="mt-1 cursor-pointer" style="font-size:12px;font-weight:500;font-family:inherit;border:none;background:transparent;color:var(--sys-primary-default)">Read more</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- COMMENT THREAD -->
+      <div id="comment-thread">
+
+        <!-- Comment 1 — SELECTED -->
+        <div id="comment-1" class="comment-block mx-4 my-2 rounded-xl border p-3" style="border-color:var(--sys-primary-default)">
           <div class="flex items-center gap-1.5 flex-wrap">
-            <input type="checkbox" checked>
+            <input type="checkbox" class="comment-cb" checked onclick="event.stopPropagation()">
             <span class="font-bold" style="font-size:12px;color:var(--sys-text-primary)">Theodore Maximilian Montgomery</span>
             <span style="font-size:11px;color:var(--sys-text-secondary)">Today at 10:05 AM</span>
             <span class="inline-flex items-center px-1.5 rounded-sm font-semibold" style="height:16px;font-size:10px;background:var(--sys-success-default);color:var(--sys-success-content)">POSITIVE</span>
             <div class="flex-1"></div>
             <div class="flex items-center gap-0.5">
-              <button class="w-6 h-6 flex items-center justify-center rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="border:none;background:transparent;color:var(--sys-text-secondary)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3m7-10v3a3 3 0 0 1-3 3H11l-2 6v1h.5a.5.5 0 0 0 .5-.5V14h7a2 2 0 0 0 2-2l-1-5a2 2 0 0 0-2-2h-2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-              <button class="w-6 h-6 flex items-center justify-center rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="border:none;background:transparent;color:var(--sys-text-secondary)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 5C6.48 5 2 9.48 2 12s4.48 7 10 7 10-4.48 10-7-4.48-7-10-7zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-8a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" fill="currentColor"/></svg></button>
-              <button class="w-6 h-6 flex items-center justify-center rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="border:none;background:transparent;color:var(--sys-text-secondary)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path fill-rule="evenodd" clip-rule="evenodd" d="M16.5 8.97a.75.75 0 0 1 0 1.06l-6 6a.75.75 0 0 1-1.06 0l-2.5-2.5a.75.75 0 1 1 1.06-1.06L10 14.44l5.44-5.47a.75.75 0 0 1 1.06 0z" fill="currentColor"/></svg></button>
-              <button class="w-6 h-6 flex items-center justify-center rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="border:none;background:transparent;color:var(--sys-text-secondary)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM19 8v6M22 11h-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-              <button class="w-6 h-6 flex items-center justify-center rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="border:none;background:transparent;color:var(--sys-text-secondary)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg></button>
+              <button class="btn-like-icon w-6 h-6 flex items-center justify-center rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" title="Like" style="border:none;background:transparent;color:var(--sys-text-secondary)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3m7-10v3a3 3 0 0 1-3 3H11l-2 6v1h.5a.5.5 0 0 0 .5-.5V14h7a2 2 0 0 0 2-2l-1-5a2 2 0 0 0-2-2h-2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <button class="w-6 h-6 flex items-center justify-center rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" title="View" style="border:none;background:transparent;color:var(--sys-text-secondary)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 5C6.48 5 2 9.48 2 12s4.48 7 10 7 10-4.48 10-7-4.48-7-10-7zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-8a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" fill="currentColor"/></svg></button>
+              <button class="btn-resolve-comment w-6 h-6 flex items-center justify-center rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" title="Resolve" style="border:none;background:transparent;color:var(--sys-text-secondary)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path fill-rule="evenodd" clip-rule="evenodd" d="M16.5 8.97a.75.75 0 0 1 0 1.06l-6 6a.75.75 0 0 1-1.06 0l-2.5-2.5a.75.75 0 1 1 1.06-1.06L10 14.44l5.44-5.47a.75.75 0 0 1 1.06 0z" fill="currentColor"/></svg></button>
+              <button class="w-6 h-6 flex items-center justify-center rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" title="Assign" style="border:none;background:transparent;color:var(--sys-text-secondary)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM19 8v6M22 11h-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <button class="w-6 h-6 flex items-center justify-center rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" title="More" style="border:none;background:transparent;color:var(--sys-text-secondary)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg></button>
             </div>
           </div>
           <div class="mt-2" style="font-size:13px;color:var(--sys-text-primary);line-height:1.5">This car is a masterpiece! I can't wait to see what Mercedes comes up with next. 🔥 #luxury #automotive</div>
           <div class="flex items-center mt-2">
-            <button class="inline-flex items-center gap-1 px-2 rounded-full border cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="height:22px;font-size:11px;font-family:inherit;background:transparent;border-color:var(--sys-border-base);color:var(--sys-text-secondary)">
+            <button class="btn-like-pill inline-flex items-center gap-1 px-2 rounded-full border cursor-pointer" data-liked="false" data-count="1" style="height:22px;font-size:11px;font-family:inherit;background:transparent;border-color:var(--sys-border-base);color:var(--sys-text-secondary);transition:all 0.15s">
               <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3m7-10v3a3 3 0 0 1-3 3H11l-2 6v1h.5a.5.5 0 0 0 .5-.5V14h7a2 2 0 0 0 2-2l-1-5a2 2 0 0 0-2-2h-2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              1 Like
+              <span class="like-count">1 Like</span>
             </button>
             <div class="flex-1"></div>
             <div class="w-5 h-5 rounded-full flex items-center justify-center font-bold text-white" style="font-size:8px;background:var(--amber-400,#f59e0b)">MS</div>
           </div>
           <div class="flex items-center gap-0.5 mt-1.5 flex-wrap">
-            <button class="px-1 py-0.5 rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="font-size:11px;font-family:inherit;border:none;background:transparent;color:var(--sys-text-secondary)">∧ Hide 2 Replies</button>
+            <button id="toggle-replies-btn" class="btn-reply-toggle px-1 py-0.5 rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="font-size:11px;font-family:inherit;border:none;background:transparent;color:var(--sys-text-secondary)">∧ Hide 2 Replies</button>
             <span style="font-size:11px;color:var(--sys-border-base)">|</span>
-            <button class="px-1 py-0.5 rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="font-size:11px;font-family:inherit;border:none;background:transparent;color:var(--sys-text-secondary)">Reply</button>
+            <button class="btn-reply px-1 py-0.5 rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="font-size:11px;font-family:inherit;border:none;background:transparent;color:var(--sys-text-secondary)">Reply</button>
             <span style="font-size:11px;color:var(--sys-border-base)">|</span>
-            <button class="px-1 py-0.5 rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="font-size:11px;font-family:inherit;border:none;background:transparent;color:var(--sys-text-secondary)">🏷 Add Tags</button>
+            <button class="btn-add-tags px-1 py-0.5 rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="font-size:11px;font-family:inherit;border:none;background:transparent;color:var(--sys-text-secondary)">🏷 Add Tags</button>
           </div>
         </div>
 
         <!-- NESTED REPLIES -->
-        <div class="ml-[42px] mr-4 mb-2 border-l-2 pl-4" style="border-left-color:var(--sys-border-soft)">
+        <div id="replies-container" class="ml-[42px] mr-4 mb-2 border-l-2 pl-4" style="border-left-color:var(--sys-border-soft)">
 
-          <!-- Reply 1: Michael Stadler — NEUTRAL -->
-          <div class="py-2.5 border-b" style="border-color:var(--sys-border-soft)">
+          <!-- Reply 1 -->
+          <div class="reply-block py-2.5 border-b" style="border-color:var(--sys-border-soft)">
             <div class="flex items-center gap-1.5 flex-wrap">
-              <input type="checkbox">
+              <input type="checkbox" class="comment-cb" onclick="event.stopPropagation()">
               <span class="font-bold" style="font-size:12px;color:var(--sys-text-primary)">Michael Stadler</span>
               <span style="font-size:11px;color:var(--sys-text-secondary)">Today at 10:05 AM</span>
               <span class="inline-flex items-center px-1.5 rounded-sm font-semibold" style="height:16px;font-size:10px;background:var(--grey-100);color:var(--sys-text-secondary)">NEUTRAL</span>
               <div class="flex-1"></div>
               <div class="flex items-center gap-0.5">
-                <button class="w-6 h-6 flex items-center justify-center rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="border:none;background:transparent;color:var(--sys-text-secondary)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3m7-10v3a3 3 0 0 1-3 3H11l-2 6v1h.5a.5.5 0 0 0 .5-.5V14h7a2 2 0 0 0 2-2l-1-5a2 2 0 0 0-2-2h-2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                <button class="btn-like-icon w-6 h-6 flex items-center justify-center rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="border:none;background:transparent;color:var(--sys-text-secondary)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3m7-10v3a3 3 0 0 1-3 3H11l-2 6v1h.5a.5.5 0 0 0 .5-.5V14h7a2 2 0 0 0 2-2l-1-5a2 2 0 0 0-2-2h-2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
                 <button class="w-6 h-6 flex items-center justify-center rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="border:none;background:transparent;color:var(--sys-text-secondary)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg></button>
               </div>
             </div>
             <div class="mt-1.5" style="font-size:13px;color:var(--sys-text-primary);line-height:1.5">My grandfather had one of these. Such a timeles car! 💯 #memories #vintagd</div>
             <div class="flex items-center mt-2">
-              <button class="inline-flex items-center gap-1 px-2 rounded-full border cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="height:22px;font-size:11px;font-family:inherit;background:transparent;border-color:var(--sys-border-base);color:var(--sys-text-secondary)">
+              <button class="btn-like-pill inline-flex items-center gap-1 px-2 rounded-full border cursor-pointer" data-liked="false" data-count="1" style="height:22px;font-size:11px;font-family:inherit;background:transparent;border-color:var(--sys-border-base);color:var(--sys-text-secondary);transition:all 0.15s">
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3m7-10v3a3 3 0 0 1-3 3H11l-2 6v1h.5a.5.5 0 0 0 .5-.5V14h7a2 2 0 0 0 2-2l-1-5a2 2 0 0 0-2-2h-2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                1 Like
+                <span class="like-count">1 Like</span>
               </button>
               <div class="flex-1"></div>
               <div class="w-5 h-5 rounded-full flex items-center justify-center font-bold text-white" style="font-size:8px;background:var(--amber-400,#f59e0b)">MS</div>
             </div>
             <div class="flex items-center gap-0.5 mt-1.5">
-              <button class="px-1 py-0.5 rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="font-size:11px;font-family:inherit;border:none;background:transparent;color:var(--sys-text-secondary)">Reply</button>
+              <button class="btn-reply px-1 py-0.5 rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="font-size:11px;font-family:inherit;border:none;background:transparent;color:var(--sys-text-secondary)">Reply</button>
               <span style="font-size:11px;color:var(--sys-border-base)">|</span>
-              <button class="px-1 py-0.5 rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="font-size:11px;font-family:inherit;border:none;background:transparent;color:var(--sys-text-secondary)">🏷 Add Tags</button>
+              <button class="btn-add-tags px-1 py-0.5 rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="font-size:11px;font-family:inherit;border:none;background:transparent;color:var(--sys-text-secondary)">🏷 Add Tags</button>
             </div>
           </div>
 
-          <!-- Reply 2: Facelift — NEUTRAL — BRAND badge -->
-          <div class="py-2.5">
+          <!-- Reply 2: Facelift -->
+          <div class="reply-block py-2.5">
             <div class="flex items-center gap-1.5 flex-wrap">
-              <input type="checkbox">
+              <input type="checkbox" class="comment-cb" onclick="event.stopPropagation()">
               <span class="font-bold" style="font-size:12px;color:var(--sys-text-primary)">Facelift</span>
               <span style="font-size:11px;color:var(--sys-text-secondary)">Today at 10:05 AM</span>
               <span class="inline-flex items-center px-1.5 rounded-sm font-semibold" style="height:16px;font-size:10px;background:var(--grey-100);color:var(--sys-text-secondary)">⊖ NEUTRAL</span>
@@ -434,36 +497,458 @@
             </div>
             <div class="mt-1.5" style="font-size:13px;color:var(--sys-text-primary);line-height:1.5">Great suggestion! We're actively working on this. Stay tuned for updates.</div>
             <div class="flex items-center gap-0.5 mt-2">
-              <button class="px-1 py-0.5 rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="font-size:11px;font-family:inherit;border:none;background:transparent;color:var(--sys-text-secondary)">Reply</button>
+              <button class="btn-reply px-1 py-0.5 rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="font-size:11px;font-family:inherit;border:none;background:transparent;color:var(--sys-text-secondary)">Reply</button>
               <span style="font-size:11px;color:var(--sys-border-base)">|</span>
-              <button class="px-1 py-0.5 rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="font-size:11px;font-family:inherit;border:none;background:transparent;color:var(--sys-text-secondary)">🏷 Add Tags</button>
+              <button class="btn-add-tags px-1 py-0.5 rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="font-size:11px;font-family:inherit;border:none;background:transparent;color:var(--sys-text-secondary)">🏷 Add Tags</button>
             </div>
           </div>
 
-        </div>
+        </div><!-- /replies-container -->
 
-        <!-- Comment 2: Theodore Maximilian Montgomery — POSITIVE (unselected) -->
-        <div class="mx-4 my-2 rounded-xl border p-3" style="border-color:var(--sys-border-soft)">
+        <!-- Comment 2 -->
+        <div id="comment-2" class="comment-block mx-4 my-2 rounded-xl border p-3" style="border-color:var(--sys-border-soft)">
           <div class="flex items-center gap-1.5 flex-wrap">
-            <input type="checkbox">
+            <input type="checkbox" class="comment-cb" onclick="event.stopPropagation()">
             <span class="font-bold" style="font-size:12px;color:var(--sys-text-primary)">Theodore Maximilian Montgomery</span>
             <span style="font-size:11px;color:var(--sys-text-secondary)">Today at 10:05 AM</span>
             <span class="inline-flex items-center px-1.5 rounded-sm font-semibold" style="height:16px;font-size:10px;background:var(--sys-success-default);color:var(--sys-success-content)">POSITIVE</span>
             <div class="flex-1"></div>
             <div class="flex items-center gap-0.5">
-              <button class="w-6 h-6 flex items-center justify-center rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="border:none;background:transparent;color:var(--sys-text-secondary)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3m7-10v3a3 3 0 0 1-3 3H11l-2 6v1h.5a.5.5 0 0 0 .5-.5V14h7a2 2 0 0 0 2-2l-1-5a2 2 0 0 0-2-2h-2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <button class="btn-like-icon w-6 h-6 flex items-center justify-center rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="border:none;background:transparent;color:var(--sys-text-secondary)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3m7-10v3a3 3 0 0 1-3 3H11l-2 6v1h.5a.5.5 0 0 0 .5-.5V14h7a2 2 0 0 0 2-2l-1-5a2 2 0 0 0-2-2h-2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
               <button class="w-6 h-6 flex items-center justify-center rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="border:none;background:transparent;color:var(--sys-text-secondary)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 5C6.48 5 2 9.48 2 12s4.48 7 10 7 10-4.48 10-7-4.48-7-10-7zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-8a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" fill="currentColor"/></svg></button>
-              <button class="w-6 h-6 flex items-center justify-center rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="border:none;background:transparent;color:var(--sys-text-secondary)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path fill-rule="evenodd" clip-rule="evenodd" d="M16.5 8.97a.75.75 0 0 1 0 1.06l-6 6a.75.75 0 0 1-1.06 0l-2.5-2.5a.75.75 0 1 1 1.06-1.06L10 14.44l5.44-5.47a.75.75 0 0 1 1.06 0z" fill="currentColor"/></svg></button>
+              <button class="btn-resolve-comment w-6 h-6 flex items-center justify-center rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="border:none;background:transparent;color:var(--sys-text-secondary)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path fill-rule="evenodd" clip-rule="evenodd" d="M16.5 8.97a.75.75 0 0 1 0 1.06l-6 6a.75.75 0 0 1-1.06 0l-2.5-2.5a.75.75 0 1 1 1.06-1.06L10 14.44l5.44-5.47a.75.75 0 0 1 1.06 0z" fill="currentColor"/></svg></button>
               <button class="w-6 h-6 flex items-center justify-center rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="border:none;background:transparent;color:var(--sys-text-secondary)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM19 8v6M22 11h-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
               <button class="w-6 h-6 flex items-center justify-center rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="border:none;background:transparent;color:var(--sys-text-secondary)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg></button>
             </div>
           </div>
+          <div class="mt-2" style="font-size:13px;color:var(--sys-text-primary);line-height:1.5">Absolutely stunning engineering. The attention to detail in this model is unparalleled — every curve tells a story.</div>
+          <div class="flex items-center mt-2">
+            <button class="btn-like-pill inline-flex items-center gap-1 px-2 rounded-full border cursor-pointer" data-liked="false" data-count="3" style="height:22px;font-size:11px;font-family:inherit;background:transparent;border-color:var(--sys-border-base);color:var(--sys-text-secondary);transition:all 0.15s">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3m7-10v3a3 3 0 0 1-3 3H11l-2 6v1h.5a.5.5 0 0 0 .5-.5V14h7a2 2 0 0 0 2-2l-1-5a2 2 0 0 0-2-2h-2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span class="like-count">3 Likes</span>
+            </button>
+            <div class="flex-1"></div>
+          </div>
+          <div class="flex items-center gap-0.5 mt-1.5 flex-wrap">
+            <button class="btn-reply px-1 py-0.5 rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="font-size:11px;font-family:inherit;border:none;background:transparent;color:var(--sys-text-secondary)">Reply</button>
+            <span style="font-size:11px;color:var(--sys-border-base)">|</span>
+            <button class="btn-add-tags px-1 py-0.5 rounded cursor-pointer hover:bg-[var(--sys-background-neutral)]" style="font-size:11px;font-family:inherit;border:none;background:transparent;color:var(--sys-text-secondary)">🏷 Add Tags</button>
+          </div>
         </div>
 
-        <div class="pb-4"></div>
-      </div>
-    </div>
+      </div><!-- /comment-thread -->
+      <div class="pb-4"></div>
+    </div><!-- /context-body -->
 
-  </div>
+  </div><!-- /context-panel -->
+</div><!-- /app-body -->
+
+<!-- ═══════════════════════════════════════
+     INTERACTIVE JAVASCRIPT
+════════════════════════════════════════ -->
+<script>
+(function () {
+
+  /* ── TOAST ── */
+  function showToast(msg, duration = 2000) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(t._timer);
+    t._timer = setTimeout(() => t.classList.remove('show'), duration);
+  }
+
+  /* ── FEED ITEM SELECTION ── */
+  const feedItems = document.querySelectorAll('.feed-item');
+
+  function selectFeedItem(item) {
+    feedItems.forEach(i => {
+      i.style.borderLeftColor = 'transparent';
+      i.style.background = '';
+      i.classList.remove('selected-item');
+    });
+    item.style.borderLeftColor = 'var(--sys-primary-default)';
+    item.style.background = 'var(--blue-50)';
+    item.classList.add('selected-item');
+  }
+
+  // initialise first item as selected
+  const firstItem = document.querySelector('.feed-item');
+  if (firstItem) {
+    firstItem.style.borderLeftColor = 'var(--sys-primary-default)';
+    firstItem.style.background = 'var(--blue-50)';
+  }
+
+  feedItems.forEach(item => {
+    item.addEventListener('click', e => {
+      if (e.target.closest('input[type=checkbox]') || e.target.closest('.btn-flag') || e.target.closest('.btn-resolve-item')) return;
+      selectFeedItem(item);
+    });
+  });
+
+  /* ── MASTER FEED CHECKBOX ── */
+  document.getElementById('master-feed-cb').addEventListener('change', function () {
+    document.querySelectorAll('.feed-cb').forEach(cb => { cb.checked = this.checked; });
+  });
+  document.querySelectorAll('.feed-cb').forEach(cb => {
+    cb.addEventListener('change', () => {
+      const all = document.querySelectorAll('.feed-cb');
+      const checked = document.querySelectorAll('.feed-cb:checked');
+      const master = document.getElementById('master-feed-cb');
+      master.checked = checked.length === all.length;
+      master.indeterminate = checked.length > 0 && checked.length < all.length;
+    });
+  });
+
+  /* ── SEARCH / FILTER ── */
+  let currentSentimentFilter = 'all';
+  let showFlaggedOnly = false;
+
+  function applyFilters() {
+    const q = document.getElementById('search-input').value.toLowerCase();
+    let visible = 0;
+    feedItems.forEach(item => {
+      const textMatch = !q || item.dataset.text.includes(q) || item.textContent.toLowerCase().includes(q);
+      const sentimentMatch = currentSentimentFilter === 'all' || item.dataset.sentiment === currentSentimentFilter;
+      const flagMatch = !showFlaggedOnly || item.classList.contains('flagged');
+      const show = textMatch && sentimentMatch && flagMatch;
+      item.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    document.getElementById('item-count').textContent = visible + (visible === 1 ? ' Item' : ' Items');
+  }
+
+  document.getElementById('search-input').addEventListener('input', applyFilters);
+
+  /* ── STATUS DROPDOWN ── */
+  const statusBtn = document.getElementById('status-filter-btn');
+  const dropdown = document.getElementById('status-dropdown');
+  statusBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+  });
+  document.addEventListener('click', () => { dropdown.style.display = 'none'; });
+
+  dropdown.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      currentSentimentFilter = btn.dataset.filter;
+      showFlaggedOnly = false;
+      // update filter pill UI
+      const allBtn = document.getElementById('filter-all-btn');
+      if (currentSentimentFilter === 'all') {
+        allBtn.classList.add('active');
+        statusBtn.style.background = 'transparent';
+        statusBtn.style.color = 'var(--sys-text-primary)';
+        statusBtn.firstChild.textContent = 'Status ';
+      } else {
+        allBtn.classList.remove('active');
+        statusBtn.style.background = 'var(--sys-primary-default)';
+        statusBtn.style.color = 'white';
+        statusBtn.style.borderColor = 'transparent';
+        const label = btn.textContent.trim();
+        statusBtn.childNodes[0].textContent = label + ' ';
+      }
+      dropdown.style.display = 'none';
+      applyFilters();
+    });
+  });
+
+  document.getElementById('filter-all-btn').addEventListener('click', () => {
+    currentSentimentFilter = 'all';
+    showFlaggedOnly = false;
+    document.getElementById('filter-all-btn').classList.add('active');
+    statusBtn.style.background = 'transparent';
+    statusBtn.style.color = 'var(--sys-text-primary)';
+    statusBtn.style.borderColor = 'var(--sys-border-base)';
+    applyFilters();
+  });
+
+  /* ── FLAG FILTER BUTTON ── */
+  document.getElementById('btn-flag-filter').addEventListener('click', function () {
+    showFlaggedOnly = !showFlaggedOnly;
+    this.style.background = showFlaggedOnly ? 'var(--orange-50)' : 'transparent';
+    this.style.color = showFlaggedOnly ? 'var(--orange-600)' : 'var(--sys-text-secondary)';
+    applyFilters();
+  });
+
+  /* ── FLAG TOGGLE (per item) ── */
+  document.querySelectorAll('.btn-flag').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const item = btn.closest('.feed-item');
+      item.classList.toggle('flagged');
+      showToast(item.classList.contains('flagged') ? 'Item flagged' : 'Flag removed');
+    });
+  });
+
+  /* ── RESOLVE FEED ITEM ── */
+  document.querySelectorAll('.btn-resolve-item').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const item = btn.closest('.feed-item');
+      item.classList.add('resolving');
+      showToast('Resolved');
+      setTimeout(() => {
+        item.style.display = 'none';
+        applyFilters();
+      }, 350);
+    });
+  });
+
+  /* ── SORT ORDER TOGGLE ── */
+  let sortAsc = true;
+  document.getElementById('sort-order-btn').addEventListener('click', () => {
+    sortAsc = !sortAsc;
+    const list = document.getElementById('feed-list');
+    const items = [...list.querySelectorAll('.feed-item')];
+    items.reverse().forEach(i => list.appendChild(i));
+    showToast(sortAsc ? 'Sorted: newest first' : 'Sorted: oldest first');
+  });
+
+  /* ── POST CARD COLLAPSE ── */
+  let postCollapsed = false;
+  document.getElementById('collapse-post-btn').addEventListener('click', function () {
+    postCollapsed = !postCollapsed;
+    const body = document.getElementById('post-body-text');
+    const readMore = document.getElementById('read-more-btn');
+    body.style.display = postCollapsed ? 'none' : '';
+    readMore.style.display = postCollapsed ? 'none' : '';
+    this.textContent = postCollapsed ? 'Expand ∨' : 'Collapse ∧';
+  });
+
+  /* ── READ MORE ── */
+  let expanded = false;
+  document.getElementById('read-more-btn').addEventListener('click', function () {
+    expanded = !expanded;
+    const body = document.getElementById('post-body-text');
+    body.classList.toggle('line-clamp-3', !expanded);
+    this.textContent = expanded ? 'Show less' : 'Read more';
+  });
+
+  /* ── HIDE / SHOW REPLIES ── */
+  let repliesVisible = true;
+  document.getElementById('toggle-replies-btn').addEventListener('click', function () {
+    repliesVisible = !repliesVisible;
+    const container = document.getElementById('replies-container');
+    container.style.display = repliesVisible ? '' : 'none';
+    this.textContent = repliesVisible ? '∧ Hide 2 Replies' : '∨ Show 2 Replies';
+  });
+
+  /* ── LIKE PILLS ── */
+  document.querySelectorAll('.btn-like-pill').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const liked = btn.dataset.liked === 'true';
+      const count = parseInt(btn.dataset.count);
+      const newCount = liked ? count - 1 : count + 1;
+      btn.dataset.liked = String(!liked);
+      btn.dataset.count = String(newCount);
+      btn.querySelector('.like-count').textContent = newCount + (newCount === 1 ? ' Like' : ' Likes');
+      btn.classList.toggle('liked', !liked);
+    });
+  });
+
+  /* ── LIKE ICON BUTTONS (in comment header) ── */
+  document.querySelectorAll('.btn-like-icon').forEach(btn => {
+    btn.addEventListener('click', () => {
+      // find the nearest like pill in the same comment/reply block
+      const block = btn.closest('.comment-block, .reply-block');
+      if (!block) return;
+      const pill = block.querySelector('.btn-like-pill');
+      if (pill) pill.click();
+    });
+  });
+
+  /* ── RESOLVE COMMENT ── */
+  document.querySelectorAll('.btn-resolve-comment').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const block = btn.closest('.comment-block');
+      if (block.classList.contains('resolved-comment')) return;
+      block.style.transition = 'opacity 0.3s';
+      block.classList.add('resolved-comment');
+      updateCommentCount();
+      showToast('Comment resolved ✓');
+    });
+  });
+
+  /* ── QUICK RESOLVE ALL ── */
+  document.getElementById('quick-resolve-btn').addEventListener('click', () => {
+    const comments = document.querySelectorAll('.comment-block:not(.resolved-comment)');
+    comments.forEach((block, i) => {
+      setTimeout(() => {
+        block.style.transition = 'opacity 0.3s';
+        block.classList.add('resolved-comment');
+      }, i * 120);
+    });
+    setTimeout(() => {
+      updateCommentCount();
+      showToast('All comments resolved ✓');
+    }, comments.length * 120 + 100);
+  });
+
+  /* ── COMMENT COUNT ── */
+  function updateCommentCount() {
+    const total = document.querySelectorAll('.comment-block').length;
+    const resolved = document.querySelectorAll('.comment-block.resolved-comment').length;
+    const active = total - resolved;
+    document.getElementById('comment-count-label').textContent = active + (active === 1 ? ' Comment' : ' Comments');
+  }
+
+  /* ── MASTER COMMENT CHECKBOX ── */
+  document.getElementById('master-comment-cb').addEventListener('change', function () {
+    document.querySelectorAll('.comment-cb').forEach(cb => { cb.checked = this.checked; });
+    document.querySelectorAll('.comment-block').forEach(block => {
+      block.classList.toggle('selected', this.checked);
+    });
+  });
+  document.querySelectorAll('.comment-cb').forEach(cb => {
+    cb.addEventListener('change', function () {
+      const block = this.closest('.comment-block, .reply-block');
+      if (block) block.classList.toggle('selected', this.checked);
+    });
+  });
+
+  /* ── REPLY COMPOSER ── */
+  document.querySelectorAll('.btn-reply').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const block = btn.closest('.comment-block, .reply-block');
+      const existing = block.querySelector('.reply-composer');
+      if (existing) { existing.remove(); return; }
+
+      const composer = document.createElement('div');
+      composer.className = 'reply-composer';
+      composer.innerHTML = `
+        <textarea placeholder="Write a reply…" rows="2"></textarea>
+        <div class="reply-composer-toolbar">
+          <button class="btn-cancel" style="height:24px;padding:0 10px;border-radius:4px;border:1px solid var(--sys-border-base);background:transparent;font-size:11px;font-weight:500;cursor:pointer;font-family:inherit;color:var(--sys-text-secondary)">Cancel</button>
+          <button class="btn-send" style="height:24px;padding:0 12px;border-radius:4px;border:none;background:var(--sys-primary-default);color:white;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;">Send</button>
+        </div>`;
+      block.appendChild(composer);
+      composer.querySelector('textarea').focus();
+
+      composer.querySelector('.btn-cancel').addEventListener('click', () => composer.remove());
+      composer.querySelector('.btn-send').addEventListener('click', () => {
+        const text = composer.querySelector('textarea').value.trim();
+        if (!text) { composer.querySelector('textarea').focus(); return; }
+        showToast('Reply sent ✓');
+        composer.remove();
+      });
+    });
+  });
+
+  /* ── ADD TAGS ── */
+  document.querySelectorAll('.btn-add-tags').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const block = btn.closest('.comment-block, .reply-block');
+      const existing = block.querySelector('.tag-input-wrap');
+      if (existing) { existing.remove(); return; }
+
+      const wrap = document.createElement('div');
+      wrap.className = 'tag-input-wrap';
+      wrap.style.cssText = 'display:flex;align-items:center;gap:6px;margin-top:6px;';
+      wrap.innerHTML = `
+        <input type="text" placeholder="Add tag…" style="height:24px;padding:0 8px;border:1px solid var(--sys-border-base);border-radius:4px;font-size:11px;font-family:inherit;outline:none;color:var(--sys-text-primary);flex:1;min-width:0;">
+        <button style="height:24px;padding:0 10px;border-radius:4px;border:none;background:var(--sys-primary-default);color:white;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;">Add</button>`;
+      const linksRow = btn.closest('.flex');
+      linksRow.parentNode.insertBefore(wrap, linksRow.nextSibling);
+      const input = wrap.querySelector('input');
+      input.focus();
+
+      wrap.querySelector('button').addEventListener('click', () => {
+        const val = input.value.trim();
+        if (!val) { input.focus(); return; }
+        // insert a tag chip before the links row
+        const chip = document.createElement('span');
+        chip.style.cssText = 'display:inline-flex;align-items:center;gap:3px;height:18px;padding:0 6px;border-radius:20px;font-size:10px;border:1px solid var(--sys-border-base);color:var(--sys-text-secondary);margin-right:4px;';
+        chip.innerHTML = `#${val} <span style="cursor:pointer;opacity:0.7" class="remove-tag">×</span>`;
+        chip.querySelector('.remove-tag').addEventListener('click', () => chip.remove());
+        linksRow.parentNode.insertBefore(chip, linksRow);
+        showToast(`Tag "#${val}" added`);
+        wrap.remove();
+      });
+      input.addEventListener('keydown', e => { if (e.key === 'Enter') wrap.querySelector('button').click(); if (e.key === 'Escape') wrap.remove(); });
+    });
+  });
+
+  /* ── COPY THREAD ── */
+  document.getElementById('copy-btn').addEventListener('click', () => {
+    const text = document.getElementById('comment-thread').innerText;
+    navigator.clipboard.writeText(text).then(() => showToast('Thread copied to clipboard')).catch(() => showToast('Copied!'));
+  });
+
+  /* ── EXPORT ── */
+  document.getElementById('export-btn').addEventListener('click', () => {
+    showToast('Exporting feed… 📥');
+  });
+
+  /* ── SIDEBAR COLLAPSE ── */
+  let sidebarExpanded = false;
+  document.getElementById('sidebar-collapse-btn').addEventListener('click', () => {
+    sidebarExpanded = !sidebarExpanded;
+    const sidebar = document.getElementById('sidebar');
+    const arrow = document.getElementById('sidebar-arrow');
+    if (sidebarExpanded) {
+      sidebar.style.width = '160px';
+      sidebar.style.minWidth = '160px';
+      sidebar.style.alignItems = 'flex-start';
+      sidebar.style.paddingLeft = '8px';
+      sidebar.style.paddingRight = '8px';
+      arrow.setAttribute('d', 'M13 12l-6-6v12z');
+      document.querySelectorAll('.sidebar-nav-btn').forEach(btn => {
+        const label = btn.dataset.label;
+        if (label && !btn.querySelector('.sidebar-label-text')) {
+          const span = document.createElement('span');
+          span.className = 'sidebar-label-text';
+          span.textContent = label;
+          span.style.cssText = 'font-size:12px;font-weight:500;margin-left:8px;white-space:nowrap;color:inherit;';
+          btn.style.width = '100%';
+          btn.style.justifyContent = 'flex-start';
+          btn.appendChild(span);
+        }
+      });
+    } else {
+      sidebar.style.width = '52px';
+      sidebar.style.minWidth = '52px';
+      sidebar.style.alignItems = 'center';
+      sidebar.style.paddingLeft = '';
+      sidebar.style.paddingRight = '';
+      arrow.setAttribute('d', 'M11 12l6-6v12z');
+      document.querySelectorAll('.sidebar-label-text').forEach(el => el.remove());
+      document.querySelectorAll('.sidebar-nav-btn').forEach(btn => {
+        btn.style.width = '';
+        btn.style.justifyContent = '';
+      });
+    }
+  });
+
+  /* ── SIDEBAR NAV ITEM ACTIVE STATE ── */
+  document.querySelectorAll('.sidebar-nav-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.sidebar-nav-btn').forEach(b => {
+        b.style.background = 'transparent';
+        b.style.color = 'var(--grey-400)';
+      });
+      this.style.background = 'var(--sys-primary-default)';
+      this.style.color = 'white';
+    });
+  });
+
+  /* ── NOTIFICATION BELL ── */
+  document.getElementById('notif-btn').addEventListener('click', () => {
+    showToast('No new notifications');
+  });
+
+  /* ── SORT COMMENTS ── */
+  let commentsAsc = true;
+  document.getElementById('sort-comments-btn').addEventListener('click', () => {
+    commentsAsc = !commentsAsc;
+    const thread = document.getElementById('comment-thread');
+    const comments = [...thread.querySelectorAll('.comment-block')];
+    comments.reverse().forEach(c => thread.appendChild(c));
+    showToast(commentsAsc ? 'Newest first' : 'Oldest first');
+  });
+
+})();
+</script>
 </body>
 </html>
