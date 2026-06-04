@@ -1,6 +1,6 @@
 # Brand Audit — screens vs. design system
 
-Scope: `screens/calendar.html` and `screens/inbox.html`, audited against `output/tokens/tokens.css`, the `styleguide-*.html` pages, and the conventions in `CLAUDE.md`.
+Scope: `experiment-screens/calendar.html` and `experiment-screens/inbox.html`, audited against `output/tokens/tokens.css`, the `styleguide-*.html` pages, and the conventions in `CLAUDE.md`.
 
 This document is for an implementation pass. Each item is a deviation with a concrete fix. Tackle Part A (screen + brand fixes) first, then Part B (system gaps) once the screen fixes have proven the missing primitives.
 
@@ -22,7 +22,7 @@ Do not introduce new hex values, new font sizes, or new shadows unless this docu
 
 ### A1. The Facelift logo mark is implemented twice, and one version is wrong
 
-`screens/calendar.html`, the `.logo-mark` rule (around line 23):
+`experiment-screens/calendar.html`, the `.logo-mark` rule (around line 23):
 
 ```css
 .logo-mark{
@@ -36,7 +36,7 @@ Do not introduce new hex values, new font sizes, or new shadows unless this docu
 }
 ```
 
-`screens/inbox.html` has a different spec for the same primitive:
+`experiment-screens/inbox.html` has a different spec for the same primitive:
 
 ```css
 .logo-mark{
@@ -121,7 +121,7 @@ In the list view, table tags get raw inline backgrounds. They should use the `ap
 
 ### A7. Inbox: notification dot uses raw red
 
-`screens/inbox.html`:
+`experiment-screens/inbox.html`:
 
 ```css
 .notif-dot{... background:#ef4444 ...}
@@ -131,7 +131,7 @@ Replace with `var(--sys-danger-content)` (#cc0000). If the visual weight feels w
 
 ### A8. Inbox: avatar gradients are off-system
 
-Every user avatar in `screens/inbox.html` is a hardcoded Tailwind gradient pair:
+Every user avatar in `experiment-screens/inbox.html` is a hardcoded Tailwind gradient pair:
 
 ```js
 {av:'MK', bg:'linear-gradient(135deg,#f97316,#ec4899)', ...}
@@ -266,10 +266,10 @@ Add a section to `CLAUDE.md` → General rules listing the most-violated foreign
 
 When this audit is complete, the following must be true:
 
-1. `grep -E "(font-size:1[03578]|font-size:21|font-size:11.5)" screens/*.html` returns nothing.
-2. `grep -E "font-weight:(600|800)" screens/*.html` returns nothing — or the type scale has been extended to include them (B3) and they're sourced from tokens.
-3. `grep -oiE "#[0-9a-f]{3,8}" screens/*.html` returns only hex values that are passthroughs of an existing token (or are inline SVG `fill="#..."` attributes for network logos where brand hex is intentional, e.g. Instagram `#E2007A`, Facebook `#1877F2`, LinkedIn `#0A66C2`, X `#0F1419`).
-4. `grep -E "rgba\(" screens/*.html` returns nothing.
+1. `grep -E "(font-size:1[03578]|font-size:21|font-size:11.5)" experiment-screens/*.html` returns nothing.
+2. `grep -E "font-weight:(600|800)" experiment-screens/*.html` returns nothing — or the type scale has been extended to include them (B3) and they're sourced from tokens.
+3. `grep -oiE "#[0-9a-f]{3,8}" experiment-screens/*.html` returns only hex values that are passthroughs of an existing token (or are inline SVG `fill="#..."` attributes for network logos where brand hex is intentional, e.g. Instagram `#E2007A`, Facebook `#1877F2`, LinkedIn `#0A66C2`, X `#0F1419`).
+4. `grep -E "rgba\(" experiment-screens/*.html` returns nothing.
 5. Both screens render the Facelift logo mark identically.
 6. Both screens load only tokens from `output/tokens/tokens.css`; no inline declarations of brand colour, font size, or shadow values that aren't `var(--…)` passthroughs.
 

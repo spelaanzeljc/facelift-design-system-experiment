@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Orchestrate MUI — All Posts, Campaigns &amp; Events</title>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden;min-width:1280px}
@@ -2039,18 +2040,20 @@ const AppHeader = ({ onOpenMainNav }) => (
 
 // ── App root ──────────────────────────────────────────────────────────────────
 const App = () => {
+  const _p = new URLSearchParams(window.location.search);
+  const _initPost = WEEK0_CARDS[2][1]; // "Webinar Reminder: Orchestrate Live" — used for view/postDetail states
   const [subNavOpen,    setSubNavOpen]    = useState(true);
   const [mainNavOpen,   setMainNavOpen]   = useState(false);
   const [weekOffset,    setWeekOffset]    = useState(0);
-  const [viewMode,      setViewMode]      = useState('week');
-  const [calView,       setCalView]       = useState('calendar');
-  const [openPanel,     setOpenPanel]     = useState(null);
-  const [selectedPost,  setSelectedPost]  = useState(null);
-  const [datePickerOpen, setDatePickerOpen] = useState(false);
-  const [viewOptsOpen,   setViewOptsOpen]   = useState(false);
+  const [viewMode,      setViewMode]      = useState(_p.get('viewMode') || 'week');
+  const [calView,       setCalView]       = useState(_p.get('calView') || 'calendar');
+  const [openPanel,     setOpenPanel]     = useState(_p.get('panel') || null);
+  const [selectedPost,  setSelectedPost]  = useState(_p.get('panel') === 'postDetail' ? _initPost : null);
+  const [datePickerOpen, setDatePickerOpen] = useState(_p.get('datePicker') === 'true');
+  const [viewOptsOpen,   setViewOptsOpen]   = useState(_p.get('viewOpts') === 'true');
   const [viewOpts,       setViewOpts]       = useState({ images:true, tags:true, slim:false, colored:false });
-  const [screenMode,     setScreenMode]     = useState(null); // null | 'create' | 'view'
-  const [screenPost,     setScreenPost]     = useState(null);
+  const [screenMode,     setScreenMode]     = useState(_p.get('screen') || null); // null | 'create' | 'view'
+  const [screenPost,     setScreenPost]     = useState(_p.get('screen') === 'view' ? _initPost : null);
   const datePickerBtnRef   = useRef(null);
   const datePickerPanelRef = useRef(null);
   const viewOptsBtnRef     = useRef(null);
@@ -2136,5 +2139,8 @@ const App = () => {
 
 ReactDOM.createRoot(document.getElementById('root')).render(<App />);
 </script>
+<!-- impeccable-live-start -->
+<script src="http://localhost:8400/live.js"></script>
+<!-- impeccable-live-end -->
 </body>
 </html>
